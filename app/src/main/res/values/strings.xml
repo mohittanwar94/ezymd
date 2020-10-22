@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Ezymd</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="camera_permisssion">Camera permission denied</string>
+    <string name="call_permisssion">Call permission denied</string>
+    <string name="no_internet_connection">No internet connection available</string>
+    <string name="facebook">facebook</string>
+    <string name="apply">Apply</string>
+    <string name="back">Back</string>
+    <string name="clear_filters">Clear filters</string>
+    <string name="filters">Filters</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="did_not_receive_otp">Didn\'t received OTP?</string>
+    <string name="resend">Resend</string>
+    <string name="continue_string">Continue</string>
+    <string name="enter_four_digit_code">Enter your 4 digit code sent to</string>
+    <string name="delivery_location">Delivery Location</string>
+    <string name="trending_food">Trending Food</string>
+    <string name="resurant_around_you">22 restaurant around you</string>
+    <string name="pizza">Pizza</string>
+    <string name="countryCode">+1</string>
+    <string name="enter_your_phone_no">Enter your phone no.</string>
+    <string name="google">Google</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="continue_with">Continue with</string>
+    <string name="or">Or</string>
+    <string name="dummmy_price">$10</string>
+    <string name="unable_to_login">Unable to login in your Google Account</string>
+</resources>

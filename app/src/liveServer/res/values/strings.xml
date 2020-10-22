@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="RAZORPAY_KEY">rzp_live_DsP8sgsdOSIHf2</string>
+    <string name="sender_id">484493247584</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyA5_k7DZT1xSnASKye9GqYsX7xtXfzkImk
+    </string>
+
+    <string name="facebook_app_id">289484765373629</string>
+    <string name="fb_login_protocol_scheme">fb289484765373629</string>
+</resources>

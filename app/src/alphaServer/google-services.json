@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "72649354033",
+    "firebase_url": "https://ezymdbeta.firebaseio.com",
+    "project_id": "ezymdbeta",
+    "storage_bucket": "ezymdbeta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72649354033:android:3a8ed723c925fae7dfde10",
+        "android_client_info": {
+          "package_name": "com.ezymd.restaurantapp.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72649354033-sd3e25i6odpns9scag48dfju7sag5e8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezymd.restaurantapp.test",
+            "certificate_hash": "26c98e5fbf233c0a6338e3fba33671b592ff62da"
+          }
+        },
+        {
+          "client_id": "72649354033-fb2bbnn9rlkm9t3cgoluvvo8e3cv5skq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezymd.restaurantapp.test",
+            "certificate_hash": "10c2fa3a63838d7f0e9787e0374873d1ebab63a3"
+          }
+        },
+        {
+          "client_id": "72649354033-nappncats40n4jtk27s6ho61s4hlvt5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgCqXZZKlLpg5TTSEgx8lJFQeV_--NrNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72649354033-nappncats40n4jtk27s6ho61s4hlvt5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

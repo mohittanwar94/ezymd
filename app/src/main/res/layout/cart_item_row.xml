@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp">
+
+
+    <com.ezymd.restaurantapp.customviews.RoundedImageView
+        android:id="@+id/ivNotesThumb"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:scaleType="centerCrop"
+        app:corner_radius="@dimen/_7sdp"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@+id/ivNotesThumb"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/pizza"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/_13sdp"
+                app:textFont="medium" />
+
+
+            <com.ezymd.restaurantapp.customviews.QuantityPicker
+                android:id="@+id/quantityPicker"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                app:focusable="false"
+                app:max="10"
+                app:min="0"
+                app:textFont="book"
+                app:unit="1"
+                app:value="-5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp">
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/addOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:text="@string/pizza"
+                android:textColor="@color/school_notic"
+                android:textSize="@dimen/_10sdp"
+                app:textFont="book" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="center_vertical"
+                android:text="@string/dummmy_price"
+                android:textColor="@color/gray_9e9e9e"
+                android:textSize="@dimen/_10sdp"
+                app:textFont="book" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

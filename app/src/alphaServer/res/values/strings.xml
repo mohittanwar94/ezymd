@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sender_id">15319799733</string>
+    <string name="RAZORPAY_KEY">rzp_test_euFE6YNpadNtme</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCyyz9K7xoOYqnrSVsFJAhcrr6OMGqmKJc</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-5588957103112277~8547987289</string>
+    <string name="admob_native_ad_unit_id" translatable="false">ca-app-pub-5588957103112277/4293666052</string>
+
+    <string name="facebook_app_id">679112216348170</string>
+    <string name="fb_login_protocol_scheme">fb679112216348170</string>
+
+</resources>

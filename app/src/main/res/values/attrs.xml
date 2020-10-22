@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="SnapButton">
+        <attr name="buttonFont" format="integer">
+            <flag name="book" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="medium" value="2" />
+            <flag name="roman" value="3" />
+        </attr>
+        <attr name="buttonDrawableLeft" format="reference" />
+        <attr name="buttonDrawableRight" format="reference" />
+        <attr name="buttonDrawableTop" format="reference" />
+        <attr name="buttonDrawableBottom" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="SnapTextView">
+        <attr name="textFont" format="integer">
+            <flag name="book" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="medium" value="2" />
+            <flag name="roman" value="3" />
+        </attr>
+        <attr name="isJustifyEnabled" format="boolean" />
+        <attr name="drawableLeftCompat" format="reference" />
+        <attr name="drawableRightCompat" format="reference" />
+        <attr name="drawableTopCompat" format="reference" />
+        <attr name="drawableBottomCompat" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="SnapEditText">
+        <attr name="textFontEdit" format="integer">
+            <flag name="book" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="medium" value="2" />
+            <flag name="roman" value="3" />
+        </attr>
+
+        <attr name="customDrawableLeft" format="reference" />
+        <attr name="customDrawableRight" format="reference" />
+        <attr name="customDrawableTop" format="reference" />
+        <attr name="customDrawableBottom" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="SnapTextInputEditText">
+        <attr name="inputTextFont" format="integer">
+            <flag name="book" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="medium" value="2" />
+            <flag name="roman" value="3" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="round_background" format="boolean" />
+        <attr name="is_oval" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+
+
+    <declare-styleable name="CircularImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SmoothCheckBox">
+        <attr name="duration" format="integer" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="color_tick" format="color" />
+        <attr name="color_checked" format="color" />
+        <attr name="color_unchecked" format="color" />
+        <attr name="color_unchecked_stroke" format="color" />
+    </declare-styleable>
+    <declare-styleable name="NumberPicker">
+        <attr name="min" format="integer"/>
+        <attr name="max" format="integer"/>
+        <attr name="value" format="integer"/>
+        <attr name="unit" format="integer" />
+        <attr name="custom_layout" format="reference" />
+        <attr name="focusable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="Themes">
+        <attr name="NumberPickerLayout" format="reference"/>
+    </declare-styleable>
+
+</resources>

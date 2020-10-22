@@ -1,0 +1,145 @@
+{
+  "project_info": {
+    "project_number": "484493247584",
+    "firebase_url": "https://oval-fort-660.firebaseio.com",
+    "project_id": "oval-fort-660",
+    "storage_bucket": "oval-fort-660.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484493247584:android:f36173e948059ccb",
+        "android_client_info": {
+          "package_name": "gcm.play.android.samples.com.gcmquickstart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484493247584-dpief6vpnfe21bqtedbb40npen3ethhh.apps.googleusercontent.com",
+          "client_type": 4
+        },
+        {
+          "client_id": "484493247584-avt6sj5sjvu6oadqkt1seilkcrq5geju.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "484493247584-tctt724s68gla41ingi36e7ne7qifq3n.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "484493247584-64np91sk0cfeqhqa2bao1r9835g58v6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSeUTSRkakmWK-5xk7TrQM_94vVk7e4_g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484493247584:android:28e4ded75458cdea",
+        "android_client_info": {
+          "package_name": "com.varshylmobile.snaphomework"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484493247584-dpief6vpnfe21bqtedbb40npen3ethhh.apps.googleusercontent.com",
+          "client_type": 4,
+          "android_info": {
+            "package_name": "com.varshylmobile.snaphomework",
+            "certificate_hash": "ECC9A560E3E9796F6C341F5CEB7B972249F84596"
+          }
+        },
+        {
+          "client_id": "484493247584-r99tv6u5dvj4eljjos212nrm6tappppu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varshylmobile.snaphomework",
+            "certificate_hash": "CB015F3D263435E8E816EDAFAA7B7D5A0B5BFAD5"
+          }
+        },
+        {
+          "client_id": "484493247584-0v4fbad6sd827og6s2ep8fe7k93q5uhm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varshylmobile.snaphomework",
+            "certificate_hash": "0BABDCA917FD4F77EA3844A1211CE3E6C6790BF7"
+          }
+        },
+        {
+          "client_id": "484493247584-ervp2pst73vkbbc4jk88kbepm22tu2vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varshylmobile.snaphomework",
+            "certificate_hash": "A30E0ACB8A76BDB2A7385683EE7C30A88D29E35A"
+          }
+        },
+        {
+          "client_id": "484493247584-irt56u9r60tlit8k35l4fpfhq7uan4he.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varshylmobile.snaphomework",
+            "certificate_hash": "95148FE96D3EAF54E2ABC57D0734F7B234D7CE1F"
+          }
+        },
+        {
+          "client_id": "484493247584-avt6sj5sjvu6oadqkt1seilkcrq5geju.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "484493247584-tctt724s68gla41ingi36e7ne7qifq3n.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "484493247584-64np91sk0cfeqhqa2bao1r9835g58v6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSeUTSRkakmWK-5xk7TrQM_94vVk7e4_g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484493247584-tg15lcirrfucfpmb58qlu5no6tusq0c6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.varshylmobile.snaphomework"
+              }
+            },
+            {
+              "client_id": "484493247584-avt6sj5sjvu6oadqkt1seilkcrq5geju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
