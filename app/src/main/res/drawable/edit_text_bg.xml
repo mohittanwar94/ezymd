@@ -3,9 +3,5 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@android:color/white" />
-    <corners
-        android:bottomLeftRadius="@dimen/_5sdp"
-        android:bottomRightRadius="@dimen/_5sdp"
-        android:topLeftRadius="@dimen/_5sdp"
-        android:topRightRadius="@dimen/_5sdp" />
+    <corners android:radius="@dimen/_8sdp" />
 </shape>

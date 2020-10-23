@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 class LoginViewModel : ViewModel() {
     private var errorRequest: MutableLiveData<String>
     private var loginRepository: LoginRepository? = null
-    val data: MutableLiveData<LoginRequest>
     val loginRequest: MutableLiveData<LoginRequest>
     val isLoading: MutableLiveData<Boolean>
 
@@ -39,7 +38,6 @@ class LoginViewModel : ViewModel() {
     init {
         errorRequest = MutableLiveData()
         loginRepository = LoginRepository.instance
-        data = MutableLiveData()
         loginRequest = MutableLiveData()
         isLoading = MutableLiveData()
 
@@ -66,7 +64,7 @@ class LoginViewModel : ViewModel() {
     }
 
     fun loginFb(acessToken: AccessToken) {
-       loginRepository!!.fbLogin(acessToken, data)
+       loginRepository!!.fbLogin(acessToken, loginRequest)
 
     }
 

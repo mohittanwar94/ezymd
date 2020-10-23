@@ -29,4 +29,5 @@
     <string name="or">Or</string>
     <string name="dummmy_price">$10</string>
     <string name="unable_to_login">Unable to login in your Google Account</string>
+    <string name="app_name_small">ezymd</string>
 </resources>

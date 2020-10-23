@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.utils.ShowDialog
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.facebook.CallbackManager
@@ -59,11 +57,11 @@ class Login : BaseActivity() {
 
         })
 
-        loginViewModel.data.observe(this, Observer {
+        loginViewModel.loginRequest.observe(this, Observer {
             if (it.error) {
                 showError(false, it.errorMessage, null)
             } else {
-
+                SnapLog.print(it.email)
             }
         })
         loginViewModel.showError().observe(this, Observer {
@@ -97,10 +95,8 @@ class Login : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RC_SIGN_IN) {
             processGoogleData(data)
-        } else if (requestCode == RC_SIGN_IN) {
-            ShowDialog(this).disPlayDialog(R.string.unable_to_login, false, false)
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data)
 
