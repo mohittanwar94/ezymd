@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#90000000"
-        android:scaleType="fitXY" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
