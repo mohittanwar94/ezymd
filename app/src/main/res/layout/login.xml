@@ -49,13 +49,14 @@
                 android:textSize="@dimen/_17sdp"
                 app:textFont="roman" />
 
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  | "
-                android:textColor="@color/color_E5E9EF"
-                android:textSize="@dimen/_25sdp"
-                app:textFont="medium" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/color_E5E9EF" />
+
 
             <com.ezymd.restaurantapp.customviews.SnapEditText
                 android:id="@+id/phoneNo"
@@ -66,7 +67,7 @@
                 android:hint="@string/enter_your_phone_no"
                 android:inputType="phone"
                 android:text=""
-                android:letterSpacing="0.11"
+                android:letterSpacing="0.08"
                 android:textColor="@color/blue_002366"
                 android:textColorHint="@color/gray_B2BDD1"
                 android:textSize="@dimen/_17sdp"
