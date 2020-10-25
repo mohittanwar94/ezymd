@@ -113,6 +113,9 @@ repositories {
 }
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -158,6 +161,5 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.github.mumayank:AirLocation:2.4'
-    implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
 }

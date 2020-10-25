@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_160sdp"
+    android:layout_gravity="bottom"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="@dimen/_160sdp"
+    tools:showIn="@layout/activity_maps">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardUseCompatPadding="false"
+        app:contentPadding="@dimen/_5sdp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.01"
+                android:text="@string/select_delivery_location"
+                android:textColor="@color/color_b2bdd1"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                app:textFont="medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/location_edit_text_bg"
+                android:orientation="horizontal">
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/toLocationTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_location"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_15sdp"
+                    app:textFont="medium" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:progressTint="@color/color_ffb912"
+                    />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:text="@string/change"
+                    android:textColor="@color/color_ffb912"
+                    android:textSize="@dimen/_12sdp"
+                    app:textFont="medium" />
+            </LinearLayout>
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:text="@string/continue_string"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                app:buttonFont="bold" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

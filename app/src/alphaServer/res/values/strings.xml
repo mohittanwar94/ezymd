@@ -2,7 +2,7 @@
 <resources>
     <string name="sender_id">15319799733</string>
     <string name="RAZORPAY_KEY">rzp_test_euFE6YNpadNtme</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCyyz9K7xoOYqnrSVsFJAhcrr6OMGqmKJc</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyClzdvri7qG3b5aueZgzY46JyawgWUs62o</string>
     <string name="admob_app_id" translatable="false">ca-app-pub-5588957103112277~8547987289</string>
     <string name="admob_native_ad_unit_id" translatable="false">ca-app-pub-5588957103112277/4293666052</string>
 
