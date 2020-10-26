@@ -26,8 +26,8 @@ import java.util.*
 class LoginRepository private constructor() {
 
 
-    suspend fun checkForPaymentMethod(
-        baseRequest: LoginRequest,
+    suspend fun generateOtp(
+        otp: String,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<BaseResponse> {
 
@@ -115,6 +115,7 @@ class LoginRepository private constructor() {
 
 
     }
+
 
 
     companion object {

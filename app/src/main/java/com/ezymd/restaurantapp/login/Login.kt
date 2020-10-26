@@ -53,6 +53,11 @@ class Login : BaseActivity() {
         google.setOnClickListener {
             signIn()
         }
+
+        next.setOnClickListener {
+            UIUtil.clickHandled(it)
+           loginViewModel.generateOtp(phoneNo.text.toString())
+        }
         loginViewModel.isLoading.observe(this, Observer {
 
         })

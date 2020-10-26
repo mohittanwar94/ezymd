@@ -21,7 +21,7 @@
             android:layout_marginBottom="@dimen/_60sdp"
             android:text="@string/app_name_small"
             android:textColor="@color/white"
-            android:textSize="@dimen/_36sdp"
+            android:textSize="@dimen/_56sdp"
             app:textFont="bold" />
 
 
@@ -65,7 +65,7 @@
                 android:textColor="@color/blue_002366"
                 android:textColorHint="@color/gray_B2BDD1"
                 android:textSize="@dimen/_17sdp"
-                app:textFontEdit="book" />
+                app:textFontEdit="medium" />
 
 
         </LinearLayout>
@@ -84,7 +84,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_17sdp"
-            app:buttonFont="medium" />
+            app:buttonFont="bold" />
 
         <LinearLayout
             android:id="@+id/orLay"

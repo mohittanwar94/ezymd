@@ -9,7 +9,6 @@ import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -44,27 +43,29 @@ class LoginViewModel : ViewModel() {
 
     }
 
-    fun loginOnServer(logRequest: LoginRequest) {
-        loginRequest.value = logRequest
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.checkForPaymentMethod(
-                loginRequest.value!!,
-                Dispatchers.IO
-            )
-            isLoading.postValue(false)
-            when (result) {
-                is ResultWrapper.NetworkError -> showNetworkError()
-                is ResultWrapper.GenericError -> showGenericError(result.error)
-                // is ResultWrapper.Success -> data.postValue(result.value)
+    fun generateOtp(otp: String) {
+        if (otp.length < 5)
+            errorRequest.postValue("Phone No. not valid")
+        else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val result = loginRepository!!.generateOtp(
+                    otp,
+                    Dispatchers.IO
+                )
+                isLoading.postValue(false)
+                when (result) {
+                    is ResultWrapper.NetworkError -> showNetworkError()
+                    is ResultWrapper.GenericError -> showGenericError(result.error)
+                    // is ResultWrapper.Success -> data.postValue(result.value)
+                }
             }
-
 
         }
 
     }
 
     fun loginFb(acessToken: AccessToken) {
-       loginRepository!!.fbLogin(acessToken, loginRequest)
+        loginRepository!!.fbLogin(acessToken, loginRequest)
 
     }
 
@@ -80,7 +81,7 @@ class LoginViewModel : ViewModel() {
 
     fun loginGoogle(resultGoogleSignIN: Task<GoogleSignInAccount>) {
         viewModelScope.launch(Dispatchers.IO) {
-            loginRepository!!.googleLogin(resultGoogleSignIN,loginRequest)
+            loginRepository!!.googleLogin(resultGoogleSignIN, loginRequest)
 
         }
 

@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.network
 
 
+import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import retrofit2.http.*
@@ -14,9 +15,8 @@ interface WebServices {
     ): BaseResponse
 
     @FormUrlEncoded
-    @POST
+    @POST(ServerConfig.GENERATE_OTP)
     suspend fun sendOtp(
-        @Url url: String,
         @FieldMap commonParameters: Map<String, String>
     ): OtpModel
 
