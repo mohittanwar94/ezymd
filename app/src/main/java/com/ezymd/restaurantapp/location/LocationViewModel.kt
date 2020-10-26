@@ -4,6 +4,7 @@ import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ezymd.restaurantapp.location.model.LocationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 class LocationViewModel : ViewModel() {
 
     private var loginRepository: LocationRepository? = null
-    val address: MutableLiveData<String>
+    val address: MutableLiveData<LocationModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {

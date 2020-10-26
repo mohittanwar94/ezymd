@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/_10sdp"
-    android:layout_marginRight="@dimen/_10sdp"
     android:paddingBottom="@dimen/_5sdp">
 
 
@@ -12,74 +11,75 @@
         android:id="@+id/ivNotesThumb"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
-        app:srcCompat="@drawable/ic_launcher_background"
         android:scaleType="centerCrop"
         app:corner_radius="@dimen/_7sdp" />
 
-    <LinearLayout
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="start"
         android:layout_marginStart="@dimen/_5sdp"
-        android:layout_toRightOf="@+id/ivNotesThumb"
-        android:orientation="vertical">
-
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center_vertical"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pizza"
-            android:textColor="@color/gray_514f4f"
-            android:textSize="@dimen/_13sdp"
-            app:textFont="medium" />
+        android:layout_toEndOf="@id/ivNotesThumb"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/pizza"
+        android:textColor="@color/gray_514f4f"
+        android:textSize="@dimen/_13sdp"
+        app:textFont="medium" />
 
 
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/foodType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pizza"
-            android:textColor="@color/gray_9e9e9e"
-            android:textSize="@dimen/_10sdp"
-            app:textFont="book" />
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/foodType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@id/ivNotesThumb"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/pizza"
+        android:textColor="@color/gray_9e9e9e"
+        android:textSize="@dimen/_10sdp"
+        app:textFont="book" />
 
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/discount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pizza"
-            android:textColor="@color/gray_676766"
-            android:textSize="@dimen/_10sdp"
-            app:textFont="book" />
-
-
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/rating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pizza"
-            android:textColor="@color/gray_9e9e9e"
-            android:textSize="@dimen/_10sdp"
-            app:textFont="book" />
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/discount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_below="@+id/foodType"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@id/ivNotesThumb"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/pizza"
+        android:textColor="@color/gray_676766"
+        android:textSize="@dimen/_10sdp"
+        app:textFont="book" />
 
 
-    </LinearLayout>
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_below="@+id/discount"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@id/ivNotesThumb"
+        android:text="@string/pizza"
+        android:textColor="@color/gray_9e9e9e"
+        android:textSize="@dimen/_10sdp"
+        app:textFont="book" />
 
-</RelativeLayout>
+
+
+    </RelativeLayout>

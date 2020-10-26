@@ -5,25 +5,25 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
+    <keep_state_fragment
         android:id="@+id/navigation_home"
         android:name="com.ezymd.restaurantapp.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
+    <keep_state_fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.ezymd.restaurantapp.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
-    <fragment
+    <keep_state_fragment
         android:id="@+id/navigation_notifications"
         android:name="com.ezymd.restaurantapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 
-    <fragment
+    <keep_state_fragment
         android:id="@+id/navigation_profile"
         android:name="com.ezymd.restaurantapp.ui.profile.ProfileFragment"
         android:label="@string/title_profile"

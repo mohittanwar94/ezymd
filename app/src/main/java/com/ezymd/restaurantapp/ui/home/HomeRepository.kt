@@ -1,21 +1,18 @@
-package com.ezymd.restaurantapp.location
+package com.ezymd.restaurantapp.ui.home
 
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import androidx.lifecycle.MutableLiveData
+import com.ezymd.restaurantapp.location.LocationRepository
 import com.ezymd.restaurantapp.location.model.LocationModel
 import java.io.IOException
 
-
-class LocationRepository private constructor() {
-
+class HomeRepository {
 
     fun getAddress(
         gcd: Geocoder,
-        lat: Double,
-        long: Double,
-        addressResult: MutableLiveData<LocationModel>,
+        locationModel: LocationModel
+        ,addressResult: MutableLiveData<LocationModel>,
         isLoading: MutableLiveData<Boolean>
     ) {
         var address = "No known address"
@@ -24,41 +21,36 @@ class LocationRepository private constructor() {
         val addresses: List<Address>
         try {
             addresses = gcd.getFromLocation(
-               lat,
-               long,
+                locationModel.lat,
+                locationModel.lang,
                 1
             )
             if (addresses.isNotEmpty()) {
                 address = addresses[0].getAddressLine(0)
             }
-            val locationModel=LocationModel()
-            locationModel.lang=long
-            locationModel.lat=lat
             locationModel.location=address
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
-            val locationModel=LocationModel()
-            locationModel.lang=long
-            locationModel.lat=lat
             locationModel.location=address
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         }
 
+
     }
 
     companion object {
         @Volatile
-        private var sportsFeeRepository: LocationRepository? = null
+        private var sportsFeeRepository: HomeRepository? = null
 
         @JvmStatic
-        val instance: LocationRepository?
+        val instance: HomeRepository?
             get() {
                 if (sportsFeeRepository == null) {
-                    synchronized(LocationRepository::class.java) {
-                        sportsFeeRepository = LocationRepository()
+                    synchronized(HomeRepository::class.java) {
+                        sportsFeeRepository = HomeRepository()
                     }
                 }
                 return sportsFeeRepository
@@ -70,4 +62,5 @@ class LocationRepository private constructor() {
             throw RuntimeException("Use getInstance() method to get the single instance of this class.")
         }
     }
+
 }

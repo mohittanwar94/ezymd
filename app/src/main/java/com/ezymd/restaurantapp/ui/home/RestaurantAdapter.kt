@@ -8,21 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 
-class RestaurantAdapter(mContext: Context, onRecyclerView: OnRecyclerView) :
+class RestaurantAdapter(context: Context, onRecyclerViewClick: OnRecyclerView) :
     RecyclerView.Adapter<RestaurantAdapter.NotesHolder>() {
-    private val onRecyclerView: OnRecyclerView
-    private val mContext: Context
-
-
-    init {
-        this.onRecyclerView = onRecyclerView
-        this.mContext = mContext
-    }
+    private val onRecyclerView = onRecyclerViewClick
+    private val mContext = context
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         return NotesHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.cart_item_row, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.restaurant_item_row, parent, false)
         )
     }
 

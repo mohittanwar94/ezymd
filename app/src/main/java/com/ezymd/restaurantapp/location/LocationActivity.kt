@@ -1,13 +1,10 @@
 package com.ezymd.restaurantapp.location
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
-import android.graphics.Color
 import android.location.Geocoder
-import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -17,10 +14,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,7 +28,9 @@ import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener
 import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -50,6 +52,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     private val viewModel by lazy {
         ViewModelProvider(this).get(LocationViewModel::class.java)
     }
+    private var locationModel = LocationModel()
     private val gcd by lazy {
         Geocoder(this, Locale.getDefault())
     }
@@ -68,7 +71,8 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         fusedLocationProviderClient = FusedLocationProviderClient(this)
         setGUI()
         viewModel.address.observe(this, androidx.lifecycle.Observer {
-            setLocationText(it)
+            locationModel = it
+            setLocationText(it.location)
         })
 
         viewModel.isLoading.observe(this, androidx.lifecycle.Observer {
@@ -81,7 +85,8 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
 
         done.setOnClickListener {
-
+            setResult(Activity.RESULT_OK, Intent().putExtra(JSONKeys.OBJECT, locationModel))
+            finish()
         }
         change.setOnClickListener {
             UIUtil.clickAlpha(it)
@@ -196,7 +201,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
                     val mLastLocation = task.result
 
                     val latLong = LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())
-                    handler.postDelayed(runnnableAnim,2000)
+                    handler.postDelayed(runnnableAnim, 2000)
                     runnnableAnim.run()
                     Handler().postDelayed({
                         imgAnim1.visibility = View.GONE
@@ -223,33 +228,30 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         var add = address
         if (add.startsWith("Unnamed Road,"))
             add = add.replace("Unnamed Road,", "")
-        toLocationTxt.setText(add)
+        toLocationTxt.setText(add.trim())
     }
 
 
     private fun setStartLocation(lat: Double, lng: Double, addr: String, zoom: Float) {
-        if (addr.isEmpty()) {
-            viewModel.getAddress(lat, lng, gcd)
-            val latLong = LatLng(lat, lng)
 
-            val cameraPosition = CameraPosition.Builder()
-                .target(latLong).zoom(zoom).build()
+        viewModel.getAddress(lat, lng, gcd)
+        val latLong = LatLng(lat, lng)
 
-            googleMap.animateCamera(
-                CameraUpdateFactory
-                    .newCameraPosition(cameraPosition)
-            )
+        val cameraPosition = CameraPosition.Builder()
+            .target(latLong).zoom(zoom).build()
 
-            handler.postDelayed(runnnableAnim,2000)
-            runnnableAnim.run()
-            Handler().postDelayed({
-                imgAnim1.visibility = View.GONE
-                imgAnim2.visibility = View.GONE
-            }, 3000)
+        googleMap.animateCamera(
+            CameraUpdateFactory
+                .newCameraPosition(cameraPosition)
+        )
 
-        } else {
-            setLocationText(addr)
-        }
+        handler.postDelayed(runnnableAnim, 2000)
+        runnnableAnim.run()
+        Handler().postDelayed({
+            imgAnim1.visibility = View.GONE
+            imgAnim2.visibility = View.GONE
+        }, 3000)
+
 
     }
 
@@ -273,6 +275,9 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
                     setStartLocation(loc[0].toDouble(), loc[1].toDouble(), place.name!!, 17f)
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
+                    val status: Status = Autocomplete.getStatusFromIntent(data!!)
+                    SnapLog.print(status.getStatusMessage())
+
 
                 }
                 AutocompleteActivity.RESULT_CANCELED -> {
@@ -293,8 +298,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     }
 
 
-
-    val runnnableAnim = Runnable{
+    val runnnableAnim = Runnable {
         imgAnim1.visibility = View.VISIBLE
         imgAnim2.visibility = View.VISIBLE
         kotlin.run {

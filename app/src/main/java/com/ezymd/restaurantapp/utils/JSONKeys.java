@@ -378,4 +378,5 @@ public  interface JSONKeys {
     String premium_status = "premium_status";
     String available_sheets = "available_sheets";
     String digital_certificate ="digital_certificate" ;
+    int LOCATION_REQUEST=1232;
 }
