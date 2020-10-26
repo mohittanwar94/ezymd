@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.login
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.ezymd.restaurantapp.ServerConfig
+import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -29,16 +30,15 @@ class LoginRepository private constructor() {
     suspend fun generateOtp(
         otp: String,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<BaseResponse> {
+    ): ResultWrapper<OtpModel> {
 
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
-
+        map.put("phone_no",otp)
 
         return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
-            apiServices.getOutStandingAmount(
-                ServerConfig.BASE_URL,
+            apiServices.sendOtp(
                 map
             )
         }

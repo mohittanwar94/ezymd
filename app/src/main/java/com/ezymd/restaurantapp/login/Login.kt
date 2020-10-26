@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -7,8 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.utils.SnapLog
-import com.ezymd.restaurantapp.utils.UIUtil
+import com.ezymd.restaurantapp.login.otp.OTPScreen
+import com.ezymd.restaurantapp.utils.*
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -55,11 +56,26 @@ class Login : BaseActivity() {
         }
 
         next.setOnClickListener {
+            SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-           loginViewModel.generateOtp(phoneNo.text.toString())
+            loginViewModel.generateOtp(phoneNo.text.toString())
         }
         loginViewModel.isLoading.observe(this, Observer {
 
+        })
+
+        loginViewModel.otpResponse.observe(this, Observer {
+            if (!it.isStatus.equals(ErrorCodes.SUCCESS)) {
+                showError(false, it.message, null)
+            } else {
+                startActivityForResult(
+                    Intent(
+                        this,
+                        OTPScreen::class.java
+                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim()),
+                    JSONKeys.OTP_REQUEST
+                )
+            }
         })
 
         loginViewModel.loginRequest.observe(this, Observer {
@@ -72,7 +88,12 @@ class Login : BaseActivity() {
         loginViewModel.showError().observe(this, Observer {
             showError(false, it, null)
         })
+
+        loginViewModel.isLoading.observe(this, Observer {
+            progress.visibility = if (it) View.VISIBLE else View.GONE
+        })
     }
+
 
     private fun fbLogin(it: View?) {
         UIUtil.clickAlpha(it)
@@ -102,6 +123,8 @@ class Login : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             processGoogleData(data)
+        } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
+            this.finish()
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data)
 

@@ -1,22 +1,28 @@
 package com.ezymd.restaurantapp.login.model;
 
-public class OtpModel {
-    private boolean isSended;
-    private String msg="";
+import com.google.gson.annotations.SerializedName;
 
-    public boolean isSended() {
-        return isSended;
+import java.io.Serializable;
+
+public class OtpModel implements Serializable {
+    @SerializedName("status")
+    private String status;
+    @SerializedName("message")
+    private String message="";
+
+    public String isStatus() {
+        return status;
     }
 
-    public void setSended(boolean sended) {
-        isSended = sended;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -5,6 +5,6 @@
     android:viewportWidth="46">
     <path
         android:name="arrow copy"
-        android:fillColor="#000"
+        android:fillColor="#002366"
         android:pathData="m31.2 37.72c0.42 -0.42 0.42 -1.1 0 -1.52l-13.37 -13.33l13.37 -13.36c0.42 -0.42 0.42 -1.1 0 -1.52c-0.42 -0.42 -1.1 -0.42 -1.52 0l-14.1 14.09c-0.21 0.21 -0.31 0.47 -0.31 0.76c0 0.26 0.1 0.55 0.31 0.76l14.1 14.09c0.42 0.44 1.1 0.44 1.52 0.03z" />
 </vector>

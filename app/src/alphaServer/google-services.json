@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "72649354033",
-    "firebase_url": "https://ezymdbeta.firebaseio.com",
-    "project_id": "ezymdbeta",
-    "storage_bucket": "ezymdbeta.appspot.com"
+    "project_number": "210423936790",
+    "firebase_url": "https://ezymdbeta-8c151.firebaseio.com",
+    "project_id": "ezymdbeta-8c151",
+    "storage_bucket": "ezymdbeta-8c151.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:72649354033:android:3a8ed723c925fae7dfde10",
+        "mobilesdk_app_id": "1:210423936790:android:134acd0b07aeabc5d14237",
         "android_client_info": {
           "package_name": "com.ezymd.restaurantapp.test"
         }
       },
       "oauth_client": [
         {
-          "client_id": "72649354033-sd3e25i6odpns9scag48dfju7sag5e8m.apps.googleusercontent.com",
+          "client_id": "210423936790-h4g9hf24as7imuk1utik4os1kosbchhl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ezymd.restaurantapp.test",
@@ -23,7 +23,7 @@
           }
         },
         {
-          "client_id": "72649354033-fb2bbnn9rlkm9t3cgoluvvo8e3cv5skq.apps.googleusercontent.com",
+          "client_id": "210423936790-vvuj2uh265mu8t85hhcvr0hkrvrlr79f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ezymd.restaurantapp.test",
@@ -31,20 +31,20 @@
           }
         },
         {
-          "client_id": "72649354033-nappncats40n4jtk27s6ho61s4hlvt5c.apps.googleusercontent.com",
+          "client_id": "210423936790-ffdsmg4vd4kdn92sruifhlstsg6vdhff.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBgCqXZZKlLpg5TTSEgx8lJFQeV_--NrNY"
+          "current_key": "AIzaSyCMzUcX2dHRgEPgSI9e55ChEKvxiPe1G4E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "72649354033-nappncats40n4jtk27s6ho61s4hlvt5c.apps.googleusercontent.com",
+              "client_id": "210423936790-ffdsmg4vd4kdn92sruifhlstsg6vdhff.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

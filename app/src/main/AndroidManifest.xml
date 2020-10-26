@@ -44,13 +44,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".location.LocationActivity"
             android:theme="@style/AppFullScreen">
 
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".login.Login"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -60,6 +61,17 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".login.otp.OTPScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysVisible" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+
 
         <receiver
             android:name=".utils.ConnectivityReceiver"

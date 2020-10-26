@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.facebook.AccessToken
@@ -19,6 +20,7 @@ class LoginViewModel : ViewModel() {
     private var errorRequest: MutableLiveData<String>
     private var loginRepository: LoginRepository? = null
     val loginRequest: MutableLiveData<LoginRequest>
+    val otpResponse: MutableLiveData<OtpModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -39,7 +41,7 @@ class LoginViewModel : ViewModel() {
         loginRepository = LoginRepository.instance
         loginRequest = MutableLiveData()
         isLoading = MutableLiveData()
-
+        otpResponse= MutableLiveData()
 
     }
 
@@ -47,6 +49,7 @@ class LoginViewModel : ViewModel() {
         if (otp.length < 5)
             errorRequest.postValue("Phone No. not valid")
         else {
+            isLoading.postValue(true)
             viewModelScope.launch(Dispatchers.IO) {
                 val result = loginRepository!!.generateOtp(
                     otp,
@@ -56,7 +59,7 @@ class LoginViewModel : ViewModel() {
                 when (result) {
                     is ResultWrapper.NetworkError -> showNetworkError()
                     is ResultWrapper.GenericError -> showGenericError(result.error)
-                    // is ResultWrapper.Success -> data.postValue(result.value)
+                    is ResultWrapper.Success -> otpResponse.postValue(result.value)
                 }
             }
 

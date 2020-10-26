@@ -20,5 +20,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>
     ): OtpModel
 
+
+    @FormUrlEncoded
+    @POST(ServerConfig.LOGIN_USER)
+    suspend fun loginUser(
+        @FieldMap commonParameters: Map<String, String>
+    ): OtpModel
+
 }
 

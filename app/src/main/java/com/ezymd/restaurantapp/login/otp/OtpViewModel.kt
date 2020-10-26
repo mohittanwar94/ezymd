@@ -45,7 +45,7 @@ class OtpViewModel : ViewModel() {
 
     }
 
-    fun loginOnServer(logRequest: LoginRequest) {
+    /*fun loginOnServer(logRequest: LoginRequest) {
         loginRequest.value = logRequest
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.checkForPaymentMethod(
@@ -62,7 +62,7 @@ class OtpViewModel : ViewModel() {
 
         }
 
-    }
+    }*/
 
     fun startSmsListener(client: SmsRetrieverClient) {
         loginRepository!!.startSmsListener(client)
@@ -94,6 +94,24 @@ class OtpViewModel : ViewModel() {
 
         }
 
+
+
+    }
+
+    fun registerUser(loginRequest: LoginRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.registerLoginUser(loginRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> otpSend.postValue(result.value)
+            }
+
+
+        }
 
 
     }

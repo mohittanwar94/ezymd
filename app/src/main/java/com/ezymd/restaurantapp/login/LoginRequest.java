@@ -9,10 +9,19 @@ public class LoginRequest {
     private String id = "";
     private String image_url = "";
     private String mobileNo = "";
+    private String otp = "";
     private Boolean isSocialLogin = false;
     private Boolean isError = false;
     @Nullable
     public String errorMessage="";
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 
     public Boolean getError() {
         return isError;

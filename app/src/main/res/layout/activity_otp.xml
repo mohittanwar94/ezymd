@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
 
     <include layout="@layout/header_new" />
 
@@ -15,9 +16,8 @@
         android:layout_height="@dimen/_100sdp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_20sdp"
-        app:srcCompat="@drawable/ic_launcher_background"
-
-        />
+        app:srcCompat="@drawable/ic_mobile_verification"
+        android:contentDescription="@string/image" />
 
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -25,11 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
         android:maxLines="1"
         android:padding="@dimen/_5sdp"
         android:text="@string/otp_verification"
-        android:textColor="@color/blue_4A689F"
+        android:textColor="@color/blue_002366"
         android:textSize="@dimen/_22sdp"
         android:visibility="visible"
         app:textFont="roman" />
@@ -37,15 +36,17 @@
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/msg"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:maxLines="1"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
         android:padding="@dimen/_5sdp"
         android:text="@string/otp_verification"
-        android:textColor="@color/blue_4A689F"
-        android:textSize="@dimen/_13sdp"
+        android:textColor="@color/blue_667ba3"
+        android:textSize="@dimen/_15sdp"
         android:visibility="visible"
         app:textFont="book" />
 
@@ -75,7 +76,7 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/bookmark_inactive_clr"
+            android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
 
         <com.ezymd.restaurantapp.customviews.SnapEditText
@@ -90,7 +91,7 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/bookmark_inactive_clr"
+            android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
 
         <com.ezymd.restaurantapp.customviews.SnapEditText
@@ -103,7 +104,7 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/bookmark_inactive_clr"
+            android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
 
 
@@ -112,13 +113,13 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
             android:gravity="center"
             android:background="@drawable/otp_edittext_bg"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/bookmark_inactive_clr"
+            android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
 
     </LinearLayout>
@@ -134,7 +135,7 @@
         android:layout_gravity="center"
         android:text="@string/continue_string"
         android:textAllCaps="false"
-        android:background="@color/input_fields_color"
+        android:background="@drawable/ic_gray_btn_pressed"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_17sdp"
         app:buttonFont="book" />
@@ -150,10 +151,10 @@
         android:maxLines="1"
         android:padding="@dimen/_5sdp"
         android:text="@string/did_not_receive_otp"
-        android:textColor="@color/gray_9e9e9e"
+        android:textColor="@color/color_667ba3"
         android:textSize="@dimen/_13sdp"
         android:visibility="visible"
-        app:textFont="book" />
+        app:textFont="medium" />
 
 
 </LinearLayout>

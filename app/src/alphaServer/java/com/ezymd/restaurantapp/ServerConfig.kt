@@ -8,12 +8,13 @@ interface ServerConfig {
 
         const val IS_TESTING = true
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
-        const val BASE_URL = "http://15.207.72.214/"
+        const val BASE_URL = "http://15.207.72.214/ezymd/api/"
 
         const val OTP_HASH = "FCWFd3gBNu0"
 
 
-        const val GENERATE_OTP = "ezymd/api/sendOtp"
-        const val LOGIN_USER = "ezymd/api/socialLoginRegister"
+        const val GENERATE_OTP = "sendOtp"
+        const val SOCIAL_LOGIN_USER = "loginRegister"
+        const val LOGIN_USER = "socialLoginRegister"
     }
 }

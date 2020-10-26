@@ -2,7 +2,7 @@ package com.ezymd.restaurantapp.utils;
 
 import org.jetbrains.annotations.Nullable;
 
-public  interface JSONKeys {
+public interface JSONKeys {
 
     String ACCOUNT_NO = "account_no";
     String BANK_NAME = "bank_name";
@@ -337,46 +337,47 @@ public  interface JSONKeys {
     String ACTIVITY_TYPE = "ACTIVITY_TYPE";
     String workshop_status = "workshop_status";
     String WORKSHOP_TYPE = "workshop_type";//1->Paid,0->unpaid
-    String COURSE_DESCRIPTION ="course_description" ;
-    String Designation ="designation" ;
-    String ShortBio ="short_bio" ;
+    String COURSE_DESCRIPTION = "course_description";
+    String Designation = "designation";
+    String ShortBio = "short_bio";
     String COURSE_MATERIAL = "course_material";
-    String COURSE_URL ="course_url" ;
-    String course_type ="course_type" ;
+    String COURSE_URL = "course_url";
+    String course_type = "course_type";
     String WORKSHOP_TRANSACTION_ID = "workshop_transacation_id";
-    String session_name ="session_name" ;
-    String SOURCE_STREAM ="source_stream" ;
+    String session_name = "session_name";
+    String SOURCE_STREAM = "source_stream";
     String IS_EDUCATOR = "is_educator";
     String CREATE_MEETING = "create_meeting";
     String IS_CHAT = "is_chat";
-    String class_status ="class_status" ;
+    String class_status = "class_status";
     String ONLINE_CLASSES = "online_classes";
-    String SUB_COMPONENTS ="sub_components" ;
-    String FEE_TYPE ="fee_type" ;
-    String sw_storage ="sw_storage" ;
-    String defaulter ="defaulter" ;
+    String SUB_COMPONENTS = "sub_components";
+    String FEE_TYPE = "fee_type";
+    String sw_storage = "sw_storage";
+    String defaulter = "defaulter";
     String expiry = "expiry";
-    String late_fee ="late_fee" ;
-    String FAQS ="FAQS" ;
-    String TIME_ZONE ="timezone" ;
+    String late_fee = "late_fee";
+    String FAQS = "FAQS";
+    String TIME_ZONE = "timezone";
     String SNAP_SIGN_STATUS = "snap_sign_status";
-    String VC_STATUS ="vc_status" ;
+    String VC_STATUS = "vc_status";
     String ZOOM_STATUS = "zoom_status";
     String SLATE_STATUS = "slate_status";
     String GOOGLE_MEET = "google_meet";
     String WL_STATUS = "wl_status";
-    String not_completed="not_completed";
-    String completed="completed";
-    String assignment="assignment";
-    String ASSIGNMENT_STATUS ="assignment_status" ;
+    String not_completed = "not_completed";
+    String completed = "completed";
+    String assignment = "assignment";
+    String ASSIGNMENT_STATUS = "assignment_status";
     String assignment_lists = "assignment_lists";
     String assignment_remarks = "assignment_remarks";
-    String grade_marks ="grade_marks" ;
-    String remarks ="remarks" ;
-    String assginment_completed ="assginment_completed" ;
+    String grade_marks = "grade_marks";
+    String remarks = "remarks";
+    String assginment_completed = "assginment_completed";
     String assginment_not_completed = "assginment_not_completed";
     String premium_status = "premium_status";
     String available_sheets = "available_sheets";
-    String digital_certificate ="digital_certificate" ;
-    int LOCATION_REQUEST=1232;
+    String digital_certificate = "digital_certificate";
+    int LOCATION_REQUEST = 1232;
+    int OTP_REQUEST = 1233;
 }

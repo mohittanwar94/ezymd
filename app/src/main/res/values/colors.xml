@@ -157,6 +157,9 @@
     <color name="color_002366">#002366</color>
     <color name="color_f2f4f7">#f2f4f7</color>
     <color name="color_e5e9ef">#e5e9ef</color>
+    <color name="blue_667ba3">#667ba3</color>
+    <color name="color_fff8e7">#fff8e7</color>
+    <color name="color_667ba3">#667ba3</color>
     <array name="smoothProgressBarColorArray">
         <item>@color/coordinatorheader</item>
         <item>@color/snappay</item>
