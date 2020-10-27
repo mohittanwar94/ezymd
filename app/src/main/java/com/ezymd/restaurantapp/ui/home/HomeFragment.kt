@@ -72,16 +72,17 @@ open class HomeFragment : Fragment() {
 
     }
 
-    private fun setLocationAddress(location: String) {
+    private fun setLocationAddress(location: String, city: String) {
         var address = location
         if (address.startsWith("Unnamed Road,"))
             address = address.replace("Unnamed Road,", "").trim()
 
-        locationValue.text = if (address.length > 25) {
+        delivery_location.text = city
+        locationValue.text = /*if (address.length > 25) {
             address.substring(0, 22) + "...".trim()
-        } else {
+        } else {*/
             address.trim()
-        }
+        //  }
     }
 
     private fun setListenerView() {
@@ -181,7 +182,7 @@ open class HomeFragment : Fragment() {
         })
         homeViewModel.address.observe(this, androidx.lifecycle.Observer {
             locationModel = it
-            setLocationAddress(it.location)
+            setLocationAddress(it.location, it.city)
         })
 
 

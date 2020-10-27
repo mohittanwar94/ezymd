@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.login.otp
 
 import com.ezymd.restaurantapp.login.LoginRequest
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
@@ -42,7 +43,7 @@ class OtpRepository private constructor() {
     suspend fun registerLoginUser(
         loginRequest:LoginRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<OtpModel> {
+    ): ResultWrapper<LoginModel> {
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()

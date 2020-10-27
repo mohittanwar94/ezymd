@@ -4,13 +4,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class LoginRequest {
     private String first_name = "";
-    private String last_name = "";
     private String email = "";
     private String id = "";
     private String image_url = "";
     private String mobileNo = "";
     private String otp = "";
-    private Boolean isSocialLogin = false;
+    private int isSocialLogin = 0;
     private Boolean isError = false;
     @Nullable
     public String errorMessage="";
@@ -48,13 +47,7 @@ public class LoginRequest {
         this.first_name = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
-    }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
 
     public String getEmail() {
         return email;
@@ -88,11 +81,11 @@ public class LoginRequest {
         this.mobileNo = mobileNo;
     }
 
-    public Boolean getSocialLogin() {
+    public int getSocialLogin() {
         return isSocialLogin;
     }
 
-    public void setSocialLogin(Boolean socialLogin) {
+    public void setSocialLogin(int socialLogin) {
         isSocialLogin = socialLogin;
     }
 }

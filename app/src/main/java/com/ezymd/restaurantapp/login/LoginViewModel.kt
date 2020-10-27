@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -20,6 +21,7 @@ class LoginViewModel : ViewModel() {
     private var errorRequest: MutableLiveData<String>
     private var loginRepository: LoginRepository? = null
     val loginRequest: MutableLiveData<LoginRequest>
+    val loginResponse: MutableLiveData<LoginModel>
     val otpResponse: MutableLiveData<OtpModel>
     val isLoading: MutableLiveData<Boolean>
 
@@ -42,7 +44,7 @@ class LoginViewModel : ViewModel() {
         loginRequest = MutableLiveData()
         isLoading = MutableLiveData()
         otpResponse= MutableLiveData()
-
+        loginResponse= MutableLiveData()
     }
 
     fun generateOtp(otp: String) {
@@ -90,5 +92,23 @@ class LoginViewModel : ViewModel() {
 
     }
 
+    fun login(it: LoginRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.loginUser(
+                it,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> loginResponse.postValue(result.value)
+            }
+        }
 
-}
+    }
+
+    }
+
+

@@ -3,7 +3,7 @@
     <style name="ActivityListTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorAccent">@color/white</item>
-        <item name="colorPrimaryDark">@color/dividerColor</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
@@ -20,7 +20,7 @@
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/dividerColor</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/yellow_circle_bg</item>
     </style>
 
@@ -48,7 +48,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="colorPrimaryDark">@color/dividerColor</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="alertDialogTheme">@style/MyAlertDialogStyle</item>
         <item name="colorAccent">@color/white</item>
         <item name="android:textColor">@android:color/black</item>
@@ -62,7 +62,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_ffb912</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="colorPrimaryDark">@color/dividerColor</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="alertDialogTheme">@style/MyAlertDialogStyle</item>
         <item name="colorAccent">@color/color_ffb912</item>
         <item name="android:textColor">@android:color/black</item>
@@ -106,7 +106,7 @@
     <style name="AppThemeDark" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/dividerColor</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/white</item>
         <item name="android:includeFontPadding">false</item>
         <item name="alertDialogTheme">@style/MyAlertDialogStyle</item>
@@ -174,7 +174,7 @@
         <!-- Used for the buttons -->
         <item name="colorAccent">@color/white</item>
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/dividerColor</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="android:includeFontPadding">false</item>
         <item name="buttonStyle">@style/AppCompatButtonStyle</item>
         <item name="windowNoTitle">true</item>
@@ -244,5 +244,13 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/launcher_screen_with_logo</item>
+    </style>
+
 
 </resources>

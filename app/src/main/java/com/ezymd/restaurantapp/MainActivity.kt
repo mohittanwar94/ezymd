@@ -2,10 +2,8 @@ package com.ezymd.restaurantapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
-import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
 import com.ezymd.restaurantapp.utils.KeepStateNavigator
@@ -26,7 +24,8 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!
 
         // setup custom navigator
-        val navigator = KeepStateNavigator(this, navHostFragment.childFragmentManager, R.id.nav_host_fragment)
+        val navigator =
+            KeepStateNavigator(this, navHostFragment.childFragmentManager, R.id.nav_host_fragment)
         navController.navigatorProvider += navigator
 
         // set navigation graph
@@ -35,7 +34,6 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
 
         navView.setupWithNavController(navController)
         navView.labelVisibilityMode = LABEL_VISIBILITY_LABELED
-
 
 
     }

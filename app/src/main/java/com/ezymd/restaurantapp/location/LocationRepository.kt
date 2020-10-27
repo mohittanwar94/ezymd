@@ -2,7 +2,6 @@ package com.ezymd.restaurantapp.location
 
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.ezymd.restaurantapp.location.model.LocationModel
 import java.io.IOException
@@ -19,30 +18,35 @@ class LocationRepository private constructor() {
         isLoading: MutableLiveData<Boolean>
     ) {
         var address = "No known address"
-
+        var cityName = "N/A"
 
         val addresses: List<Address>
         try {
             addresses = gcd.getFromLocation(
-               lat,
-               long,
+                lat,
+                long,
                 1
             )
             if (addresses.isNotEmpty()) {
                 address = addresses[0].getAddressLine(0)
+                if (addresses[0].getLocality() != null)
+                    cityName = addresses[0].getLocality()
+
             }
-            val locationModel=LocationModel()
-            locationModel.lang=long
-            locationModel.lat=lat
-            locationModel.location=address
+            val locationModel = LocationModel()
+            locationModel.lang = long
+            locationModel.lat = lat
+            locationModel.location = address
+            locationModel.city = cityName
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
-            val locationModel=LocationModel()
-            locationModel.lang=long
-            locationModel.lat=lat
-            locationModel.location=address
+            val locationModel = LocationModel()
+            locationModel.lang = long
+            locationModel.lat = lat
+            locationModel.city = cityName
+            locationModel.location = address
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         }

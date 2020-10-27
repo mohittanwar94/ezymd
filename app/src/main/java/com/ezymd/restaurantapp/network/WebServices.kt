@@ -2,6 +2,7 @@ package com.ezymd.restaurantapp.network
 
 
 import com.ezymd.restaurantapp.ServerConfig
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import retrofit2.http.*
@@ -25,7 +26,14 @@ interface WebServices {
     @POST(ServerConfig.LOGIN_USER)
     suspend fun loginUser(
         @FieldMap commonParameters: Map<String, String>
-    ): OtpModel
+    ): LoginModel
+
+
+    @FormUrlEncoded
+    @POST(ServerConfig.SOCIAL_LOGIN_USER)
+    suspend fun loginSocialUser(
+        @FieldMap commonParameters: Map<String, String>
+    ): LoginModel
 
 }
 

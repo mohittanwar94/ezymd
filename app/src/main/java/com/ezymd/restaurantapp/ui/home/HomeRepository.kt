@@ -16,6 +16,7 @@ class HomeRepository {
         isLoading: MutableLiveData<Boolean>
     ) {
         var address = "No known address"
+        var cityName = "N/A"
 
 
         val addresses: List<Address>
@@ -27,13 +28,18 @@ class HomeRepository {
             )
             if (addresses.isNotEmpty()) {
                 address = addresses[0].getAddressLine(0)
+                if (addresses[0].getLocality() != null)
+                    cityName = addresses[0].getLocality()
+
             }
             locationModel.location=address
+            locationModel.city=cityName
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
             locationModel.location=address
+            locationModel.city=cityName
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         }

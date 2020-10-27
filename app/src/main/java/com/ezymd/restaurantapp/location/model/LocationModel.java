@@ -7,6 +7,7 @@ public class LocationModel implements Parcelable {
     public String location="";
     public Double lang=0.0;
     public Double lat=0.0;
+    public String city="";
 
 
     @Override
@@ -19,6 +20,7 @@ public class LocationModel implements Parcelable {
         dest.writeString(this.location);
         dest.writeValue(this.lang);
         dest.writeValue(this.lat);
+        dest.writeString(this.city);
     }
 
     public LocationModel() {
@@ -28,6 +30,7 @@ public class LocationModel implements Parcelable {
         this.location = in.readString();
         this.lang = (Double) in.readValue(Double.class.getClassLoader());
         this.lat = (Double) in.readValue(Double.class.getClassLoader());
+        this.city = in.readString();
     }
 
     public static final Creator<LocationModel> CREATOR = new Creator<LocationModel>() {

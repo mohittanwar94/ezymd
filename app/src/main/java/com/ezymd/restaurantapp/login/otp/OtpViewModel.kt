@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.login.LoginRequest
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -19,6 +20,7 @@ class OtpViewModel : ViewModel() {
     private var loginRepository: OtpRepository? = null
     val data: MutableLiveData<LoginRequest>
     val loginRequest: MutableLiveData<LoginRequest>
+    val loginResponse: MutableLiveData<LoginModel>
     val isLoading: MutableLiveData<Boolean>
     val otpSend: MutableLiveData<OtpModel>
 
@@ -42,27 +44,9 @@ class OtpViewModel : ViewModel() {
         loginRequest = MutableLiveData()
         isLoading = MutableLiveData()
         otpSend= MutableLiveData()
-
+        loginResponse = MutableLiveData()
     }
 
-    /*fun loginOnServer(logRequest: LoginRequest) {
-        loginRequest.value = logRequest
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.checkForPaymentMethod(
-                loginRequest.value!!,
-                Dispatchers.IO
-            )
-            isLoading.postValue(false)
-            when (result) {
-                is ResultWrapper.NetworkError -> showNetworkError()
-                is ResultWrapper.GenericError -> showGenericError(result.error)
-                // is ResultWrapper.Success -> data.postValue(result.value)
-            }
-
-
-        }
-
-    }*/
 
     fun startSmsListener(client: SmsRetrieverClient) {
         loginRepository!!.startSmsListener(client)
@@ -107,7 +91,7 @@ class OtpViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> otpSend.postValue(result.value)
+                is ResultWrapper.Success -> loginResponse.postValue(result.value)
             }
 
 

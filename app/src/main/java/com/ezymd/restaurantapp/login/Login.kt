@@ -7,7 +7,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.otp.OTPScreen
 import com.ezymd.restaurantapp.utils.*
 import com.facebook.CallbackManager
@@ -65,7 +67,7 @@ class Login : BaseActivity() {
         })
 
         loginViewModel.otpResponse.observe(this, Observer {
-            if (!it.isStatus.equals(ErrorCodes.SUCCESS)) {
+            if (it.isStatus!=ErrorCodes.SUCCESS) {
                 showError(false, it.message, null)
             } else {
                 startActivityForResult(
@@ -78,11 +80,20 @@ class Login : BaseActivity() {
             }
         })
 
+        loginViewModel.loginResponse.observe(this, Observer {
+
+            if (it.status==ErrorCodes.SUCCESS) {
+                setLoginUser(it)
+
+            } else {
+                showError(false, it.message, null)
+            }
+        })
         loginViewModel.loginRequest.observe(this, Observer {
             if (it.error) {
                 showError(false, it.errorMessage, null)
             } else {
-                SnapLog.print(it.email)
+                loginViewModel.login(it)
             }
         })
         loginViewModel.showError().observe(this, Observer {
@@ -92,6 +103,18 @@ class Login : BaseActivity() {
         loginViewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
         })
+    }
+
+    private fun setLoginUser(it: LoginModel) {
+        userInfo?.accessToken = it.data.access_token
+        userInfo?.userName = it.data.user.name
+        userInfo?.email = it.data.user.email
+        userInfo?.userID = it.data.user.id
+        userInfo?.phoneNumber = it.data.user.phone_no
+        userInfo?.profilePic = it.data.user.profile_pic
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+
     }
 
 

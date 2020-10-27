@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.login.otp
 
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.ezymd.restaurantapp.OtpBroadcastReceiver
 import com.ezymd.restaurantapp.OtpBroadcastReceiver.OTPReceiveListener
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.login.LoginRequest
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import kotlinx.android.synthetic.main.activity_otp.*
@@ -28,8 +30,6 @@ import kotlinx.android.synthetic.main.header_new.*
  * Created by Mohit on 19/10/2020.
  */
 class OTPScreen : BaseActivity(), View.OnClickListener {
-    private var otp = ""
-    private val server_otp = ""
     private var otpReceiveListener: OTPReceiveListener? = null
     private var smsBroadcast: OtpBroadcastReceiver? = null
     private var isBackPressEnable = false
@@ -97,23 +97,38 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
     private fun setGui() {
         icon1.requestFocus()
         otpViewModel!!.isLoading.observe(this, Observer {
-            progress.visibility = if (it) {
-                View.VISIBLE
+            if (it) {
+                progress.visibility = View.VISIBLE
             } else {
-                View.GONE
+                progress.visibility = View.GONE
+                progressLogin.visibility = View.GONE
             }
         })
 
         otpViewModel!!.otpSend.observe(this, Observer {
             ShowDialog(this).disPlayDialog(
                 it.message,
-                it.isStatus.equals(ErrorCodes.SUCCESS),
+                it.isStatus == ErrorCodes.SUCCESS,
                 false
             )
+
+
+        })
+
+        otpViewModel!!.loginResponse.observe(this, Observer {
+
+            if (it.status == ErrorCodes.SUCCESS) {
+                setLoginUser(it)
+
+            } else {
+                setErrorWithVibrator()
+                showError(false, it.message, null)
+            }
         })
 
         leftIcon.setOnClickListener(this)
         resendOtp.setOnClickListener(this)
+        next.setOnClickListener(this)
         val spann = SpannableString(getString(R.string.did_not_receive_otp))
         val spannResend = SpannableString(getString(R.string.resend))
         spannResend.setSpan(
@@ -157,12 +172,7 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                if (s.length == 1) {
-                    otp = icon1.text.toString().trim() + icon2.text.toString()
-                        .trim() + icon3.text.toString().trim() + icon4.text.toString()
-                        .trim()
 
-                }
             }
         })
         icon1.addTextChangedListener(object : TextWatcher {
@@ -218,13 +228,6 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         })
     }
 
-    /*check condition otp match or not*/
-    private fun gotoConditionCheck(otp: String) {
-        if (otp == server_otp) {
-        } else {
-            setErrorWithVibrator()
-        }
-    }
 
     /*set ui for wrong otp*/
     private fun setErrorWithVibrator() {
@@ -267,9 +270,12 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         } else if (icon4.text.toString().trim().isEmpty()) {
             icon4.requestFocus()
         } else {
-            val  loginRequest=LoginRequest()
-            loginRequest.mobileNo=intent.getStringExtra(JSONKeys.MOBILE_NO)
-            loginRequest.otp=icon1.text.toString()+icon2.text.toString()+icon3.text.toString()+icon4.text.toString()
+            SuspendKeyPad.suspendKeyPad(this)
+            progressLogin.visibility = View.VISIBLE
+            val loginRequest = LoginRequest()
+            loginRequest.mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
+            loginRequest.otp =
+                icon1.text.toString() + icon2.text.toString() + icon3.text.toString() + icon4.text.toString()
             otpViewModel?.registerUser(loginRequest)
         }
 
@@ -297,7 +303,6 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
 
     /*clear otp when wrong is entered*/
     fun clearOtp() {
-        otp = ""
         icon1.setText("")
         icon2.setText("")
         icon3.setText("")
@@ -305,5 +310,17 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         icon1.requestFocus()
     }
 
+    private fun setLoginUser(it: LoginModel) {
+        setResult(Activity.RESULT_OK)
+        userInfo?.accessToken = it.data.access_token
+        userInfo?.userName = it.data.user.name
+        userInfo?.email = it.data.user.email
+        userInfo?.userID = it.data.user.id
+        userInfo?.phoneNumber = it.data.user.phone_no
+        userInfo?.profilePic = it.data.user.profile_pic
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+
+    }
 
 }

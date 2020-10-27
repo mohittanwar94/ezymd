@@ -14,7 +14,7 @@ interface ServerConfig {
 
 
         const val GENERATE_OTP = "sendOtp"
-        const val SOCIAL_LOGIN_USER = "loginRegister"
-        const val LOGIN_USER = "socialLoginRegister"
+        const val SOCIAL_LOGIN_USER = "socialLoginRegister"
+        const val LOGIN_USER = "loginRegister"
     }
 }

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -50,8 +52,8 @@ public class UserInfo {
     }
 
 
-    public void setUserPassword(String pwd) {
-        preferences.edit().putString("password", pwd).apply();
+    public void setAccessToken(String accessToken) {
+        preferences.edit().putString("accessTokenApp", accessToken).apply();
     }
 
 
@@ -91,8 +93,8 @@ public class UserInfo {
         preferences.edit().putString("phone_number", phone_number).apply();
     }
 
-    public String getPassword() {
-        return preferences.getString("password", "");
+    public String getAccessToken() {
+        return preferences.getString("accessTokenApp", "");
     }
 
     public String getEmail() {

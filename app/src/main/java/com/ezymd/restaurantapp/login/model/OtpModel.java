@@ -6,15 +6,15 @@ import java.io.Serializable;
 
 public class OtpModel implements Serializable {
     @SerializedName("status")
-    private String status;
+    private int status;
     @SerializedName("message")
     private String message="";
 
-    public String isStatus() {
+    public int isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
