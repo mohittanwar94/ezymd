@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.details
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
+import android.transition.TransitionInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
@@ -23,6 +24,10 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        window.sharedElementEnterTransition =
+            TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation);
+        image.transitionName = "thumbnailTransition";
+
         setToolBar()
         setHeaderData()
     }
@@ -38,15 +43,17 @@ class DetailsActivity : AppCompatActivity() {
         category.text = resturant.category
         distance.text = TextUtils.concat("" + UIUtil.round(resturant.distance, 1), " km")
         rating.text = if (resturant.rating > 0) "" + resturant.rating else "N/A"
-        minimumOrder.text = if (resturant.minOrder.equals("0")) "N/A" else resturant.minOrder + getString(
-            R.string.dollor
-        )
+        minimumOrder.text =
+            if (resturant.minOrder.equals("0")) "N/A" else resturant.minOrder + getString(
+                R.string.dollor
+            )
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
+
     private fun setToolBar() {
 
         setSupportActionBar(findViewById(R.id.toolbar))

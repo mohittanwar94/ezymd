@@ -64,6 +64,7 @@ class RestaurantAdapter(
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.itemView.ivNotesThumb)
 
+        holder.itemView.ivNotesThumb.transitionName = "thumbnailTransition";
         val item = data[position]
         holder.itemView.tvTitle.text = item.name
         holder.itemView.foodType.text = item.category

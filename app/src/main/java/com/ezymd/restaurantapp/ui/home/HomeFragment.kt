@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.customviews.RoundedImageView
 import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
@@ -184,9 +186,13 @@ open class HomeFragment : Fragment() {
         )
         restaurantAdapter =
             RestaurantAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+                val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
                 val intent = Intent(activity, DetailsActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
-                (activity as MainActivity).startActivity(intent)
+                val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
+                )
+                (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -204,9 +210,13 @@ open class HomeFragment : Fragment() {
             BannerPagerAdapter(
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
+                    val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
                     val intent = Intent(activity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
-                    (activity as MainActivity).startActivity(intent)
+                    intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                    val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
+                    )
+                    (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
 
                 })
         bannerPager.adapter = registerationTutorialPagerAdapter

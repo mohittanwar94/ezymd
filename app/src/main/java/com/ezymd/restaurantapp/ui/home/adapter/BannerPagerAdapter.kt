@@ -35,8 +35,9 @@ class BannerPagerAdapter(
         val layout = inflater.inflate(R.layout.banner_row, collection, false)
         val imageView = layout.findViewById<RoundedImageView>(R.id.imageView)
         GlideApp.with(mContext.applicationContext)
-            .load(data[position].banner).centerCrop().override(550,350).dontAnimate()
+            .load(data[position].banner).centerCrop().override(550, 350).dontAnimate()
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
+        imageView.transitionName = "thumbnailTransition";
         layout.setOnClickListener { onRecyclerView.onClick(position, layout) }
         collection.addView(layout)
         SnapLog.print(data[position].banner)
