@@ -1,194 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".ui.home.HomeFragment">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp">
-
-            <ImageView
-                android:id="@+id/location"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:padding="@dimen/_5sdp"
-                app:srcCompat="@drawable/ic_location"
-
-                />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.home.HomeFragment">
 
 
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/delivery_location"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_toStartOf="@+id/search"
-                android:layout_toEndOf="@+id/location"
-                android:maxLines="1"
-                android:text="N/A"
-                android:textColor="@color/color_002366"
-                android:textSize="@dimen/_13sdp"
-                android:visibility="visible"
-                app:textFont="medium" />
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/location"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    app:srcCompat="@drawable/ic_location"
+
+                    />
 
 
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/locationValue"
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/delivery_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/search"
+                    android:layout_toEndOf="@+id/location"
+                    android:maxLines="1"
+                    android:text="N/A"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_13sdp"
+                    android:visibility="visible"
+                    app:textFont="medium" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/locationValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/delivery_location"
+                    android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/search"
+                    android:layout_toEndOf="@+id/location"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="N/A"
+                    android:textColor="@color/color_b2bdd1"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="visible"
+                    app:textFont="book" />
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toLeftOf="@+id/cart"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_launcher_background"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/cart"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_launcher_background"
+
+                    />
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/delivery_location"
-                android:layout_gravity="center"
-                android:layout_toStartOf="@+id/search"
-                android:layout_toEndOf="@+id/location"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="N/A"
-                android:textColor="@color/color_b2bdd1"
-                android:textSize="@dimen/_10sdp"
-                android:visibility="visible"
-                app:textFont="book" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/search"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_toLeftOf="@+id/cart"
-                android:padding="@dimen/_5sdp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_launcher_background"
+                <com.ezymd.restaurantapp.customviews.SnapViewPager
+                    android:id="@+id/bannerPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp" />
 
-                />
-
-            <ImageView
-                android:id="@+id/cart"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_launcher_background"
-
-                />
+                <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                    android:id="@+id/dots_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:dotsColor="@color/color_b2bdd1"
+                    app:dotsCornerRadius="@dimen/_5sdp"
+                    app:dotsSize="@dimen/_10sdp"
+                    app:dotsSpacing="@dimen/_4sdp"
+                    app:dotsWidthFactor="2.5"
+                    app:progressMode="true"
+                    app:selectedDotColor="@color/color_ffb912" />
 
 
-        </RelativeLayout>
-
-        <com.ezymd.restaurantapp.customviews.SnapViewPager
-            android:id="@+id/bannerPager"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp" />
-
-        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-            android:id="@+id/dots_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:dotsColor="@color/color_b2bdd1"
-            app:dotsCornerRadius="@dimen/_5sdp"
-            app:dotsSize="@dimen/_10sdp"
-            app:dotsSpacing="@dimen/_4sdp"
-            app:dotsWidthFactor="2.5"
-            app:progressMode="true"
-            app:selectedDotColor="@color/color_ffb912" />
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/trending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:ellipsize="end"
+                    android:maxLength="50"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:text="@string/trending_food"
+                    android:textColor="@color/gray_2a2f37"
+                    android:textSize="@dimen/_18sdp"
+                    android:visibility="visible"
+                    app:textFont="bold" />
 
 
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/trending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_7sdp"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:maxLength="50"
-            android:singleLine="true"
-            android:text="@string/trending_food"
-            android:textColor="@color/gray_2a2f37"
-            android:textSize="@dimen/_18sdp"
-            android:visibility="visible"
-            app:textFont="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/trendingRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                     android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_23sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trendingRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
-            android:layout_marginBottom="@dimen/_7sdp"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
-            android:paddingLeft="@dimen/_10sdp"
-             />
+                    <com.ezymd.restaurantapp.customviews.SnapTextView
+                        android:id="@+id/resturantCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="start"
+                        android:layout_toLeftOf="@+id/filter"
+                        android:ellipsize="end"
+                        android:maxLength="50"
+                        android:singleLine="true"
+                        android:text="@string/resurant_around_you"
+                        android:textColor="@color/gray_2a2f37"
+                        android:textSize="@dimen/_18sdp"
+                        android:visibility="visible"
+                        app:textFont="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_23sdp"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_15sdp">
-
-
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/resturantCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="start"
-                android:layout_toLeftOf="@+id/filter"
-                android:ellipsize="end"
-                android:maxLength="50"
-                android:singleLine="true"
-                android:text="@string/resurant_around_you"
-                android:textColor="@color/gray_2a2f37"
-                android:textSize="@dimen/_18sdp"
-                android:visibility="visible"
-                app:textFont="bold" />
-
-            <ImageView
-                android:id="@+id/filter"
-                android:layout_width="@dimen/_28sdp"
-                android:layout_height="@dimen/_28sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="center"
-                android:background="@drawable/filter_icon_bg"
-                android:padding="@dimen/_5sdp"
-                app:srcCompat="@drawable/ic_filter" />
+                    <ImageView
+                        android:id="@+id/filter"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/filter_icon_bg"
+                        android:padding="@dimen/_5sdp"
+                        app:srcCompat="@drawable/ic_filter" />
 
 
-        </RelativeLayout>
+                </RelativeLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/resturantRecyclerView"
-            android:layout_width="match_parent"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/resturantRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp" />
+            </LinearLayout>
 
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:theme="@style/progressBarTheme" />
+
+</FrameLayout>

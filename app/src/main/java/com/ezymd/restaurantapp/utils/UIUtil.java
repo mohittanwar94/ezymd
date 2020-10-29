@@ -29,6 +29,10 @@ public class UIUtil {
     /**
      * Supresses instantiation
      */
+    public static double round (double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    }
     private UIUtil() {
         throw new AssertionError();
     }
@@ -125,6 +129,10 @@ public class UIUtil {
         slide.setDuration(300);
         slide.setInterpolator(new AccelerateDecelerateInterpolator());
         return slide;
+    }
+
+    public static void loadImage() {
+
     }
 
     public static class SimpleAnimationListener implements Animator.AnimatorListener {

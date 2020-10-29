@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
-import com.ezymd.restaurantapp.ui.home.model.Banner
+import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
@@ -23,7 +23,7 @@ import java.util.*
  */
 class BannerPagerAdapter(
     private val mContext: Context,
-    private val data: ArrayList<Banner>,
+    private val data: ArrayList<Resturant>,
     private val onRecyclerView: OnRecyclerView
 
 ) : PagerAdapter() {

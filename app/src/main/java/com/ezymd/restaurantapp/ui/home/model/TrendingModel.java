@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class BannerModel {
+public class TrendingModel {
     @SerializedName("data")
     @Expose
-    private ArrayList<Banner> data = null;
+    private ArrayList<Trending> data = null;
     @SerializedName("message")
     @Expose
     private String message;
@@ -16,11 +16,11 @@ public class BannerModel {
     @Expose
     private Integer status;
 
-    public ArrayList<Banner> getData() {
+    public ArrayList<Trending> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Banner> data) {
+    public void setData(ArrayList<Trending> data) {
         this.data = data;
     }
 

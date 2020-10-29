@@ -22,8 +22,8 @@ import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.ui.home.adapter.BannerPagerAdapter
-import com.ezymd.restaurantapp.ui.home.model.Banner
 import com.ezymd.restaurantapp.ui.home.model.Resturant
+import com.ezymd.restaurantapp.ui.home.model.Trending
 import com.ezymd.restaurantapp.ui.home.trending.TrendingAdapter
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -34,6 +34,7 @@ import kotlin.collections.ArrayList
 
 open class HomeFragment : Fragment() {
 
+    private var treandingAdapter: TrendingAdapter? = null
     private var restaurantAdapter: RestaurantAdapter? = null
     private var isNullViewRoot = false
     private lateinit var homeViewModel: HomeViewModel
@@ -41,8 +42,9 @@ open class HomeFragment : Fragment() {
     private var locationModel = LocationModel()
     private var viewRoot: View? = null
 
-    private val dataBanner = ArrayList<Banner>()
+    private val dataBanner = ArrayList<Resturant>()
     private val dataResturant = ArrayList<Resturant>()
+    private val dataTrending = ArrayList<Trending>()
 
     private val userInfo by lazy {
         (activity as MainActivity).userInfo
@@ -84,8 +86,12 @@ open class HomeFragment : Fragment() {
         val isGranted = (activity as BaseActivity).checkLocationPermissions(object :
             BaseActivity.PermissionListener {
             override fun result(isGranted: Boolean) {
-                if (isGranted)
+                if (isGranted) {
                     setLocationListener()
+                    homeViewModel.getBanners(BaseRequest(userInfo))
+                    homeViewModel.getResturants(BaseRequest(userInfo))
+                    homeViewModel.getTrending(BaseRequest(userInfo))
+                }
 
             }
         })
@@ -216,6 +222,7 @@ open class HomeFragment : Fragment() {
             if (dataBanner.size == 0) {
                 homeViewModel.getBanners(BaseRequest(userInfo))
                 homeViewModel.getResturants(BaseRequest(userInfo))
+                homeViewModel.getTrending(BaseRequest(userInfo))
             }
         }
         setObservers()
@@ -224,7 +231,10 @@ open class HomeFragment : Fragment() {
 
     private fun setObservers() {
         homeViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
-
+            if (!it) {
+                content.visibility = View.VISIBLE
+                progress.visibility = View.GONE
+            }
         })
         homeViewModel.address.observe(this, androidx.lifecycle.Observer {
             locationModel = it
@@ -239,6 +249,19 @@ open class HomeFragment : Fragment() {
                 dataBanner.clear()
                 dataBanner.addAll(it.data)
                 bannerPager.adapter?.notifyDataSetChanged()
+
+            } else {
+                (activity as BaseActivity).showError(false, it.message, null)
+            }
+        })
+
+        homeViewModel.mTrendingData.observe(this, androidx.lifecycle.Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                dataTrending.clear()
+                treandingAdapter!!.setData(it.data)
+                treandingAdapter!!.getData().let { it1 ->
+                    dataTrending.addAll(it1)
+                }
 
             } else {
                 (activity as BaseActivity).showError(false, it.message, null)
@@ -293,10 +316,10 @@ open class HomeFragment : Fragment() {
 
     private fun setAdapterTrending() {
         trendingRecyclerView.setLayoutManager(LinearLayoutManager(activity, HORIZONTAL, false))
-        val treandingAdapter =
+        treandingAdapter =
             TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
 
-            }, dataResturant)
+            }, dataTrending)
         trendingRecyclerView.adapter = treandingAdapter
 
 

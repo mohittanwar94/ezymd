@@ -34,7 +34,7 @@ class LoginRepository private constructor() {
         val map = HashMap<String, String>()
         map.put("phone_no", otp)
 
-        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(
                 map
             )
@@ -58,7 +58,7 @@ class LoginRepository private constructor() {
         map.put("name", loginRequest.first_name)
         map.put("photo", loginRequest.image_url)
 
-        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.loginSocialUser(
                 map
             )

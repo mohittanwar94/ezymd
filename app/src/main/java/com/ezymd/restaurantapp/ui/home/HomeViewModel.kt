@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.home.model.BannerModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.BaseResponse
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -20,7 +19,8 @@ class HomeViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
-    val mPagerData: MutableLiveData<BannerModel>
+    val mPagerData: MutableLiveData<ResturantModel>
+    val mTrendingData: MutableLiveData<TrendingModel>
     val mResturantData: MutableLiveData<ResturantModel>
     val isLoading: MutableLiveData<Boolean>
 
@@ -37,7 +37,9 @@ class HomeViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()
+        mTrendingData= MutableLiveData()
         errorRequest = MutableLiveData()
+        isLoading.postValue(true)
 
 
     }
@@ -52,13 +54,13 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getBanners(baseRequest: BaseRequest) {
-        isLoading.postValue(true)
+        //isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.listBanners(
                 baseRequest,
                 Dispatchers.IO
             )
-            isLoading.postValue(false)
+          //  isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
@@ -70,13 +72,13 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getResturants(baseRequest: BaseRequest) {
-        isLoading.postValue(true)
+      //  isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getResturants(
                 baseRequest,
                 Dispatchers.IO
             )
-            isLoading.postValue(false)
+           // isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
@@ -95,6 +97,25 @@ class HomeViewModel : ViewModel() {
 
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
+    }
+
+    fun getTrending(baseRequest: BaseRequest) {
+
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.getTrending(
+                baseRequest,
+                Dispatchers.IO
+            )
+            //isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> mTrendingData.postValue(result.value)
+            }
+
+        }
+
     }
 
 

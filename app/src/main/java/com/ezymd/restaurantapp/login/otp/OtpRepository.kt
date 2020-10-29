@@ -34,7 +34,7 @@ class OtpRepository private constructor() {
         val map = HashMap<String, String>()
         map.put("phone_no", mobile)
 
-        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(map)
         }
     }
@@ -50,7 +50,7 @@ class OtpRepository private constructor() {
         map.put("phone_no", loginRequest.mobileNo)
         map.put("otp", loginRequest.otp)
 
-        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.loginUser(map)
         }
     }

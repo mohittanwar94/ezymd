@@ -23,7 +23,6 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@color/blue_tansparent"
             app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
 

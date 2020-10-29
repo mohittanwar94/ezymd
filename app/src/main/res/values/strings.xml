@@ -134,5 +134,6 @@
     <string name="rating">Rating</string>
     <string name="free_delivery">Free delivery</string>
     <string name="minimum">Min</string>
+    <string name="dollor">$</string>
 
 </resources>

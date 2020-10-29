@@ -14,20 +14,20 @@ class NetworkCommonRequest {
         private var networkRequest: NetworkCommonRequest? = null
 
         @JvmStatic
-        val instance: NetworkCommonRequest
+        val instance: NetworkCommonRequest?
             get() {
                 if (networkRequest == null) {
                     synchronized(NetworkCommonRequest::class.java) {
                         networkRequest = NetworkCommonRequest()
                     }
                 }
-                return networkRequest ?: NetworkCommonRequest()
+                return networkRequest
             }
     }
 
     init {
         if (networkRequest != null) {
-            throw RuntimeException("Use getInstance() method to get the single instance of NetworkCommonRequest class.")
+          //  throw RuntimeException("Use getInstance() method to get the single instance of NetworkCommonRequest class.")
         }
     }
 

@@ -1,24 +1,32 @@
 package com.ezymd.restaurantapp.ui.home.trending
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import android.widget.FrameLayout
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.ui.home.model.Resturant
+import com.ezymd.restaurantapp.ui.home.model.Trending
+import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
+import com.ezymd.restaurantapp.utils.SnapLog
+import kotlinx.android.synthetic.main.trending_item_row.view.*
+
 
 class TrendingAdapter(
     mContext: Context,
     onRecyclerView: OnRecyclerView,
-    dataResturant: ArrayList<Resturant>
+    dataResturant: ArrayList<Trending>
 ) :
     RecyclerView.Adapter<TrendingAdapter.NotesHolder>() {
     private val onRecyclerView: OnRecyclerView
     private val mContext: Context
-    private val data = ArrayList<Resturant>()
+    private val data = ArrayList<Trending>()
 
 
     init {
@@ -40,10 +48,27 @@ class TrendingAdapter(
 
 
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
+        val item = data[position]
+        holder.itemView.tvTitle.text = item.item
+        GlideApp.with(mContext.applicationContext)
+            .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
+            .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(holder.itemView.ivNotesThumb)
 
+        SnapLog.print("trending===" + data[position].image)
         holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }
+
+    }
+
+    fun setData(dataTrend: ArrayList<Trending>) {
+        data.addAll(dataTrend)
+        notifyDataSetChanged()
+    }
+
+    fun getData(): ArrayList<Trending> {
+        return data
     }
 
 
