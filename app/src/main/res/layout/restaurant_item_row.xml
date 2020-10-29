@@ -1,85 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/_10sdp"
+    android:orientation="horizontal"
     android:paddingBottom="@dimen/_5sdp">
 
 
     <com.ezymd.restaurantapp.customviews.RoundedImageView
         android:id="@+id/ivNotesThumb"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
         android:scaleType="centerCrop"
-        app:corner_radius="@dimen/_7sdp" />
+        app:border_color="@color/color_f3f3f3"
+        app:border_width="@dimen/_1sdp"
+        app:corner_radius="@dimen/_7sdp"
+        app:round_background="@color/color_f3f3f3" />
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/tvTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_toEndOf="@id/ivNotesThumb"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/pizza"
-        android:textColor="@color/gray_514f4f"
-        android:textSize="@dimen/_13sdp"
-        app:textFont="medium" />
+        android:layout_gravity="top"
+        android:layout_marginStart="@dimen/_5sdp">
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="@dimen/_4sdp"
+            android:maxLines="2"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:text="@string/pizza"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_15sdp"
+            app:textFont="medium" />
 
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/foodType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_below="@+id/tvTitle"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_toEndOf="@id/ivNotesThumb"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/pizza"
-        android:textColor="@color/gray_9e9e9e"
-        android:textSize="@dimen/_10sdp"
-        app:textFont="book" />
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/foodType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="@dimen/_2sdp"
+            android:maxLines="2"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="@string/pizza"
+            android:textColor="@color/color_667ba3"
+            android:textSize="@dimen/_10sdp"
+            app:textFont="roman" />
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/discount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_below="@+id/foodType"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_toEndOf="@id/ivNotesThumb"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/pizza"
-        android:textColor="@color/gray_676766"
-        android:textSize="@dimen/_10sdp"
-        app:textFont="book" />
-
-
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_below="@+id/discount"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:padding="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_toEndOf="@id/ivNotesThumb"
-        android:text="@string/pizza"
-        android:textColor="@color/gray_9e9e9e"
-        android:textSize="@dimen/_10sdp"
-        app:textFont="book" />
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/discount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/foodType"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.01"
+            android:maxLines="2"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="@string/pizza"
+            android:textColor="@color/color_d94040"
+            android:textSize="@dimen/_10sdp"
+            app:textFont="roman" />
 
 
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/discount"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.01"
+            android:maxLines="2"
+            android:text="@string/pizza"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_10sdp"
+            app:textFont="roman" />
 
     </RelativeLayout>
+
+</LinearLayout>

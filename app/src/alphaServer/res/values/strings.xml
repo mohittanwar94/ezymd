@@ -3,6 +3,7 @@
     <string name="sender_id">210423936790</string>
     <string name="RAZORPAY_KEY">rzp_test_euFE6YNpadNtme</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDGO5CosbcSB1cACh86GxPRQOoWPAr-7eo</string>
+    <string name="google_places_api" templateMergeStrategy="preserve" translatable="false">AIzaSyAXXgHUcWKrnpoql8_9SPy6oQbYQQmX1GQ</string>
 
     <string name="facebook_app_id">679112216348170</string>
     <string name="fb_login_protocol_scheme">fb679112216348170</string>

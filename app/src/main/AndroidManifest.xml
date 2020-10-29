@@ -47,16 +47,19 @@
 
         <activity
             android:name=".location.LocationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppFullScreen">
 
         </activity>
         <activity
             android:name=".login.Login"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppFullScreen" />
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,10 +73,15 @@
             android:name=".login.otp.OTPScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysVisible" />
+        <activity
+            android:name=".details.DetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
 

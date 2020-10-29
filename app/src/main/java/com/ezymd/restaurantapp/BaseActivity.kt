@@ -46,6 +46,9 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            window.statusBarColor = Color.GRAY
+        }
         super.onCreate(savedInstanceState)
         if (ServerConfig.IS_TESTING)
             Thread.setDefaultUncaughtExceptionHandler(TopExceptionHandler(this))

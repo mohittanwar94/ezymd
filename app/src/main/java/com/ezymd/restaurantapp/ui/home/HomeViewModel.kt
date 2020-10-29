@@ -1,20 +1,27 @@
 package com.ezymd.restaurantapp.ui.home
 
 import android.location.Geocoder
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ezymd.restaurantapp.location.LocationRepository
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.ui.home.model.BannerModel
+import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.utils.BaseRequest
+import com.ezymd.restaurantapp.utils.BaseResponse
+import com.ezymd.restaurantapp.utils.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-
+    var errorRequest: MutableLiveData<String>
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
+    val mPagerData: MutableLiveData<BannerModel>
+    val mResturantData: MutableLiveData<ResturantModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -28,6 +35,9 @@ class HomeViewModel : ViewModel() {
         loginRepository = HomeRepository.instance
         address = MutableLiveData()
         isLoading = MutableLiveData()
+        mPagerData = MutableLiveData()
+        mResturantData = MutableLiveData()
+        errorRequest = MutableLiveData()
 
 
     }
@@ -40,5 +50,52 @@ class HomeViewModel : ViewModel() {
         }
 
     }
+
+    fun getBanners(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.listBanners(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> mPagerData.postValue(result.value)
+            }
+
+        }
+
+    }
+
+    fun getResturants(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.getResturants(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> mResturantData.postValue(result.value)
+            }
+
+        }
+
+    }
+
+
+    private fun showNetworkError() {
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+    }
+
+
+    private fun showGenericError(error: ErrorResponse?) {
+        errorRequest.postValue(error?.message)
+    }
+
 
 }

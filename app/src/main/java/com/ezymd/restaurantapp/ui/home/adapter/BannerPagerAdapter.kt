@@ -8,8 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.customviews.RoundedImageView
+import com.ezymd.restaurantapp.ui.home.model.Banner
+import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
+import com.ezymd.restaurantapp.utils.SnapLog
 import java.util.*
 
 
@@ -18,17 +23,23 @@ import java.util.*
  */
 class BannerPagerAdapter(
     private val mContext: Context,
-    private val commonMessagesArrayList: ArrayList<String>,
+    private val data: ArrayList<Banner>,
     private val onRecyclerView: OnRecyclerView
 
 ) : PagerAdapter() {
+
     val handler: Handler = Handler(Looper.getMainLooper())
     var swipeTimer: Timer? = null
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(mContext)
-        val layout = inflater.inflate(R.layout.banner_row, collection, false) as ViewGroup
+        val layout = inflater.inflate(R.layout.banner_row, collection, false)
+        val imageView = layout.findViewById<RoundedImageView>(R.id.imageView)
+        GlideApp.with(mContext.applicationContext)
+            .load(data[position].banner).centerCrop().override(550,350).dontAnimate()
+            .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
         layout.setOnClickListener { onRecyclerView.onClick(position, layout) }
         collection.addView(layout)
+        SnapLog.print(data[position].banner)
         return layout
     }
 
@@ -37,7 +48,7 @@ class BannerPagerAdapter(
     }
 
     override fun getCount(): Int {
-        return 3
+        return data.size
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -45,7 +56,7 @@ class BannerPagerAdapter(
     }
 
     fun startTimer(myPager: ViewPager, time: Int) {
-        val size: Int = 3
+        val size: Int = data.size
         val Update: Runnable = object : Runnable {
             var NUM_PAGES = size
             var currentPage = myPager?.currentItem

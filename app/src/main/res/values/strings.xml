@@ -19,7 +19,7 @@
     <string name="enter_four_digit_code">Enter your 4 digit code sent to</string>
     <string name="delivery_location">Delivery Location</string>
     <string name="trending_food">Trending Food</string>
-    <string name="resurant_around_you">22 restaurant around you</string>
+    <string name="resurant_around_you">restaurant around you</string>
     <string name="pizza">Pizza</string>
     <string name="countryCode">+1</string>
     <string name="enter_your_phone_no">Enter your phone no.</string>
@@ -126,5 +126,13 @@
     <string name="select_delivery_location">Select Delivery location</string>
     <string name="search_location">Search Location</string>
     <string name="change">Change</string>
+    <string name="share">share</string>
+    <string name="bookmark">bookmark</string>
+    <string name="view_cart">View cart</string>
+    <string name="percent_discount">% discount</string>
+    <string name="use_coupon_code">Use coupan code</string>
+    <string name="rating">Rating</string>
+    <string name="free_delivery">Free delivery</string>
+    <string name="minimum">Min</string>
 
 </resources>

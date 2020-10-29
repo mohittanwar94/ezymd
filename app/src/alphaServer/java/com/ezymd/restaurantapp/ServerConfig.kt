@@ -14,6 +14,8 @@ interface ServerConfig {
 
 
         const val GENERATE_OTP = "sendOtp"
+        const val LIST_BANNER = "nearByRestaurantBanner"
+        const val LIST_RESTURANTS="nearByRestaurant"
         const val SOCIAL_LOGIN_USER = "socialLoginRegister"
         const val LOGIN_USER = "loginRegister"
     }

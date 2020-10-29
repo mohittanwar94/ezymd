@@ -5,6 +5,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.ui.home.adapter.BannerPagerAdapter
+import com.ezymd.restaurantapp.ui.home.model.Banner
+import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.ui.home.trending.TrendingAdapter
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -29,11 +34,19 @@ import kotlin.collections.ArrayList
 
 open class HomeFragment : Fragment() {
 
+    private var restaurantAdapter: RestaurantAdapter? = null
     private var isNullViewRoot = false
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var airLocation: AirLocation
     private var locationModel = LocationModel()
     private var viewRoot: View? = null
+
+    private val dataBanner = ArrayList<Banner>()
+    private val dataResturant = ArrayList<Resturant>()
+
+    private val userInfo by lazy {
+        (activity as MainActivity).userInfo
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,17 +71,26 @@ open class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (isNullViewRoot) {
             setAdapterTrending()
-
             setBannerPager()
-            setLocationListener()
-
-
+            askPermission()
             setListenerView()
+            setAdapterRestaurant()
+
         }
+
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun askPermission() {
+        val isGranted = (activity as BaseActivity).checkLocationPermissions(object :
+            BaseActivity.PermissionListener {
+            override fun result(isGranted: Boolean) {
+                if (isGranted)
+                    setLocationListener()
+
+            }
+        })
+        if (isGranted)
+            setLocationListener()
 
     }
 
@@ -145,10 +167,21 @@ open class HomeFragment : Fragment() {
 
     private fun setAdapterRestaurant() {
         resturantRecyclerView.layoutManager = LinearLayoutManager(activity, VERTICAL, false)
-        val restaurantAdapter =
+        resturantRecyclerView.addItemDecoration(
+            VerticalSpacesItemDecoration(
+                UIUtil.convertDpToPx(
+                    activity,
+                    requireActivity().resources.getDimension(R.dimen._3sdp)
+                )
+                    .toInt()
+            )
+        )
+        restaurantAdapter =
             RestaurantAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-
-            })
+                val intent = Intent(activity, DetailsActivity::class.java)
+                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                (activity as MainActivity).startActivity(intent)
+            }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
 
@@ -156,13 +189,18 @@ open class HomeFragment : Fragment() {
 
     private fun setBannerPager() {
         bannerPager.offscreenPageLimit = 1
+        bannerPager.clipToPadding = false;
+        bannerPager.setPadding(20, 0, 40, 0);
+        bannerPager.pageMargin = 20;
+
         // bannerPager.setPageTransformer(true, AlphaPageTransformation())
         val registerationTutorialPagerAdapter =
             BannerPagerAdapter(
                 activity as MainActivity,
-                ArrayList<String>(),
-                OnRecyclerView { position, view ->
-
+                dataBanner, OnRecyclerView { position, view ->
+                    val intent = Intent(activity, DetailsActivity::class.java)
+                    intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
+                    (activity as MainActivity).startActivity(intent)
 
                 })
         bannerPager.adapter = registerationTutorialPagerAdapter
@@ -175,18 +213,58 @@ open class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (isNullViewRoot) {
-            setAdapterRestaurant()
+            if (dataBanner.size == 0) {
+                homeViewModel.getBanners(BaseRequest(userInfo))
+                homeViewModel.getResturants(BaseRequest(userInfo))
+            }
         }
+        setObservers()
+        // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
+    }
+
+    private fun setObservers() {
         homeViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
 
         })
         homeViewModel.address.observe(this, androidx.lifecycle.Observer {
             locationModel = it
+            userInfo!!.lang = it.lang.toString()
+            userInfo!!.lat = it.lat.toString()
             setLocationAddress(it.location, it.city)
         })
 
 
-        (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
+        homeViewModel.mPagerData.observe(this, androidx.lifecycle.Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                dataBanner.clear()
+                dataBanner.addAll(it.data)
+                bannerPager.adapter?.notifyDataSetChanged()
+
+            } else {
+                (activity as BaseActivity).showError(false, it.message, null)
+            }
+        })
+
+        homeViewModel.mResturantData.observe(this, androidx.lifecycle.Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                dataResturant.clear()
+                restaurantAdapter?.setData(it.data)
+                restaurantAdapter?.getData()?.let { it1 ->
+                    dataResturant.addAll(it1)
+                    resturantCount.text =
+                        TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
+                }
+
+            } else {
+                (activity as BaseActivity).showError(false, it.message, null)
+            }
+
+        })
+        homeViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
+            (activity as BaseActivity).showError(false, it, null)
+        })
+
+
     }
 
     override fun onStop() {
@@ -218,7 +296,7 @@ open class HomeFragment : Fragment() {
         val treandingAdapter =
             TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
 
-            })
+            }, dataResturant)
         trendingRecyclerView.adapter = treandingAdapter
 
 

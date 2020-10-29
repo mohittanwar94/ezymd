@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/dividerColor"
-    app:cardCornerRadius="@dimen/_10sdp"
-    app:cardElevation="@dimen/_3sdp"
-    app:cardUseCompatPadding="true">
 
-    <com.ezymd.restaurantapp.customviews.RoundedImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:corner_radius="@dimen/_10sdp" />
-</androidx.cardview.widget.CardView>
+<com.ezymd.restaurantapp.customviews.RoundedImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imageView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_150sdp"
+    android:paddingStart="@dimen/_10sdp"
+    android:scaleType="centerCrop"
+    app:border_color="@color/color_f3f3f3"
+    app:border_width="@dimen/_1sdp"
+    app:corner_radius="@dimen/_7sdp"
+    app:round_background="@color/color_f3f3f3" />

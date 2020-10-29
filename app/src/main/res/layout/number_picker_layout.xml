@@ -16,7 +16,7 @@
         android:padding="@dimen/_5sdp"
         android:text="—"
         android:layout_gravity="center"
-        android:textColor="@color/gray_676766"
+        android:textColor="@color/color_002366"
         android:textSize="@dimen/_10sdp"
         />
 
@@ -32,7 +32,7 @@
         android:layout_gravity="center"
         android:text="1"
         android:textSize="@dimen/_13sdp"
-        android:textColor="@color/gray_676766"
+        android:textColor="@color/color_002366"
         app:textFontEdit="book" />
 
     <com.ezymd.restaurantapp.customviews.SnapButton
@@ -44,6 +44,6 @@
         android:gravity="center"
         app:buttonFont="roman"
         android:layout_gravity="center"
-        android:textColor="@color/gray_676766"
+        android:textColor="@color/color_002366"
         android:textSize="@dimen/_13sdp" />
 </LinearLayout>

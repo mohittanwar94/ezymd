@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -66,8 +64,6 @@ public class UserInfo {
     }
 
 
-
-
     public int getRoleID() {
         return preferences.getInt("role_id", 0);
     }
@@ -94,7 +90,7 @@ public class UserInfo {
     }
 
     public String getAccessToken() {
-        return preferences.getString("accessTokenApp", "");
+        return "Bearer "+preferences.getString("accessTokenApp", "");
     }
 
     public String getEmail() {
@@ -147,4 +143,21 @@ public class UserInfo {
         preferences.edit().putString("LoginUsername", "").apply();
         preferences.edit().putString("password", "").apply();
     }
+
+    public String getLat() {
+        return preferences.getString("lat", "0.0");
+    }
+
+    public void setLat(String lat) {
+        preferences.edit().putString("lat", lat).apply();
+    }
+
+    public  String getLang() {
+        return preferences.getString("lang", "0.0");
+    }
+
+    public void setLang(String lat) {
+        preferences.edit().putString("lang", lat).apply();
+    }
+
 }

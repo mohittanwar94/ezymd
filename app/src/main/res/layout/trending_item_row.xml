@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/black_tansparent">
+            android:background="@color/blue_tansparent">
 
             <com.ezymd.restaurantapp.customviews.SnapTextView
                 android:id="@+id/tvTitle"
@@ -46,10 +46,10 @@
                 android:padding="@dimen/_5sdp"
                 android:text="@string/pizza"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_11sdp"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hCV"
-                app:textFont="book" />
+                app:textFont="medium" />
 
         </FrameLayout>
     </androidx.cardview.widget.CardView>

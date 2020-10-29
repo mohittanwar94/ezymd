@@ -99,9 +99,9 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun startSearchPlacesApi() {
         if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, getString(R.string.google_maps_key))
+            Places.initialize(applicationContext, getString(R.string.google_places_api))
         }
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,Place.Field.PHOTO_METADATAS)
         val intent =
             Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this)
         startActivityForResult(intent, CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE)
@@ -109,7 +109,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map ?: return
-        val success = googleMap.setMapStyle(
+       val success = googleMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.style_json
             )

@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:fitsSystemWindows="true"
     tools:context=".details.DetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_240sdp"
+        android:layout_height="@dimen/_200sdp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -22,24 +23,30 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@color/blue_tansparent"
+            app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
 
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
+                android:id="@+id/image"
                 android:layout_height="@dimen/_240sdp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/splash_bg" />
+                />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:theme="@style/CustomToolBarStyle" />
+                app:theme="@style/CustomToolBarStyle">
+
+            </androidx.appcompat.widget.Toolbar>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -48,5 +55,5 @@
 
     <include layout="@layout/content_scrolling" />
 
-
+    <include layout="@layout/cart_view" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimaryDark">#cccccc</color>
     <color name="colorAccent">#ffffff</color>
+
     <color name="pure_blue">#0078ff</color>
     <color name="signinColor">#0496f2</color>
     <color name="parentheader">#F05C42</color>
@@ -160,6 +161,12 @@
     <color name="blue_667ba3">#667ba3</color>
     <color name="color_fff8e7">#fff8e7</color>
     <color name="color_667ba3">#667ba3</color>
+    <color name="blue_tansparent">#CC002366</color>
+    <color name="color_d94040">#d94040</color>
+    <color name="color_fafbfc">#fafbfc</color>
+    <color name="primary_dark">#fafbfc</color>
+    <color name="color_f3f3f3">#f3f3f3</color>
+
     <array name="smoothProgressBarColorArray">
         <item>@color/coordinatorheader</item>
         <item>@color/snappay</item>

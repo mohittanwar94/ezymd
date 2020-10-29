@@ -3,16 +3,23 @@ package com.ezymd.restaurantapp.ui.home
 import android.location.Address
 import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
-import com.ezymd.restaurantapp.location.LocationRepository
 import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.network.ApiClient
+import com.ezymd.restaurantapp.network.NetworkCommonRequest
+import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.ui.home.model.BannerModel
+import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.utils.BaseRequest
+import com.ezymd.restaurantapp.utils.BaseResponse
+import kotlinx.coroutines.CoroutineDispatcher
 import java.io.IOException
 
 class HomeRepository {
 
     fun getAddress(
         gcd: Geocoder,
-        locationModel: LocationModel
-        ,addressResult: MutableLiveData<LocationModel>,
+        locationModel: LocationModel, addressResult: MutableLiveData<LocationModel>,
         isLoading: MutableLiveData<Boolean>
     ) {
         var address = "No known address"
@@ -32,16 +39,48 @@ class HomeRepository {
                     cityName = addresses[0].getLocality()
 
             }
-            locationModel.location=address
-            locationModel.city=cityName
+            locationModel.location = address
+            locationModel.city = cityName
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
-            locationModel.location=address
-            locationModel.city=cityName
+            locationModel.location = address
+            locationModel.city = cityName
             addressResult.postValue(locationModel)
             isLoading.postValue(false)
+        }
+
+
+    }
+
+    suspend fun listBanners(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<BannerModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+            apiServices.listBanners(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+    suspend fun getResturants(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<ResturantModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance.safeApiCall(dispatcher) {
+            apiServices.getResturants(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
         }
 
 

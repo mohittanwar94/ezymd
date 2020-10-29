@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cartView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_50sdp"
+    android:layout_gravity="bottom"
+    app:cardElevation="@dimen/_10sdp"
+    app:cardUseCompatPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:gravity="start"
+        android:orientation="horizontal">
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/quantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="@dimen/_7sdp"
+            android:text="5 km"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:textFont="roman" />
+
+        <com.ezymd.restaurantapp.customviews.SnapButton
+            android:id="@+id/viewCart"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_26sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_gray_btn_pressed"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="@dimen/_7sdp"
+            android:text="@string/view_cart"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:buttonFont="bold" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
