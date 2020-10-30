@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.transition.TransitionInflater
+import android.util.TypedValue
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -62,11 +63,9 @@ class DetailsActivity : BaseActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         itmesRecyclerView.addItemDecoration(
             VerticalSpacesItemDecoration(
-                UIUtil.convertDpToPx(
-                    this,
-                    resources.getDimension(R.dimen._3sdp)
-                )
-                    .toInt()
+                (resources.getDimensionPixelSize(
+                    R.dimen._13sdp
+                ))
             )
         )
         restaurantAdapter = MenuAdapter(this, OnRecyclerView { position, view ->
@@ -120,10 +119,8 @@ class DetailsActivity : BaseActivity() {
             var isPresent = false
             for (foodCategory in foodType) {
                 if (foodCategory.categoryID == model.categoryID) {
-                    model.count = foodCategory.count + 1
+                    foodCategory.count = foodCategory.count + 1
                     isPresent = true
-                } else {
-                    model.count = model.count + 1
                 }
             }
             if (!isPresent)
@@ -147,14 +144,14 @@ class DetailsActivity : BaseActivity() {
             studentName.typeface = CustomTypeFace.medium
             studentName.setSingleLine()
             studentName.letterSpacing = 0.01f
-            studentName.textSize = UIUtil.convertDpToPx(
-                this,
-                resources.getDimension(R.dimen._2sdp)
+            studentName.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen._13sdp).toFloat()
             )
+
 
             studentName.text = if (isDisplayCount) TextUtils.concat(
                 foodType[i].categoryName,
-                " (" + foodType[i].count + " )"
+                " (" + foodType[i].count + ")"
             ) else foodType[i].categoryName
             studentName.setTextColor(ContextCompat.getColor(this, R.color.color_667ba3))
             if (i == selectedStudentPosition) {
@@ -223,9 +220,7 @@ class DetailsActivity : BaseActivity() {
         distance.text = TextUtils.concat("" + UIUtil.round(restaurant.distance, 1), " km")
         rating.text = if (restaurant.rating > 0) "" + restaurant.rating else "N/A"
         minimumOrder.text =
-            if (restaurant.minOrder.equals("0")) "N/A" else "min "+restaurant.minOrder + getString(
-                R.string.dollor
-            )
+            if (restaurant.minOrder.equals("0")) "N/A" else "min " + getString(R.string.dollor) + restaurant.minOrder
 
         counts.setOnClickListener {
             isDisplayCount = !isDisplayCount

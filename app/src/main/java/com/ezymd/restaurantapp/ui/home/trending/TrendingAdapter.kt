@@ -63,6 +63,7 @@ class TrendingAdapter(
     }
 
     fun setData(dataTrend: ArrayList<Trending>) {
+        data.clear()
         data.addAll(dataTrend)
         notifyDataSetChanged()
     }

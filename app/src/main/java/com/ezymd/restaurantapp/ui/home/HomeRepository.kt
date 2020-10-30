@@ -35,7 +35,7 @@ class HomeRepository {
             if (addresses.isNotEmpty()) {
                 address = addresses[0].getAddressLine(0)
                 if (addresses[0].getLocality() != null)
-                    cityName = addresses[0].getLocality()
+                    cityName = addresses[0].locality
 
             }
             locationModel.location = address

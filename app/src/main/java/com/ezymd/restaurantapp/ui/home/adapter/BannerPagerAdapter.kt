@@ -60,7 +60,7 @@ class BannerPagerAdapter(
         val size: Int = data.size
         val Update: Runnable = object : Runnable {
             var NUM_PAGES = size
-            var currentPage = myPager?.currentItem
+            var currentPage = myPager.currentItem
             override fun run() {
                 if (currentPage == NUM_PAGES) {
                     currentPage = 0

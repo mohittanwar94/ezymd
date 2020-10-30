@@ -90,9 +90,7 @@ open class HomeFragment : Fragment() {
             override fun result(isGranted: Boolean) {
                 if (isGranted) {
                     setLocationListener()
-                    homeViewModel.getBanners(BaseRequest(userInfo))
-                    homeViewModel.getResturants(BaseRequest(userInfo))
-                    homeViewModel.getTrending(BaseRequest(userInfo))
+
                 }
 
             }

@@ -20,7 +20,7 @@ class DiffUtilsCallBack(data: ArrayList<Resturant>, neData: ArrayList<Resturant>
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem: Resturant = mOldEmployeeList[oldItemPosition]
         val newItem: Resturant = mNewEmployeeList[newItemPosition]
-        return oldItem.id === newItem.id
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

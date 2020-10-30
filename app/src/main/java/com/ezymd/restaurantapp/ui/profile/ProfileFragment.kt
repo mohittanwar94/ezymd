@@ -38,8 +38,7 @@ class ProfileFragment : Fragment() {
     ): View? {
         notificationsViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +61,7 @@ class ProfileFragment : Fragment() {
         super.onResume()
         setObserver()
     }
+
 
     private fun setObserver() {
         notificationsViewModel.isLoading.observe(this, Observer {
@@ -96,6 +96,8 @@ class ProfileFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         requireActivity().window.statusBarColor = Color.WHITE
+        notificationsViewModel.isLoading.removeObservers(this)
+        notificationsViewModel.mResturantData.removeObservers(this)
     }
 
 

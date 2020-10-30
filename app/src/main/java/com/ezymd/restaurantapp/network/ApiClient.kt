@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.network
 
-import com.ezymd.restaurantapp.BuildConfig
 import com.ezymd.restaurantapp.ServerConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -44,7 +43,7 @@ class ApiClient private constructor() {
                 .retryOnConnectionFailure(true)
                 .followRedirects(true)
                 .followSslRedirects(true)
-            if (ServerConfig.IS_TESTING || BuildConfig.DEBUG) {
+            if (ServerConfig.IS_TESTING) {
                 val interceptor = HttpLoggingInterceptor()
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 httpClient.addInterceptor(interceptor)

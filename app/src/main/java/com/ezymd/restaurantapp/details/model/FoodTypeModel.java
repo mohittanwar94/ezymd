@@ -5,7 +5,7 @@ public class FoodTypeModel {
     private int categoryID;
 
     private String categoryName = "";
-    public int count = 0;
+    public int count = 1;
 
     public int getCategoryID() {
         return categoryID;

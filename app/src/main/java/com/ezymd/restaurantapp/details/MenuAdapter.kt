@@ -64,9 +64,7 @@ class MenuAdapter(
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
 
-        holder.itemView.price.text = "" + item.price + mContext.getString(
-            R.string.dollor
-        )
+        holder.itemView.price.text =  mContext.getString(R.string.dollor) + item.price
         // setDiscount(item, holder.itemView.discount)
         // setRatings(item, holder.itemView.rating)
 
