@@ -28,7 +28,7 @@ class DetailsActivity : BaseActivity() {
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
     private val dataResturant = ArrayList<ItemModel>()
-    private val mData = MenuItemModel()
+    private var mData = MenuItemModel()
     private val foodType = ArrayList<FoodTypeModel>()
     private var restaurantAdapter: MenuAdapter? = null
     private val viewModel by lazy {
@@ -90,8 +90,13 @@ class DetailsActivity : BaseActivity() {
 
     private fun setObserver() {
         viewModel.mResturantData.observe(this, Observer {
-            if (it.data != null)
+
+            if (it.data != null) {
+                mData = it
+                if (it.data.size > 0)
+                    detailContent.visibility = View.VISIBLE
                 processDataFindTabs(it)
+            }
         })
 
 
@@ -100,6 +105,8 @@ class DetailsActivity : BaseActivity() {
         })
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
+
+
         })
     }
 
@@ -116,7 +123,7 @@ class DetailsActivity : BaseActivity() {
                     model.count = foodCategory.count + 1
                     isPresent = true
                 } else {
-                    model.count = foodCategory.count + 1
+                    model.count = model.count + 1
                 }
             }
             if (!isPresent)
@@ -142,7 +149,7 @@ class DetailsActivity : BaseActivity() {
             studentName.letterSpacing = 0.01f
             studentName.textSize = UIUtil.convertDpToPx(
                 this,
-                resources.getDimension(R.dimen._3sdp)
+                resources.getDimension(R.dimen._2sdp)
             )
 
             studentName.text = if (isDisplayCount) TextUtils.concat(
@@ -189,7 +196,7 @@ class DetailsActivity : BaseActivity() {
             })
         }
 
-
+        onChildChanged()
     }
 
     private fun onChildChanged() {
@@ -201,7 +208,7 @@ class DetailsActivity : BaseActivity() {
                 dataResturant.add(item)
 
         }
-        restaurantAdapter!!.notifyDataSetChanged()
+        restaurantAdapter!!.setData(dataResturant)
     }
 
     private fun setHeaderData() {
@@ -216,7 +223,7 @@ class DetailsActivity : BaseActivity() {
         distance.text = TextUtils.concat("" + UIUtil.round(restaurant.distance, 1), " km")
         rating.text = if (restaurant.rating > 0) "" + restaurant.rating else "N/A"
         minimumOrder.text =
-            if (restaurant.minOrder.equals("0")) "N/A" else restaurant.minOrder + getString(
+            if (restaurant.minOrder.equals("0")) "N/A" else "min "+restaurant.minOrder + getString(
                 R.string.dollor
             )
 

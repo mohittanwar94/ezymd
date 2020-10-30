@@ -12,16 +12,23 @@
         tools:layout="@layout/fragment_home" />
 
     <keep_state_fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.ezymd.restaurantapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:id="@+id/navigation_search"
+        android:name="com.ezymd.restaurantapp.ui.dashboard.SearchFragment"
+        android:label="@string/title_search"
         tools:layout="@layout/fragment_dashboard" />
 
     <keep_state_fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.ezymd.restaurantapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_cart"
+        android:name="com.ezymd.restaurantapp.ui.notifications.CartFragment"
+        android:label="@string/title_cart"
         tools:layout="@layout/fragment_notifications" />
+
+    <keep_state_fragment
+        android:id="@+id/navigation_order"
+        android:name="com.ezymd.restaurantapp.ui.notifications.CartFragment"
+        android:label="@string/title_order"
+        tools:layout="@layout/fragment_notifications" />
+
 
     <keep_state_fragment
         android:id="@+id/navigation_profile"

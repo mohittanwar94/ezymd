@@ -140,5 +140,8 @@
     <string name="faq">FAQ’s</string>
     <string name="refer_earn"><![CDATA[Refer & earn]]></string>
     <string name="logout">Logout</string>
+    <string name="title_search">Search</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_order">My order</string>
 
 </resources>

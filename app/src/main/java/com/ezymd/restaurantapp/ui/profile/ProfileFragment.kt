@@ -15,7 +15,6 @@ import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.notifications.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
-import com.facebook.login.Login
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -75,11 +74,12 @@ class ProfileFragment : Fragment() {
         notificationsViewModel.mResturantData.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 userInfo.clear()
-                val intent = Intent(requireActivity(), Login::class.java)
+                val intent =
+                    Intent(requireActivity(), com.ezymd.restaurantapp.login.Login::class.java)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 requireActivity().finish()
-            }else{
+            } else {
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })

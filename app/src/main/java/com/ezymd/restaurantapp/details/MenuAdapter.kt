@@ -4,17 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.ui.home.trending.DiffUtilsCallBack
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
-import kotlinx.android.synthetic.main.restaurant_item_row.view.*
+import kotlinx.android.synthetic.main.menu_item_row.view.*
+import kotlinx.android.synthetic.main.restaurant_item_row.view.ivNotesThumb
 
 class MenuAdapter(
     context: Context,
@@ -42,6 +41,12 @@ class MenuAdapter(
         )
     }
 
+    fun setData(itemList: ArrayList<ItemModel>) {
+        data.clear()
+        data.addAll(itemList)
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return data.size
     }
@@ -54,13 +59,16 @@ class MenuAdapter(
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.itemView.ivNotesThumb)
 
-        holder.itemView.ivNotesThumb.transitionName = "thumbnailTransition";
+        // holder.itemView.ivNotesThumb.transitionName = "thumbnailTransition";
         val item = data[position]
-        holder.itemView.tvTitle.text = item.item
-        holder.itemView.foodType.text = item.category
-        holder.itemView.discount.visibility = View.GONE
-       // setDiscount(item, holder.itemView.discount)
-       // setRatings(item, holder.itemView.rating)
+        holder.itemView.dishName.text = item.item
+        holder.itemView.addOn.text = item.description
+
+        holder.itemView.price.text = "" + item.price + mContext.getString(
+            R.string.dollor
+        )
+        // setDiscount(item, holder.itemView.discount)
+        // setRatings(item, holder.itemView.rating)
 
 
         holder.itemView.setOnClickListener {

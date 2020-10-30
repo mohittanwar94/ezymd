@@ -64,13 +64,6 @@ public class UserInfo {
     }
 
 
-    public int getRoleID() {
-        return preferences.getInt("role_id", 0);
-    }
-
-    public void setRoleID(int roleid) {
-        preferences.edit().putInt("role_id", roleid).apply();
-    }
 
     public String getUserName() {
         return preferences.getString("name", "");
@@ -90,7 +83,7 @@ public class UserInfo {
     }
 
     public String getAccessToken() {
-        return "Bearer "+preferences.getString("accessTokenApp", "");
+        return "Bearer " + preferences.getString("accessTokenApp", "");
     }
 
     public String getEmail() {
@@ -101,13 +94,6 @@ public class UserInfo {
         preferences.edit().putString("email", email).apply();
     }
 
-    public String getLoginUsername() {
-        return preferences.getString("LoginUsername", "");
-    }
-
-    public void setLoginUsername(String email) {
-        preferences.edit().putString("LoginUsername", email).apply();
-    }
 
     public String getProfilePic() {
         return preferences.getString("profilePic", "");
@@ -117,13 +103,6 @@ public class UserInfo {
         preferences.edit().putString("profilePic", pic).apply();
     }
 
-    public String getProfilePicThumb() {
-        return preferences.getString("profilePicThumb", "");
-    }
-
-    public void setProfilePicThumb(String pic) {
-        preferences.edit().putString("profilePicThumb", pic).apply();
-    }
 
 
     public void clear() {
@@ -132,17 +111,15 @@ public class UserInfo {
         preferences.edit().putString("name", "").apply();
         preferences.edit().putString("city_name", "").apply();
         preferences.edit().putString("school_country ", "").apply();
-
+        preferences.edit().putString("lat", "0.0").apply();
+        preferences.getString("lang", "0.0");
         preferences.edit().putString("profilePic", "").apply();
         preferences.edit().putString("profilePicThumb", "").apply();
+        preferences.edit().putInt("user_id",0).apply();
 
     }
 
 
-    public void clearCredential() {
-        preferences.edit().putString("LoginUsername", "").apply();
-        preferences.edit().putString("password", "").apply();
-    }
 
     public String getLat() {
         return preferences.getString("lat", "0.0");
@@ -152,7 +129,7 @@ public class UserInfo {
         preferences.edit().putString("lat", lat).apply();
     }
 
-    public  String getLang() {
+    public String getLang() {
         return preferences.getString("lang", "0.0");
     }
 

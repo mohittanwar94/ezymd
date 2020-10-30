@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.ui.profile.ProfileRepository
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -17,7 +17,7 @@ class ProfileViewModel : ViewModel() {
 
     var errorRequest: MutableLiveData<String>
     private var loginRepository: ProfileRepository? = null
-    val mResturantData: MutableLiveData<ResturantModel>
+    val mResturantData: MutableLiveData<LogoutModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -32,7 +32,6 @@ class ProfileViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mResturantData = MutableLiveData()
         errorRequest = MutableLiveData()
-
 
 
     }

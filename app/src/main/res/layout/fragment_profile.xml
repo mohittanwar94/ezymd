@@ -68,17 +68,17 @@
                         android:padding="@dimen/_2sdp"
                         app:civ_border_overlay="true"
                         app:civ_fill_color="@color/white"
-                        app:srcCompat="@drawable/ic_settings" />
+                        app:srcCompat="@drawable/ic_profile_png" />
 
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <!--<androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/editProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/circle_shape"
                         app:srcCompat="@drawable/ic_camera" />
-
+-->
                 </FrameLayout>
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView

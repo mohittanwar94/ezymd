@@ -7,6 +7,7 @@ import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
+import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import retrofit2.http.*
 
@@ -40,7 +41,7 @@ interface WebServices {
     @GET(ServerConfig.LOGOUT)
     suspend fun logout(
         @Header("Authorization") token: String
-    ): ResturantModel
+    ): LogoutModel
 
     @FormUrlEncoded
     @POST(ServerConfig.LIST_RESTURANTS)
@@ -48,7 +49,7 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): ResturantModel
 
-    @GET(ServerConfig.LIST_RESTURANTS)
+    @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel

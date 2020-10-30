@@ -14,7 +14,7 @@ class ProfileRepository {
     suspend fun logout(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<LogoutModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 

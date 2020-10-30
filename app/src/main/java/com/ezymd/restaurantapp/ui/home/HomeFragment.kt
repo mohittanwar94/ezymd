@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 
 
 open class HomeFragment : Fragment() {
-
+    private var locationChange = false
     private var treandingAdapter: TrendingAdapter? = null
     private var restaurantAdapter: RestaurantAdapter? = null
     private var isNullViewRoot = false
@@ -112,6 +112,12 @@ open class HomeFragment : Fragment() {
             address.substring(0, 22) + "...".trim()
         } else {*/
             address.trim()
+        if (dataBanner.size == 0 || locationChange) {
+            locationChange = false
+            homeViewModel.getBanners(BaseRequest(userInfo))
+            homeViewModel.getResturants(BaseRequest(userInfo))
+            homeViewModel.getTrending(BaseRequest(userInfo))
+        }
         //  }
     }
 
@@ -157,6 +163,7 @@ open class HomeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
+            locationChange = true
             locationModel = data!!.getParcelableExtra(JSONKeys.OBJECT) as LocationModel
             homeViewModel.address.postValue(locationModel)
         } else
@@ -228,7 +235,7 @@ open class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (dataBanner.size == 0) {
+        if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
             homeViewModel.getBanners(BaseRequest(userInfo))
             homeViewModel.getResturants(BaseRequest(userInfo))
             homeViewModel.getTrending(BaseRequest(userInfo))
@@ -300,6 +307,12 @@ open class HomeFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        homeViewModel.isLoading.removeObservers(this)
+        homeViewModel.mPagerData.removeObservers(this)
+        homeViewModel.mResturantData.removeObservers(this)
+        homeViewModel.mTrendingData.removeObservers(this)
+        homeViewModel.errorRequest.removeObservers(this)
+        homeViewModel.address.removeObservers(this)
         (bannerPager.adapter as BannerPagerAdapter).stopTimer()
     }
 
