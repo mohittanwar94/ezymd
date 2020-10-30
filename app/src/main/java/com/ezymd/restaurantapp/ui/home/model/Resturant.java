@@ -7,6 +7,18 @@ import java.io.Serializable;
 
 public class Resturant implements Serializable {
 
+
+    @SerializedName("address")
+    @Expose
+    private String address = "";
+
+    @SerializedName("lat")
+    @Expose
+    private Double lat = 0.0;
+
+    @SerializedName("long")
+    @Expose
+    private Double longitude = 0.0;
     @SerializedName("id")
     @Expose
     private Integer id = 0;
@@ -37,6 +49,30 @@ public class Resturant implements Serializable {
     @SerializedName("distance")
     @Expose
     private Double distance = 0.0;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public Integer getId() {
         return id;

@@ -47,6 +47,11 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): ResturantModel
 
+    @GET(ServerConfig.LIST_RESTURANTS)
+    suspend fun getResturantDetails(
+        @Path("id") id: Int, @Header("Authorization") token: String
+    ): ResturantModel
+
     @FormUrlEncoded
     @POST(ServerConfig.LIST_TRENDING)
     suspend fun getTrending(

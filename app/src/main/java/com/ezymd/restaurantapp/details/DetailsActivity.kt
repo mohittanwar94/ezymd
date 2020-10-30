@@ -4,22 +4,30 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.transition.TransitionInflater
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.home.model.Resturant
+import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.activity_details.app_bar
-import kotlinx.android.synthetic.main.activity_details.toolbar
-import kotlinx.android.synthetic.main.activity_details.toolbar_layout
 import kotlinx.android.synthetic.main.content_scrolling.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : BaseActivity() {
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(DetailViewModel::class.java)
+    }
+    private val resturant by lazy {
+        intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
+    }
+
     enum class State {
         EXPANDED, COLLAPSED, IDLE
     }
@@ -32,12 +40,38 @@ class DetailsActivity : AppCompatActivity() {
             TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation);
         image.transitionName = "thumbnailTransition";
 
+        getData()
         setToolBar()
         setHeaderData()
     }
 
+    private fun getData() {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap.put("id", "" + resturant.id)
+        viewModel.getDetails(baseRequest)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setObserver()
+    }
+
+    private fun setObserver() {
+        viewModel.mResturantData.observe(this, Observer {
+
+        })
+
+
+        viewModel.errorRequest.observe(this, Observer {
+            showError(false, it, null)
+        })
+        viewModel.isLoading.observe(this, Observer {
+            progress.visibility = if (it) View.VISIBLE else View.GONE
+        })
+    }
+
     private fun setHeaderData() {
-        val resturant = intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
+
         GlideApp.with(applicationContext)
             .load(resturant.banner).centerCrop().override(550, 350).dontAnimate()
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(image)

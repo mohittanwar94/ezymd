@@ -28,12 +28,11 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
                 android:id="@+id/image"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_240sdp"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -54,5 +53,7 @@
 
     <include layout="@layout/content_scrolling" />
 
-    <include layout="@layout/cart_view" />
+    <include
+        layout="@layout/cart_view"
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
