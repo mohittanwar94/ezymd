@@ -24,7 +24,7 @@ class DetailsActivity : BaseActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this).get(DetailViewModel::class.java)
     }
-    private val resturant by lazy {
+    private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
     }
 
@@ -47,7 +47,7 @@ class DetailsActivity : BaseActivity() {
 
     private fun getData() {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("id", "" + resturant.id)
+        baseRequest.paramsMap.put("id", "" + restaurant.id)
         viewModel.getDetails(baseRequest)
     }
 
@@ -73,16 +73,16 @@ class DetailsActivity : BaseActivity() {
     private fun setHeaderData() {
 
         GlideApp.with(applicationContext)
-            .load(resturant.banner).centerCrop().override(550, 350).dontAnimate()
+            .load(restaurant.banner).centerCrop().override(550, 350).dontAnimate()
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(image)
 
-        toolbar_layout.title = resturant.name
-        name.text = resturant.name
-        category.text = resturant.category
-        distance.text = TextUtils.concat("" + UIUtil.round(resturant.distance, 1), " km")
-        rating.text = if (resturant.rating > 0) "" + resturant.rating else "N/A"
+        toolbar_layout.title = restaurant.name
+        name.text = restaurant.name
+        category.text = restaurant.category
+        distance.text = TextUtils.concat("" + UIUtil.round(restaurant.distance, 1), " km")
+        rating.text = if (restaurant.rating > 0) "" + restaurant.rating else "N/A"
         minimumOrder.text =
-            if (resturant.minOrder.equals("0")) "N/A" else resturant.minOrder + getString(
+            if (restaurant.minOrder.equals("0")) "N/A" else restaurant.minOrder + getString(
                 R.string.dollor
             )
     }
