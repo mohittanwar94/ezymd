@@ -228,12 +228,10 @@ open class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isNullViewRoot) {
-            if (dataBanner.size == 0) {
-                homeViewModel.getBanners(BaseRequest(userInfo))
-                homeViewModel.getResturants(BaseRequest(userInfo))
-                homeViewModel.getTrending(BaseRequest(userInfo))
-            }
+        if (dataBanner.size == 0) {
+            homeViewModel.getBanners(BaseRequest(userInfo))
+            homeViewModel.getResturants(BaseRequest(userInfo))
+            homeViewModel.getTrending(BaseRequest(userInfo))
         }
         setObservers()
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)

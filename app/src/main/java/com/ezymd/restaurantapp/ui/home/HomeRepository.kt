@@ -41,13 +41,13 @@ class HomeRepository {
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-            isLoading.postValue(false)
+           // isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-            isLoading.postValue(false)
+          //  isLoading.postValue(false)
         }
 
 

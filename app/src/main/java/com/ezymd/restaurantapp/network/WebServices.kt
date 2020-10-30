@@ -36,6 +36,10 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): ResturantModel
 
+    @GET(ServerConfig.LOGOUT)
+    suspend fun logout(
+        @Header("Authorization") token: String
+    ): ResturantModel
 
     @FormUrlEncoded
     @POST(ServerConfig.LIST_RESTURANTS)

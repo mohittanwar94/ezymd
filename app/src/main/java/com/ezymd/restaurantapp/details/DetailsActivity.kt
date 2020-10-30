@@ -13,7 +13,11 @@ import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.activity_details.app_bar
+import kotlinx.android.synthetic.main.activity_details.toolbar
+import kotlinx.android.synthetic.main.activity_details.toolbar_layout
 import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class DetailsActivity : AppCompatActivity() {
     enum class State {
@@ -58,10 +62,13 @@ class DetailsActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         window.statusBarColor = Color.TRANSPARENT
-        toolbar_layout.title = ""
 
         app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
+                if (Math.abs(verticalOffset) != verticalOffset) {
+                    toolbar_layout.setCollapsedTitleTextColor(Color.TRANSPARENT)
+                }
+
                 if (mCurrentState != State.EXPANDED) {
                 }
                 mCurrentState = State.EXPANDED;
@@ -69,7 +76,7 @@ class DetailsActivity : AppCompatActivity() {
                 if (mCurrentState != State.COLLAPSED) {
                     toolbar.setTitleTextColor(Color.BLACK)
                     toolbar.setBackgroundColor(Color.WHITE)
-                    window.statusBarColor = Color.WHITE;
+                    window.statusBarColor = Color.WHITE
                     toolbar_layout.setCollapsedTitleTextColor(Color.BLACK)
                 }
                 mCurrentState = State.COLLAPSED;

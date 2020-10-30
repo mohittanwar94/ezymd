@@ -166,6 +166,8 @@
     <color name="color_fafbfc">#fafbfc</color>
     <color name="primary_dark">#fafbfc</color>
     <color name="color_f3f3f3">#f3f3f3</color>
+    <color name="color_c3c2c2">#c3c2c2</color>
+    <color name="color_3b3b3b">#3b3b3b</color>
 
     <array name="smoothProgressBarColorArray">
         <item>@color/coordinatorheader</item>

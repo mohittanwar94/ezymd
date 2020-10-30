@@ -145,7 +145,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
