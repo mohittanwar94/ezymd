@@ -5,22 +5,32 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.transition.TransitionInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.customviews.SnapTextView
+import com.ezymd.restaurantapp.details.model.FoodTypeModel
+import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.GlideApp
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.UIUtil
+import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
 class DetailsActivity : BaseActivity() {
-
+    private var isDisplayCount = false
+    private var selectedStudentPosition = 0
+    private val dataResturant = ArrayList<ItemModel>()
+    private val mData = MenuItemModel()
+    private val foodType = ArrayList<FoodTypeModel>()
+    private var restaurantAdapter: MenuAdapter? = null
     private val viewModel by lazy {
         ViewModelProvider(this).get(DetailViewModel::class.java)
     }
@@ -43,6 +53,28 @@ class DetailsActivity : BaseActivity() {
         getData()
         setToolBar()
         setHeaderData()
+
+        setAdapter()
+    }
+
+    private fun setAdapter() {
+        itmesRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        itmesRecyclerView.addItemDecoration(
+            VerticalSpacesItemDecoration(
+                UIUtil.convertDpToPx(
+                    this,
+                    resources.getDimension(R.dimen._3sdp)
+                )
+                    .toInt()
+            )
+        )
+        restaurantAdapter = MenuAdapter(this, OnRecyclerView { position, view ->
+
+        }, dataResturant)
+        itmesRecyclerView.adapter = restaurantAdapter
+
+
     }
 
     private fun getData() {
@@ -58,7 +90,8 @@ class DetailsActivity : BaseActivity() {
 
     private fun setObserver() {
         viewModel.mResturantData.observe(this, Observer {
-
+            if (it.data != null)
+                processDataFindTabs(it)
         })
 
 
@@ -68,6 +101,107 @@ class DetailsActivity : BaseActivity() {
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
         })
+    }
+
+    private fun processDataFindTabs(it: MenuItemModel) {
+
+
+        for (item in it.data) {
+            val model = FoodTypeModel()
+            model.categoryID = item.category_id
+            model.categoryName = item.category
+            var isPresent = false
+            for (foodCategory in foodType) {
+                if (foodCategory.categoryID == model.categoryID) {
+                    model.count = foodCategory.count + 1
+                    isPresent = true
+                } else {
+                    model.count = foodCategory.count + 1
+                }
+            }
+            if (!isPresent)
+                foodType.add(model)
+
+        }
+
+        disPlayCategoryData()
+    }
+
+    private fun disPlayCategoryData() {
+        if (foodType.size == 0) {
+            layoutTabs.visibility = View.VISIBLE
+            return
+        }
+        tabs.clearOnTabSelectedListeners()
+        tabs.removeAllTabs()
+        tabs.visibility = View.VISIBLE
+        for (i in 0 until foodType.size) {
+            val studentName = SnapTextView(this)
+            studentName.typeface = CustomTypeFace.medium
+            studentName.setSingleLine()
+            studentName.letterSpacing = 0.01f
+            studentName.textSize = UIUtil.convertDpToPx(
+                this,
+                resources.getDimension(R.dimen._3sdp)
+            )
+
+            studentName.text = if (isDisplayCount) TextUtils.concat(
+                foodType[i].categoryName,
+                " (" + foodType[i].count + " )"
+            ) else foodType[i].categoryName
+            studentName.setTextColor(ContextCompat.getColor(this, R.color.color_667ba3))
+            if (i == selectedStudentPosition) {
+                studentName.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+                tabs.addTab(tabs.newTab().setCustomView(studentName), true)
+            } else
+                tabs.addTab(tabs.newTab().setCustomView(studentName))
+        }
+        tabs.post {
+            tabs.getTabAt(selectedStudentPosition)!!.select()
+            tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    if (selectedStudentPosition != tab.position) {
+                        selectedStudentPosition = tab.position
+                        val selView = tab.customView as SnapTextView?
+                        selView!!.setTextColor(
+                            ContextCompat.getColor(
+                                this@DetailsActivity,
+                                R.color.color_002366
+                            )
+                        )
+                        for (j in 0 until tabs.tabCount) {
+                            if (j != selectedStudentPosition) {
+                                val unSelView = tabs.getTabAt(j)!!.customView as SnapTextView?
+                                unSelView!!.setTextColor(
+                                    ContextCompat.getColor(
+                                        this@DetailsActivity,
+                                        R.color.color_667ba3
+                                    )
+                                )
+                            }
+                        }
+                        onChildChanged()
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab) {}
+            })
+        }
+
+
+    }
+
+    private fun onChildChanged() {
+        dataResturant.clear()
+        restaurantAdapter!!.notifyDataSetChanged()
+        val category = foodType[selectedStudentPosition]
+        for (item in mData.data) {
+            if (category.categoryID == item.category_id)
+                dataResturant.add(item)
+
+        }
+        restaurantAdapter!!.notifyDataSetChanged()
     }
 
     private fun setHeaderData() {
@@ -85,6 +219,12 @@ class DetailsActivity : BaseActivity() {
             if (restaurant.minOrder.equals("0")) "N/A" else restaurant.minOrder + getString(
                 R.string.dollor
             )
+
+        counts.setOnClickListener {
+            isDisplayCount = !isDisplayCount
+            disPlayCategoryData()
+
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

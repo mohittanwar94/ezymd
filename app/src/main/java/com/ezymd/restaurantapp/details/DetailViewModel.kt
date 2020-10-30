@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: DetailRepository? = null
-    val mResturantData: MutableLiveData<ResturantModel>
+    val mResturantData: MutableLiveData<MenuItemModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {

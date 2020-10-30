@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -14,7 +15,7 @@ class DetailRepository {
     suspend fun resturantDetails(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<MenuItemModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 

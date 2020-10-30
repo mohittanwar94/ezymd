@@ -107,7 +107,7 @@ class HomeViewModel : ViewModel() {
                 baseRequest,
                 Dispatchers.IO
             )
-            //isLoading.postValue(false)
+            isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
