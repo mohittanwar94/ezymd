@@ -22,6 +22,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.login.LoginRequest
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.utils.*
+import com.ezymd.restaurantapp.utils.JSONKeys.IS_MOBILE
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import kotlinx.android.synthetic.main.activity_otp.*
 import kotlinx.android.synthetic.main.header_new.*
@@ -78,13 +79,9 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         onBackPressed()
     }
 
-    fun onStartHomeScreen() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
 
     /*when back pressed activity does not close app goes in background*/
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+    /*override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_BACK -> {
                 if (isBackPressEnable) moveTaskToBack(true)
@@ -92,7 +89,7 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
             }
         }
         return false
-    }
+    }*/
 
     private fun setGui() {
         icon1.requestFocus()
@@ -272,11 +269,16 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         } else {
             SuspendKeyPad.suspendKeyPad(this)
             progressLogin.visibility = View.VISIBLE
-            val loginRequest = LoginRequest()
-            loginRequest.mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
-            loginRequest.otp =
-                icon1.text.toString() + icon2.text.toString() + icon3.text.toString() + icon4.text.toString()
-            otpViewModel?.registerUser(loginRequest)
+            if (intent.hasExtra(IS_MOBILE)){
+                setResult(Activity.RESULT_OK)
+                finish()
+            }else {
+                val loginRequest = LoginRequest()
+                loginRequest.mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
+                loginRequest.otp =
+                    icon1.text.toString() + icon2.text.toString() + icon3.text.toString() + icon4.text.toString()
+                otpViewModel?.registerUser(loginRequest)
+            }
         }
 
     }

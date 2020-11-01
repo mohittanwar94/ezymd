@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.ui.notifications
+package com.ezymd.restaurantapp.ui.card
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

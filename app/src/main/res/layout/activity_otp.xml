@@ -50,13 +50,6 @@
         android:visibility="visible"
         app:textFont="book" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/iconLay"
@@ -154,14 +147,19 @@
             android:visibility="gone" />
 
     </FrameLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:layout_height="wrap_content">
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/resendOtp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_25sdp"
         android:maxLines="1"
         android:padding="@dimen/_5sdp"
         android:text="@string/did_not_receive_otp"
@@ -170,5 +168,14 @@
         android:visibility="visible"
         app:textFont="medium" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="@dimen/_17sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:layout_gravity="center"
+        android:theme="@style/progressBarTheme"
+        android:visibility="gone" />
+
+    </LinearLayout>
 
 </LinearLayout>

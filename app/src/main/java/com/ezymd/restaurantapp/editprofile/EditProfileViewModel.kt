@@ -1,24 +1,25 @@
-package com.ezymd.restaurantapp.ui.card
+package com.ezymd.restaurantapp.editprofile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.profile.LogoutModel
-import com.ezymd.restaurantapp.ui.profile.ProfileRepository
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.File
 
-class ProfileViewModel : ViewModel() {
-
+class EditProfileViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
-    private var loginRepository: ProfileRepository? = null
-    val mResturantData: MutableLiveData<LogoutModel>
+    private var loginRepository: EditProfileRepository? = null
+    val mResturantData: MutableLiveData<MenuItemModel>
     val isLoading: MutableLiveData<Boolean>
+    val otpResponse: MutableLiveData<OtpModel>
 
     override fun onCleared() {
         super.onCleared()
@@ -28,7 +29,8 @@ class ProfileViewModel : ViewModel() {
 
     init {
 
-        loginRepository = ProfileRepository.instance
+        otpResponse = MutableLiveData()
+        loginRepository = EditProfileRepository.instance
         isLoading = MutableLiveData()
         mResturantData = MutableLiveData()
         errorRequest = MutableLiveData()
@@ -37,10 +39,10 @@ class ProfileViewModel : ViewModel() {
     }
 
 
-    fun logout(baseRequest: BaseRequest) {
+    fun getDetails(baseRequest: BaseRequest) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.logout(
+            val result = loginRepository!!.updateUprofile(
                 baseRequest,
                 Dispatchers.IO
             )
@@ -48,13 +50,31 @@ class ProfileViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mResturantData.postValue(result.value)
+                // is ResultWrapper.Success -> mResturantData.postValue(result.value)
             }
 
         }
 
     }
 
+
+    fun generateOtp(otp: String) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.generateOtp(
+                otp,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> otpResponse.postValue(result.value)
+            }
+        }
+
+
+    }
 
     private fun showNetworkError() {
         errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
@@ -63,6 +83,10 @@ class ProfileViewModel : ViewModel() {
 
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
+    }
+
+    fun saveImage(file: File) {
+
     }
 
 

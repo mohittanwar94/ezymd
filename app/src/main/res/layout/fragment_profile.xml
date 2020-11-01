@@ -110,6 +110,7 @@
                     app:textFont="roman" />
 
                 <FrameLayout
+                    android:id="@+id/edit_profile"
                     android:layout_width="@dimen/_74sdp"
                     android:layout_height="@dimen/_28sdp"
                     android:layout_gravity="center_horizontal"

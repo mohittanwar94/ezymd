@@ -13,7 +13,7 @@ public class UserInfo {
     private static UserInfo userInfo;
     private SharedPreferences preferences;
     private WeakReference<Context> mContextWeakReference;
-    public MutableLiveData<Integer> mUserUpdate = new MutableLiveData<>();
+    public MutableLiveData<Boolean> mUserUpdate = new MutableLiveData<>();
 
     private UserInfo(Context context) {
         if (userInfo == null) {
@@ -70,7 +70,7 @@ public class UserInfo {
     }
 
     public void setUserName(String name) {
-        userInfo.mUserUpdate.postValue(1);
+        userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("name", name).apply();
     }
 
@@ -79,6 +79,7 @@ public class UserInfo {
     }
 
     public void setPhoneNumber(String phone_number) {
+        userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("phone_number", phone_number).apply();
     }
 
@@ -91,6 +92,7 @@ public class UserInfo {
     }
 
     public void setEmail(String email) {
+        userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("email", email).apply();
     }
 
@@ -100,6 +102,7 @@ public class UserInfo {
     }
 
     public void setProfilePic(String pic) {
+        userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("profilePic", pic).apply();
     }
 
@@ -109,12 +112,9 @@ public class UserInfo {
         preferences.edit().putString("phone_number", "").apply();
         preferences.edit().putString("email", "").apply();
         preferences.edit().putString("name", "").apply();
-        preferences.edit().putString("city_name", "").apply();
-        preferences.edit().putString("school_country ", "").apply();
         preferences.edit().putString("lat", "0.0").apply();
         preferences.getString("lang", "0.0");
         preferences.edit().putString("profilePic", "").apply();
-        preferences.edit().putString("profilePicThumb", "").apply();
         preferences.edit().putInt("user_id",0).apply();
 
     }

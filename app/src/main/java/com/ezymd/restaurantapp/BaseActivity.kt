@@ -222,15 +222,12 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
-                    Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.ACCESS_MEDIA_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 val notGranted = ArrayList<String>()
                 val permissions = arrayOf(
                     Manifest.permission.CAMERA,
-                    Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 for (permission in permissions) {

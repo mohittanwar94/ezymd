@@ -10,10 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.ui.notifications.ProfileViewModel
+import com.ezymd.restaurantapp.editprofile.EditProfileActivity
+import com.ezymd.restaurantapp.ui.card.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -49,6 +51,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setGUI() {
+        setProfileData()
+        edit_profile.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(activity, EditProfileActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
         logout.setOnClickListener {
             UIUtil.clickHandled(it)
             val baseRequest = BaseRequest(userInfo)
@@ -64,6 +73,10 @@ class ProfileFragment : Fragment() {
 
 
     private fun setObserver() {
+
+        userInfo.mUserUpdate.observe(this, Observer {
+            setProfileData()
+        })
         notificationsViewModel.isLoading.observe(this, Observer {
             if (it)
                 logoutProgress.visibility = View.VISIBLE
@@ -98,11 +111,11 @@ class ProfileFragment : Fragment() {
         requireActivity().window.statusBarColor = Color.WHITE
         notificationsViewModel.isLoading.removeObservers(this)
         notificationsViewModel.mResturantData.removeObservers(this)
+        userInfo.mUserUpdate.removeObservers(this)
     }
 
 
     private fun setToolBar() {
-
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         requireActivity().window.statusBarColor = Color.TRANSPARENT
         toolbar_layout.title = getString(R.string.title_profile)
@@ -139,5 +152,19 @@ class ProfileFragment : Fragment() {
 
         })
 
+    }
+
+
+    private fun setProfileData() {
+        userName.text = userInfo!!.userName
+        if (userInfo!!.email != "")
+            email.text = userInfo!!.email
+        else
+            email.text = userInfo!!.phoneNumber
+        if (userInfo!!.profilePic != null) {
+            GlideApp.with(requireActivity().applicationContext)
+                .load(userInfo!!.profilePic).centerCrop().override(100, 100).dontAnimate()
+                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
+        }
     }
 }

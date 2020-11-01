@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.ui.notifications
+package com.ezymd.restaurantapp.ui.card
 
 import android.os.Bundle
 import android.view.LayoutInflater
