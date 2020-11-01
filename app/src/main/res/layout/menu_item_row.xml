@@ -39,18 +39,40 @@
                 app:textFont="medium" />
 
 
-            <com.ezymd.restaurantapp.customviews.QuantityPicker
-                android:id="@+id/quantityPicker"
+            <FrameLayout
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_26sdp"
-                android:layout_gravity="center"
-                android:gravity="end"
-                app:focusable="false"
-                app:max="10"
-                app:min="0"
-                app:textFont="book"
-                app:unit="1"
-                app:value="-5" />
+                android:layout_height="@dimen/_26sdp">
+
+                <com.ezymd.restaurantapp.customviews.QuantityPicker
+                    android:id="@+id/quantityPicker"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_gravity="center"
+                    android:gravity="end"
+                    android:visibility="gone"
+                    app:focusable="false"
+                    app:max="10"
+                    app:min="0"
+                    app:textFont="book"
+                    app:unit="1"
+                    app:value="0" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/add"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/add_button_bg"
+                    android:gravity="center"
+                    android:letterSpacing="0.02"
+                    android:text="+ ADD"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_ffb912"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout

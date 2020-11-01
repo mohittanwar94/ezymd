@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +17,7 @@ class DetailViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: DetailRepository? = null
     val mResturantData: MutableLiveData<MenuItemModel>
+    val mCartData: MutableLiveData<ArrayList<ItemModel>>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -29,6 +30,7 @@ class DetailViewModel : ViewModel() {
 
         loginRepository = DetailRepository.instance
         isLoading = MutableLiveData()
+        mCartData = MutableLiveData()
         mResturantData = MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
@@ -44,7 +46,7 @@ class DetailViewModel : ViewModel() {
                 baseRequest,
                 Dispatchers.IO
             )
-              isLoading.postValue(false)
+            isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
@@ -62,6 +64,37 @@ class DetailViewModel : ViewModel() {
 
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
+    }
+
+    fun addToCart(item: ItemModel) {
+        val arrayListData = mCartData.value
+        val arrayList: ArrayList<ItemModel>
+        if (arrayListData == null)
+            arrayList = ArrayList()
+        else
+            arrayList = arrayListData
+
+        var isExist = false
+        var i = 0
+        for (itemModel in arrayList) {
+            if (itemModel.id == item.id) {
+                isExist = true
+                itemModel.quantity = item.quantity
+                arrayList[i] = itemModel
+            }
+            i++
+        }
+        if (!isExist)
+            arrayList.add(item)
+
+        mCartData.postValue(arrayList)
+        EzymdApplication.getInstance().cartData.postValue(arrayList)
+
+    }
+
+    fun removeItem(item: ItemModel) {
+        mCartData.value?.remove(item)
+        EzymdApplication.getInstance().cartData.postValue(mCartData.value)
     }
 
 

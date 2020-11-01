@@ -1,11 +1,15 @@
 package com.ezymd.restaurantapp.details
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.transition.TransitionInflater
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +27,7 @@ import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.cart_view.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
 class DetailsActivity : BaseActivity() {
@@ -68,11 +73,15 @@ class DetailsActivity : BaseActivity() {
                 ))
             )
         )
-        restaurantAdapter = MenuAdapter(this, OnRecyclerView { position, view ->
+        restaurantAdapter = MenuAdapter(viewModel, this, OnRecyclerView { position, view ->
 
         }, dataResturant)
         itmesRecyclerView.adapter = restaurantAdapter
 
+
+        viewCart.setOnClickListener {
+
+        }
 
     }
 
@@ -97,7 +106,10 @@ class DetailsActivity : BaseActivity() {
                 processDataFindTabs(it)
             }
         })
-
+        viewModel.mCartData.observe(this, Observer {
+            if (it != null)
+                processCartData(it)
+        })
 
         viewModel.errorRequest.observe(this, Observer {
             showError(false, it, null)
@@ -109,8 +121,91 @@ class DetailsActivity : BaseActivity() {
         })
     }
 
-    private fun processDataFindTabs(it: MenuItemModel) {
+    private fun processCartData(arrayList: ArrayList<ItemModel>) {
+        var quantity = 0
+        var price = 0
+        for (itemModel in arrayList) {
+            price += (itemModel.price * itemModel.quantity)
+            quantity += itemModel.quantity
+        }
 
+
+        setCartData(quantity, price)
+
+    }
+
+    private fun setCartData(quantity: Int, price: Int) {
+
+        if (quantity == 0 && price == 0) {
+            slideDown(cartView)
+        } else {
+            if (cartView.visibility != View.VISIBLE)
+                slideUp(cartView)
+            setCartDetails(quantity, price)
+        }
+
+
+    }
+
+    private fun setCartDetails(quantityCount: Int, price: Int) {
+        quantity.text = TextUtils.concat(
+            "" + quantityCount,
+            " ",
+            getString(R.string.items),
+            " | ",
+            getString(R.string.dollor),
+            "" + price
+        )
+    }
+
+    private fun slideUp(view: View) {
+        view.setVisibility(View.VISIBLE);
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0f
+        );                // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    private fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            0f,                 // fromYDelta
+            view.height.toFloat()
+        ) // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                view.visibility = View.GONE
+            }
+        })
+        view.startAnimation(animate)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.mResturantData.removeObservers(this)
+        viewModel.errorRequest.removeObservers(this)
+        viewModel.isLoading.removeObservers(this)
+        viewModel.mCartData.removeObservers(this)
+    }
+
+    private fun processDataFindTabs(it: MenuItemModel) {
+        foodType.clear()
 
         for (item in it.data) {
             val model = FoodTypeModel()
@@ -216,6 +311,7 @@ class DetailsActivity : BaseActivity() {
 
         toolbar_layout.title = restaurant.name
         name.text = restaurant.name
+        address.text = restaurant.address
         category.text = restaurant.category
         distance.text = TextUtils.concat("" + UIUtil.round(restaurant.distance, 1), " km")
         rating.text = if (restaurant.rating > 0) "" + restaurant.rating else "N/A"
@@ -225,6 +321,13 @@ class DetailsActivity : BaseActivity() {
         counts.setOnClickListener {
             isDisplayCount = !isDisplayCount
             disPlayCategoryData()
+
+        }
+        address.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:${restaurant.lat},${restaurant.longitude}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
 
         }
     }

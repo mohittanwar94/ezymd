@@ -26,7 +26,6 @@
             android:gravity="center_vertical"
             android:letterSpacing="0.02"
             android:lineSpacingExtra="@dimen/_7sdp"
-            android:text="5 km"
             android:textColor="@color/color_002366"
             android:textSize="@dimen/_13sdp"
             android:textStyle="normal"

@@ -51,7 +51,7 @@ public class Resturant implements Serializable {
     private Double distance = 0.0;
 
     public String getAddress() {
-        return address;
+        return address != null && !address.equals("") ? address : "N/A";
     }
 
     public void setAddress(String address) {

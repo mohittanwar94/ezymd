@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.os.Process;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.ezymd.restaurantapp.details.model.ItemModel;
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver;
 import com.facebook.FacebookSdk;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +27,8 @@ import java.util.List;
 public class EzymdApplication extends Application implements Application.ActivityLifecycleCallbacks {
     private Activity mLastForegroundActivity;
     @Nullable
-    public final String networkErrorMessage="it seems network is not available right now";
+    public final String networkErrorMessage = "it seems network is not available right now";
+    public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<ArrayList<ItemModel>>();
 
     public static boolean isAppForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -71,7 +76,6 @@ public class EzymdApplication extends Application implements Application.Activit
         if (getResources() == null) {
             Process.killProcess(Process.myPid());
         }
-
 
 
     }

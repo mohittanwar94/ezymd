@@ -3,17 +3,30 @@ package com.ezymd.restaurantapp.details.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import retrofit2.SkipCallbackExecutor;
-
 public class ItemModel {
 
     @SerializedName("rating")
     @Expose
     private Double rating = 0.0;
 
+
+    private int quantity = 0;
+
     @SerializedName("stock")
     @Expose
     private int stock;
+
+    @SerializedName("id")
+    @Expose
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @SerializedName("sell_price")
     @Expose
@@ -43,6 +56,15 @@ public class ItemModel {
     @SerializedName("image")
     @Expose
     private String image;
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public Double getRating() {
         return rating;

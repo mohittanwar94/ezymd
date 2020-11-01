@@ -74,11 +74,29 @@
                 tools:ignore="RtlSymmetry" />
 
 
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/category"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:letterSpacing="0.01"
+                app:drawableLeftCompat="@drawable/ic_location"
+                android:lineSpacingExtra="@dimen/_3sdp"
+                android:drawablePadding="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:textColor="@color/color_667ba3"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="normal"
+                app:textFont="roman"
+                />
+
             <LinearLayout
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_below="@+id/category"
+                android:layout_below="@+id/address"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
