@@ -93,8 +93,12 @@ class DetailViewModel : ViewModel() {
     }
 
     fun removeItem(item: ItemModel) {
-        mCartData.value?.remove(item)
-        EzymdApplication.getInstance().cartData.postValue(mCartData.value)
+      val arrayList=  mCartData.value
+        if (arrayList!=null) {
+            arrayList.remove(item)
+            mCartData.postValue(arrayList)
+            EzymdApplication.getInstance().cartData.postValue(arrayList)
+        }
     }
 
 

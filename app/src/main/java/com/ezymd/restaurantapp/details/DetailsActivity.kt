@@ -134,13 +134,18 @@ class DetailsActivity : BaseActivity() {
 
     }
 
+    var isExanded = false
     private fun setCartData(quantity: Int, price: Int) {
 
         if (quantity == 0 && price == 0) {
+            //cartView.visibility= View.GONE
             slideDown(cartView)
+            isExanded = false
         } else {
-            if (cartView.visibility != View.VISIBLE)
+            // cartView.visibility= View.VISIBLE
+            if (!isExanded)
                 slideUp(cartView)
+            isExanded = true
             setCartDetails(quantity, price)
         }
 
@@ -148,26 +153,29 @@ class DetailsActivity : BaseActivity() {
     }
 
     private fun setCartDetails(quantityCount: Int, price: Int) {
-        quantity.text = TextUtils.concat(
-            "" + quantityCount,
-            " ",
-            getString(R.string.items),
-            " | ",
-            getString(R.string.dollor),
-            "" + price
-        )
+        runOnUiThread(Runnable {
+            quantity.text = TextUtils.concat(
+                "" + quantityCount,
+                " ",
+                getString(R.string.items),
+                " | ",
+                getString(R.string.dollor),
+                "" + price
+            )
+        })
+
     }
 
     private fun slideUp(view: View) {
-        view.setVisibility(View.VISIBLE);
+        view.visibility = View.VISIBLE
         val animate = TranslateAnimation(
             0f,                 // fromXDelta
             0f,                 // toXDelta
             view.height.toFloat(),  // fromYDelta
             0f
-        );                // toYDelta
+        )             // toYDelta
         animate.duration = 500
-        animate.fillAfter = true
+        animate.fillAfter=true
         view.startAnimation(animate)
     }
 
@@ -180,7 +188,7 @@ class DetailsActivity : BaseActivity() {
             view.height.toFloat()
         ) // toYDelta
         animate.duration = 500
-        animate.fillAfter = true
+        animate.fillAfter=true
         animate.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {
             }
@@ -190,7 +198,6 @@ class DetailsActivity : BaseActivity() {
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                view.visibility = View.GONE
             }
         })
         view.startAnimation(animate)

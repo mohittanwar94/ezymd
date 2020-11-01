@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -100,8 +101,8 @@ class MenuAdapter(
                 holder.itemView.add.visibility = View.GONE
                 holder.itemView.quantityPicker.value = 1
                 holder.itemView.quantityPicker.alpha = 1f
-                data.set(holder.adapterPosition, item)
-                notifyItemChanged(position)
+                data[position] = item
+                //notifyItemChanged(position)
                 viewModelDetails.addToCart(item)
 
             }, 250)
@@ -111,7 +112,7 @@ class MenuAdapter(
             onRecyclerView.onClick(position, it)
         }
 
-        addListener(holder, holder.adapterPosition)
+        addListener(holder, position)
     }
 
     private fun addListener(holder: NotesHolder, position: Int) {
@@ -129,26 +130,22 @@ class MenuAdapter(
                     item.quantity = 0
                     holder.itemView.add.alpha = 0.0f
                     holder.itemView.add.visibility = View.VISIBLE
-                    holder.itemView.add.animate().alpha(1f).setDuration(250).start()
-
-                    holder.itemView.quantityPicker.postDelayed({
-                        holder.itemView.quantityPicker.value = 0
-                        holder.itemView.add.alpha = 1f
-                        data.set(holder.adapterPosition, item)
-                        notifyItemChanged(position)
-                        viewModelDetails.addToCart(item)
-
-                    }, 250)
+                    holder.itemView.add.animate().alpha(1f).setDuration(250)
+                        .setUpdateListener { animation ->
+                            holder.itemView.add.alpha =
+                                (250 / if (animation!!.currentPlayTime <= 0) 1 else animation.currentPlayTime).toFloat()
+                        }.start()
+                    holder.itemView.quantityPicker.value = 0
+                    data[position] = item
                     viewModelDetails.removeItem(item)
-                    return@ValueChangedListener
                 } else {
+
+                    item.quantity = value
+                    data[position] = item
                     viewModelDetails.addToCart(item)
                 }
 
-                item.quantity = value
-                SnapLog.print("item.quantity====" + item.quantity)
-                data[position] = item
-                notifyItemChanged(position)
+                //notifyItemChanged(position)
             }
 
     }
