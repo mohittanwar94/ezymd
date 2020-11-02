@@ -117,6 +117,11 @@ class RestaurantAdapter(
 
     }
 
+    fun clearData() {
+        data.clear()
+        notifyDataSetChanged()
+    }
+
 
     inner class NotesHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

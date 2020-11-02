@@ -44,10 +44,18 @@ interface WebServices {
     ): LogoutModel
 
     @FormUrlEncoded
+    @POST(ServerConfig.SEARCH_RESTURANTS)
+    suspend fun searchRestaurant(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): ResturantModel
+
+    @FormUrlEncoded
     @POST(ServerConfig.LIST_RESTURANTS)
     suspend fun getResturants(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): ResturantModel
+
+
 
     @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(

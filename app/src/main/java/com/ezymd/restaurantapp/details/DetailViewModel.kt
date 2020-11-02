@@ -17,7 +17,6 @@ class DetailViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: DetailRepository? = null
     val mResturantData: MutableLiveData<MenuItemModel>
-    val mCartData: MutableLiveData<ArrayList<ItemModel>>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -30,7 +29,6 @@ class DetailViewModel : ViewModel() {
 
         loginRepository = DetailRepository.instance
         isLoading = MutableLiveData()
-        mCartData = MutableLiveData()
         mResturantData = MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
@@ -67,7 +65,7 @@ class DetailViewModel : ViewModel() {
     }
 
     fun addToCart(item: ItemModel) {
-        val arrayListData = mCartData.value
+        val arrayListData = EzymdApplication.getInstance().cartData.value
         val arrayList: ArrayList<ItemModel>
         if (arrayListData == null)
             arrayList = ArrayList()
@@ -87,19 +85,41 @@ class DetailViewModel : ViewModel() {
         if (!isExist)
             arrayList.add(item)
 
-        mCartData.postValue(arrayList)
         EzymdApplication.getInstance().cartData.postValue(arrayList)
 
     }
 
     fun removeItem(item: ItemModel) {
-      val arrayList=  mCartData.value
-        if (arrayList!=null) {
+        val arrayList = EzymdApplication.getInstance().cartData.value
+        if (arrayList != null) {
             arrayList.remove(item)
-            mCartData.postValue(arrayList)
             EzymdApplication.getInstance().cartData.postValue(arrayList)
         }
     }
+
+    fun updateCartData() {
+        val data = mResturantData.value
+        val arrayList = EzymdApplication.getInstance().cartData.value
+
+        if (arrayList != null && data != null && data.data != null) {
+
+            var i = 0
+            for (item in data.data) {
+                for (itemModel in arrayList) {
+
+                    if (itemModel.id == item.id) {
+                        item.quantity = itemModel.quantity
+                        data.data[i] = item
+                    }
+                    i++
+                }
+            }
+
+            mResturantData.postValue(data)
+        }
+    }
+
+
 
 
 }

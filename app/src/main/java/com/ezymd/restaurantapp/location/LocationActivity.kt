@@ -127,6 +127,10 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         if (isGranted) {
             setReadyLocation(googleMap)
         }
+
+        myLocation.setOnClickListener {
+            getCurrentLocation()
+        }
     }
 
     @SuppressLint("MissingPermission")

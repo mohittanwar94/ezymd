@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
@@ -198,6 +199,7 @@ open class HomeFragment : Fragment() {
                     (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                 )
                 (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
+                EzymdApplication.getInstance().cartData.postValue(ArrayList())
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -222,7 +224,7 @@ open class HomeFragment : Fragment() {
                         (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                     )
                     (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
-
+                    EzymdApplication.getInstance().cartData.postValue(ArrayList())
                 })
         bannerPager.adapter = registerationTutorialPagerAdapter
         dots_indicator.setViewPager(bannerPager)

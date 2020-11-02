@@ -16,7 +16,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.details.model.FoodTypeModel
 import com.ezymd.restaurantapp.details.model.ItemModel
@@ -80,7 +82,10 @@ class DetailsActivity : BaseActivity() {
 
 
         viewCart.setOnClickListener {
-
+            val intent = Intent(this@DetailsActivity, CartActivity::class.java)
+            intent.putExtra(JSONKeys.OBJECT, restaurant)
+            startActivity(intent)
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
 
     }
@@ -94,6 +99,8 @@ class DetailsActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         setObserver()
+
+        viewModel.updateCartData()
     }
 
     private fun setObserver() {
@@ -106,7 +113,7 @@ class DetailsActivity : BaseActivity() {
                 processDataFindTabs(it)
             }
         })
-        viewModel.mCartData.observe(this, Observer {
+        EzymdApplication.getInstance().cartData.observe(this, Observer {
             if (it != null)
                 processCartData(it)
         })
@@ -175,7 +182,7 @@ class DetailsActivity : BaseActivity() {
             0f
         )             // toYDelta
         animate.duration = 500
-        animate.fillAfter=true
+        animate.fillAfter = true
         view.startAnimation(animate)
     }
 
@@ -188,7 +195,7 @@ class DetailsActivity : BaseActivity() {
             view.height.toFloat()
         ) // toYDelta
         animate.duration = 500
-        animate.fillAfter=true
+        animate.fillAfter = true
         animate.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {
             }
@@ -208,7 +215,7 @@ class DetailsActivity : BaseActivity() {
         viewModel.mResturantData.removeObservers(this)
         viewModel.errorRequest.removeObservers(this)
         viewModel.isLoading.removeObservers(this)
-        viewModel.mCartData.removeObservers(this)
+        EzymdApplication.getInstance().cartData.removeObservers(this)
     }
 
     private fun processDataFindTabs(it: MenuItemModel) {
@@ -376,6 +383,11 @@ class DetailsActivity : BaseActivity() {
             }
 
         })
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
 
     }
 }

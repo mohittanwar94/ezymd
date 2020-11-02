@@ -13,9 +13,9 @@
 
     <keep_state_fragment
         android:id="@+id/navigation_search"
-        android:name="com.ezymd.restaurantapp.ui.dashboard.SearchFragment"
+        android:name="com.ezymd.restaurantapp.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_search" />
 
     <keep_state_fragment
         android:id="@+id/navigation_cart"

@@ -99,6 +99,11 @@
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
         <activity
+            android:name=".cart.CartActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

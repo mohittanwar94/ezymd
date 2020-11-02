@@ -154,5 +154,10 @@
     <string name="save">Save</string>
     <string name="items">Items</string>
     <string name="this_item_is_not_available">This item is out of stock</string>
+    <string name="search_resturant">Search Restaurant</string>
+    <string name="total">Total</string>
+    <string name="delivery_type">Delivery Type</string>
+    <string name="pick_up">Pick up</string>
+    <string name="delivery">Delivery</string>
 
 </resources>

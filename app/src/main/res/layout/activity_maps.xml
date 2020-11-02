@@ -30,28 +30,42 @@
 
             <ImageView
                 android:id="@+id/imgAnim1"
-                android:visibility="gone"
-                android:src="@drawable/map_circle"
-                android:layout_gravity="center"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"/>
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/imgAnim2"
-                android:src="@drawable/map_circle"
+                android:layout_height="@dimen/_80sdp"
                 android:layout_gravity="center"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"/>
+                android:src="@drawable/map_circle"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imageMarker"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_pickup" />
+            <ImageView
+                android:id="@+id/imgAnim2"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/map_circle"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/imageMarker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:src="@drawable/ic_pickup" />
         </FrameLayout>
 
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:background="@color/white"
+            app:backgroundTint="@color/white"
+            app:elevation="@dimen/_4sdp"
+            app:fabSize="mini"
+            app:rippleColor="@color/dividerColor"
+            app:srcCompat="@drawable/ic_center_location"
+            app:useCompatPadding="true" />
     </FrameLayout>
 
     <include
