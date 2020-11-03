@@ -97,29 +97,5 @@ class DetailViewModel : ViewModel() {
         }
     }
 
-    fun updateCartData() {
-        val data = mResturantData.value
-        val arrayList = EzymdApplication.getInstance().cartData.value
-
-        if (arrayList != null && data != null && data.data != null) {
-
-            var i = 0
-            for (item in data.data) {
-                for (itemModel in arrayList) {
-
-                    if (itemModel.id == item.id) {
-                        item.quantity = itemModel.quantity
-                        data.data[i] = item
-                    }
-                    i++
-                }
-            }
-
-            mResturantData.postValue(data)
-        }
-    }
-
-
-
 
 }

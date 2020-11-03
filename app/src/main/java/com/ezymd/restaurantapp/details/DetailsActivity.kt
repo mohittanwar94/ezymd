@@ -100,7 +100,7 @@ class DetailsActivity : BaseActivity() {
         super.onResume()
         setObserver()
 
-        viewModel.updateCartData()
+
     }
 
     private fun setObserver() {
@@ -114,8 +114,10 @@ class DetailsActivity : BaseActivity() {
             }
         })
         EzymdApplication.getInstance().cartData.observe(this, Observer {
-            if (it != null)
+            if (it != null) {
+                checkDataChanges(it)
                 processCartData(it)
+            }
         })
 
         viewModel.errorRequest.observe(this, Observer {
@@ -126,6 +128,26 @@ class DetailsActivity : BaseActivity() {
 
 
         })
+    }
+
+    private fun checkDataChanges(it: ArrayList<ItemModel>) {
+        var i = 0
+        for (item in dataResturant) {
+            SnapLog.print("data quantity===" + item.quantity)
+            if (it.size == 0)
+                item.quantity = 0
+            dataResturant[i] = item
+            for (itemModel in it) {
+                if (itemModel.id == item.id) {
+                    SnapLog.print("quantity===" + itemModel.quantity)
+                    dataResturant[i] = itemModel
+                    break
+                }
+            }
+            i++
+        }
+        onChildChanged()
+
     }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {

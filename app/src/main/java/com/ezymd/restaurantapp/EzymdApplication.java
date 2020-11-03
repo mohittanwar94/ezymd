@@ -28,7 +28,7 @@ public class EzymdApplication extends Application implements Application.Activit
     private Activity mLastForegroundActivity;
     @Nullable
     public final String networkErrorMessage = "it seems network is not available right now";
-    public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<ArrayList<ItemModel>>();
+    public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<>();
 
     public static boolean isAppForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

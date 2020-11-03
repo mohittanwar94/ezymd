@@ -199,7 +199,7 @@ open class HomeFragment : Fragment() {
                     (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                 )
                 (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
-                EzymdApplication.getInstance().cartData.postValue(ArrayList())
+                EzymdApplication.getInstance().cartData.postValue(null)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -224,7 +224,7 @@ open class HomeFragment : Fragment() {
                         (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                     )
                     (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
-                    EzymdApplication.getInstance().cartData.postValue(ArrayList())
+                    EzymdApplication.getInstance().cartData.postValue(null)
                 })
         bannerPager.adapter = registerationTutorialPagerAdapter
         dots_indicator.setViewPager(bannerPager)

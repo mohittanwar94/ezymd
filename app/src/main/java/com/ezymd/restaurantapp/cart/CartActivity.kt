@@ -116,6 +116,7 @@ class CartActivity : BaseActivity() {
 
 
     private fun notifyAdapter(it: ArrayList<ItemModel>) {
+        processCartData(it)
         dataResturant.clear()
         dataResturant.addAll(it)
         restaurantAdapter!!.setData(it)

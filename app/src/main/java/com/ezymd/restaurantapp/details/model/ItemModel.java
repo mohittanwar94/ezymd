@@ -3,13 +3,16 @@ package com.ezymd.restaurantapp.details.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ItemModel {
+import java.io.Serializable;
+
+public class ItemModel implements Serializable {
 
     @SerializedName("rating")
     @Expose
     private Double rating = 0.0;
 
 
+    @Expose
     private int quantity = 0;
 
     @SerializedName("stock")
