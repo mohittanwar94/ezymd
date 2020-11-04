@@ -15,7 +15,7 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.editprofile.EditProfileActivity
-import com.ezymd.restaurantapp.ui.card.ProfileViewModel
+import com.ezymd.restaurantapp.ui.cart.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_profile.*

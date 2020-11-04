@@ -25,7 +25,7 @@
 -->
     <keep_state_fragment
         android:id="@+id/navigation_order"
-        android:name="com.ezymd.restaurantapp.ui.card.CartFragment"
+        android:name="com.ezymd.restaurantapp.ui.myorder.OrderFragment"
         android:label="@string/title_order"
         tools:layout="@layout/fragment_notifications" />
 

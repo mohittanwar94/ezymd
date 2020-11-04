@@ -148,6 +148,8 @@ class Login : BaseActivity() {
             processGoogleData(data)
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             this.finish()
+        } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode != Activity.RESULT_OK) {
+            SnapLog.print("back==========")
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data)
 

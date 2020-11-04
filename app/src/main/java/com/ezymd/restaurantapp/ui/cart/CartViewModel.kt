@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.ui.card
+package com.ezymd.restaurantapp.ui.cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
