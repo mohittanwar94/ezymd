@@ -17,12 +17,12 @@
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
-    <keep_state_fragment
+   <!-- <keep_state_fragment
         android:id="@+id/navigation_cart"
         android:name="com.ezymd.restaurantapp.ui.card.CartFragment"
         android:label="@string/title_cart"
         tools:layout="@layout/fragment_notifications" />
-
+-->
     <keep_state_fragment
         android:id="@+id/navigation_order"
         android:name="com.ezymd.restaurantapp.ui.card.CartFragment"

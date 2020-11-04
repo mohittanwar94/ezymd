@@ -11,11 +11,11 @@
         android:icon="@drawable/ic_search"
         android:title="@string/title_search" />
 
-    <item
+    <!--<item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_cart"
         android:title="@string/title_cart" />
-
+-->
 
     <item
         android:id="@+id/navigation_order"
