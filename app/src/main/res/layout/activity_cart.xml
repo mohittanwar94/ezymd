@@ -17,10 +17,10 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleTextAppearance="@style/CollapsingToolbarExpanded"
-            app:collapsedTitleTextAppearance="@style/CollapsingToolbarCollapse"
             android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarCollapse"
             app:expandedTitleMarginStart="@dimen/_15sdp"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarExpanded"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
@@ -33,8 +33,7 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:theme="@style/CustomToolBarStyle"/>
-
+                app:theme="@style/CustomToolBarStyle" />
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -50,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:id="@+id/content"
             android:orientation="vertical">
 
 
@@ -73,8 +73,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_toEndOf="@+id/ivNotesThumb"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -378,6 +378,23 @@
 
             </RelativeLayout>
 
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <FrameLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/image"
+            app:srcCompat="@drawable/ic_search" />
+    </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

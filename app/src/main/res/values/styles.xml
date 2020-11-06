@@ -25,11 +25,11 @@
         <item name="colorControlActivated">@color/yellow_circle_bg</item>
     </style>
 
-    <style name="checkboxstyle" parent="Base.Theme.AppCompat">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorAccent">@color/blue</item>
-        <item name="colorControlNormal">@color/gray_999</item>
-        <item name="android:textColorSecondary">@color/gray_999</item>
+    <style name="checkboxstyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="colorPrimary">@color/color_ffb912</item>
+        <item name="colorAccent">@color/color_ffb912</item>
+        <item name="colorControlNormal">@color/color_002366</item>
+        <item name="android:textColorSecondary">@color/color_002366</item>
 
     </style>
 
@@ -304,4 +304,14 @@
         <item name="colorControlActivated">@color/color_ffb912</item>
     </style>
 
+    <style name="MyTimePickerDark" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorControlActivated">@color/color_ffb912</item>
+        <item name="colorAccent">@color/color_ffb912</item>
+        <item name="android:selectableItemBackgroundBorderless">@android:color/transparent</item>
+        <item name="colorControlHighlight">@color/color_002366</item>
+        <item name="colorPrimary">@color/color_ffb912</item>
+        <item name="colorPrimaryDark">@color/color_ffb912</item>
+            
+    </style>
+     
 </resources>

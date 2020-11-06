@@ -10,6 +10,7 @@ import com.ezymd.restaurantapp.filters.adapter.FilterAdapter
 import kotlinx.android.synthetic.main.filter_layout.*
 import kotlinx.android.synthetic.main.header_new.*
 
+// sortby
 class FilterActivity : AppCompatActivity() {
     var filterAdapter: FilterAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_120sdp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarCollapse"
+            app:expandedTitleMarginStart="@dimen/_15sdp"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarExpanded"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="true"
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/CustomToolBarStyle" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.01"
+                android:padding="@dimen/_15sdp"
+                android:text="@string/delivery_type"
+                android:textColor="#b2bdd1"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:textFont="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:id="@+id/nowlayout"
+                android:padding="@dimen/_15sdp">
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/nowcheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_17sdp"
+                    app:color_checked="@color/color_ffb912"
+                    app:color_tick="@color/white"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/color_002366"
+                    app:duration="100"
+                    app:stroke_width="@dimen/_1sdp" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/nowcheckBox"
+                    android:letterSpacing="0.01"
+                    android:text="@string/now"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/now"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_toEndOf="@+id/nowcheckBox"
+                    android:letterSpacing="0.01"
+                    android:text="@string/now_delivery_instructions"
+                    android:textColor="#667ba3"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="normal"
+                    app:textFont="roman" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:id="@+id/scheduleLayout"
+                android:padding="@dimen/_15sdp">
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/schedulecheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_17sdp"
+                    app:color_checked="@color/color_ffb912"
+                    app:color_tick="@color/white"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/color_002366"
+                    app:duration="100"
+                    app:stroke_width="@dimen/_1sdp" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/schedulecheckBox"
+                    android:letterSpacing="0.01"
+                    android:text="@string/schedule"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/schedule"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_toEndOf="@+id/schedulecheckBox"
+                    android:letterSpacing="0.01"
+                    android:text="@string/schedule_delivery_instructions"
+                    android:textColor="#667ba3"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="normal"
+                    app:textFont="roman" />
+
+
+
+            </RelativeLayout>
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.01"
+                android:layout_margin="@dimen/_15sdp"
+                android:visibility="gone"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:textFont="roman" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/chooseTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/otp_edittext_bg"
+                android:letterSpacing="0.01"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:text="@string/choose_date_time"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:textFont="bold" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:background="@color/color_f2f4f7" />
+
+            <RelativeLayout
+                android:id="@+id/selectAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="@dimen/_15sdp">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.01"
+                    android:text="Delivery location"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/location"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:drawableTint="@color/color_002366"
+                    android:letterSpacing="0.01"
+                    android:text="Select Address"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
+                    app:textFont="medium" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
+
+            <RelativeLayout
+                android:id="@+id/promoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="@dimen/_15sdp">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/promocode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.01"
+                    android:text="Promo code"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/promocode"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:drawableTint="@color/color_002366"
+                    android:letterSpacing="0.01"
+                    android:text="Apply coupan"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
+                    app:textFont="medium" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_45sdp"
+                android:background="@color/color_f2f4f7" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/payButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_margin="@dimen/_15sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/pay"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:buttonFont="bold" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -42,7 +42,6 @@
         android:required="false" />
 
 
-
     <application
         android:name=".EzymdApplication"
         android:allowBackup="true"
@@ -102,6 +101,12 @@
             android:name=".cart.CartActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+
+        <activity
+            android:name=".cart.ConfirmOrder"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+
 
         <activity
             android:name=".MainActivity"

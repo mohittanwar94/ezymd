@@ -162,4 +162,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.github.mumayank:AirLocation:2.4'
 
+    implementation 'com.stripe:stripe-android:14.1.0'
+
+
 }

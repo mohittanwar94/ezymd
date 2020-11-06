@@ -159,5 +159,13 @@
     <string name="delivery_type">Delivery Type</string>
     <string name="pick_up">Pick up</string>
     <string name="delivery">Delivery</string>
+    <string name="pay">Pay</string>
+    <string name="title_confirm_order">Confirm Order</string>
+    <string name="now">Now</string>
+    <string name="now_delivery_instructions">Now orders are meant to place orders where the courier delivers your orders ASAP.</string>
+    <string name="schedule_delivery_instructions">Schedule orders are meant to place orders when the courier delivers your orders on specified time.</string>
+    <string name="schedule">Schedule</string>
+    <string name="choose_date_time"><![CDATA[Choose Time For Delivery]]></string>
+    <string name="delivery_at">Deliver today At</string>
 
 </resources>

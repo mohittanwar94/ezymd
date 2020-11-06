@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.cart
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -14,10 +15,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.utils.GlideApp
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.OnRecyclerView
-import com.ezymd.restaurantapp.utils.VerticalSpacesItemDecoration
+import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
@@ -45,6 +43,33 @@ class CartActivity : BaseActivity() {
         setToolBar()
         setHeaderData()
         setAdapter()
+        setGUI()
+    }
+
+    private fun setGUI() {
+        pickUp.setOnClickListener {
+            UIUtil.clickHandled(it)
+            startConfirmOrder()
+            delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+            pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
+            pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            delivery.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+        }
+        delivery.setOnClickListener {
+            UIUtil.clickHandled(it)
+            startConfirmOrder()
+            pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+            delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
+            delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            pickUp.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+        }
+    }
+
+    private fun startConfirmOrder() {
+        val intent = Intent(this, ConfirmOrder::class.java)
+        intent.putExtra(JSONKeys.OBJECT, restaurant)
+        startActivity(intent)
+        overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
 
     private fun setHeaderData() {
@@ -75,6 +100,8 @@ class CartActivity : BaseActivity() {
             if (it != null) {
                 if (it.size > 0)
                     notifyAdapter(it)
+                else
+                    showEmpty()
             }
         })
 
@@ -86,6 +113,11 @@ class CartActivity : BaseActivity() {
 
 
         })
+    }
+
+    private fun showEmpty() {
+        emptyView.visibility = View.VISIBLE
+        content.visibility = View.GONE
     }
 
     private fun setAdapter() {
@@ -116,6 +148,8 @@ class CartActivity : BaseActivity() {
 
 
     private fun notifyAdapter(it: ArrayList<ItemModel>) {
+        emptyView.visibility = View.GONE
+        content.visibility = View.VISIBLE
         processCartData(it)
         dataResturant.clear()
         dataResturant.addAll(it)
