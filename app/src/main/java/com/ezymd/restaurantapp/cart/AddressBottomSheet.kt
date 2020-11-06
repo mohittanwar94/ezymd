@@ -24,10 +24,6 @@ class AddressBottomSheet : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.bottomsheet_address, container, false)
     }
 
-    fun setOnButtonClickListener(clickListener: OnRecyclerView) {
-        onClickListener = clickListener
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setGUI()
