@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.bottomsheet_address.*
 
 class AddressBottomSheet : BottomSheetDialogFragment() {
 
-    private var onClickListener: OnRecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
