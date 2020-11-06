@@ -229,6 +229,7 @@
                     android:text="Select Address"
                     android:paddingBottom="@dimen/_15sdp"
                     android:textColor="#002366"
+                    android:drawablePadding="@dimen/_15sdp"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"
                     app:drawableRightCompat="@drawable/ic_arrow_right"
