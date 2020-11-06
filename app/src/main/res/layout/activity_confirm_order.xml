@@ -65,10 +65,10 @@
                 app:textFont="bold" />
 
             <RelativeLayout
+                android:id="@+id/nowlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:id="@+id/nowlayout"
                 android:padding="@dimen/_15sdp">
 
                 <com.ezymd.restaurantapp.customviews.SmoothCheckBox
@@ -112,10 +112,10 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/scheduleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:id="@+id/scheduleLayout"
                 android:padding="@dimen/_15sdp">
 
                 <com.ezymd.restaurantapp.customviews.SmoothCheckBox
@@ -158,19 +158,18 @@
                     app:textFont="roman" />
 
 
-
             </RelativeLayout>
 
             <com.ezymd.restaurantapp.customviews.SnapTextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:letterSpacing="0.01"
                 android:layout_margin="@dimen/_15sdp"
-                android:visibility="gone"
+                android:letterSpacing="0.01"
                 android:textColor="@color/color_002366"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:textFont="roman" />
 
 
@@ -178,17 +177,17 @@
                 android:id="@+id/chooseTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/otp_edittext_bg"
                 android:letterSpacing="0.01"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
                 android:text="@string/choose_date_time"
                 android:textAllCaps="false"
-                android:visibility="gone"
                 android:textColor="@color/color_002366"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:textFont="bold" />
 
 
@@ -210,8 +209,8 @@
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="0.01"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
                     android:text="Delivery location"
                     android:textColor="#b2bdd1"
                     android:textSize="@dimen/_13sdp"
@@ -223,13 +222,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location"
-                    android:paddingTop="@dimen/_12sdp"
+                    android:drawablePadding="@dimen/_15sdp"
                     android:drawableTint="@color/color_002366"
                     android:letterSpacing="0.01"
-                    android:text="Select Address"
+                    android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
+                    android:text="Select Address"
                     android:textColor="#002366"
-                    android:drawablePadding="@dimen/_15sdp"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"
                     app:drawableRightCompat="@drawable/ic_arrow_right"
@@ -257,9 +256,9 @@
                     android:id="@+id/promocode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="0.01"
-                    android:text="Promo code"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:text="Delivery Instruction"
                     android:textColor="#b2bdd1"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="normal"
@@ -270,11 +269,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/promocode"
-                    android:paddingTop="@dimen/_12sdp"
                     android:drawableTint="@color/color_002366"
                     android:letterSpacing="0.01"
-                    android:text="Apply coupan"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
+                    android:text="Add Delivery Instruction"
                     android:textColor="#002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"

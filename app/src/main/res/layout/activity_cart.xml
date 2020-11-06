@@ -136,6 +136,58 @@
                 android:paddingEnd="@dimen/_15sdp" />
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/color_f2f4f7" />
+
+
+            <RelativeLayout
+                android:id="@+id/promoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/promocode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.01"
+                    android:text="@string/promo_code"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/couponCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/promocode"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:drawableTint="@color/color_002366"
+                    android:letterSpacing="0.01"
+                    android:text="@string/apply_coupan"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:drawableRightCompat="@drawable/ic_arrow_right"
+                    app:textFont="medium" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:letterSpacing="0.02"
-                    android:text="Subtotal"
+                    android:text="@string/subtotal"
                     android:textColor="@color/color_002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"

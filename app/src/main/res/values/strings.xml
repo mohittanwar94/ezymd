@@ -180,5 +180,9 @@
     <string name="floor_hint">e.g. 2nd Floor</string>
     <string name="office_home_no">H. No /Office Name /Office Number *</string>
     <string name="office_home_no_hint">e.g Plot 100</string>
+    <string name="promo_code">Promo code</string>
+    <string name="apply_coupan">Apply coupan</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="add_delivery_instruction">Add Delivery Instruction</string>
 
 </resources>

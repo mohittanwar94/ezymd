@@ -55,6 +55,8 @@ class ConfirmOrder : BaseActivity() {
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
             selectAddress.text = location?.location
+        } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
+            val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
         }
     }
 
@@ -63,7 +65,14 @@ class ConfirmOrder : BaseActivity() {
         schedulecheckBox.isClickable = false
 
         couponCode.setOnClickListener {
-
+            startActivityForResult(
+                Intent(
+                    this@ConfirmOrder,
+                    AddDeliveryInstruction::class.java
+                ),
+                JSONKeys.OTP_REQUEST
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
         selectAddress.setOnClickListener {
             val locationModel = LocationModel()

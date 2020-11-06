@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_120sdp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarCollapse"
+            app:expandedTitleMarginStart="@dimen/_15sdp"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarExpanded"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="true"
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/CustomToolBarStyle" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp">
+
+            <com.ezymd.restaurantapp.customviews.SnapEditText
+                android:id="@+id/deliveryInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@drawable/location_edit_text_bg"
+                android:gravity="top|start"
+                android:hint="@string/add_delivery_instruction"
+                android:maxLength="100"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_15sdp"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/charterCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="top|start"
+                android:padding="@dimen/_5sdp"
+                android:text="0/100"
+                android:textColor="@color/blue_667ba3"
+                android:textSize="@dimen/_10sdp"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:text="@string/continue_string"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                app:buttonFont="bold" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

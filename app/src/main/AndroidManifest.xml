@@ -107,6 +107,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
+        <activity
+            android:name=".cart.AddDeliveryInstruction"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysVisible" />
 
         <activity
             android:name=".MainActivity"
