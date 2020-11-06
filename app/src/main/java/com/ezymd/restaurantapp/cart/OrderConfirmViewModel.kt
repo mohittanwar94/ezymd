@@ -31,6 +31,7 @@ class OrderConfirmViewModel : ViewModel() {
         isLoading = MutableLiveData()
         errorRequest = MutableLiveData()
         isNowSelectd= MutableLiveData()
+        isNowSelectd.postValue(true)
         dateSelected=MutableLiveData()
 
 

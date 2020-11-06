@@ -380,4 +380,6 @@ public interface JSONKeys {
     String digital_certificate = "digital_certificate";
     int LOCATION_REQUEST = 1232;
     int OTP_REQUEST = 1233;
+    @Nullable
+    String LOCATION_OBJECT="location";
 }

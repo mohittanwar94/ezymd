@@ -1,6 +1,8 @@
 package com.ezymd.restaurantapp.cart
 
+import android.app.Activity
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TimePicker
@@ -10,8 +12,11 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
+import com.ezymd.restaurantapp.location.LocationActivity
+import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.JSONKeys
+import com.ezymd.restaurantapp.utils.ShowDialog
 import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.activity_confirm_order.*
 import kotlinx.android.synthetic.main.content_scrolling.*
@@ -44,12 +49,38 @@ class ConfirmOrder : BaseActivity() {
         setGUI()
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
+            val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
+            selectAddress.text = location?.location
+        }
+    }
+
     private fun setGUI() {
-        nowcheckBox.setChecked(true, true)
-        nowcheckBox.isClickable=false
-        schedulecheckBox.isClickable=false
-        viewModel.isNowSelectd.postValue(true)
-        viewModel.isNowSelectd.postValue(true)
+        nowcheckBox.isClickable = false
+        schedulecheckBox.isClickable = false
+
+        couponCode.setOnClickListener {
+
+        }
+        selectAddress.setOnClickListener {
+            val locationModel = LocationModel()
+            locationModel.city = ""
+            locationModel.location = "";
+            locationModel.lang = userInfo!!.lang.toDouble()
+            locationModel.lat = userInfo!!.lat.toDouble()
+
+            startActivityForResult(
+                Intent(
+                    this@ConfirmOrder,
+                    LocationActivity::class.java
+                ).putExtra(JSONKeys.LOCATION_OBJECT, locationModel),
+                JSONKeys.LOCATION_REQUEST
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
         nowlayout.setOnClickListener {
             viewModel.isNowSelectd.postValue(true)
 
@@ -79,7 +110,14 @@ class ConfirmOrder : BaseActivity() {
                 object : TimePickerDialog.OnTimeSetListener {
 
                     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                        viewModel.dateSelected.value = "$hourOfDay:$minute"
+                        if (hourOfDay < hour) {
+                            ShowDialog(this@ConfirmOrder).disPlayDialog(
+                                getString(R.string.pass_time),
+                                false,
+                                false
+                            )
+                        } else
+                            viewModel.dateSelected.value = "$hourOfDay:$minute"
 
                     }
 
@@ -94,9 +132,9 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun setNowCheckBoxSelected() {
-        schedulecheckBox.setChecked(false, false)
+        schedulecheckBox.setChecked(false, true)
         if (!nowcheckBox.isChecked)
-            nowcheckBox.setChecked(true, false)
+            nowcheckBox.setChecked(true, true)
         chooseTime.visibility = View.GONE
         time.visibility = View.GONE
 
@@ -104,9 +142,9 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun setScheduleCheckBox() {
-        nowcheckBox.setChecked(false, false)
+        nowcheckBox.setChecked(false, true)
         if (!schedulecheckBox.isChecked)
-            schedulecheckBox.setChecked(true, false)
+            schedulecheckBox.setChecked(true, true)
         chooseTime.visibility = View.VISIBLE
         time.visibility = View.VISIBLE
 
@@ -114,7 +152,6 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun setHeaderData() {
-
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.title = getString(R.string.title_confirm_order)
@@ -137,7 +174,7 @@ class ConfirmOrder : BaseActivity() {
         })
         viewModel.dateSelected.observe(this, Observer {
             if (it != null)
-                time.text = getString(R.string.delivery_at)+" "+it
+                time.text = getString(R.string.delivery_at) + " " + it
 
         })
         viewModel.isNowSelectd.observe(this, Observer {
@@ -162,8 +199,6 @@ class ConfirmOrder : BaseActivity() {
         viewModel.isNowSelectd.removeObservers(this)
         viewModel.dateSelected.removeObservers(this)
         viewModel.errorRequest.removeObservers(this)
-        viewModel.isLoading.removeObservers(this)
-        viewModel.isLoading.removeObservers(this)
         viewModel.isLoading.removeObservers(this)
         EzymdApplication.getInstance().cartData.removeObservers(this)
     }

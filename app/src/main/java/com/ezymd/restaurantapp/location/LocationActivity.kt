@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.cart.AddressBottomSheet
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.SnapLog
@@ -42,6 +43,7 @@ import java.util.*
 
 
 class LocationActivity : BaseActivity(), OnMapReadyCallback {
+    private var bottomSheetDialogFragment: AddressBottomSheet? = null
     private var mTimerIsRunning = false
     val REQUEST_CHECK_SETTINGS = 43
 
@@ -82,11 +84,20 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun setGUI() {
-
+        if (intent.hasExtra(JSONKeys.LOCATION_OBJECT))
+            done.text = getString(R.string.confirm_and_proceed)
 
         done.setOnClickListener {
-            setResult(Activity.RESULT_OK, Intent().putExtra(JSONKeys.OBJECT, locationModel))
-            finish()
+            if (!intent.hasExtra(JSONKeys.LOCATION_OBJECT)) {
+                setResult(
+                    Activity.RESULT_OK,
+                    Intent().putExtra(JSONKeys.LOCATION_OBJECT, locationModel)
+                )
+                finish()
+            } else {
+                //show address bottomsheet
+                showAddressBottomSheet()
+            }
         }
         change.setOnClickListener {
             UIUtil.clickAlpha(it)
@@ -96,12 +107,41 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
+    private fun showAddressBottomSheet() {
+        val tag = AddressBottomSheet.javaClass.name
+        val oldFragment = supportFragmentManager.findFragmentByTag(tag)
+        if (oldFragment != null) {
+            supportFragmentManager.beginTransaction().remove(oldFragment).commit()
+            bottomSheetDialogFragment = null
+        }
+        if (bottomSheetDialogFragment == null) {
+            bottomSheetDialogFragment = AddressBottomSheet.newInstance(locationModel.location)
+            bottomSheetDialogFragment!!.show(supportFragmentManager, tag)
+
+        } else {
+            if (!bottomSheetDialogFragment!!.isVisible) {
+                bottomSheetDialogFragment!!.show(supportFragmentManager, tag)
+            }
+        }
+
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.right_in,R.anim.right_out)
+    }
 
     private fun startSearchPlacesApi() {
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, getString(R.string.google_places_api))
         }
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,Place.Field.PHOTO_METADATAS)
+        val fields = listOf(
+            Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.LAT_LNG,
+            Place.Field.PHOTO_METADATAS
+        )
         val intent =
             Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this)
         startActivityForResult(intent, CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE)
@@ -109,7 +149,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map ?: return
-       val success = googleMap.setMapStyle(
+        val success = googleMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.style_json
             )
@@ -155,8 +195,13 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         })
 
 
+        if (!intent.hasExtra(JSONKeys.LOCATION_OBJECT))
+            getCurrentLocation()
+        else {
+            val location = intent.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
+            setStartLocation(location.lat, location.lang, "", 17f)
 
-        getCurrentLocation()
+        }
 
     }
 
@@ -232,6 +277,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         var add = address
         if (add.startsWith("Unnamed Road,"))
             add = add.replace("Unnamed Road,", "")
+        locationModel.location=add
         toLocationTxt.setText(add.trim())
     }
 
@@ -264,7 +310,13 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         when (requestCode) {
             REQUEST_CHECK_SETTINGS -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    getCurrentLocation()
+                    if (intent.hasExtra(JSONKeys.LOCATION_OBJECT)) {
+                        val location =
+                            intent.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
+                        setStartLocation(location.lat, location.lang, "", 17f)
+                    } else {
+                        getCurrentLocation()
+                    }
                 }
             }
         }
@@ -326,7 +378,19 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onDestroy() {
         super.onDestroy()
+        bottomSheetDialogFragment?.dismissAllowingStateLoss()
         handler.removeCallbacks(runnnableAnim)
+    }
+
+    fun updateAddress(toString: String) {
+        locationModel.location = toString
+        bottomSheetDialogFragment?.dismissAllowingStateLoss()
+        setResult(
+            Activity.RESULT_OK,
+            Intent().putExtra(JSONKeys.LOCATION_OBJECT, locationModel)
+        )
+        finish()
+
     }
 
 }

@@ -163,9 +163,22 @@
     <string name="title_confirm_order">Confirm Order</string>
     <string name="now">Now</string>
     <string name="now_delivery_instructions">Now orders are meant to place orders where the courier delivers your orders ASAP.</string>
-    <string name="schedule_delivery_instructions">Schedule orders are meant to place orders when the courier delivers your orders on specified time.</string>
+    <string name="schedule_delivery_instructions">Scheduled orders ae meant to place orders where the courier delivers your orders at the selected delivery slot</string>
     <string name="schedule">Schedule</string>
     <string name="choose_date_time"><![CDATA[Choose Time For Delivery]]></string>
-    <string name="delivery_at">Deliver today At</string>
+    <string name="delivery_at">Deliver today at</string>
+    <string name="pass_time">you can not schedule your delivery in past time</string>
+    <string name="confirm_and_proceed"><![CDATA[Confirm location & proceed]]></string>
+    <string name="enter_address_details">Enter Address Details</string>
+    <string name="address">Address</string>
+    <string name="your_location">Your Location</string>
+    <string name="how_to_reach">How to reach (optional)</string>
+    <string name="how_to_reach_hint">Landmark / Entry gate/ Street</string>
+    <string name="tower_wing">Tower / Wing (if applicable)</string>
+    <string name="tower">e.g. Tower D</string>
+    <string name="floor">Floor *</string>
+    <string name="floor_hint">e.g. 2nd Floor</string>
+    <string name="office_home_no">H. No /Office Name /Office Number *</string>
+    <string name="office_home_no_hint">e.g Plot 100</string>
 
 </resources>

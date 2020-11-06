@@ -199,11 +199,11 @@
                 android:background="@color/color_f2f4f7" />
 
             <RelativeLayout
-                android:id="@+id/selectAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:padding="@dimen/_15sdp">
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp">
 
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -211,6 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.01"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:text="Delivery location"
                     android:textColor="#b2bdd1"
                     android:textSize="@dimen/_13sdp"
@@ -218,13 +219,15 @@
                     app:textFont="bold" />
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/selectAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/location"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_12sdp"
                     android:drawableTint="@color/color_002366"
                     android:letterSpacing="0.01"
                     android:text="Select Address"
+                    android:paddingBottom="@dimen/_15sdp"
                     android:textColor="#002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"
@@ -245,7 +248,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:padding="@dimen/_15sdp">
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp">
 
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -254,19 +258,22 @@
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.01"
                     android:text="Promo code"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:textColor="#b2bdd1"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="normal"
                     app:textFont="bold" />
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/couponCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/promocode"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_12sdp"
                     android:drawableTint="@color/color_002366"
                     android:letterSpacing="0.01"
                     android:text="Apply coupan"
+                    android:paddingBottom="@dimen/_15sdp"
                     android:textColor="#002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"

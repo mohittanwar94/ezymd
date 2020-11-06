@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -105,6 +107,13 @@ public class UserInfo {
         userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("profilePic", pic).apply();
     }
+    public String getAddress() {
+        return preferences.getString("address", "");
+    }
+
+    public void setAddress(String address) {
+        preferences.edit().putString("address", address).apply();
+    }
 
 
 
@@ -114,6 +123,7 @@ public class UserInfo {
         preferences.edit().putString("name", "").apply();
         preferences.edit().putString("lat", "0.0").apply();
         preferences.getString("lang", "0.0");
+        preferences.edit().putString("address", "").apply();
         preferences.edit().putString("profilePic", "").apply();
         preferences.edit().putInt("user_id",0).apply();
 

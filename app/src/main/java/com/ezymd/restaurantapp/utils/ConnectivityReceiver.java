@@ -45,5 +45,6 @@ public class ConnectivityReceiver
 
     public interface ConnectivityReceiverListener {
         void onNetworkConnectionChanged(boolean isConnected);
+
     }
 }

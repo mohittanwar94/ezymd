@@ -111,6 +111,7 @@ open class HomeFragment : Fragment() {
             address.substring(0, 22) + "...".trim()
         } else {*/
             address.trim()
+        userInfo!!.address = address.trim()
         if (dataBanner.size == 0 || locationChange) {
             locationChange = false
             homeViewModel.getBanners(BaseRequest(userInfo))
@@ -163,7 +164,7 @@ open class HomeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             locationChange = true
-            locationModel = data!!.getParcelableExtra(JSONKeys.OBJECT) as LocationModel
+            locationModel = data!!.getParcelableExtra(JSONKeys.LOCATION_OBJECT) as LocationModel
             homeViewModel.address.postValue(locationModel)
         } else
             airLocation.onActivityResult(requestCode, resultCode, data)
