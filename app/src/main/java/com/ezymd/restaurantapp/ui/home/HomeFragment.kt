@@ -22,6 +22,7 @@ import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
 import com.ezymd.restaurantapp.details.DetailsActivity
+import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.ui.home.adapter.BannerPagerAdapter
@@ -80,6 +81,7 @@ open class HomeFragment : Fragment() {
             askPermission()
             setListenerView()
             setAdapterRestaurant()
+            homeViewModel.getFilters(BaseRequest(userInfo))
 
         }
 
@@ -166,6 +168,12 @@ open class HomeFragment : Fragment() {
             locationChange = true
             locationModel = data!!.getParcelableExtra(JSONKeys.LOCATION_OBJECT) as LocationModel
             homeViewModel.address.postValue(locationModel)
+        } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_FIRST_USER) {
+            //clearAllFilter()
+        } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_OK) {
+            //applyAllFilter()
+        } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_CANCELED) {
+            //applyAllFilter()
         } else
             airLocation.onActivityResult(requestCode, resultCode, data)
     }
@@ -181,6 +189,14 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setAdapterRestaurant() {
+        filter.setOnClickListener {
+            requireActivity().startActivityFromFragment(
+                this, Intent(requireActivity(), FilterActivity::class.java),
+                JSONKeys.FILTER
+            )
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+
+        }
         resturantRecyclerView.layoutManager = LinearLayoutManager(activity, VERTICAL, false)
         resturantRecyclerView.addItemDecoration(
             VerticalSpacesItemDecoration(
@@ -305,6 +321,8 @@ open class HomeFragment : Fragment() {
 
 
     }
+
+
 
     override fun onStop() {
         super.onStop()

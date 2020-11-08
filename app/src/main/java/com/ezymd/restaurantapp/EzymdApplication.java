@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ezymd.restaurantapp.details.model.ItemModel;
+import com.ezymd.restaurantapp.filters.model.DataModel;
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver;
 import com.facebook.FacebookSdk;
 
@@ -29,6 +30,7 @@ public class EzymdApplication extends Application implements Application.Activit
     @Nullable
     public final String networkErrorMessage = "it seems network is not available right now";
     public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<>();
+    public MutableLiveData<DataModel> filterModel = new MutableLiveData<>();
 
     public static boolean isAppForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

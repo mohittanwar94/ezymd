@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
@@ -10,11 +11,14 @@
     <com.ezymd.restaurantapp.customviews.SnapTextView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
+        android:layout_height="@dimen/_42sdp"
         android:text="@string/clear_filters"
-        android:textColor="@color/gray_9e9e9e"
+        android:layout_gravity="center"
+        android:paddingStart="@dimen/_15sdp"
+        android:gravity="start|center"
+        android:textColor="@color/color_6c6c6c"
         android:textSize="@dimen/_13sdp"
-        app:textFont="book" />
+        app:textFont="roman"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

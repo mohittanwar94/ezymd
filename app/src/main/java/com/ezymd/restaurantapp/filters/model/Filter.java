@@ -1,44 +1,43 @@
 package com.ezymd.restaurantapp.filters.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Filter {
-    public static Integer INDEX_COLOR = 0;
-    public static Integer INDEX_SIZE = 1;
-    public static Integer INDEX_PRICE = 2;
 
-    private String name;
-    private List<String> values;
-    private List<String> selected;
+    @SerializedName("filter_id")
+    @Expose
+    private Integer filterId;
+    @SerializedName("filter_name")
+    @Expose
+    private String filterName;
+    @SerializedName("data")
+    @Expose
+    private ArrayList<FilterInnerModel> data = new ArrayList<>();
 
-    public Filter(String name, List<String> values, List<String> selected) {
-        this.name = name;
-        this.values = values;
-        this.selected = selected;
+    public Integer getFilterId() {
+        return filterId;
     }
 
-    public String getName() {
-        return name;
+    public void setFilterId(Integer filterId) {
+        this.filterId = filterId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFilterName() {
+        return filterName;
     }
 
-    public List<String> getValues() {
-        return values;
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
     }
 
-    public void setValues(List<String> values) {
-        this.values = values;
+    public ArrayList<FilterInnerModel> getData() {
+        return data;
     }
 
-    public List<String> getSelected() {
-        return selected;
-    }
-
-    public void setSelected(List<String> selected) {
-        this.selected = selected;
+    public void setData(ArrayList<FilterInnerModel> data) {
+        this.data = data;
     }
 }

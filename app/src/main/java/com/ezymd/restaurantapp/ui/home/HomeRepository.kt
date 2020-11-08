@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.ui.home
 import android.location.Address
 import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
+import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
@@ -48,6 +49,19 @@ class HomeRepository {
             locationModel.city = cityName
             addressResult.postValue(locationModel)
           //  isLoading.postValue(false)
+        }
+
+
+    }
+    suspend fun getFilters(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<FilterModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.getFilters(baseRequest.accessToken)
         }
 
 

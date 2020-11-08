@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,25 +11,52 @@
 
         <include layout="@layout/header_new" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="@color/activity_bg">
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/filterRV"
-                android:layout_width="@dimen/_100sdp"
+                android:layout_width="@dimen/_120sdp"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/_55sdp"
                 android:layout_height="match_parent"
                  />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/filterValuesRV"
                 android:layout_width="match_parent"
+                android:layout_toEndOf="@+id/filterRV"
+                android:background="@color/color_fafbfc"
+                android:paddingBottom="@dimen/_55sdp"
                 android:layout_height="match_parent"
                 />
 
-        </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:theme="@style/progressBarTheme"
+                />
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/apply"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/_15sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:text="@string/apply"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                app:buttonFont="bold" />
+
+        </RelativeLayout>
 
 
     </LinearLayout>

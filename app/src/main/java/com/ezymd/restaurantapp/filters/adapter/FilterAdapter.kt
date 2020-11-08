@@ -9,16 +9,25 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.filters.FilterViewModel
 import com.ezymd.restaurantapp.filters.model.Filter
-import com.ezymd.restaurantapp.font.CustomTypeFace
-import java.util.*
+import com.ezymd.restaurantapp.filters.model.FilterInnerModel
 
 class FilterAdapter(
     private val context: Context,
-    private val filters: HashMap<Int, Filter>,
-    private val filterValuesRV: RecyclerView
+    private val filters: ArrayList<Filter>,
+    private val filterValuesRV: RecyclerView,
+    viewModel: FilterViewModel
 ) : RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
-    private var selectedPostion = 0
+    private var selectedPosition:Int = 0
+    private val adapterFilter by lazy {
+        FilterValuesAdapter(context,viewModel)
+    }
+
+    init {
+        filterValuesRV.adapter = adapterFilter
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): MyViewHolder {
         val view =
             LayoutInflater.from(viewGroup.context).inflate(R.layout.filter_item, viewGroup, false)
@@ -26,31 +35,43 @@ class FilterAdapter(
     }
 
     override fun onBindViewHolder(myViewHolder: MyViewHolder, position: Int) {
-        myViewHolder.container.setOnClickListener {
-            filterValuesRV.adapter = FilterValuesAdapter(context, position)
-            selectedPostion = position
+        val data = filters[position]
+        myViewHolder.itemView.setOnClickListener {
+            selectedPosition = myViewHolder.adapterPosition
+            adapterFilter.setData(filters[selectedPosition].data)
             notifyDataSetChanged()
         }
-        filterValuesRV.adapter = FilterValuesAdapter(context, selectedPostion)
-        myViewHolder.container.setBackgroundColor(if (selectedPostion == position) Color.WHITE else Color.TRANSPARENT)
-        myViewHolder.title.text = filters[position]!!.name
-        setSelectedViews(myViewHolder, true)
+        if (selectedPosition == position) {
+            adapterFilter.setData(filters[selectedPosition].data)
+        }
+        myViewHolder.container.setBackgroundColor(if (selectedPosition == position) Color.parseColor("#fafbfc") else Color.TRANSPARENT)
+        myViewHolder.title.text = data.filterName
+        setSelectedViews(myViewHolder, (selectedPosition == position))
+    }
+
+    private fun setAdapterRecyclerView(data: ArrayList<FilterInnerModel>) {
+        adapterFilter.setData(data)
     }
 
 
     private fun setSelectedViews(myViewHolder: MyViewHolder, isSelected: Boolean) {
         if (isSelected) {
-            myViewHolder.title.typeface = CustomTypeFace.bold
-            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.black))
+            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_ffb912))
         } else {
-            myViewHolder.title.typeface = CustomTypeFace.book
-            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.gray_9e9e9e))
+            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_6c6c6c))
         }
 
     }
 
     override fun getItemCount(): Int {
         return filters.size
+    }
+
+    fun setData(list: ArrayList<Filter>) {
+        filters.clear()
+        filters.addAll(list)
+        notifyDataSetChanged()
+
     }
 
     class MyViewHolder(var container: View) : RecyclerView.ViewHolder(
@@ -63,3 +84,6 @@ class FilterAdapter(
         }
     }
 }
+
+
+

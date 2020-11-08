@@ -37,13 +37,28 @@ class HomeViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()
-        mTrendingData= MutableLiveData()
+        mTrendingData = MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
 
 
     }
 
+    fun getFilters(baseRequest: BaseRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.getFilters(
+                baseRequest,
+                Dispatchers.IO
+            )
+            when (result) {
+                is ResultWrapper.Success -> {
+                    EzymdApplication.getInstance().filterModel.postValue(result.value.data)
+                }
+            }
+
+        }
+
+    }
 
     fun getAddress(locationModel: LocationModel, gcd: Geocoder) {
         isLoading.value = true
@@ -60,7 +75,7 @@ class HomeViewModel : ViewModel() {
                 baseRequest,
                 Dispatchers.IO
             )
-          //  isLoading.postValue(false)
+            //  isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
@@ -72,13 +87,13 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getResturants(baseRequest: BaseRequest) {
-      //  isLoading.postValue(true)
+        //  isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getResturants(
                 baseRequest,
                 Dispatchers.IO
             )
-           // isLoading.postValue(false)
+            // isLoading.postValue(false)
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)

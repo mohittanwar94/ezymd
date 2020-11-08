@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.network
 
 import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
@@ -56,11 +57,17 @@ interface WebServices {
     ): ResturantModel
 
 
-
     @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel
+
+
+    @GET(ServerConfig.RESTURANT_FILTERS)
+    suspend fun getFilters(
+        @Header("Authorization") token: String
+    ): FilterModel
+
 
     @FormUrlEncoded
     @POST(ServerConfig.LIST_TRENDING)

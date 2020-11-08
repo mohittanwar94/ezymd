@@ -19,6 +19,7 @@ interface ServerConfig {
         const val LIST_RESTURANTS="nearByRestaurant"
         const val SEARCH_RESTURANTS="nearByRestaurant"
         const val RESTURANT_DETAILS="restaurantItems/{id}"
+        const val RESTURANT_FILTERS="getFilters"
         const val SOCIAL_LOGIN_USER = "socialLoginRegister"
         const val LOGIN_USER = "loginRegister"
         const val LIST_TRENDING="trendingFoods"

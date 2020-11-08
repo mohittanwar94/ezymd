@@ -382,4 +382,5 @@ public interface JSONKeys {
     int OTP_REQUEST = 1233;
     @Nullable
     String LOCATION_OBJECT="location";
+    int FILTER=1244;
 }

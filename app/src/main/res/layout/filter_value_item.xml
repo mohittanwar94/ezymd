@@ -2,30 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/_15sdp"
-    android:paddingRight="@dimen/_10sdp">
+    android:paddingTop="@dimen/_4sdp"
+    android:paddingBottom="@dimen/_4sdp"
+    android:paddingStart="@dimen/_15sdp"
+    android:paddingEnd="@dimen/_10sdp">
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:text="100"
         android:textAllCaps="false"
         android:textColor="@color/gray_9e9e9e"
         android:textSize="@dimen/_13sdp"
         app:textFont="book" />
 
-    <CheckBox
+    <com.ezymd.restaurantapp.customviews.SmoothCheckBox
         android:id="@+id/checkbox"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
         android:layout_margin="@dimen/_10sdp"
-        android:button="@drawable/custom_checkbox"
-        android:text=""
-        android:textSize="@dimen/_13sdp" />
+        app:duration="100"
+        app:stroke_width="@dimen/_1sdp"
+        app:color_unchecked="@android:color/white"
+        app:color_unchecked_stroke="@color/color_6c6c6c"
+        app:color_tick="@color/white"
+        app:color_checked="@color/color_ffb912"
+      />
 
 </LinearLayout>
