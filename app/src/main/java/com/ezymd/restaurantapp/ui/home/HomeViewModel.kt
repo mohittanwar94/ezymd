@@ -11,6 +11,7 @@ import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -79,7 +80,10 @@ class HomeViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mPagerData.postValue(result.value)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("viewpagerdata" + result.value)
+                    mPagerData.postValue(result.value)
+                }
             }
 
         }
@@ -97,7 +101,10 @@ class HomeViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mResturantData.postValue(result.value)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("restaurantdata" + result.value)
+                    mResturantData.postValue(result.value)
+                }
             }
 
         }
@@ -126,7 +133,10 @@ class HomeViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mTrendingData.postValue(result.value)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("mTrendingData" + result.value)
+                    mTrendingData.postValue(result.value)
+                }
             }
 
         }

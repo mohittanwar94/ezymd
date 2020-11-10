@@ -16,12 +16,11 @@ import com.ezymd.restaurantapp.filters.model.FilterInnerModel
 class FilterAdapter(
     private val context: Context,
     private val filters: ArrayList<Filter>,
-    private val filterValuesRV: RecyclerView,
-    viewModel: FilterViewModel
+    private val filterValuesRV: RecyclerView
 ) : RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
     private var selectedPosition:Int = 0
     private val adapterFilter by lazy {
-        FilterValuesAdapter(context,viewModel)
+        FilterValuesAdapter(context)
     }
 
     init {

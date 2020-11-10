@@ -3,6 +3,8 @@ package com.ezymd.restaurantapp.filters.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class FilterInnerModel {
     @SerializedName("filter_value_id")
     @Expose
@@ -11,19 +13,21 @@ public class FilterInnerModel {
     @Expose
     private String filterValueName;
 
-    private boolean isSelected=false;
+    private boolean isSelected = false;
 
     @SerializedName("sort_by")
     @Expose
-    private String sort_by="";
+    private String sort_by = "";
 
 
     @SerializedName("sort_order")
     @Expose
-    private String sort_order="";
+    private String sort_order = "";
 
 
     private boolean isSingleSelected = false;
+    @NotNull
+    public final int itemType = 0;
 
     public boolean isSingleSelected() {
         return isSingleSelected;

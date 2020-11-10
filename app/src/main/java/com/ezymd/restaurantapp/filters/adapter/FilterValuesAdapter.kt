@@ -9,23 +9,70 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SmoothCheckBox
 import com.ezymd.restaurantapp.customviews.SnapTextView
-import com.ezymd.restaurantapp.filters.FilterViewModel
 import com.ezymd.restaurantapp.filters.model.FilterInnerModel
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import java.util.*
 
 class FilterValuesAdapter(
-    private val context: Context,
-    viewModel: FilterViewModel
-) : RecyclerView.Adapter<FilterValuesAdapter.MyViewHolder>() {
+    private val context: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val filters = ArrayList<FilterInnerModel>()
-    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): MyViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.filter_value_item, viewGroup, false)
-        return MyViewHolder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): RecyclerView.ViewHolder {
+        when (getItemViewType(position)) {
+            0 -> {
+                val view = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.filter_value_item, viewGroup, false)
+                return MyViewHolder(view)
+            }
+            1 -> {
+                val view = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.filter_value_item, viewGroup, false)
+                return MyViewHolder(view)
+            }
+            2 -> {
+                val view = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.filter_value_price, viewGroup, false)
+                return RatingViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.filter_value_item, viewGroup, false)
+                return MyViewHolder(view)
+            }
+
+
+        }
+
     }
 
-    override fun onBindViewHolder(myViewHolder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(parent: RecyclerView.ViewHolder, position: Int) {
+        when (parent.itemViewType) {
+            0 -> {
+                val myViewHolder = parent as MyViewHolder
+                setFilterData(myViewHolder, position)
+            }
+            1 -> {
+                val myViewHolder = parent as MyViewHolder
+                setFilterData(myViewHolder, position)
+            }
+            2 -> {
+                val myViewHolder = parent as RatingViewHolder
+                setRating(myViewHolder, position)
+            }
+            else -> {
+                val myViewHolder = parent as MyViewHolder
+                setFilterData(myViewHolder, position)
+            }
+        }
+
+    }
+
+    private fun setRating(myViewHolder: FilterValuesAdapter.RatingViewHolder, position: Int) {
+
+
+    }
+
+    private fun setFilterData(myViewHolder: MyViewHolder, position: Int) {
         val filter = filters[position]
         myViewHolder.name.text = filter.filterValueName
         setSelectedViews(myViewHolder, filter.isSelected)
@@ -40,6 +87,10 @@ class FilterValuesAdapter(
                 setSelectedViews(myViewHolder, filter.isSelected)
             }
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+         return 0
     }
 
     private fun setOhterUnselected(adapterPosition: Int) {
@@ -86,4 +137,8 @@ class FilterValuesAdapter(
             name = container.findViewById(R.id.name)
         }
     }
+
+    class RatingViewHolder(var container: View) : RecyclerView.ViewHolder(container)
+
+
 }

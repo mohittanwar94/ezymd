@@ -16,7 +16,10 @@ import com.ezymd.restaurantapp.filters.adapter.FilterAdapter
 import com.ezymd.restaurantapp.filters.model.*
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ShowDialog
+import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
+import com.jaygoo.widget.OnRangeChangedListener
+import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.filter_layout.*
 import kotlinx.android.synthetic.main.header_new.*
 
@@ -34,6 +37,23 @@ class FilterActivity : BaseActivity() {
     }
 
     private fun setGUI() {
+        ratingSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(
+                view: RangeSeekBar?,
+                leftValue: Float,
+                rightValue: Float,
+                isFromUser: Boolean
+            ) {
+                SnapLog.print("leftValue" + leftValue + "\n" + "rightValue===" + rightValue)
+            }
+
+            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+
+            }
+
+            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+            }
+        })
         leftIcon.setOnClickListener {
             UIUtil.clickAlpha(it)
             onBackPressed()
@@ -131,6 +151,8 @@ class FilterActivity : BaseActivity() {
             filterInner.isSingleSelected = true
             filteNewModel.data.add(filterInner)
         }
+
+
         list.add(filteNewModel)
         list.addAll(dataModel.filters)
 
@@ -184,18 +206,45 @@ class FilterActivity : BaseActivity() {
         EzymdApplication.getInstance().filterModel.postValue(dataModel)
     }
 
+    private fun getSortedData() {
+        val hashMap = HashMap<String, String>()
+        for ((i, sort) in list.withIndex()) {
+            if (i == 0) {
+                for (filterModel in sort.data) {
+                    if (filterModel.isSelected) {
+                        hashMap["sort_by"] = filterModel.sort_by
+                        hashMap["sort_order"] = filterModel.sort_order
+                    }
+                }
+            } else {
+                val builder = StringBuilder()
+                for (filterModel in sort.data) {
+                    if (filterModel.isSelected) {
+                        builder.append("," + filterModel.filterValueId)
+
+                    }
+                }
+                val ids = builder.toString().substring(1)
+                hashMap["cuisines"] = ids
+                SnapLog.print(ids)
+
+
+            }
+        }
+    }
+
     private fun initControls() {
         filterRV.layoutManager = LinearLayoutManager(this)
         filterRV.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
         filterValuesRV.layoutManager = LinearLayoutManager(this)
         done.visibility = View.VISIBLE
         done.text = getString(R.string.clear_filters)
-        done.setTextColor(ContextCompat.getColor(this,R.color.color_ffb912))
+        done.setTextColor(ContextCompat.getColor(this, R.color.color_ffb912))
         headertext.visibility = View.VISIBLE
         headertext.text = getString(R.string.filters)
 
         val list = ArrayList<Filter>()
-        filterAdapter = FilterAdapter(applicationContext, list, filterValuesRV, viewModel)
+        filterAdapter = FilterAdapter(applicationContext, list, filterValuesRV)
         filterRV.adapter = filterAdapter
     }
 
