@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.filters
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -125,6 +126,9 @@ class FilterActivity : BaseActivity() {
             filterInner.filterValueId = sort.id
             filterInner.filterValueName = sort.name
             filterInner.isSelected = sort.isSelected
+            filterInner.sort_by = sort.sort_by
+            filterInner.sort_order = sort.sort_order
+            filterInner.isSingleSelected = true
             filteNewModel.data.add(filterInner)
         }
         list.add(filteNewModel)
@@ -164,6 +168,8 @@ class FilterActivity : BaseActivity() {
                     val sortModel = Sort()
                     sortModel.id = filterModel.filterValueId
                     sortModel.name = filterModel.filterValueName
+                    sortModel.sort_by = filterModel.sort_by
+                    sortModel.sort_order = filterModel.sort_order
                     sortModel.isSelected = filterModel.isSelected
                     sorting.data.add(sortModel)
                 }
@@ -184,7 +190,7 @@ class FilterActivity : BaseActivity() {
         filterValuesRV.layoutManager = LinearLayoutManager(this)
         done.visibility = View.VISIBLE
         done.text = getString(R.string.clear_filters)
-
+        done.setTextColor(ContextCompat.getColor(this,R.color.color_ffb912))
         headertext.visibility = View.VISIBLE
         headertext.text = getString(R.string.filters)
 

@@ -71,7 +71,7 @@ class SearchFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 if (search.text.toString().trim().length > 4) {
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("q", search.text.toString())
+                    baseRequest.paramsMap.put("search", search.text.toString())
                     searchViewModel.searchRestaurants(baseRequest)
                 }
             }

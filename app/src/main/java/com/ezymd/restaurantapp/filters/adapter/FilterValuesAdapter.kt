@@ -18,7 +18,7 @@ class FilterValuesAdapter(
     private val context: Context,
     viewModel: FilterViewModel
 ) : RecyclerView.Adapter<FilterValuesAdapter.MyViewHolder>() {
-    private val filters= ArrayList<FilterInnerModel>()
+    private val filters = ArrayList<FilterInnerModel>()
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): MyViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.filter_value_item, viewGroup, false)
@@ -32,8 +32,24 @@ class FilterValuesAdapter(
         myViewHolder.checkBox.isClickable = false
         myViewHolder.itemView.setOnClickListener {
             filter.isSelected = !filter.isSelected
-            setSelectedViews(myViewHolder, filter.isSelected)
+            if (filter.isSingleSelected) {
+                setOhterUnselected(myViewHolder.adapterPosition)
+                notifyDataSetChanged()
+
+            } else {
+                setSelectedViews(myViewHolder, filter.isSelected)
+            }
         }
+    }
+
+    private fun setOhterUnselected(adapterPosition: Int) {
+        var i = 0
+        for (filterModel in filters) {
+            if (i != adapterPosition)
+                filterModel.isSelected = false
+            i++
+        }
+
     }
 
     private fun setSelectedViews(myViewHolder: MyViewHolder, isSelected: Boolean) {

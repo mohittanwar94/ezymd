@@ -13,6 +13,43 @@ public class FilterInnerModel {
 
     private boolean isSelected=false;
 
+    @SerializedName("sort_by")
+    @Expose
+    private String sort_by="";
+
+
+    @SerializedName("sort_order")
+    @Expose
+    private String sort_order="";
+
+
+    private boolean isSingleSelected = false;
+
+    public boolean isSingleSelected() {
+        return isSingleSelected;
+    }
+
+    public void setSingleSelected(boolean singleSelected) {
+        isSingleSelected = singleSelected;
+    }
+
+
+    public String getSort_by() {
+        return sort_by;
+    }
+
+    public void setSort_by(String sort_by) {
+        this.sort_by = sort_by;
+    }
+
+    public String getSort_order() {
+        return sort_order;
+    }
+
+    public void setSort_order(String sort_order) {
+        this.sort_order = sort_order;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }
