@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:contentDescription="@string/bookmark"
-                        app:srcCompat="@drawable/ic_location" />
+                        app:srcCompat="@drawable/ic_star" />
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
                         android:id="@+id/rating"
