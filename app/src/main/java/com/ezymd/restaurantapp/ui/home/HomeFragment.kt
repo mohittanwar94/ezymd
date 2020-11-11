@@ -169,9 +169,18 @@ open class HomeFragment : Fragment() {
             locationModel = data!!.getParcelableExtra(JSONKeys.LOCATION_OBJECT) as LocationModel
             homeViewModel.address.postValue(locationModel)
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_FIRST_USER) {
+            dataResturant.clear()
+            restaurantAdapter?.clearData()
+            homeViewModel.getResturants(BaseRequest(userInfo))
             //clearAllFilter()
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_OK) {
             //applyAllFilter()
+            dataResturant.clear()
+            restaurantAdapter?.clearData()
+            val baseRequest = BaseRequest(userInfo)
+            baseRequest.paramsMap.putAll(data?.getSerializableExtra(JSONKeys.FILTER_MAP) as HashMap<String, String>)
+            homeViewModel.getResturants(baseRequest)
+
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_CANCELED) {
             //applyAllFilter()
         } else
@@ -321,7 +330,6 @@ open class HomeFragment : Fragment() {
 
 
     }
-
 
 
     override fun onStop() {

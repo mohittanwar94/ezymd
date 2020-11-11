@@ -383,4 +383,5 @@ public interface JSONKeys {
     @Nullable
     String LOCATION_OBJECT="location";
     int FILTER=1244;
+    String FILTER_MAP="filtermap";
 }

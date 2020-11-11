@@ -1,7 +1,9 @@
 package com.ezymd.restaurantapp.filters
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -14,10 +16,7 @@ import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.filters.adapter.FilterAdapter
 import com.ezymd.restaurantapp.filters.model.*
-import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.ShowDialog
-import com.ezymd.restaurantapp.utils.SnapLog
-import com.ezymd.restaurantapp.utils.UIUtil
+import com.ezymd.restaurantapp.utils.*
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.filter_layout.*
@@ -25,6 +24,8 @@ import kotlinx.android.synthetic.main.header_new.*
 
 class FilterActivity : BaseActivity() {
     var filterAdapter: FilterAdapter? = null
+
+
     private val viewModel by lazy {
         ViewModelProvider(this).get(FilterViewModel::class.java)
     }
@@ -44,7 +45,37 @@ class FilterActivity : BaseActivity() {
                 rightValue: Float,
                 isFromUser: Boolean
             ) {
-                SnapLog.print("leftValue" + leftValue + "\n" + "rightValue===" + rightValue)
+                SnapLog.print("leftValue" + ratingSeekBar.leftSeekBar.progress.toString())
+                data.rating = ratingSeekBar.leftSeekBar.progress.toString()
+            }
+
+            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+
+
+            }
+
+            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+                textView.text = TextUtils.concat("Rating: ", getRating(data.rating))
+
+            }
+        })
+
+        priceSeekBar.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(
+                view: RangeSeekBar?,
+                leftValue: Float,
+                rightValue: Float,
+                isFromUser: Boolean
+            ) {
+                SnapLog.print("leftValue" + priceSeekBar.leftSeekBar.progress.toString())
+                SnapLog.print("leftValue" + priceSeekBar.rightSeekBar.progress.toString())
+                data.min_price = leftValue.toString()
+                data.max_price = rightValue.toString()
+
+                textView.text =
+                    "Price: " + getString(R.string.dollor) + leftValue.toInt().toString() +
+                            " - " + getString(R.string.dollor) + rightValue.toInt().toString()
+
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
@@ -63,7 +94,7 @@ class FilterActivity : BaseActivity() {
         }
         apply.setOnClickListener {
             UIUtil.clickHandled(it)
-            setResult(Activity.RESULT_OK)
+            setResult(Activity.RESULT_OK, Intent().putExtra(JSONKeys.FILTER_MAP, getSortedData()))
             this.finish()
         }
 
@@ -136,7 +167,9 @@ class FilterActivity : BaseActivity() {
     }
 
     val list = ArrayList<Filter>()
+    var data = DataModel()
     private fun processData(dataModel: DataModel) {
+        data = dataModel
         list.clear()
         val filteNewModel = Filter()
         filteNewModel.filterId = dataModel.sorting.id
@@ -152,12 +185,35 @@ class FilterActivity : BaseActivity() {
             filteNewModel.data.add(filterInner)
         }
 
-
         list.add(filteNewModel)
         list.addAll(dataModel.filters)
 
+        if (!checkhaveRatingAndPrice(dataModel.filters)) {
+            val rating = Filter()
+            rating.filterId = 1000
+            rating.filterName = "Rating"
+            rating.viewType = 2
+
+            val priceFilter = Filter()
+            priceFilter.filterId = 1001
+            priceFilter.filterName = "Cost per person"
+            priceFilter.viewType = 2
+            list.add(rating)
+            list.add(priceFilter)
+
+        }
+
         filterAdapter?.setData(list)
         viewModel.isLoading.postValue(false)
+    }
+
+    private fun checkhaveRatingAndPrice(filters: ArrayList<Filter>): Boolean {
+        for (filter in filters) {
+            if (filter.filterId == 1000 || filter.filterId == 1001)
+                return true
+        }
+
+        return false
     }
 
 
@@ -177,11 +233,10 @@ class FilterActivity : BaseActivity() {
     }
 
     private fun getUpdateData() {
-        val dataModel = DataModel()
+        val dataModel = data
         val filter = ArrayList<Filter>()
         val sorting = Sorting()
-        var i = 0
-        for (sort in list) {
+        for ((i, sort) in list.withIndex()) {
             if (i == 0) {
                 sorting.id = sort.filterId
                 sorting.name = sort.filterName
@@ -199,15 +254,18 @@ class FilterActivity : BaseActivity() {
                 filter.add(sort)
 
             }
-            i++
         }
         dataModel.filters = filter
         dataModel.sorting = sorting
         EzymdApplication.getInstance().filterModel.postValue(dataModel)
     }
 
-    private fun getSortedData() {
+    private fun getSortedData(): HashMap<String, String> {
         val hashMap = HashMap<String, String>()
+        hashMap["min_price"] = data.min_price.toFloat().toInt().toString()
+        hashMap["max_price"] = data.max_price.toFloat().toInt().toString()
+        hashMap["min_rating"] = getRatingValue(data.rating).toString()
+        hashMap["max_rating"] = "5.0"
         for ((i, sort) in list.withIndex()) {
             if (i == 0) {
                 for (filterModel in sort.data) {
@@ -217,20 +275,25 @@ class FilterActivity : BaseActivity() {
                     }
                 }
             } else {
-                val builder = StringBuilder()
-                for (filterModel in sort.data) {
-                    if (filterModel.isSelected) {
-                        builder.append("," + filterModel.filterValueId)
+                if (sort.data != null) {
+                    val builder = StringBuilder()
+                    for (filterModel in sort.data) {
+                        if (filterModel.isSelected) {
+                            builder.append("," + filterModel.filterValueId)
 
+                        }
+                    }
+                    if (builder.length > 1) {
+                        val ids = builder.toString().substring(1)
+                        hashMap["cuisines"] = ids
+                        SnapLog.print(ids)
                     }
                 }
-                val ids = builder.toString().substring(1)
-                hashMap["cuisines"] = ids
-                SnapLog.print(ids)
-
 
             }
         }
+
+        return hashMap
     }
 
     private fun initControls() {
@@ -244,8 +307,59 @@ class FilterActivity : BaseActivity() {
         headertext.text = getString(R.string.filters)
 
         val list = ArrayList<Filter>()
-        filterAdapter = FilterAdapter(applicationContext, list, filterValuesRV)
+        filterAdapter = FilterAdapter(applicationContext, list, filterValuesRV) { pos, view ->
+
+            if (pos == 1045) {
+                ratingSeekBar.visibility = View.GONE
+                priceSeekBar.visibility = View.GONE
+                textView.visibility = View.GONE
+                return@FilterAdapter
+            }
+            textView.visibility = View.VISIBLE
+            if (list[pos].viewType == 2 && list[pos].filterName.equals("Rating")) {
+                ratingSeekBar.visibility = View.VISIBLE
+                priceSeekBar.visibility = View.GONE
+                ratingSeekBar.setProgress(data.rating.toFloat())
+                textView.text = TextUtils.concat("Rating: ", getRating(data.rating))
+            } else {
+                priceSeekBar.visibility = View.VISIBLE
+                ratingSeekBar.visibility = View.GONE
+                priceSeekBar.setProgress(data.min_price.toFloat(), data.max_price.toFloat())
+            }
+        }
         filterRV.adapter = filterAdapter
+    }
+
+    private fun getRating(rating: String): String {
+
+        if (rating.toDouble() == 1.25) {
+            return "3.0 +"
+        } else if (rating.toDouble() == 2.5) {
+            return "3.5 +"
+        } else if (rating.toDouble() == 3.75) {
+            return "4.0 +"
+        } else if (rating.toDouble() == 5.0) {
+            return "4.5 +"
+        } else {
+            return "Any"
+        }
+
+    }
+
+    private fun getRatingValue(rating: String): Double {
+
+        if (rating.toDouble() == 1.25) {
+            return 3.0
+        } else if (rating.toDouble() == 2.5) {
+            return 3.5
+        } else if (rating.toDouble() == 3.75) {
+            return 4.0
+        } else if (rating.toDouble() == 5.0) {
+            return 4.5
+        } else {
+            return 0.0
+        }
+
     }
 
     override fun onBackPressed() {

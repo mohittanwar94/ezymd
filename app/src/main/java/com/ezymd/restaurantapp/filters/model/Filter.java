@@ -17,6 +17,16 @@ public class Filter {
     @Expose
     private ArrayList<FilterInnerModel> data = new ArrayList<>();
 
+    private int viewType=1;
+
+    public int getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(int viewType) {
+        this.viewType = viewType;
+    }
+
     public Integer getFilterId() {
         return filterId;
     }
