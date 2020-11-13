@@ -8,13 +8,14 @@ import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
 
-    var errorRequest: MutableLiveData<String>
+    var errorRequest: SingleLiveEvent<String>
     private var loginRepository: SearchRepository? = null
     val mResturantData: MutableLiveData<ResturantModel>
     val mSearchData: MutableLiveData<ResturantModel>
@@ -32,7 +33,7 @@ class SearchViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mSearchData= MutableLiveData()
         mResturantData = MutableLiveData()
-        errorRequest = MutableLiveData()
+        errorRequest = SingleLiveEvent()
 
 
     }

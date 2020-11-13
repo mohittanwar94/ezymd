@@ -11,13 +11,14 @@ import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SingleLiveEvent
 import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    var errorRequest: MutableLiveData<String>
+    var errorRequest: SingleLiveEvent<String>
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
     val mPagerData: MutableLiveData<ResturantModel>
@@ -39,7 +40,7 @@ class HomeViewModel : ViewModel() {
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()
         mTrendingData = MutableLiveData()
-        errorRequest = MutableLiveData()
+        errorRequest = SingleLiveEvent()
         isLoading.postValue(true)
 
 
