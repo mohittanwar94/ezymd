@@ -57,6 +57,7 @@ class ConfirmOrder : BaseActivity() {
             selectAddress.text = location?.location
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
+            couponCode.text = deliveryInstructions
         }
     }
 
