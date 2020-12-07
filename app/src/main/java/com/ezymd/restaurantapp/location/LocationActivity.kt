@@ -134,7 +134,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun startSearchPlacesApi() {
         if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, getString(R.string.google_places_api))
+            Places.initialize(applicationContext, getString(R.string.google_maps_key))
         }
         val fields = listOf(
             Place.Field.ID,

@@ -75,6 +75,16 @@
             android:name=".editprofile.EditProfileActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".tracker.TrackerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
         <activity
             android:name=".filters.FilterActivity"
@@ -86,11 +96,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
