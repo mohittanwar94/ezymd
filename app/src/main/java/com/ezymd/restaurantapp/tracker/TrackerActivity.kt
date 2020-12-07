@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -74,8 +75,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        // Authenticate with Firebase when the Google map is loaded
-        mMap = googleMap;
+        mMap = googleMap
         mMap!!.setMaxZoomPreference(16f)
         trackViewModel.loginToFirebase(
             getString(R.string.firebase_email),
@@ -98,6 +98,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                     .icon(bitmapDescriptorFromVector(this, R.drawable.ic_delivery_man))
                     .position(location)
             )
+
         } else {
             mMarkers[key]?.setPosition(location)
         }
@@ -113,24 +114,20 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         context: Context,
         @DrawableRes vectorDrawableResourceId: Int
     ): BitmapDescriptor? {
-        val background = ContextCompat.getDrawable(context, R.drawable.ic_delivery_man)
-        background!!.setBounds(0, 0, background.intrinsicWidth, background.intrinsicHeight)
-        val vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId)
-        vectorDrawable!!.setBounds(
-            40,
-            20,
-            vectorDrawable.intrinsicWidth + 40,
-            vectorDrawable.intrinsicHeight + 20
-        )
-        val bitmap = Bitmap.createBitmap(
-            background.intrinsicWidth,
-            background.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        background.draw(canvas)
+        val vectorDrawable =
+            ContextCompat.getDrawable(this, vectorDrawableResourceId) as VectorDrawable?
+
+        val h = vectorDrawable!!.intrinsicHeight
+        val w = vectorDrawable.intrinsicWidth
+
+        vectorDrawable.setBounds(0, 0, w, h)
+
+        val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bm)
         vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+
+        return BitmapDescriptorFactory.fromBitmap(bm)
+
     }
 
 
