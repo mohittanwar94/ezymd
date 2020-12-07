@@ -35,6 +35,10 @@ public class ItemModel implements Serializable {
     @Expose
     private int sell_price;
 
+    @SerializedName("veg_nonveg")
+    @Expose
+    private int is_veg;
+
     @SerializedName("price")
     @Expose
     private int price;
@@ -60,6 +64,13 @@ public class ItemModel implements Serializable {
     @Expose
     private String image;
 
+    public int getIs_veg() {
+        return is_veg;
+    }
+
+    public void setIs_veg(int is_veg) {
+        this.is_veg = is_veg;
+    }
 
     public int getQuantity() {
         return quantity;
