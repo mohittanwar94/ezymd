@@ -14,16 +14,18 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.payment.CheckoutActivity
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.JSONKeys
+import com.ezymd.restaurantapp.utils.OrderCheckoutUtilsModel
 import com.ezymd.restaurantapp.utils.ShowDialog
 import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.activity_confirm_order.*
-import kotlinx.android.synthetic.main.content_scrolling.*
 import java.util.*
 
 
 class ConfirmOrder : BaseActivity() {
+    val checkoutModel = OrderCheckoutUtilsModel()
     private val viewModel by lazy {
         ViewModelProvider(this).get(OrderConfirmViewModel::class.java)
     }
@@ -55,9 +57,11 @@ class ConfirmOrder : BaseActivity() {
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
             selectAddress.text = location?.location
+            checkoutModel.deliveryAddress = selectAddress.text.toString()
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
             couponCode.text = deliveryInstructions
+            checkoutModel.delivery_instruction = couponCode.text.toString()
         }
     }
 
@@ -105,6 +109,28 @@ class ConfirmOrder : BaseActivity() {
         chooseTime.setOnClickListener {
             UIUtil.clickHandled(it)
             showTimePicker()
+        }
+
+        payButton.setOnClickListener {
+            UIUtil.clickHandled(it)
+            if (checkoutModel.deliveryAddress == "") {
+                return@setOnClickListener
+            }
+            checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {
+                1
+            } else {
+                2
+            }
+            if (checkoutModel.delivery_type == 2)
+                checkoutModel.delivery_time = viewModel.dateSelected.value!!
+            startActivity(
+                Intent(
+                    this@ConfirmOrder,
+                    CheckoutActivity::class.java
+                ).putExtra(JSONKeys.OBJECT, restaurant)
+                    .putExtra(JSONKeys.CHEKOUT_OBJECT, checkoutModel)
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
 
     }
@@ -197,7 +223,6 @@ class ConfirmOrder : BaseActivity() {
             showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
-            progress.visibility = if (it) View.VISIBLE else View.GONE
 
 
         })

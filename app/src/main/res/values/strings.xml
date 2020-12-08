@@ -184,5 +184,6 @@
     <string name="apply_coupan">Apply coupan</string>
     <string name="subtotal">Subtotal</string>
     <string name="add_delivery_instruction">Add Delivery Instruction</string>
+    <string name="title_checkout">Checkout</string>
 
 </resources>

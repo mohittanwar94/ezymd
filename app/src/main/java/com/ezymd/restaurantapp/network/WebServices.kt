@@ -11,7 +11,6 @@ import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
-import org.json.JSONObject
 import retrofit2.http.*
 
 interface WebServices {
@@ -83,10 +82,20 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>
     ): LoginModel
 
+    @POST(ServerConfig.CREATE_ORDER)
+    suspend fun startCheckout(
+        @Body jsonObject: JsonObject, @Header("Authorization") token: String
+    ): BaseResponse
+
+
     @GET(ServerConfig.DIRECTION_API)
     suspend fun downloadRoute(
-        @Query("origin") url: String,@Query("sensor") sensor: String,@Query("destination") destination: String,
-        @Query("mode") mode: String,@Query("key") key: String): JsonObject
+        @Query("origin") url: String,
+        @Query("sensor") sensor: String,
+        @Query("destination") destination: String,
+        @Query("mode") mode: String,
+        @Query("key") key: String
+    ): JsonObject
 
 }
 
