@@ -18,6 +18,7 @@ import com.ezymd.restaurantapp.editprofile.EditProfileActivity
 import com.ezymd.restaurantapp.ui.cart.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
+import com.stripe.android.CustomerSession
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
@@ -87,6 +88,7 @@ class ProfileFragment : Fragment() {
         notificationsViewModel.mResturantData.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 userInfo.clear()
+                CustomerSession.endCustomerSession()
                 val intent =
                     Intent(requireActivity(), com.ezymd.restaurantapp.login.Login::class.java)
                 startActivity(intent)

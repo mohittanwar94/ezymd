@@ -11,6 +11,7 @@ import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface WebServices {
@@ -97,5 +98,8 @@ interface WebServices {
         @Query("key") key: String
     ): JsonObject
 
+    @FormUrlEncoded
+    @POST("ephemeral_keys")
+    suspend fun createEphemeralKey(@FieldMap apiVersionMap: MutableMap<String, String>): ResponseBody
 }
 

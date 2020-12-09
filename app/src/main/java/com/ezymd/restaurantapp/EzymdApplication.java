@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.os.Process;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ezymd.restaurantapp.details.model.ItemModel;
 import com.ezymd.restaurantapp.filters.model.DataModel;
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver;
 import com.facebook.FacebookSdk;
+import com.stripe.android.PaymentConfiguration;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -70,6 +70,10 @@ public class EzymdApplication extends Application implements Application.Activit
     @Override
     public void onCreate() {
         super.onCreate();
+        PaymentConfiguration.init(
+                this,
+                ServerConfig.PAYMENT_PUBLISHABLE_KEY);
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mInstance = this;
         FacebookSdk.setAutoLogAppEventsEnabled(false);

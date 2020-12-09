@@ -136,6 +136,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".payment.HostActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
 
         <receiver
             android:name=".utils.ConnectivityReceiver"

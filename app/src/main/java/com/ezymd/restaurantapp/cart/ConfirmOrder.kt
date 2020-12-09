@@ -11,15 +11,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
-import com.ezymd.restaurantapp.payment.CheckoutActivity
+import com.ezymd.restaurantapp.payment.ExampleEphemeralKeyProvider
+import com.ezymd.restaurantapp.payment.HostActivity
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OrderCheckoutUtilsModel
 import com.ezymd.restaurantapp.utils.ShowDialog
 import com.ezymd.restaurantapp.utils.UIUtil
+import com.stripe.android.CustomerSession
 import kotlinx.android.synthetic.main.activity_confirm_order.*
 import java.util.*
 
@@ -42,6 +45,11 @@ class ConfirmOrder : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_order)
+        CustomerSession.initCustomerSession(
+            this,
+            ExampleEphemeralKeyProvider(ServerConfig.PAYMENT_ACCOUNT_ID)
+        )
+
         setToolBar()
         setHeaderData()
     }
@@ -126,7 +134,7 @@ class ConfirmOrder : BaseActivity() {
             startActivity(
                 Intent(
                     this@ConfirmOrder,
-                    CheckoutActivity::class.java
+                    HostActivity::class.java
                 ).putExtra(JSONKeys.OBJECT, restaurant)
                     .putExtra(JSONKeys.CHEKOUT_OBJECT, checkoutModel)
             )

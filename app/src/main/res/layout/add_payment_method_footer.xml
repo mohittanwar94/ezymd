@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.ezymd.restaurantapp.customviews.SnapTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/button_add_payment_method"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableStart="@drawable/ic_search"
+    android:drawablePadding="10dp"
+    android:padding="@dimen/_15sdp"
+    android:text="@string/add_payment_method"
+    android:textAppearance="@android:style/TextAppearance"
+    android:textColor="@color/color_667ba3"
+    app:textFont="bold" />
+
