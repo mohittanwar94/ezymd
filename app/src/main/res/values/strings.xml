@@ -185,8 +185,8 @@
     <string name="subtotal">Subtotal</string>
     <string name="add_delivery_instruction">Add Delivery Instruction</string>
     <string name="title_checkout">Checkout</string>
-    <string name="add_payment_method">Add Payment Method</string>
     <string name="add_shipping_details">Add Shiping Details</string>
     <string name="setup_payment_credentials">Setup payment credentials</string>
+    <string name="add_payment_method">Add Payment Method</string>
 
 </resources>

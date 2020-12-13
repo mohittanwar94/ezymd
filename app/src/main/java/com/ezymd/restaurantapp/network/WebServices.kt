@@ -98,8 +98,23 @@ interface WebServices {
         @Query("key") key: String
     ): JsonObject
 
+    @POST(ServerConfig.CREATE_ORDER/*"create_payment_intent"*/)
+    suspend fun createPaymentIntent(@Body params: MutableMap<String, Any>, @Header("Authorization") token: String): ResponseBody
+
+    @POST("confirm_payment_intent")
+    suspend fun confirmPaymentIntent(@Body params: MutableMap<String, String?>): ResponseBody
+
+    @POST("create_setup_intent")
+    suspend fun createSetupIntent(@Body params: MutableMap<String, Any>): ResponseBody
+
     @FormUrlEncoded
-    @POST("ephemeral_keys")
-    suspend fun createEphemeralKey(@FieldMap apiVersionMap: MutableMap<String, String>): ResponseBody
+    @POST(ServerConfig.EPHEMERAL_KEYS)
+    suspend fun createEphemeralKey(@FieldMap apiVersionMap: MutableMap<String, String>,@Header("Authorization") accessToken: String?): ResponseBody
+
+
+    @GET(ServerConfig.CREATE_CUSTOMER)
+    suspend fun createCustomer(@Header("Authorization") accessToken: String?): JsonObject
+
+
 }
 

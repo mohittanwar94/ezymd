@@ -18,7 +18,7 @@ import java.util.Locale;
 public class StoreActivity {
 
     @NonNull
-    static PaymentSessionConfig createPaymentSessionConfig() {
+    public static PaymentSessionConfig createPaymentSessionConfig() {
         return new PaymentSessionConfig.Builder()
 
                 // hide the phone field on the shipping information form
@@ -48,7 +48,7 @@ public class StoreActivity {
                 .setShippingInfoRequired(true)
 
                 // collect shipping method
-                .setShippingMethodsRequired(true)
+                .setShippingMethodsRequired(false)
 
                 // specify the payment method types that the customer can use;
                 // defaults to PaymentMethod.Type.Card
@@ -68,7 +68,7 @@ public class StoreActivity {
                 .setShippingInformationValidator(new AppShippingInformationValidator())
 
                 // specify the shipping methods factory delegate
-                .setShippingMethodsFactory(new AppShippingMethodsFactory())
+            //    .setShippingMethodsFactory(new AppShippingMethodsFactory())
 
                 // if `true`, will show "Google Pay" as an option on the
                 // Payment Methods selection screen

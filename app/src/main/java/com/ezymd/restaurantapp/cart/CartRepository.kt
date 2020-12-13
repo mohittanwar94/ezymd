@@ -6,26 +6,46 @@ import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
+import com.ezymd.restaurantapp.utils.BaseResponse
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineDispatcher
 
 class CartRepository {
 
 
-    suspend fun getRestaurantSearch(
+    suspend fun startCheckoutPayment(
+        jsonObject: JsonObject,
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<BaseResponse> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.searchRestaurant(
-                baseRequest.paramsMap, baseRequest.accessToken
+            apiServices.startCheckout(
+                jsonObject.asJsonObject,baseRequest.accessToken
             )
         }
 
 
     }
+
+    suspend fun createCustomer(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<JsonObject> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.createCustomer(
+                baseRequest.accessToken
+            )
+        }
+
+
+    }
+
 
     suspend fun getRestaurants(
         baseRequest: BaseRequest,

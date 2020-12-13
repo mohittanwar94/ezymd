@@ -43,6 +43,14 @@ public class UserInfo {
         preferences.edit().putString("DeviceToken", token).apply();
     }
 
+    public String getCustomerID() {
+        return preferences.getString("getCustomerID"+userInfo.getUserID(), null);
+    }
+
+    public void setCustomerID(String custID) {
+        preferences.edit().putString("getCustomerID"+userInfo.getUserID(), custID).apply();
+    }
+
     public String getDeviceID() {
         return preferences.getString("DeviceID", "");
     }

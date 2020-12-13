@@ -28,6 +28,8 @@ interface ServerConfig {
         const val LOGIN_USER = "loginRegister"
         const val LIST_TRENDING = "trendingFoods"
         const val CREATE_ORDER = "order"
+        const val CREATE_CUSTOMER="stripe/createCustomer"
+        const val EPHEMERAL_KEYS="stripe/ephemeralKey"
 
     }
 }

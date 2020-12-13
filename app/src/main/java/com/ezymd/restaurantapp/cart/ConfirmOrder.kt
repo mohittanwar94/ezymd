@@ -16,19 +16,54 @@ import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.payment.ExampleEphemeralKeyProvider
-import com.ezymd.restaurantapp.payment.HostActivity
+import com.ezymd.restaurantapp.payment.StoreActivity
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.OrderCheckoutUtilsModel
-import com.ezymd.restaurantapp.utils.ShowDialog
-import com.ezymd.restaurantapp.utils.UIUtil
-import com.stripe.android.CustomerSession
+import com.ezymd.restaurantapp.utils.*
+import com.google.android.gms.wallet.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.stripe.android.*
+import com.stripe.android.model.*
 import kotlinx.android.synthetic.main.activity_confirm_order.*
+import org.json.JSONObject
 import java.util.*
 
 
 class ConfirmOrder : BaseActivity() {
+    private var paymentSessionData: PaymentSessionData? = null
+    private var paymentSession: PaymentSession? = null
     val checkoutModel = OrderCheckoutUtilsModel()
+    val totalPrice = 100
+    private val LOAD_PAYMENT_DATA_REQUEST_CODE = 5000
+
+    private val stripe: Stripe by lazy {
+        Stripe(
+            this,
+            PaymentConfiguration.getInstance(this).publishableKey,
+            PaymentConfiguration.getInstance(this).stripeAccountId,
+            true
+        )
+
+    }
+    private val googlePayJsonFactory: GooglePayJsonFactory by lazy {
+        GooglePayJsonFactory(this)
+    }
+
+    private val paymentsClient: PaymentsClient by lazy {
+        Wallet.getPaymentsClient(
+            this,
+            Wallet.WalletOptions.Builder()
+                .setEnvironment(
+                    if (ServerConfig.IS_TESTING) {
+                        WalletConstants.ENVIRONMENT_TEST
+                    } else {
+                        WalletConstants.ENVIRONMENT_PRODUCTION
+                    }
+                )
+                .build()
+        )
+    }
     private val viewModel by lazy {
         ViewModelProvider(this).get(OrderConfirmViewModel::class.java)
     }
@@ -45,13 +80,16 @@ class ConfirmOrder : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_order)
-        CustomerSession.initCustomerSession(
-            this,
-            ExampleEphemeralKeyProvider(ServerConfig.PAYMENT_ACCOUNT_ID)
-        )
+        if (userInfo!!.customerID == null)
+            viewModel.createCustomerStripe(userInfo!!)
+        else
+            viewModel.isCustomerIDAvailable.postValue(true)
+        viewModel.setStripe(stripe)
 
         setToolBar()
         setHeaderData()
+        setObserver()
+
     }
 
     override fun onStart() {
@@ -66,10 +104,14 @@ class ConfirmOrder : BaseActivity() {
             val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
             selectAddress.text = location?.location
             checkoutModel.deliveryAddress = selectAddress.text.toString()
+            checkStartPaymentSession()
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
             couponCode.text = deliveryInstructions
             checkoutModel.delivery_instruction = couponCode.text.toString()
+            checkStartPaymentSession()
+        } else if (data != null) {
+            paymentSession?.handlePaymentData(requestCode, resultCode, data)
         }
     }
 
@@ -107,7 +149,15 @@ class ConfirmOrder : BaseActivity() {
             viewModel.isNowSelectd.postValue(true)
 
         }
+        shippingAddress.setOnClickListener {
+            if (paymentSession != null)
+                paymentSession?.presentShippingFlow()
+        }
 
+        paymentMethod.setOnClickListener {
+            if (paymentSession != null)
+                paymentSession?.presentPaymentMethodSelection()
+        }
         scheduleLayout.setOnClickListener {
             viewModel.isNowSelectd.postValue(false)
 
@@ -121,26 +171,23 @@ class ConfirmOrder : BaseActivity() {
 
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (checkoutModel.deliveryAddress == "") {
+            if (paymentSession == null)
                 return@setOnClickListener
-            }
-            checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {
-                1
-            } else {
-                2
-            }
-            if (checkoutModel.delivery_type == 2)
-                checkoutModel.delivery_time = viewModel.dateSelected.value!!
-            startActivity(
-                Intent(
-                    this@ConfirmOrder,
-                    HostActivity::class.java
-                ).putExtra(JSONKeys.OBJECT, restaurant)
-                    .putExtra(JSONKeys.CHEKOUT_OBJECT, checkoutModel)
-            )
-            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+            createPaymentIntent(paymentSessionData!!)
+
         }
 
+    }
+
+    private fun createPaymentIntent(paymentSessionData: PaymentSessionData) {
+        when {
+            paymentSessionData.useGooglePay -> payWithGoogle()
+            else -> {
+                paymentSessionData.paymentMethod?.let { paymentMethod ->
+                    payWithPaymentMethod(paymentMethod)
+                } ?: displayError("No payment method selected")
+            }
+        }
     }
 
     private fun showTimePicker() {
@@ -209,16 +256,28 @@ class ConfirmOrder : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        setObserver()
     }
 
     private fun setObserver() {
+        viewModel.isCustomerIDAvailable.observe(this, Observer {
+            if (it) {
+                CustomerSession.initCustomerSession(
+                    this,
+                    ExampleEphemeralKeyProvider(userInfo!!.customerID,userInfo!!.accessToken)
+                )
+
+            }
+        })
         EzymdApplication.getInstance().cartData.observe(this, Observer {
+
+        })
+        viewModel.baseResponse.observe(this, Observer {
 
         })
         viewModel.dateSelected.observe(this, Observer {
             if (it != null)
                 time.text = getString(R.string.delivery_at) + " " + it
+            checkStartPaymentSession()
 
         })
         viewModel.isNowSelectd.observe(this, Observer {
@@ -226,6 +285,7 @@ class ConfirmOrder : BaseActivity() {
                 setNowCheckBoxSelected()
             else
                 setScheduleCheckBox()
+            checkStartPaymentSession()
         })
         viewModel.errorRequest.observe(this, Observer {
             showError(false, it, null)
@@ -236,14 +296,25 @@ class ConfirmOrder : BaseActivity() {
         })
     }
 
+    private fun checkStartPaymentSession() {
+        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.deliveryAddress == "") {
+            return
+        }
+        checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {
+            1
+        } else {
+            2
+        }
+        if (checkoutModel.delivery_type == 2)
+            checkoutModel.delivery_time = viewModel.dateSelected.value!!
+
+        startPaymentSession()
+
+    }
+
 
     override fun onStop() {
         super.onStop()
-        viewModel.isNowSelectd.removeObservers(this)
-        viewModel.dateSelected.removeObservers(this)
-        viewModel.errorRequest.removeObservers(this)
-        viewModel.isLoading.removeObservers(this)
-        EzymdApplication.getInstance().cartData.removeObservers(this)
     }
 
 
@@ -251,4 +322,342 @@ class ConfirmOrder : BaseActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
     }
+
+    private fun startPaymentSession() {
+        if (paymentSession == null) {
+            paymentSession = PaymentSession(
+                this,
+                StoreActivity.createPaymentSessionConfig()
+            )
+            setupPaymentSession()
+        }
+    }
+
+    private fun setupPaymentSession() {
+        paymentSession?.init(
+            object : PaymentSession.PaymentSessionListener {
+                override fun onCommunicatingStateChanged(isCommunicating: Boolean) {
+                    progressBar.visibility = if (isCommunicating) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    // update UI, such as hiding or showing a progress bar
+                }
+
+                override fun onError(errorCode: Int, errorMessage: String) {
+                    // handle error
+                }
+
+                override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
+                    SnapLog.print("onPaymentSessionDataChanged")
+                    paymentSessionData = data
+
+                    payButton.isEnabled = data.isPaymentReadyToCharge
+                    when {
+                        data.useGooglePay -> {
+                            updateForGooglePay()
+                        }
+                        else -> {
+                            data.paymentMethod?.let { paymentMethod ->
+                                showSelectedMethod(getPaymentMethodDescription(paymentMethod))
+                            }
+                        }
+                    }
+
+
+                }
+            })
+    }
+
+    private fun updateForGooglePay() {
+        paymentMethod.text =
+            getString(R.string.google_pay)
+    }
+
+    private fun showSelectedMethod(value: String) {
+        paymentMethod.text = value
+    }
+
+    private fun getPaymentMethodDescription(paymentMethod: PaymentMethod): String {
+        return when (paymentMethod.type) {
+            PaymentMethod.Type.Card -> {
+                paymentMethod.card?.let {
+                    "${it.brand.displayName}-${it.last4}"
+                }.orEmpty()
+            }
+            PaymentMethod.Type.Fpx -> {
+                paymentMethod.fpx?.let {
+                    "${getDisplayName(it.bank)} (FPX)"
+                }.orEmpty()
+            }
+            else -> ""
+        }
+    }
+
+    private fun getDisplayName(name: String?): String {
+        return (name.orEmpty())
+            .split("_")
+            .joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
+    }
+
+    private fun getJsonObject(): JsonObject {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("name", userInfo!!.userName)
+        jsonObject.addProperty("email", userInfo!!.email)
+        jsonObject.addProperty("phone_no", userInfo!!.phoneNumber)
+        jsonObject.addProperty("address", checkoutModel.deliveryAddress)
+        jsonObject.addProperty(
+            "delivery_instruction",
+            checkoutModel.delivery_instruction
+        )
+        jsonObject.addProperty("restaurant_id", restaurant.id)
+        jsonObject.addProperty("schedule_type", checkoutModel.delivery_type)
+        if (checkoutModel.delivery_type == 2) {
+            jsonObject.addProperty("schedule_time", checkoutModel.delivery_time)
+        }
+
+        val orderItems = JsonArray()
+        val listItemModel = EzymdApplication.getInstance().cartData.value
+
+        var price = 0
+        for (model in listItemModel!!) {
+            val jsonObjectModel = JsonObject()
+            jsonObjectModel.addProperty("food_id", model.id)
+            jsonObjectModel.addProperty("price", model.price)
+            jsonObjectModel.addProperty("qty", model.quantity)
+            price += (model.price * model.quantity)
+            orderItems.add(jsonObjectModel)
+        }
+        jsonObject.addProperty("total", price)
+        paymentSession?.setCartTotal(price.toLong())
+
+        jsonObject.add("orderItems", orderItems)
+        return jsonObject
+    }
+
+    private fun payWithGoogle() {
+        viewModel.isLoading.postValue(true)
+        AutoResolveHelper.resolveTask(
+            paymentsClient.loadPaymentData(
+                PaymentDataRequest.fromJson(
+                    googlePayJsonFactory.createPaymentDataRequest(
+                        transactionInfo = GooglePayJsonFactory.TransactionInfo(
+                            currencyCode = "USD",
+                            totalPrice = totalPrice,
+                            totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
+                        ),
+                        merchantInfo = GooglePayJsonFactory.MerchantInfo(
+                            merchantName = getString(R.string.app_name)
+                        ),
+                        shippingAddressParameters = GooglePayJsonFactory.ShippingAddressParameters(
+                            isRequired = true,
+                            allowedCountryCodes = setOf("US"),
+                            phoneNumberRequired = true
+                        ),
+                        billingAddressParameters = GooglePayJsonFactory.BillingAddressParameters(
+                            isRequired = true
+                        )
+                    ).toString()
+                )
+            ),
+            this@ConfirmOrder,
+            LOAD_PAYMENT_DATA_REQUEST_CODE
+        )
+    }
+
+    private fun payWithPaymentMethod(paymentMethod: PaymentMethod) {
+        viewModel.isLoading.postValue(true)
+        viewModel.createPaymentIntent(
+            createCreatePaymentIntentParams(
+                paymentSessionData?.shippingInformation,
+                PaymentConfiguration.getInstance(this).stripeAccountId
+            ),userInfo!!.accessToken
+        ).observe(
+            this,
+            { result ->
+                result.fold(
+                    onSuccess = { response ->
+                        onStripeIntentClientSecretResponse(response, paymentMethod)
+                    },
+                    onFailure = ::displayError
+                )
+            }
+        )
+    }
+
+
+    private fun onStripeIntentClientSecretResponse(
+        response: JSONObject,
+        paymentMethod: PaymentMethod?
+    ) {
+        if (response.has("success")) {
+            val success = response.getBoolean("success")
+            if (success) {
+                finishPayment()
+            } else {
+                displayError("Payment failed")
+            }
+        } else {
+            val clientSecret = response.getString("secret")
+            when {
+                clientSecret.startsWith("pi_") ->
+                    retrievePaymentIntent(clientSecret, paymentMethod)
+                clientSecret.startsWith("seti_") -> {
+                }
+                //retrieveSetupIntent(clientSecret, paymentMethod)
+                else -> throw IllegalArgumentException("Invalid client_secret: $clientSecret")
+            }
+        }
+    }
+
+    private fun retrievePaymentIntent(
+        clientSecret: String,
+        paymentMethod: PaymentMethod?
+    ) {
+        viewModel.isLoading.postValue(true)
+        viewModel.retrievePaymentIntent(clientSecret)
+            .observe(
+                this,
+                { result ->
+                    viewModel.isLoading.postValue(false)
+                    result.fold(
+                        onSuccess = {
+                            processStripeIntent(
+                                it,
+                                isAfterConfirmation = false,
+                                paymentMethod = paymentMethod
+                            )
+                        },
+                        onFailure = ::displayError
+                    )
+                }
+            )
+    }
+
+    private fun processStripeIntent(
+        stripeIntent: StripeIntent,
+        isAfterConfirmation: Boolean = false,
+        paymentMethod: PaymentMethod?
+    ) {
+        if (stripeIntent.requiresAction()) {
+            stripe.handleNextActionForPayment(this, stripeIntent.clientSecret!!)
+        } else if (stripeIntent.requiresConfirmation()) {
+            confirmStripeIntent(
+                stripeIntent.id!!,
+                paymentMethod
+            )
+        } else if (stripeIntent.status == StripeIntent.Status.Succeeded) {
+            if (stripeIntent is PaymentIntent) {
+                finishPayment()
+            } else if (stripeIntent is SetupIntent) {
+                finishSetup()
+            }
+        } else if (stripeIntent.status == StripeIntent.Status.RequiresPaymentMethod) {
+            if (stripeIntent is PaymentIntent) {
+                stripe.confirmPayment(
+                    this,
+                    ConfirmPaymentIntentParams.createWithPaymentMethodId(
+                        paymentMethodId = paymentMethod?.id.orEmpty(),
+                        clientSecret = requireNotNull(stripeIntent.clientSecret)
+                    )
+                )
+            } else if (stripeIntent is SetupIntent) {
+                stripe.confirmSetupIntent(
+                    this,
+                    ConfirmSetupIntentParams.create(
+                        paymentMethodId = paymentMethod?.id.orEmpty(),
+                        clientSecret = requireNotNull(stripeIntent.clientSecret)
+                    )
+                )
+            }
+
+        } else {
+            displayError(
+                "Unhandled Payment Intent Status: " + stripeIntent.status.toString()
+            )
+        }
+    }
+
+    private fun confirmStripeIntent(
+        stripeIntentId: String,
+        paymentMethod: PaymentMethod?
+    ) {
+        val params = mapOf(
+            "payment_intent_id" to stripeIntentId
+        ).plus(
+            PaymentConfiguration.getInstance(this).stripeAccountId.let {
+                mapOf("stripe_account" to it)
+            }.orEmpty()
+        )
+
+        viewModel.isLoading.postValue(true)
+        viewModel.confirmStripeIntent(
+            params
+        ).observe(
+            this,
+            { result ->
+                viewModel.isLoading.postValue(false)
+                result.fold(
+                    onSuccess = {
+                        onStripeIntentClientSecretResponse(
+                            it,
+                            paymentMethod
+                        )
+                    },
+                    onFailure = ::displayError
+                )
+            }
+        )
+    }
+
+    private fun createCreatePaymentIntentParams(
+        shippingInformation: ShippingInformation?,
+        stripeAccountId: String?
+    ): Map<String, Any> {
+        return mapOf(
+            "country" to "US",
+            "customer_id" to userInfo!!.customerID,
+            "data" to getJsonObject()
+        ).plus(
+            shippingInformation?.let {
+                mapOf("shipping" to it.toParamMap())
+            }.orEmpty()
+        ).plus(
+            stripeAccountId?.let {
+                mapOf("stripe_account" to it)
+            }.orEmpty()
+        )
+    }
+
+    private fun displayError(throwable: Throwable) = displayError(throwable.message)
+
+    private fun displayError(errorMessage: String?) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Error")
+            .setMessage(errorMessage)
+            .setNeutralButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun finishPayment() {
+        finishWithResult(
+            100
+        )
+
+    }
+
+    private fun finishSetup() {
+        finishWithResult(0)
+    }
+
+    private fun finishWithResult(i: Int) {
+        paymentSession?.onCompleted()
+
+    }
+
 }

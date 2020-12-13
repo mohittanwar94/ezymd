@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.payment
 
-import android.content.Context
 import androidx.annotation.Size
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.WebServices
@@ -13,7 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExampleEphemeralKeyProvider @JvmOverloads constructor(
-    private val stripeAccountId: String? = null
+    private val stripeAccountId: String? = null,
+    private val accessToken: String? = null
 ) : EphemeralKeyProvider {
     private val workContext = Dispatchers.IO
     val apiServices = ApiClient.client!!.create(WebServices::class.java)
@@ -24,14 +24,14 @@ class ExampleEphemeralKeyProvider @JvmOverloads constructor(
     ) {
         val params = hashMapOf("api_version" to apiVersion)
         stripeAccountId?.let {
-            params["stripe_account"] = it
+            params["customer_id"] = it
         }
 
         CoroutineScope(workContext).launch {
             val response =
                 kotlin.runCatching {
                     apiServices
-                        .createEphemeralKey(params)
+                        .createEphemeralKey(params,accessToken)
                         .string()
                 }
 
