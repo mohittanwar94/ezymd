@@ -111,6 +111,28 @@ class ConfirmOrder : BaseActivity() {
             checkoutModel.delivery_instruction = couponCode.text.toString()
             checkStartPaymentSession()
         } else if (data != null) {
+            viewModel.isLoading.postValue(true)
+            val isPaymentIntentResult = stripe.onPaymentResult(
+                requestCode,
+                data,
+                object : ApiResultCallback<PaymentIntentResult> {
+                    override fun onSuccess(result: PaymentIntentResult) {
+                        viewModel.isLoading.postValue(false)
+                        processStripeIntent(
+                            result.intent,
+                            paymentMethod = null
+                        )
+                    }
+
+                    override fun onError(e: Exception) {
+                        viewModel.isLoading.postValue(false)
+                        displayError(e.message)
+                    }
+                }
+            )
+
+
+
             paymentSession?.handlePaymentData(requestCode, resultCode, data)
         }
     }
@@ -263,7 +285,7 @@ class ConfirmOrder : BaseActivity() {
             if (it) {
                 CustomerSession.initCustomerSession(
                     this,
-                    ExampleEphemeralKeyProvider(userInfo!!.customerID,userInfo!!.accessToken)
+                    ExampleEphemeralKeyProvider(userInfo!!.customerID, userInfo!!.accessToken)
                 )
 
             }
@@ -291,7 +313,11 @@ class ConfirmOrder : BaseActivity() {
             showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
-
+            progressBar.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
         })
     }
@@ -473,7 +499,7 @@ class ConfirmOrder : BaseActivity() {
             createCreatePaymentIntentParams(
                 paymentSessionData?.shippingInformation,
                 PaymentConfiguration.getInstance(this).stripeAccountId
-            ),userInfo!!.accessToken
+            ), userInfo!!.accessToken
         ).observe(
             this,
             { result ->
@@ -500,7 +526,7 @@ class ConfirmOrder : BaseActivity() {
                 displayError("Payment failed")
             }
         } else {
-            val clientSecret = response.getString("secret")
+            val clientSecret = response.getString("client_secret")
             when {
                 clientSecret.startsWith("pi_") ->
                     retrievePaymentIntent(clientSecret, paymentMethod)
@@ -526,7 +552,6 @@ class ConfirmOrder : BaseActivity() {
                         onSuccess = {
                             processStripeIntent(
                                 it,
-                                isAfterConfirmation = false,
                                 paymentMethod = paymentMethod
                             )
                         },
@@ -538,7 +563,6 @@ class ConfirmOrder : BaseActivity() {
 
     private fun processStripeIntent(
         stripeIntent: StripeIntent,
-        isAfterConfirmation: Boolean = false,
         paymentMethod: PaymentMethod?
     ) {
         if (stripeIntent.requiresAction()) {
@@ -551,8 +575,6 @@ class ConfirmOrder : BaseActivity() {
         } else if (stripeIntent.status == StripeIntent.Status.Succeeded) {
             if (stripeIntent is PaymentIntent) {
                 finishPayment()
-            } else if (stripeIntent is SetupIntent) {
-                finishSetup()
             }
         } else if (stripeIntent.status == StripeIntent.Status.RequiresPaymentMethod) {
             if (stripeIntent is PaymentIntent) {
@@ -561,15 +583,8 @@ class ConfirmOrder : BaseActivity() {
                     ConfirmPaymentIntentParams.createWithPaymentMethodId(
                         paymentMethodId = paymentMethod?.id.orEmpty(),
                         clientSecret = requireNotNull(stripeIntent.clientSecret)
-                    )
-                )
-            } else if (stripeIntent is SetupIntent) {
-                stripe.confirmSetupIntent(
-                    this,
-                    ConfirmSetupIntentParams.create(
-                        paymentMethodId = paymentMethod?.id.orEmpty(),
-                        clientSecret = requireNotNull(stripeIntent.clientSecret)
-                    )
+                    ),
+                    PaymentConfiguration.getInstance(this).stripeAccountId
                 )
             }
 
@@ -651,11 +666,9 @@ class ConfirmOrder : BaseActivity() {
 
     }
 
-    private fun finishSetup() {
-        finishWithResult(0)
-    }
 
     private fun finishWithResult(i: Int) {
+        // success screen
         paymentSession?.onCompleted()
 
     }

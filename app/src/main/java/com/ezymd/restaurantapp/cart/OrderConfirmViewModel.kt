@@ -88,11 +88,6 @@ class OrderConfirmViewModel : ViewModel() {
         }
     }
 
-    fun createSetupIntent(params: Map<String, Any>): LiveData<Result<JSONObject>> {
-        return executeBackendMethod {
-            backendApi.createSetupIntent(params.toMutableMap())
-        }
-    }
 
     fun confirmStripeIntent(params: Map<String, String?>): LiveData<Result<JSONObject>> {
         return executeBackendMethod {

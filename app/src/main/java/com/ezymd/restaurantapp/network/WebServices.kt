@@ -104,9 +104,6 @@ interface WebServices {
     @POST("confirm_payment_intent")
     suspend fun confirmPaymentIntent(@Body params: MutableMap<String, String?>): ResponseBody
 
-    @POST("create_setup_intent")
-    suspend fun createSetupIntent(@Body params: MutableMap<String, Any>): ResponseBody
-
     @FormUrlEncoded
     @POST(ServerConfig.EPHEMERAL_KEYS)
     suspend fun createEphemeralKey(@FieldMap apiVersionMap: MutableMap<String, String>,@Header("Authorization") accessToken: String?): ResponseBody
