@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.details
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +66,6 @@ class MenuAdapter(
         val item = data[position]
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
-        item.stock = 5
         holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
         holder.itemView.quantityPicker.max = item.stock
 
@@ -83,7 +81,11 @@ class MenuAdapter(
             holder.itemView.quantityPicker.visibility = View.VISIBLE
             holder.itemView.quantityPicker.value = item.quantity
         }
-
+        if (item.is_veg == 0) {
+            holder.itemView.vegLabel.setImageResource(R.drawable.ic_veg)
+        } else {
+            holder.itemView.vegLabel.setImageResource(R.drawable.ic_non_veg)
+        }
 
         holder.itemView.add.setOnClickListener {
             if (item.stock == 0) {

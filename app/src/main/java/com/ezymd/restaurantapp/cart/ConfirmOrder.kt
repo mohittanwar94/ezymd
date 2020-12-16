@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.TimePicker
 import androidx.lifecycle.Observer
@@ -31,10 +32,10 @@ import java.util.*
 
 
 class ConfirmOrder : BaseActivity() {
+    private var totalPrice = 0.0
     private var paymentSessionData: PaymentSessionData? = null
     private var paymentSession: PaymentSession? = null
     val checkoutModel = OrderCheckoutUtilsModel()
-    val totalPrice = 100
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 5000
 
     private val stripe: Stripe by lazy {
@@ -110,6 +111,17 @@ class ConfirmOrder : BaseActivity() {
             couponCode.text = deliveryInstructions
             checkoutModel.delivery_instruction = couponCode.text.toString()
             checkStartPaymentSession()
+        } else if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    if (data != null) {
+                        handleGooglePayResult(data)
+                    }
+                }
+                else -> {
+                    resetCheckout()
+                }
+            }
         } else if (data != null) {
             viewModel.isLoading.postValue(true)
             val isPaymentIntentResult = stripe.onPaymentResult(
@@ -135,6 +147,42 @@ class ConfirmOrder : BaseActivity() {
 
             paymentSession?.handlePaymentData(requestCode, resultCode, data)
         }
+    }
+
+    private fun handleGooglePayResult(data: Intent) {
+        val paymentData = PaymentData.getFromIntent(data) ?: return
+        val paymentDataJson = JSONObject(paymentData.toJson())
+
+        val paymentMethodCreateParams =
+            PaymentMethodCreateParams.createFromGooglePay(paymentDataJson)
+
+        viewModel.isLoading.postValue(true)
+        viewModel.createPaymentMethod(paymentMethodCreateParams)
+            .observe(
+                this,
+                { result ->
+                    result.fold(
+                        onSuccess = {
+                            payWithPaymentMethod(it)
+                        },
+                        onFailure = {
+                            displayError(it)
+                            resetCheckout()
+                        }
+                    )
+                }
+            )
+    }
+
+    private fun resetCheckout() {
+        paymentSessionData = null
+        viewModel.isLoading.postValue(false)
+
+        payButton.isEnabled = false
+        checkStartPaymentSession()
+
+        paymentMethod.text = getString(R.string.add_payment_method)
+        shippingAddress.text = getString(R.string.add_shipping_details)
     }
 
     private fun setGUI() {
@@ -381,6 +429,18 @@ class ConfirmOrder : BaseActivity() {
                     paymentSessionData = data
 
                     payButton.isEnabled = data.isPaymentReadyToCharge
+                    shippingAddress.text = TextUtils.concat(
+                        paymentSessionData?.shippingInformation?.address?.line2,
+                        ", ",
+                        paymentSessionData?.shippingInformation?.address?.line1,
+                        ", ",
+                        paymentSessionData?.shippingInformation?.address?.city,
+                        ", ",
+                        paymentSessionData?.shippingInformation?.address?.postalCode,
+                        ", ",
+                        paymentSessionData?.shippingInformation?.address?.state
+                    )
+
                     when {
                         data.useGooglePay -> {
                             updateForGooglePay()
@@ -434,6 +494,8 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("email", userInfo!!.email)
         jsonObject.addProperty("phone_no", userInfo!!.phoneNumber)
         jsonObject.addProperty("address", checkoutModel.deliveryAddress)
+        jsonObject.addProperty("lat", restaurant.lat)
+        jsonObject.addProperty("lang", restaurant.longitude)
         jsonObject.addProperty(
             "delivery_instruction",
             checkoutModel.delivery_instruction
@@ -457,6 +519,7 @@ class ConfirmOrder : BaseActivity() {
             orderItems.add(jsonObjectModel)
         }
         jsonObject.addProperty("total", price)
+        totalPrice = price.toDouble()
         paymentSession?.setCartTotal(price.toLong())
 
         jsonObject.add("orderItems", orderItems)
@@ -471,7 +534,7 @@ class ConfirmOrder : BaseActivity() {
                     googlePayJsonFactory.createPaymentDataRequest(
                         transactionInfo = GooglePayJsonFactory.TransactionInfo(
                             currencyCode = "USD",
-                            totalPrice = totalPrice,
+                            totalPrice = totalPrice.toInt(),
                             totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
                         ),
                         merchantInfo = GooglePayJsonFactory.MerchantInfo(

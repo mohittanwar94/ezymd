@@ -4,19 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <FrameLayout
+        android:id="@+id/ivNotesThumbLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <com.ezymd.restaurantapp.customviews.RoundedImageView
-        android:id="@+id/ivNotesThumb"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:scaleType="centerCrop"
-        app:corner_radius="@dimen/_7sdp" />
+        <com.ezymd.restaurantapp.customviews.RoundedImageView
+            android:id="@+id/ivNotesThumb"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:scaleType="centerCrop"
+            app:corner_radius="@dimen/_7sdp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/vegLabel"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_gravity="top|right"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/white"
+            android:scaleType="centerCrop" />
+
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_toEndOf="@+id/ivNotesThumb"
+        android:layout_toEndOf="@+id/ivNotesThumbLay"
         android:gravity="center"
         android:orientation="vertical">
 
