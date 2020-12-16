@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.TimePicker
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
@@ -123,7 +122,6 @@ class ConfirmOrder : BaseActivity() {
                 }
             }
         } else if (data != null) {
-            viewModel.isLoading.postValue(true)
             val isPaymentIntentResult = stripe.onPaymentResult(
                 requestCode,
                 data,
@@ -142,7 +140,9 @@ class ConfirmOrder : BaseActivity() {
                     }
                 }
             )
-
+            if (isPaymentIntentResult) {
+                viewModel.isLoading.postValue(true)
+            }
 
 
             paymentSession?.handlePaymentData(requestCode, resultCode, data)
@@ -186,6 +186,18 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun setGUI() {
+
+        if (restaurant.isPick) {
+            viewModel.isNowSelectd.postValue(true)
+            resturantAddressLay.visibility = View.VISIBLE
+            resturantName.text = restaurant.name
+            resturantAddress.text = restaurant.address
+            nowlayout.visibility = View.GONE
+            scheduleLayout.visibility = View.GONE
+            delivey_type.text = getString(R.string.pick_up_from)
+        } else {
+            resturantAddressLay.visibility = View.GONE
+        }
         nowcheckBox.isClickable = false
         schedulecheckBox.isClickable = false
 
@@ -268,20 +280,15 @@ class ConfirmOrder : BaseActivity() {
             TimePickerDialog(
                 this@ConfirmOrder,
                 R.style.MyTimePickerDark,
-                object : TimePickerDialog.OnTimeSetListener {
-
-                    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                        if (hourOfDay < hour) {
-                            ShowDialog(this@ConfirmOrder).disPlayDialog(
-                                getString(R.string.pass_time),
-                                false,
-                                false
-                            )
-                        } else
-                            viewModel.dateSelected.value = "$hourOfDay:$minute"
-
-                    }
-
+                { view, hourOfDay, minute ->
+                    if (hourOfDay < hour) {
+                        ShowDialog(this@ConfirmOrder).disPlayDialog(
+                            getString(R.string.pass_time),
+                            false,
+                            false
+                        )
+                    } else
+                        viewModel.dateSelected.value = "$hourOfDay:$minute"
                 },
                 hour,
                 minute,
@@ -361,11 +368,15 @@ class ConfirmOrder : BaseActivity() {
             showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
-            progressBar.visibility = if (it) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            SnapLog.print("observer========" + it)
+            runOnUiThread(Runnable {
+                progressBar.visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            })
+
 
         })
     }
@@ -411,16 +422,14 @@ class ConfirmOrder : BaseActivity() {
         paymentSession?.init(
             object : PaymentSession.PaymentSessionListener {
                 override fun onCommunicatingStateChanged(isCommunicating: Boolean) {
-                    progressBar.visibility = if (isCommunicating) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
+                    SnapLog.print("onCommunicatingStateChanged" + isCommunicating)
+
 
                     // update UI, such as hiding or showing a progress bar
                 }
 
                 override fun onError(errorCode: Int, errorMessage: String) {
+                    displayError(errorMessage)
                     // handle error
                 }
 
@@ -429,17 +438,7 @@ class ConfirmOrder : BaseActivity() {
                     paymentSessionData = data
 
                     payButton.isEnabled = data.isPaymentReadyToCharge
-                    shippingAddress.text = TextUtils.concat(
-                        paymentSessionData?.shippingInformation?.address?.line2,
-                        ", ",
-                        paymentSessionData?.shippingInformation?.address?.line1,
-                        ", ",
-                        paymentSessionData?.shippingInformation?.address?.city,
-                        ", ",
-                        paymentSessionData?.shippingInformation?.address?.postalCode,
-                        ", ",
-                        paymentSessionData?.shippingInformation?.address?.state
-                    )
+                    shippingAddress.text = getAddress(paymentSessionData!!)
 
                     when {
                         data.useGooglePay -> {
@@ -455,6 +454,51 @@ class ConfirmOrder : BaseActivity() {
 
                 }
             })
+    }
+
+    private fun getAddress(paymentSessionData: PaymentSessionData): String {
+        if (TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.line2) && TextUtils.isEmpty(
+                paymentSessionData.shippingInformation?.address?.line1
+            ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.city) && TextUtils.isEmpty(
+                paymentSessionData.shippingInformation?.address?.state
+            ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.postalCode) && TextUtils.isEmpty(
+                paymentSessionData.shippingInformation?.address?.state
+            )
+        ) {
+            return getString(R.string.add_shipping_details)
+        } else {
+            val builder = StringBuilder("");
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.line1)) {
+                builder.append(paymentSessionData.shippingInformation?.address?.line1)
+            }
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.line2)) {
+                builder.append(", ")
+                builder.append(paymentSessionData.shippingInformation?.address?.line2)
+            }
+
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.city)) {
+                builder.append(", ")
+                builder.append(paymentSessionData.shippingInformation?.address?.city)
+            }
+
+
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.state)) {
+                builder.append(", ")
+                builder.append(paymentSessionData.shippingInformation?.address?.state)
+            }
+
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.postalCode)) {
+                builder.append(", ")
+                builder.append(paymentSessionData.shippingInformation?.address?.postalCode)
+            }
+
+            if (!TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.country)) {
+                builder.append(", ")
+                builder.append(paymentSessionData.shippingInformation?.address?.country)
+            }
+
+            return builder.toString()
+        }
     }
 
     private fun updateForGooglePay() {
@@ -496,6 +540,13 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("address", checkoutModel.deliveryAddress)
         jsonObject.addProperty("lat", restaurant.lat)
         jsonObject.addProperty("lang", restaurant.longitude)
+        jsonObject.addProperty(
+            "order_pickup_status", if (restaurant.isPick) {
+                JSONKeys.FROM_RESTAURANT
+            } else {
+                JSONKeys.DELIVERY
+            }
+        )
         jsonObject.addProperty(
             "delivery_instruction",
             checkoutModel.delivery_instruction

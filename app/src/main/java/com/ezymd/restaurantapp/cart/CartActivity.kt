@@ -49,7 +49,7 @@ class CartActivity : BaseActivity() {
     private fun setGUI() {
         pickUp.setOnClickListener {
             UIUtil.clickHandled(it)
-            startConfirmOrder()
+            restaurant.isPick = true
             delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
             pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
@@ -57,13 +57,18 @@ class CartActivity : BaseActivity() {
         }
         delivery.setOnClickListener {
             UIUtil.clickHandled(it)
-            startConfirmOrder()
+            restaurant.isPick = false
             pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
             delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             pickUp.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
         }
+        payButton.setOnClickListener {
+            UIUtil.clickHandled(it)
+            startConfirmOrder()
+        }
     }
+
 
     private fun startConfirmOrder() {
         val intent = Intent(this, ConfirmOrder::class.java)

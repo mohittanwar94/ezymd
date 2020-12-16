@@ -64,6 +64,7 @@ class MenuAdapter(
 
         // holder.itemView.ivNotesThumb.transitionName = "thumbnailTransition";
         val item = data[position]
+        item.stock =5
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
         holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price

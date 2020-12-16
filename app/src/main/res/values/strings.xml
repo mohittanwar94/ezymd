@@ -192,4 +192,6 @@
     <string name="default_notification_channel_id" translatable="false">Ezymd01</string>
     <string name="default_notification_channel_id_2" translatable="false">Ezymd02</string>
     <string name="ok">Ok</string>
+    <string name="next">Next</string>
+    <string name="pick_up_from">Pick From</string>
 </resources>

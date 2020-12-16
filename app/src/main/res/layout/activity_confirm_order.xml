@@ -54,6 +54,7 @@
             android:orientation="vertical">
 
             <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/delivey_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.01"
@@ -63,6 +64,62 @@
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="normal"
                 app:textFont="bold" />
+
+            <RelativeLayout
+                android:id="@+id/resturantAddressLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/cart_delivery_option_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:id="@+id/ic_location"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:background="@drawable/edit_text_bg"
+                    android:contentDescription="@string/title_cart"
+                    android:padding="@dimen/_10sdp"
+                    app:srcCompat="@drawable/ic_location" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/resturantName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_toEndOf="@+id/ic_location"
+                    android:letterSpacing="0.01"
+                    android:lineSpacingExtra="5sp"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingBottom="@dimen/_4sdp"
+                    android:text="@string/delivery_type"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/resturantAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/resturantName"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_toEndOf="@+id/ic_location"
+                    android:letterSpacing="0.01"
+                    android:lineSpacingExtra="5sp"
+                    android:text="Select how do want to get your order."
+                    android:textColor="@color/color_667ba3"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="roman" />
+
+
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/nowlayout"
@@ -282,6 +339,7 @@
                     app:textFont="medium" />
 
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
@@ -326,6 +384,7 @@
                     app:textFont="medium" />
 
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
@@ -404,6 +463,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
+                    android:elevation="@dimen/_5sdp"
                     android:indeterminate="true"
                     android:visibility="gone" />
 

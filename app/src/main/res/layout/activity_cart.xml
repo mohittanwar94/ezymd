@@ -431,6 +431,22 @@
             </RelativeLayout>
 
 
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/payButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:layout_margin="@dimen/_15sdp"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:buttonFont="bold" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <FrameLayout

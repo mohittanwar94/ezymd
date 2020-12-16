@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface JSONKeys {
@@ -386,4 +387,9 @@ public interface JSONKeys {
     String FILTER_MAP="filtermap";
     @Nullable
     String CHEKOUT_OBJECT="checkout_object";
+
+
+    // delivery type
+    String FROM_RESTAURANT="1";
+    String DELIVERY="2";
 }

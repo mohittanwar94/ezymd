@@ -50,6 +50,16 @@ public class Resturant implements Serializable {
     @Expose
     private Double distance = 0.0;
 
+    private boolean isPick = false;
+
+    public boolean isPick() {
+        return isPick;
+    }
+
+    public void setPick(boolean pick) {
+        isPick = pick;
+    }
+
     public String getAddress() {
         return address != null && !address.equals("") ? address : "N/A";
     }
