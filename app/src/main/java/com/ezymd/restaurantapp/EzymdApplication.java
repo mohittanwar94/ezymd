@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.Process;
 
@@ -13,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ezymd.restaurantapp.details.model.ItemModel;
 import com.ezymd.restaurantapp.filters.model.DataModel;
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver;
+import com.ezymd.restaurantapp.utils.UserInfo;
 import com.facebook.FacebookSdk;
 import com.stripe.android.PaymentConfiguration;
 
@@ -84,6 +86,12 @@ public class EzymdApplication extends Application implements Application.Activit
             Process.killProcess(Process.myPid());
         }
 
+        UserInfo userInfo=UserInfo.getInstance(mInstance);
+        if (userInfo.getDeviceID().length() < 1) {
+            String deviceId = android.provider.Settings.System.getString(getContentResolver(),
+                    android.provider.Settings.Secure.ANDROID_ID);
+            userInfo.setDeviceID(deviceId == null ? "" + new ApplicationInfo().uid : deviceId);
+        }
 
     }
 

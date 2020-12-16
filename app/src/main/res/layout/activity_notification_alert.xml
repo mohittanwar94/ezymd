@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000">
+
+    <FrameLayout
+        android:id="@+id/frameimageAnim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:background="@drawable/circle_white_transparent"
+        android:padding="@dimen/_2sdp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageAnim"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="top|center"
+            android:background="@drawable/blue_circle"
+            android:padding="@dimen/_13sdp"
+            app:srcCompat="@drawable/ic_location" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/notification_background">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_30sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:cardUseCompatPadding="false">
+
+            <RelativeLayout
+                android:id="@+id/root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_2sdp">
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_toLeftOf="@+id/ok"
+                    android:layout_toRightOf="@+id/image"
+                    android:gravity="left|center"
+                    android:textColor="@color/teacherheader"
+                    android:textSize="@dimen/_13sdp"
+                    app:textFont="medium" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toLeftOf="@+id/ok"
+                    android:layout_toRightOf="@+id/image"
+                    android:gravity="left|center"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:textColor="@color/lightGraycolor"
+                    android:textSize="@dimen/_12sdp"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:padding="@dimen/_100sdp"
+                    android:text="@string/ok"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_13sdp"
+                    app:textFont="medium" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/blue_circle"
+                    android:padding="@dimen/_13sdp"
+                    app:srcCompat="@drawable/ic_location" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/ok"
+                    android:layout_alignTop="@+id/ok"
+                    android:layout_alignBottom="@+id/ok"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</FrameLayout>
