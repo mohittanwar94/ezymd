@@ -102,9 +102,7 @@ class ConfirmOrder : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
-            selectAddress.text = location?.location
-            checkoutModel.deliveryAddress = selectAddress.text.toString()
-            checkStartPaymentSession()
+            viewModel.locationSelected.postValue(location)
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
             couponCode.text = deliveryInstructions
@@ -343,6 +341,30 @@ class ConfirmOrder : BaseActivity() {
                     ExampleEphemeralKeyProvider(userInfo!!.customerID, userInfo!!.accessToken)
                 )
 
+            }
+        })
+
+        viewModel.locationSelected.observe(this, Observer {
+            val baseRequest = BaseRequest()
+            baseRequest.accessToken = userInfo!!.accessToken
+            baseRequest.paramsMap.put("lat", "" + it!!.lat)
+            baseRequest.paramsMap.put("device_token", userInfo!!.deviceToken)
+            baseRequest.paramsMap.put("device_id", userInfo!!.deviceID)
+            baseRequest.paramsMap.put("lang", "" + it.lang)
+            baseRequest.paramsMap.put("restaurant_id", "" + restaurant.id)
+
+            viewModel.checkAddressLocationValidation(baseRequest)
+        })
+        viewModel.isAddressValid.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    selectAddress.text = viewModel.locationSelected.value?.location
+                    checkoutModel.deliveryAddress = selectAddress.text.toString()
+                    checkStartPaymentSession()
+
+                } else {
+                    showError(false, it.message, null)
+                }
             }
         })
         EzymdApplication.getInstance().cartData.observe(this, Observer {

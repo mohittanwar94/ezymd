@@ -8,6 +8,7 @@ public class BaseRequest {
     public Map<String, String> paramsMap;
 
     public BaseRequest() {
+        paramsMap = new HashMap<>();
     }
 
     public BaseRequest(UserInfo userInfo) {

@@ -3,6 +3,8 @@ package com.ezymd.restaurantapp.cart
 
 import androidx.lifecycle.*
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
+import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
@@ -20,9 +22,11 @@ import org.json.JSONObject
 
 class OrderConfirmViewModel : ViewModel() {
 
-    var errorRequest: MutableLiveData<String>
+    var errorRequest: SingleLiveEvent<String>
     val dateSelected: MutableLiveData<String>
     val isNowSelectd: MutableLiveData<Boolean>
+    val locationSelected: SingleLiveEvent<LocationModel>
+    val isAddressValid: SingleLiveEvent<LocationValidatorModel>
     val isCustomerIDAvailable: MutableLiveData<Boolean>
     val baseResponse: MutableLiveData<BaseResponse>
 
@@ -43,7 +47,9 @@ class OrderConfirmViewModel : ViewModel() {
         isCustomerIDAvailable = MutableLiveData()
         isCustomerIDAvailable.postValue(false)
         baseResponse = MutableLiveData()
-        errorRequest = MutableLiveData()
+        errorRequest = SingleLiveEvent()
+        locationSelected = SingleLiveEvent()
+        isAddressValid = SingleLiveEvent()
         isNowSelectd = MutableLiveData()
         isNowSelectd.postValue(true)
         dateSelected = MutableLiveData()
@@ -82,9 +88,12 @@ class OrderConfirmViewModel : ViewModel() {
     private lateinit var stripeObj: Stripe
     private val coroutineContext = Dispatchers.IO + SupervisorJob()
 
-    fun createPaymentIntent(params: Map<String, Any>, accessToken: String): LiveData<Result<JSONObject>> {
+    fun createPaymentIntent(
+        params: Map<String, Any>,
+        accessToken: String
+    ): LiveData<Result<JSONObject>> {
         return executeBackendMethod {
-            backendApi.createPaymentIntent(params.toMutableMap(),accessToken)
+            backendApi.createPaymentIntent(params.toMutableMap(), accessToken)
         }
     }
 
@@ -177,6 +186,26 @@ class OrderConfirmViewModel : ViewModel() {
                     SnapLog.print(id)
                     userInfo.customerID = id
                     isCustomerIDAvailable.postValue(true)
+                }
+            }
+        }
+
+    }
+
+    fun checkAddressLocationValidation(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.locationValidate(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    isAddressValid.postValue(result.value)
+
                 }
             }
         }

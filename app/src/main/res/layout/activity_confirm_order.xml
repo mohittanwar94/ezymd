@@ -421,7 +421,7 @@
                     android:letterSpacing="0.01"
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
-                    android:text="Shipping Address"
+                    android:text="@string/add_shipping_details"
                     android:textColor="#002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"
@@ -437,39 +437,42 @@
                 android:layout_marginBottom="@dimen/_45sdp"
                 android:background="@color/color_f2f4f7" />
 
-            <RelativeLayout
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/payButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_15sdp">
-
-                <com.ezymd.restaurantapp.customviews.SnapButton
-                    android:id="@+id/payButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:background="@drawable/ic_gray_btn_pressed"
-                    android:letterSpacing="0.01"
-                    android:lineSpacingExtra="5sp"
-                    android:text="@string/pay"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="normal"
-                    app:buttonFont="bold" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="@style/progressBarTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:elevation="@dimen/_5sdp"
-                    android:indeterminate="true"
-                    android:visibility="gone" />
+                android:layout_height="@dimen/_45sdp"
+                android:layout_margin="@dimen/_15sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/pay"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:buttonFont="bold" />
 
 
-            </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#60000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@style/progressBarTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="@dimen/_5sdp"
+            android:indeterminate="true"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

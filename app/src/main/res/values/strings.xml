@@ -185,13 +185,13 @@
     <string name="subtotal">Subtotal</string>
     <string name="add_delivery_instruction">Add Delivery Instruction</string>
     <string name="title_checkout">Checkout</string>
-    <string name="add_shipping_details">Add Shiping Details</string>
+    <string name="add_shipping_details">Add Shipping Details</string>
     <string name="setup_payment_credentials">Setup payment credentials</string>
     <string name="add_payment_method">Add Payment Method</string>
 
     <string name="default_notification_channel_id" translatable="false">Ezymd01</string>
     <string name="default_notification_channel_id_2" translatable="false">Ezymd02</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="next">Next</string>
     <string name="pick_up_from">Pick From</string>
 </resources>

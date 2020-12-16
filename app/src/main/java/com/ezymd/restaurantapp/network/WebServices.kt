@@ -2,6 +2,7 @@ package com.ezymd.restaurantapp.network
 
 
 import com.ezymd.restaurantapp.ServerConfig
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.login.model.LoginModel
@@ -112,6 +113,9 @@ interface WebServices {
     @GET(ServerConfig.CREATE_CUSTOMER)
     suspend fun createCustomer(@Header("Authorization") accessToken: String?): JsonObject
 
+    @FormUrlEncoded
+    @POST(ServerConfig.LOCATION_VALIDATE)
+    suspend fun locationValidate(@FieldMap apiVersionMap: Map<String, String>,@Header("Authorization") accessToken: String): LocationValidatorModel
 
 }
 
