@@ -710,7 +710,11 @@ class ConfirmOrder : BaseActivity() {
             )
         } else if (stripeIntent.status == StripeIntent.Status.Succeeded) {
             if (stripeIntent is PaymentIntent) {
-                finishPayment()
+                saveSuccessPayment(stripeIntent)
+            }
+        } else if (stripeIntent.status == StripeIntent.Status.Canceled) {
+            if (stripeIntent is PaymentIntent) {
+                saveFailurePayment(stripeIntent)
             }
         } else if (stripeIntent.status == StripeIntent.Status.RequiresPaymentMethod) {
             if (stripeIntent is PaymentIntent) {
@@ -729,6 +733,46 @@ class ConfirmOrder : BaseActivity() {
                 "Unhandled Payment Intent Status: " + stripeIntent.status.toString()
             )
         }
+    }
+
+    private fun saveSuccessPayment(stripeIntent: PaymentIntent) {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap.put("status", "" + PaymentStatus.SUCCESS)
+        baseRequest.paramsMap.put("intent_id", stripeIntent.id)
+        baseRequest.paramsMap.put(
+            "payment_method",
+            getPaymentMethodDescription(stripeIntent.paymentMethod!!)
+        )
+        viewModel.savePaymentInfo(baseRequest)
+        viewModel.savePaymentResponse.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    finishPayment()
+                } else {
+                    showError(false, it.message, null)
+                }
+            }
+        })
+    }
+
+    private fun saveFailurePayment(stripeIntent: PaymentIntent) {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap.put("status", "" + PaymentStatus.FAILURE)
+        baseRequest.paramsMap.put("intent_id", stripeIntent.id)
+        baseRequest.paramsMap.put(
+            "payment_method",
+            getPaymentMethodDescription(stripeIntent.paymentMethod!!)
+        )
+        viewModel.savePaymentInfo(baseRequest)
+        viewModel.savePaymentResponse.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    finishPayment()
+                } else {
+                    showError(false, it.message, null)
+                }
+            }
+        })
     }
 
     private fun confirmStripeIntent(
@@ -798,7 +842,7 @@ class ConfirmOrder : BaseActivity() {
     private fun finishPayment() {
 
         val intent = Intent(this@ConfirmOrder, OrderSuccess::class.java)
-        intent.putExtra(JSONKeys.IS_PICKUP,restaurant.isPick)
+        intent.putExtra(JSONKeys.IS_PICKUP, restaurant.isPick)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
         finishWithResult(

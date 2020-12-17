@@ -27,6 +27,7 @@ class OrderConfirmViewModel : ViewModel() {
     val isNowSelectd: MutableLiveData<Boolean>
     val locationSelected: SingleLiveEvent<LocationModel>
     val isAddressValid: SingleLiveEvent<LocationValidatorModel>
+    val savePaymentResponse: SingleLiveEvent<LocationValidatorModel>
     val isCustomerIDAvailable: MutableLiveData<Boolean>
     val baseResponse: MutableLiveData<BaseResponse>
 
@@ -49,6 +50,7 @@ class OrderConfirmViewModel : ViewModel() {
         baseResponse = MutableLiveData()
         errorRequest = SingleLiveEvent()
         locationSelected = SingleLiveEvent()
+        savePaymentResponse=SingleLiveEvent()
         isAddressValid = SingleLiveEvent()
         isNowSelectd = MutableLiveData()
         isNowSelectd.postValue(true)
@@ -205,6 +207,26 @@ class OrderConfirmViewModel : ViewModel() {
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> {
                     isAddressValid.postValue(result.value)
+
+                }
+            }
+        }
+
+    }
+
+    fun savePaymentInfo(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.savePayment(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    savePaymentResponse.postValue(result.value)
 
                 }
             }

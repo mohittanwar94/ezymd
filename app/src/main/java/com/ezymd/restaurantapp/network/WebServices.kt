@@ -122,5 +122,12 @@ interface WebServices {
     @POST(ServerConfig.LOCATION_VALIDATE)
     suspend fun locationValidate(@FieldMap apiVersionMap: Map<String, String>,@Header("Authorization") accessToken: String): LocationValidatorModel
 
+
+    @FormUrlEncoded
+    @POST(ServerConfig.SAVE_PAYMENT)
+    suspend fun savePaymentInfo(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): LocationValidatorModel
+
 }
 

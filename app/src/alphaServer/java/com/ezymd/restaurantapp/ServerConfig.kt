@@ -31,6 +31,7 @@ interface ServerConfig {
         const val CREATE_CUSTOMER="stripe/createCustomer"
         const val EPHEMERAL_KEYS="stripe/ephemeralKey"
         const val LOCATION_VALIDATE="validateLocations"
+        const val SAVE_PAYMENT="paymentVerify"
 
     }
 }

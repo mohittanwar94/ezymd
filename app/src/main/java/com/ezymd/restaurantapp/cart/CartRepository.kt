@@ -64,15 +64,15 @@ class CartRepository {
     }
 
 
-    suspend fun getRestaurants(
+    suspend fun savePayment(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<LocationValidatorModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getResturants(
+            apiServices.savePaymentInfo(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }
