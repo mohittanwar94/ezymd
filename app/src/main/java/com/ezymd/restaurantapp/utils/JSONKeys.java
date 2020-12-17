@@ -392,4 +392,6 @@ public interface JSONKeys {
     // delivery type
     String FROM_RESTAURANT="1";
     String DELIVERY="2";
+    @Nullable
+    String IS_PICKUP="is_pickup";
 }

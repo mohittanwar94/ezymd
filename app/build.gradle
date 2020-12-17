@@ -167,6 +167,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.github.mumayank:AirLocation:2.4'
+    implementation 'com.github.sureshmaidaragi1919:CircularTimer:1.1'
 
     implementation 'com.stripe:stripe-android:16.1.1'
 

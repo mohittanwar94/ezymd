@@ -1,12 +1,15 @@
 package com.ezymd.restaurantapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
+import com.ezymd.restaurantapp.ui.myorder.OrderFragment
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
 import com.ezymd.restaurantapp.utils.KeepStateNavigator
+import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode.LABEL_VISIBILITY_LABELED
 
@@ -34,10 +37,19 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
 
         navView.setupWithNavController(navController)
         navView.labelVisibilityMode = LABEL_VISIBILITY_LABELED
+        SnapLog.print("onCreate")
 
+        if (intent.hasExtra(OrderFragment::class.java.name)){
+            intent.removeExtra(OrderFragment::class.java.name)
+            navView.selectedItemId = R.id.navigation_order
+        }
 
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        SnapLog.print("onNewIntent")
+    }
     override fun onResume() {
         super.onResume()
         EzymdApplication.getInstance().setConnectivityListener(this@MainActivity);

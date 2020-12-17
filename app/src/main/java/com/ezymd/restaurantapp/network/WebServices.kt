@@ -9,6 +9,7 @@ import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
+import com.ezymd.restaurantapp.ui.myorder.model.OrderBaseModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
@@ -112,6 +113,10 @@ interface WebServices {
 
     @GET(ServerConfig.CREATE_CUSTOMER)
     suspend fun createCustomer(@Header("Authorization") accessToken: String?): JsonObject
+
+
+    @GET(ServerConfig.CREATE_ORDER)
+    suspend fun orderList(@Header("Authorization") accessToken: String): OrderBaseModel
 
     @FormUrlEncoded
     @POST(ServerConfig.LOCATION_VALIDATE)

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/progressLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.view.circulartimerview.CircularTimerView
+            android:id="@+id/progress_circular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundColor="#e76130"
+            app:backgroundWidth="8"
+            app:isClockwise="true"
+            app:maxValue="100"
+            app:prefix=""
+            app:progressBackgroundColor="#eee"
+            app:progressColor="@color/color_ffb912"
+            app:progressText=""
+            app:progressTextColor="@color/white"
+            app:startingPoint="bottom"
+            app:suffix=""
+            app:textSize="@dimen/_15sdp" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/wait_assigning_order"
+            android:textColor="@color/color_0a0a0a"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:gravity="center"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/waiting_for_confrirmation"
+            android:textColor="@color/color_6c6c6c"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:textFont="roman" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/successLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="@dimen/_300sdp"
+            android:layout_gravity="center"
+            android:padding="@dimen/_15sdp"
+            app:srcCompat="@drawable/ic_order_success" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/resturantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/congratualtions"
+            android:textColor="@color/color_0a0a0a"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/resturantAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/success_msg"
+            android:textColor="@color/color_6c6c6c"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:textFont="roman" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapButton
+            android:id="@+id/payButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="@dimen/_15sdp"
+            android:background="@drawable/ic_gray_btn_pressed"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
+            android:text="@string/track_order"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="normal"
+            app:buttonFont="medium" />
+    </LinearLayout>
+
+</FrameLayout>
