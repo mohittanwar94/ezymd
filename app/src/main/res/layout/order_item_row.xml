@@ -36,12 +36,13 @@
         android:letterSpacing="0.01"
         android:lineSpacingExtra="@dimen/_2sdp"
         android:maxLines="1"
+        android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"
         android:singleLine="true"
         android:text="@string/pizza"
         android:textColor="@color/color_002366"
         android:textSize="@dimen/_12sdp"
-        app:textFont="roman" />
+        app:textFont="medium" />
 
     <View
         android:id="@+id/view"

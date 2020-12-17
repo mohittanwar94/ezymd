@@ -18,7 +18,7 @@ import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorCodes
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_orders.*
 
 class OrderFragment : Fragment() {
 

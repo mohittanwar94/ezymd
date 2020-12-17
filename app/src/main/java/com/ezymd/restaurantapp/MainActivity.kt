@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
-import com.ezymd.restaurantapp.ui.myorder.OrderFragment
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
+import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.KeepStateNavigator
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,8 +39,8 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
         navView.labelVisibilityMode = LABEL_VISIBILITY_LABELED
         SnapLog.print("onCreate")
 
-        if (intent.hasExtra(OrderFragment::class.java.name)){
-            intent.removeExtra(OrderFragment::class.java.name)
+        if (intent.hasExtra(JSONKeys.LABEL)) {
+            intent.removeExtra(JSONKeys.LABEL)
             navView.selectedItemId = R.id.navigation_order
         }
 
@@ -50,6 +50,7 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
         super.onNewIntent(intent)
         SnapLog.print("onNewIntent")
     }
+
     override fun onResume() {
         super.onResume()
         EzymdApplication.getInstance().setConnectivityListener(this@MainActivity);
