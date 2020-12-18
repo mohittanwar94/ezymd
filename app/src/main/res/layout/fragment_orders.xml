@@ -14,8 +14,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/resturantRecyclerView"
             android:layout_width="match_parent"
-            android:paddingLeft="@dimen/_15sdp"
-            android:paddingRight="@dimen/_15sdp"
             android:layout_height="wrap_content" />
 
         <ProgressBar

@@ -200,4 +200,13 @@
     <string name="wait_assigning_order">Wait! assigning your order</string>
     <string name="waiting_for_confrirmation">Waiting for confirmation from restaurant.\nPlease Wait...</string>
     <string name="order_amount">Order Amount</string>
+    <string name="orderID">Order ID</string>
+    <string name="resurant_name">Resurant Name</string>
+    <string name="order_status">Order Status</string>
+    <string name="completed">Completed</string>
+    <string name="view_order_details">View Order Details</string>
+    <string name="payment_id">Payment ID</string>
+    <string name="created">Created At</string>
+    <string name="delivery_instruction">Delivery Instruction</string>
+    <string name="scheduleAt">Schedule At</string>
 </resources>

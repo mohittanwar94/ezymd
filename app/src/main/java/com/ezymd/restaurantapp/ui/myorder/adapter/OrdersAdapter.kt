@@ -1,14 +1,9 @@
 package com.ezymd.restaurantapp.ui.myorder.adapter
 
 import android.content.Context
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
@@ -65,23 +60,12 @@ class OrdersAdapter(
         val item = data[position]
         holder.itemView.order_id.text = "#" + item.orderId
         holder.itemView.name.text = item.restaurantName
-        val spannable =
-            SpannableString(holder.itemView.context.getString(R.string.order_amount) + ": ")
-        spannable.setSpan(
-            ForegroundColorSpan(
-                ContextCompat.getColor(
-                    holder.itemView.totalAmount.context,
-                    R.color.color_002366
-                )
-            ), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val spannable1 =
-            SpannableString(holder.itemView.context.getString(R.string.dollor) + item.total)
-        holder.itemView.totalAmount.text = TextUtils.concat(spannable, spannable1)
+
+        holder.itemView.totalAmount.text = holder.itemView.context.getString(R.string.dollor) + item.total
 
 
         holder.itemView.created.text = TimeUtils.getReadableDate(item.created)
-        holder.itemView.setOnClickListener {
+        holder.itemView.viewOrderDetails.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }
     }

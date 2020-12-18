@@ -1,23 +1,20 @@
 package com.ezymd.restaurantapp.ui.myorder
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.orderdetails.OrderDetailsActivity
 import com.ezymd.restaurantapp.ui.myorder.adapter.OrdersAdapter
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
-import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.ErrorCodes
-import com.ezymd.restaurantapp.utils.OnRecyclerView
-import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_orders.*
 
 class OrderFragment : Fragment() {
@@ -67,14 +64,18 @@ class OrderFragment : Fragment() {
         resturantRecyclerView.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         resturantRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                RecyclerView.VERTICAL
+            VerticalSpacesItemDecoration(
+                UIUtil.convertDpToPx(
+                    activity,
+                    requireActivity().resources.getDimension(R.dimen._3sdp)
+                )
+                    .toInt()
             )
         )
         restaurantAdapter =
             OrdersAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-
+                startActivity(Intent(requireActivity(), OrderDetailsActivity::class.java).putExtra(JSONKeys.OBJECT,dataResturant[position]))
+                requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 

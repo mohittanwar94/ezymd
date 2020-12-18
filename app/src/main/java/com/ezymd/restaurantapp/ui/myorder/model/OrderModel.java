@@ -17,6 +17,11 @@ public class OrderModel implements Serializable {
     @Expose
     private String delivery_lat;
 
+    @SerializedName("address")
+    @Expose
+    private String address;
+
+
     @SerializedName("restaurant_lat")
     @Expose
     private String restaurant_lat;
@@ -121,6 +126,14 @@ public class OrderModel implements Serializable {
         return created;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public void setCreated(String created) {
         this.created = created;
     }
@@ -146,7 +159,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getDeliveryInstruction() {
-        return TextUtils.isEmpty(deliveryInstruction) ? "" : deliveryInstruction;
+        return TextUtils.isEmpty(deliveryInstruction) ? "N/A" : deliveryInstruction;
     }
 
     public String getRestaurant_lang() {
