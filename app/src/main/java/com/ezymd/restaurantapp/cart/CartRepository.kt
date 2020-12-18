@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.cart
 
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
+import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -30,6 +31,23 @@ class CartRepository {
 
 
     }
+
+    suspend fun getTransactionCharges(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<TransactionChargeModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.transactionCharge(
+                baseRequest.paramsMap,baseRequest.accessToken
+            )
+        }
+
+
+    }
+
 
     suspend fun createCustomer(
         baseRequest: BaseRequest,

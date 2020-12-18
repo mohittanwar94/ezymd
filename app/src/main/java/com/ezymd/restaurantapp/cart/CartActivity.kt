@@ -13,14 +13,16 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.editprofile.EditProfileActivity
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_cart.*
-import kotlinx.android.synthetic.main.content_scrolling.*
 
 class CartActivity : BaseActivity() {
-    val serviceAmount = 10
+    var serviceAmount = 0.0
+    var deliveryAmount=0.0
     private var restaurantAdapter: CartAdapter? = null
     private val dataResturant = ArrayList<ItemModel>()
 
@@ -44,6 +46,8 @@ class CartActivity : BaseActivity() {
         setHeaderData()
         setAdapter()
         setGUI()
+
+
     }
 
     private fun setGUI() {
@@ -65,7 +69,27 @@ class CartActivity : BaseActivity() {
         }
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            startConfirmOrder()
+            if (TextUtils.isEmpty(userInfo!!.phoneNumber)) {
+                showError(false, "Please Add Your Phone No.", object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        super.onDismissed(transientBottomBar, event)
+                        startActivityForResult(
+                            Intent(
+                                this@CartActivity,
+                                EditProfileActivity::class.java
+                            ), JSONKeys.OTP_REQUEST
+                        )
+                        overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                    }
+
+                    override fun onShown(sb: Snackbar?) {
+                        super.onShown(sb)
+                    }
+
+                })
+            } else {
+                startConfirmOrder()
+            }
         }
     }
 
@@ -73,6 +97,9 @@ class CartActivity : BaseActivity() {
     private fun startConfirmOrder() {
         val intent = Intent(this, ConfirmOrder::class.java)
         intent.putExtra(JSONKeys.OBJECT, restaurant)
+        intent.putExtra(JSONKeys.TOTAL_CASH, getTotalPrice(EzymdApplication.getInstance().cartData.value!!))
+        intent.putExtra(JSONKeys.FEE_CHARGES, serviceAmount)
+        intent.putExtra(JSONKeys.DELIVERY_CHARGES, deliveryAmount)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
@@ -103,9 +130,13 @@ class CartActivity : BaseActivity() {
     private fun setObserver() {
         EzymdApplication.getInstance().cartData.observe(this, Observer {
             if (it != null) {
-                if (it.size > 0)
+                if (it.size > 0) {
                     notifyAdapter(it)
-                else
+                    val baseRequest = BaseRequest(userInfo)
+                    baseRequest.paramsMap.put("amount", "" + getTotalPrice(it))
+                    viewModel.getCharges(baseRequest)
+
+                } else
                     showEmpty()
             }
         })
@@ -113,11 +144,42 @@ class CartActivity : BaseActivity() {
         viewModel.errorRequest.observe(this, Observer {
             showError(false, it, null)
         })
+
+        viewModel.mTransactionCharge.observe(this, Observer {
+
+            if (it != null && it.status == ErrorCodes.SUCCESS) {
+                serviceAmount = it.transaction_charge
+                notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
+            } else {
+                showError(false, it.message, object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        super.onDismissed(transientBottomBar, event)
+                        onBackPressed()
+                    }
+
+                    override fun onShown(sb: Snackbar?) {
+                        super.onShown(sb)
+                    }
+
+                })
+            }
+        })
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
 
 
         })
+    }
+
+    private fun getTotalPrice(arrayList: ArrayList<ItemModel>): Double {
+        var price = 0.0
+        for (itemModel in arrayList) {
+            price += (itemModel.price * itemModel.quantity)
+        }
+
+
+
+        return price
     }
 
     private fun showEmpty() {
@@ -145,7 +207,7 @@ class CartActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.mResturantData.removeObservers(this)
+        viewModel.mTransactionCharge.removeObservers(this)
         viewModel.errorRequest.removeObservers(this)
         viewModel.isLoading.removeObservers(this)
         EzymdApplication.getInstance().cartData.removeObservers(this)

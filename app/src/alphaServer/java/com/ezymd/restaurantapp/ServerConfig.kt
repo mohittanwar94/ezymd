@@ -32,6 +32,7 @@ interface ServerConfig {
         const val EPHEMERAL_KEYS="stripe/ephemeralKey"
         const val LOCATION_VALIDATE="validateLocations"
         const val SAVE_PAYMENT="paymentVerify"
+        const val TRANSACTION_CHARGES="transactionAmount"
 
     }
 }

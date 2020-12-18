@@ -47,7 +47,7 @@ public class OrderModel implements Serializable {
     private String phoneNo;
     @SerializedName("total")
     @Expose
-    private Integer total;
+    private Double total;
     @SerializedName("payment_id")
     @Expose
     private String paymentId;
@@ -113,7 +113,7 @@ public class OrderModel implements Serializable {
         this.phoneNo = phoneNo;
     }
 
-    public Integer getTotal() {
+    public Double getTotal() {
         return total;
     }
 
@@ -133,7 +133,7 @@ public class OrderModel implements Serializable {
         this.scheduleTime = scheduleTime;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 

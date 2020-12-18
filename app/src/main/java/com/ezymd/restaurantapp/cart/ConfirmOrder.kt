@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.cart
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -37,6 +38,7 @@ class ConfirmOrder : BaseActivity() {
     val checkoutModel = OrderCheckoutUtilsModel()
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 5000
 
+
     private val stripe: Stripe by lazy {
         Stripe(
             this,
@@ -67,6 +69,7 @@ class ConfirmOrder : BaseActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this).get(OrderConfirmViewModel::class.java)
     }
+
 
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
@@ -183,8 +186,16 @@ class ConfirmOrder : BaseActivity() {
         shippingAddress.text = getString(R.string.add_shipping_details)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setGUI() {
-
+        payButton.text =
+            getString(R.string.pay) + " " + getString(R.string.dollor) + (intent.getDoubleExtra(
+                JSONKeys.TOTAL_CASH,
+                0.0
+            ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+                JSONKeys.FEE_CHARGES,
+                0.0
+            ))
         if (restaurant.isPick) {
             viewModel.isNowSelectd.postValue(true)
             resturantAddressLay.visibility = View.VISIBLE
@@ -591,8 +602,24 @@ class ConfirmOrder : BaseActivity() {
             price += (model.price * model.quantity)
             orderItems.add(jsonObjectModel)
         }
-        jsonObject.addProperty("total", price)
-        totalPrice = price.toDouble()
+        jsonObject.addProperty(
+            "transaction_charges",
+            intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
+        )
+
+        jsonObject.addProperty(
+            "delivery_charges",
+            intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
+        )
+        totalPrice = intent.getDoubleExtra(
+            JSONKeys.TOTAL_CASH,
+            0.0
+        ) + intent.getDoubleExtra(
+            JSONKeys.DELIVERY_CHARGES,
+            0.0
+        ) + intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
+        jsonObject.addProperty("total", totalPrice)
+
         paymentSession?.setCartTotal(price.toLong())
 
         jsonObject.add("orderItems", orderItems)

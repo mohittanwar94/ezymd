@@ -394,4 +394,6 @@ public interface JSONKeys {
     String DELIVERY="2";
     @Nullable
     String IS_PICKUP="is_pickup";
+    @Nullable
+    String DELIVERY_CHARGES="delivery_charges";
 }

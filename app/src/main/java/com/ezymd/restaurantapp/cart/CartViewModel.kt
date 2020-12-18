@@ -4,16 +4,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SingleLiveEvent
+import com.google.gson.JsonObject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
 
-    var errorRequest: MutableLiveData<String>
+    var errorRequest: SingleLiveEvent<String>
     private var loginRepository: CartRepository? = null
-    val mResturantData: MutableLiveData<ResturantModel>
+    val mTransactionCharge: MutableLiveData<TransactionChargeModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -26,8 +33,8 @@ class CartViewModel : ViewModel() {
 
         loginRepository = CartRepository.instance
         isLoading = MutableLiveData()
-        mResturantData = MutableLiveData()
-        errorRequest = MutableLiveData()
+        mTransactionCharge = MutableLiveData()
+        errorRequest = SingleLiveEvent()
 
 
     }
@@ -66,6 +73,25 @@ class CartViewModel : ViewModel() {
         }
     }
 
+
+
+    fun getCharges(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.getTransactionCharges(
+                 baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> mTransactionCharge.postValue(result.value)
+            }
+        }
+
+
+    }
 
     private fun showNetworkError() {
         errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
