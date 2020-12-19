@@ -3,10 +3,13 @@ package com.ezymd.restaurantapp.cart
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.OrderFragment
+import com.ezymd.restaurantapp.utils.FirebaseConstants
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.view.circulartimerview.CircularTimerListener
@@ -16,6 +19,9 @@ import kotlinx.android.synthetic.main.activity_order_success.*
 
 class OrderSuccess : BaseActivity() {
     private var isBackEnable = false
+    private val trackViewModel by lazy {
+        ViewModelProvider(this).get(OrderSuccessViewModel::class.java)
+    }
 
     override fun onBackPressed() {
         if (isBackEnable) {
@@ -26,8 +32,32 @@ class OrderSuccess : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_success)
+        trackViewModel.loginToFirebase(FirebaseConstants.email, FirebaseConstants.password, "")
+        setObserver()
+    }
+
+    private fun setObserver() {
+        trackViewModel.showError().observe(this, Observer {
+            if (it != null)
+                showError(false, it, null)
+        })
+        trackViewModel.errorRequest.observe(this, Observer {
+            if (it != null)
+                showError(false, it, null)
+        })
 
 
+        trackViewModel.firebaseResponse.observe(this, Observer {
+            if (it != null) {
+
+            }
+        })
+
+        trackViewModel.response.observe(this, Observer {
+            if (it != null) {
+
+            }
+        })
     }
 
     override fun onStart() {
