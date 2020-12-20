@@ -61,7 +61,7 @@ class OrdersAdapter(
 
         val item = data[position]
         holder.itemView.order_id.text =
-            holder.itemView.order_id.context.getString(R.string.orderID) + ": #" + item.orderId
+            holder.itemView.order_id.context.getString(R.string.orderID) + " #" + item.orderId
         holder.itemView.name.text = item.restaurantName
 
         holder.itemView.totalAmount.text =
