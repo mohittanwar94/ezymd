@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_cart.*
 
 class CartActivity : BaseActivity() {
     var serviceAmount = 0.0
-    var deliveryAmount=0.0
+    var deliveryAmount = 0.0
     private var restaurantAdapter: CartAdapter? = null
     private val dataResturant = ArrayList<ItemModel>()
 
@@ -97,7 +97,10 @@ class CartActivity : BaseActivity() {
     private fun startConfirmOrder() {
         val intent = Intent(this, ConfirmOrder::class.java)
         intent.putExtra(JSONKeys.OBJECT, restaurant)
-        intent.putExtra(JSONKeys.TOTAL_CASH, getTotalPrice(EzymdApplication.getInstance().cartData.value!!))
+        intent.putExtra(
+            JSONKeys.TOTAL_CASH,
+            getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
+        )
         intent.putExtra(JSONKeys.FEE_CHARGES, serviceAmount)
         intent.putExtra(JSONKeys.DELIVERY_CHARGES, deliveryAmount)
         startActivity(intent)
@@ -251,7 +254,8 @@ class CartActivity : BaseActivity() {
         runOnUiThread(Runnable {
             serviceCharge.text = TextUtils.concat(
                 getString(R.string.dollor),
-                "" + serviceAmount
+                "" + String.format("%.2f", serviceAmount)
+
             )
             totalAmount.text = TextUtils.concat(
                 getString(R.string.dollor),

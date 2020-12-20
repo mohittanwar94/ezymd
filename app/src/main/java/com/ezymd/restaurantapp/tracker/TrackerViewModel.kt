@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.utils.ErrorResponse
-import com.ezymd.restaurantapp.utils.SingleLiveEvent
-import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.utils.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
@@ -28,9 +27,12 @@ class TrackerViewModel : ViewModel() {
     private var loginRepository: TrackerRepository? = null
     val routeInfoResponse: MutableLiveData<ArrayList<List<HashMap<String, String>>>>
     val firebaseResponse: MutableLiveData<DataSnapshot>
+    val locationUpdate = MutableLiveData<LocationModel>()
     val isLoading: MutableLiveData<Boolean>
+    val timer = Timer()
 
     override fun onCleared() {
+        timer.cancel()
         super.onCleared()
         viewModelScope.cancel()
     }
@@ -51,6 +53,19 @@ class TrackerViewModel : ViewModel() {
         routeInfoResponse = MutableLiveData()
     }
 
+
+    fun startTimer(order_id: String, userInfo: UserInfo) {
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap["id"] = order_id
+                downloadLatestCoordinates(baseRequest)
+
+            }
+
+
+        }, 120000, 120000);
+    }
 
     private fun showNetworkError() {
         errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
@@ -116,6 +131,27 @@ class TrackerViewModel : ViewModel() {
         return haspMap
     }
 
+
+    fun downloadLatestCoordinates(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.updateCoordinates(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    SnapLog.print(result.value.toString())
+                    locationUpdate.postValue(result.value)
+                }
+            }
+        }
+
+    }
+
     fun downloadRoute(url: ConcurrentHashMap<String, String>) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
@@ -139,7 +175,7 @@ class TrackerViewModel : ViewModel() {
     private fun parseResponse(value: String): ArrayList<List<HashMap<String, String>>> {
         val routes = ArrayList<List<HashMap<String, String>>>()
         try {
-            val jsonObject=JSONObject(value)
+            val jsonObject = JSONObject(value)
             val parser = DirectionsJSONParser()
             routes.addAll(parser.parse(jsonObject))
         } catch (e: java.lang.Exception) {

@@ -1,9 +1,11 @@
 package com.ezymd.restaurantapp.tracker
 
+import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,6 +37,22 @@ class TrackerRepository private constructor() {
 
     }
 
+    suspend fun updateCoordinates(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LocationModel> {
+
+        SnapLog.print("track repositry=====")
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.locationUpdates(
+               baseRequest.paramsMap["id"]!!, baseRequest.accessToken
+            )
+        }
+
+
+    }
 
     companion object {
         @Volatile

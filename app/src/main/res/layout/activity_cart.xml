@@ -255,9 +255,9 @@
 
                 <ProgressBar
                     android:id="@+id/progress"
-                    style="@style/progressBarTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:theme="@style/progressBarTheme"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:visibility="gone"
                     android:layout_gravity="end" />
 

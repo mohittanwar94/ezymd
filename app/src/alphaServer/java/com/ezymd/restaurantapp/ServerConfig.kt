@@ -33,6 +33,7 @@ interface ServerConfig {
         const val LOCATION_VALIDATE="validateLocations"
         const val SAVE_PAYMENT="paymentVerify"
         const val TRANSACTION_CHARGES="transactionAmount"
+        const val UPDATED_COORDINATES="orderTracking/{name}"
 
     }
 }

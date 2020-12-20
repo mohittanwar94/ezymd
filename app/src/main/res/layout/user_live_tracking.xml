@@ -61,11 +61,10 @@
                         android:layout_marginTop="@dimen/_4sdp"
                         android:enabled="false"
                         android:gravity="start|center"
-                        android:paddingStart="@dimen/_5sdp"
                         android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
-                        app:textFont="medium" />
+                        app:textFont="bold" />
 
                 </LinearLayout>
 

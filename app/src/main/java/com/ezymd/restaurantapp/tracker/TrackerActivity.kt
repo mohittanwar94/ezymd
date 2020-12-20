@@ -79,8 +79,11 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun setObserver() {
-        var lat = userInfo!!.lat.toDouble()
-        var lng = userInfo!!.lang.toDouble()
+        //if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY)
+        trackViewModel.startTimer(item.orderId.toString(), userInfo!!)
+
+        var lat = item.delivery_lat.toDouble()
+        var lng = item.delivery_lang.toDouble()
         val source = LatLng(lat, lng)
         lat = item.restaurant_lat.toDouble()
         lng = item.restaurant_lang.toDouble()
@@ -94,9 +97,19 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         trackViewModel.downloadRoute(hashMap)
         trackViewModel.routeInfoResponse.observe(this, Observer {
             if (it != null) {
+                grayPolyline?.remove()
+                blackPolyline?.remove()
+                pointsList.clear()
                 generateRouteOnMap(it)
                 showPath(pointsList)
+
                 // showMovingCab(pointsList)
+            }
+        })
+
+        trackViewModel.locationUpdate.observe(this, Observer {
+            if (it != null) {
+                getUpdateRoot()
             }
         })
 
@@ -124,17 +137,34 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
 
+    private fun getUpdateRoot() {
+        var lat = item.delivery_lat.toDouble()
+        var lng = item.delivery_lang.toDouble()
+        val source = LatLng(lat, lng)
+        lat = item.restaurant_lat.toDouble()
+        lng = item.restaurant_lang.toDouble()
+        val destination = LatLng(lat, lng)
+
+        val hashMap = trackViewModel.getDirectionsUrl(
+            source,
+            destination,
+            getString(R.string.google_maps_key)
+        )
+        trackViewModel.downloadRoute(hashMap)
+    }
+
+
     override fun onMapReady(map: GoogleMap) {
         mMap = map
         mMap!!.setMaxZoomPreference(16f)
-        defaultLocation = LatLng(28.971880, 77.673700)
+        defaultLocation = LatLng(item.delivery_lat.toDouble(), item.delivery_lang.toDouble())
         mMap!!.uiSettings.isMyLocationButtonEnabled = false
         showDefaultLocationOnMap(defaultLocation)
 
-        trackViewModel.loginToFirebase(
+        /*trackViewModel.loginToFirebase(
             getString(R.string.firebase_email),
             getString(R.string.firebase_password), getString(R.string.firebase_path)
-        )
+        )*/
         setObserver()
     }
 

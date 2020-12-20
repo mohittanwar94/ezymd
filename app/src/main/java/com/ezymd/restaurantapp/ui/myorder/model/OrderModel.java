@@ -165,7 +165,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getRestaurant_lang() {
-        return TextUtils.isEmpty(restaurant_lang) ? "" : restaurant_lang;
+        return TextUtils.isEmpty(restaurant_lang) ? "0.0" : restaurant_lang;
     }
 
     public void setRestaurant_lang(String restaurant_lang) {
@@ -173,7 +173,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getDelivery_lat() {
-        return TextUtils.isEmpty(delivery_lat) ? "" : delivery_lat;
+        return TextUtils.isEmpty(delivery_lat) ? "0.0" : delivery_lat;
     }
 
     public void setDelivery_lat(String delivery_lat) {
@@ -181,7 +181,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getRestaurant_lat() {
-        return TextUtils.isEmpty(restaurant_lat) ? "" : restaurant_lat;
+        return TextUtils.isEmpty(restaurant_lat) ? "0.0" : restaurant_lat;
     }
 
     public void setRestaurant_lat(String restaurant_lat) {
@@ -189,7 +189,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getDelivery_lang() {
-        return TextUtils.isEmpty(delivery_lang) ? "" : delivery_lang;
+        return TextUtils.isEmpty(delivery_lang) ? "0.0" : delivery_lang;
     }
 
     public void setDelivery_lang(String delivery_lang) {

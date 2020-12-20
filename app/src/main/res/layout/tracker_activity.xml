@@ -9,7 +9,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/_150sdp"
+        android:layout_marginBottom="@dimen/_100sdp"
         android:background="@color/color_f2f4f7"
         android:orientation="vertical">
 

@@ -6,6 +6,7 @@ import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
+import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
@@ -102,14 +103,20 @@ interface WebServices {
     ): JsonObject
 
     @POST(ServerConfig.CREATE_ORDER/*"create_payment_intent"*/)
-    suspend fun createPaymentIntent(@Body params: MutableMap<String, Any>, @Header("Authorization") token: String): ResponseBody
+    suspend fun createPaymentIntent(
+        @Body params: MutableMap<String, Any>,
+        @Header("Authorization") token: String
+    ): ResponseBody
 
     @POST("confirm_payment_intent")
     suspend fun confirmPaymentIntent(@Body params: MutableMap<String, String?>): ResponseBody
 
     @FormUrlEncoded
     @POST(ServerConfig.EPHEMERAL_KEYS)
-    suspend fun createEphemeralKey(@FieldMap apiVersionMap: MutableMap<String, String>,@Header("Authorization") accessToken: String?): ResponseBody
+    suspend fun createEphemeralKey(
+        @FieldMap apiVersionMap: MutableMap<String, String>,
+        @Header("Authorization") accessToken: String?
+    ): ResponseBody
 
 
     @GET(ServerConfig.CREATE_CUSTOMER)
@@ -119,14 +126,27 @@ interface WebServices {
     @GET(ServerConfig.CREATE_ORDER)
     suspend fun orderList(@Header("Authorization") accessToken: String): OrderBaseModel
 
+    @GET(ServerConfig.UPDATED_COORDINATES)
+    suspend fun locationUpdates(
+        @Path("name") id: String,
+        @Header("Authorization") accessToken: String
+    ): LocationModel
+
+
     @FormUrlEncoded
     @POST(ServerConfig.LOCATION_VALIDATE)
-    suspend fun locationValidate(@FieldMap apiVersionMap: Map<String, String>,@Header("Authorization") accessToken: String): LocationValidatorModel
+    suspend fun locationValidate(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): LocationValidatorModel
 
 
     @FormUrlEncoded
     @POST(ServerConfig.TRANSACTION_CHARGES)
-    suspend fun transactionCharge(@FieldMap apiVersionMap: Map<String, String>,@Header("Authorization") accessToken: String): TransactionChargeModel
+    suspend fun transactionCharge(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): TransactionChargeModel
 
 
     @FormUrlEncoded
