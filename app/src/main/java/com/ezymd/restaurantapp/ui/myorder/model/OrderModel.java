@@ -9,27 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OrderModel implements Serializable {
-    @SerializedName("restaurant_lang")
-    @Expose
-    private String restaurant_lang;
-
-    @SerializedName("delivery_lat")
-    @Expose
-    private String delivery_lat;
-
-    @SerializedName("address")
-    @Expose
-    private String address;
-
-
-    @SerializedName("restaurant_lat")
-    @Expose
-    private String restaurant_lat;
-
-    @SerializedName("delivery_lang")
-    @Expose
-    private String delivery_lang;
-
     @SerializedName("order_id")
     @Expose
     private Integer orderId;
@@ -42,11 +21,6 @@ public class OrderModel implements Serializable {
     @SerializedName("email")
     @Expose
     private String email;
-
-    @SerializedName("order_created")
-    @Expose
-    private String created;
-
     @SerializedName("phone_no")
     @Expose
     private String phoneNo;
@@ -62,18 +36,46 @@ public class OrderModel implements Serializable {
     @SerializedName("schedule_type")
     @Expose
     private Integer scheduleType;
-
-    @SerializedName("schedule_date")
+    @SerializedName("address")
     @Expose
-    private String scheduleTime;
-
-
-    @SerializedName("shipping_details")
-    @Expose
-    private String shippingDetails;
+    private String address;
     @SerializedName("order_pickup_status")
     @Expose
     private Integer orderPickupStatus;
+    @SerializedName("restaurant_lat")
+    @Expose
+    private String restaurant_lat;
+    @SerializedName("restaurant_lang")
+    @Expose
+    private String restaurant_lang;
+    @SerializedName("delivery_lat")
+    @Expose
+    private String delivery_lat;
+    @SerializedName("delivery_lang")
+    @Expose
+    private String delivery_lang;
+    @SerializedName("order_created")
+    @Expose
+    private String created;
+    @SerializedName("schedule_date")
+    @Expose
+    private String scheduleTime;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+    @SerializedName("order_status")
+    @Expose
+    private Integer orderStatus;
+    @SerializedName("delivery_time")
+    @Expose
+    private String deliveryTime;
+    @SerializedName("transaction_charges")
+    @Expose
+    private String transactionCharges;
+    @SerializedName("delivery_charges")
+    @Expose
+    private String deliveryCharges;
+
     @SerializedName("order_items")
     @Expose
     private ArrayList<OrderItems> orderItems = new ArrayList<>();
@@ -206,13 +208,6 @@ public class OrderModel implements Serializable {
         this.scheduleType = scheduleType;
     }
 
-    public String getShippingDetails() {
-        return shippingDetails;
-    }
-
-    public void setShippingDetails(String shippingDetails) {
-        this.shippingDetails = shippingDetails;
-    }
 
     public Integer getOrderPickupStatus() {
         return orderPickupStatus;

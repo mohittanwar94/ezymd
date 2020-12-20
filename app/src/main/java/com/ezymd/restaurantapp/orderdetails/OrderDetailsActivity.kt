@@ -3,7 +3,6 @@ package com.ezymd.restaurantapp.orderdetails
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
@@ -12,6 +11,7 @@ import com.ezymd.restaurantapp.orderdetails.adapter.OrderDetailsAdapter
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
+import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.TimeUtils
@@ -45,7 +45,7 @@ class OrderDetailsActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-        order_id.text =getString(R.string.orderID)+ " #" + item.orderId
+        order_id.text = getString(R.string.orderID) + " #" + item.orderId
         restaurantname.text = item.restaurantName
         username.text = userInfo?.userName
         order_info.text =
@@ -60,12 +60,11 @@ class OrderDetailsActivity : BaseActivity() {
         } else {
             scheduleAt.text = getString(R.string.now)
         }
-        if (item.orderPickupStatus.equals(JSONKeys.FROM_RESTAURANT)) {
-            trackOrder.visibility = View.GONE
-            //JSONKeys.FROM_RESTAURANT
-        } /*else {
-            JSONKeys.DELIVERY
-        }*/
+
+        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
+            status.text = getString(R.string.your_order_processing)
+        }
+
 
         leftIcon.setOnClickListener {
             onBackPressed()

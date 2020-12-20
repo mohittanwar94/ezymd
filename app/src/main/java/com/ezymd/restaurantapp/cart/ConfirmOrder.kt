@@ -573,6 +573,9 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("address", checkoutModel.deliveryAddress)
         jsonObject.addProperty("lat", restaurant.lat)
         jsonObject.addProperty("lang", restaurant.longitude)
+        jsonObject.addProperty("restaurant_address", restaurant.address)
+        jsonObject.addProperty("delivery_lat", viewModel.locationSelected.value?.lat)
+        jsonObject.addProperty("delivery_lang", viewModel.locationSelected.value?.lang)
         jsonObject.addProperty(
             "order_pickup_status", if (restaurant.isPick) {
                 JSONKeys.FROM_RESTAURANT

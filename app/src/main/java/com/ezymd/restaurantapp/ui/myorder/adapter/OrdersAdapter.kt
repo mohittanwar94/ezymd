@@ -2,13 +2,17 @@ package com.ezymd.restaurantapp.ui.myorder.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
+import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.TimeUtils
 import kotlinx.android.synthetic.main.order_item_row.view.*
@@ -78,7 +82,9 @@ class OrdersAdapter(
         holder.itemView.items.text = itemsString.toString()
         holder.itemView.created.text = TimeUtils.getReadableDate(item.created)
         holder.itemView.trackOrder.setOnClickListener {
-
+            val startIntent = Intent(holder.itemView.context, TrackerActivity::class.java)
+            startIntent.putExtra(JSONKeys.OBJECT, data[position])
+            (mContext as MainActivity).startActivity(startIntent)
         }
 
         holder.itemView.setOnClickListener {

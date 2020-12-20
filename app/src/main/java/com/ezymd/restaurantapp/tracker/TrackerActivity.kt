@@ -1,25 +1,29 @@
 package com.ezymd.restaurantapp.tracker
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.utils.AnimationUtils
-import com.ezymd.restaurantapp.utils.MapUtils
-import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
+import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
+import com.ezymd.restaurantapp.utils.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
+import kotlinx.android.synthetic.main.tracker_activity.*
+import kotlinx.android.synthetic.main.user_live_tracking.*
 
 
 class TrackerActivity : BaseActivity(), OnMapReadyCallback {
@@ -33,6 +37,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     private var currentLatLng: LatLng? = null
     val pointsList = ArrayList<LatLng>()
 
+    private val item by lazy {
+        intent.getSerializableExtra(JSONKeys.OBJECT) as OrderModel
+    }
 
     private val mMarkers: HashMap<String, Marker> = HashMap()
     private var mMap: GoogleMap? = null
@@ -41,6 +48,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tracker_activity)
+        setGUI()
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -48,12 +56,34 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun setGUI() {
+        order_id.text = getString(R.string.orderID) + " #" + item.orderId
+        order_info.text =
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
+                R.string.dollor
+            ) + item.total
+
+        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
+            liveStatus.text = getString(R.string.your_order_processing)
+        } else if (item.orderPickupStatus == OrderStatus.ORDER_PREPARING) {
+            liveStatus.text = getString(R.string.your_order_is_cooking)
+        } else if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY) {
+            deliveyLay.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            //liveStatus.text = getString(R.string.your_order_processing)
+        }
+        leftIcon.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
     private fun setObserver() {
-        var lat = 28.971880
-        var lng = 77.673700
+        var lat = userInfo!!.lat.toDouble()
+        var lng = userInfo!!.lang.toDouble()
         val source = LatLng(lat, lng)
-        lat = 28.15179145
-        lng = 77.34360700000001
+        lat = item.restaurant_lat.toDouble()
+        lng = item.restaurant_lang.toDouble()
         val destination = LatLng(lat, lng)
 
         val hashMap = trackViewModel.getDirectionsUrl(
@@ -81,15 +111,15 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
 
         trackViewModel.firebaseResponse.observe(this, Observer {
-            if (it != null) {
-                //   val key = it.key
-                val value = it.value as HashMap<*, *>
-                val lat = (value["latitude"].toString()).toDouble()
-                val lng = (value["longitude"].toString()).toDouble()
-                val location = LatLng(lat, lng)
-                updateCarLocation(location)
-                // setMarker(it)
-            }
+            /*  if (it != null) {
+                  //   val key = it.key
+                  val value = it.value as HashMap<*, *>
+                  val lat = (value["latitude"].toString()).toDouble()
+                  val lng = (value["longitude"].toString()).toDouble()
+                  val location = LatLng(lat, lng)
+                  updateCarLocation(location)
+                  // setMarker(it)
+              }*/
         })
     }
 
@@ -97,7 +127,6 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         mMap = map
         mMap!!.setMaxZoomPreference(16f)
-        mMap!!.isMyLocationEnabled=false
         defaultLocation = LatLng(28.971880, 77.673700)
         mMap!!.uiSettings.isMyLocationButtonEnabled = false
         showDefaultLocationOnMap(defaultLocation)

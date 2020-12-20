@@ -212,4 +212,8 @@
     <string name="reorder">Reorder</string>
     <string name="review">Review</string>
     <string name="your_order_is_completed">Your order is completed</string>
+    <string name="live_status">Live Status</string>
+    <string name="have_an_issue_chat_with_us">Have an issue chat with us?</string>
+    <string name="your_order_processing">Your order is processing</string>
+    <string name="your_order_is_cooking">"Your order is cooking "</string>
 </resources>

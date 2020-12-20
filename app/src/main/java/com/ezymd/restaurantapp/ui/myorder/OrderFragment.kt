@@ -75,7 +75,6 @@ class OrderFragment : Fragment() {
         restaurantAdapter =
             OrdersAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 startActivity(Intent(requireActivity(), OrderDetailsActivity::class.java).putExtra(JSONKeys.OBJECT,dataResturant[position]))
-                requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
