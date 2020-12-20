@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.ui.myorder.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -54,18 +55,33 @@ class OrdersAdapter(
         return data
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
 
 
         val item = data[position]
-        holder.itemView.order_id.text = "#" + item.orderId
+        holder.itemView.order_id.text =
+            holder.itemView.order_id.context.getString(R.string.orderID) + ": #" + item.orderId
         holder.itemView.name.text = item.restaurantName
 
-        holder.itemView.totalAmount.text = holder.itemView.context.getString(R.string.dollor) + item.total
+        holder.itemView.totalAmount.text =
+            holder.itemView.context.getString(R.string.dollor) + item.total
 
+        val itemsString = StringBuilder()
+        for (model in item.orderItems) {
+            itemsString.append(model.item)
+            itemsString.append(" x ")
+            itemsString.append(model.qty)
+            itemsString.append("\n")
+        }
 
+        holder.itemView.items.text = itemsString.toString()
         holder.itemView.created.text = TimeUtils.getReadableDate(item.created)
-        holder.itemView.viewOrderDetails.setOnClickListener {
+        holder.itemView.trackOrder.setOnClickListener {
+
+        }
+
+        holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }
     }

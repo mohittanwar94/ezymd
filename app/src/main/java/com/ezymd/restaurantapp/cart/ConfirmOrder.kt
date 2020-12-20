@@ -869,7 +869,7 @@ class ConfirmOrder : BaseActivity() {
     private fun finishPayment() {
 
         val intent = Intent(this@ConfirmOrder, OrderSuccess::class.java)
-        intent.putExtra(JSONKeys.IS_PICKUP, restaurant.isPick)
+        intent.putExtra(JSONKeys.IS_PICKUP, true)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
         finishWithResult(

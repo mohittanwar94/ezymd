@@ -15,6 +15,9 @@
                 android:width="@dimen/_90sdp"
                 android:height="@dimen/_35sdp" />
             <corners android:radius="@dimen/_6sdp" />
+
+            <stroke android:width="@dimen/_1sdp"
+                android:color="@android:color/transparent"/>
         </shape>
     </item>
 </ripple>

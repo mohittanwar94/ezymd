@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.ItemModel
-import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.orderdetails.adapter.OrderDetailsAdapter
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
@@ -46,14 +45,16 @@ class OrderDetailsActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-        order_id.text = "#" + item.orderId
-        name.text = item.restaurantName
-
+        order_id.text =getString(R.string.orderID)+ "#" + item.orderId
+        restaurantname.text = item.restaurantName
+        username.text = userInfo?.userName
+        order_info.text =
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
+                R.string.dollor
+            ) + item.total
         totalAmount.text = getString(R.string.dollor) + item.total
-        created.text = TimeUtils.getReadableDate(item.created)
-        paymentID.text = item.paymentId
         deliveryInstruction.text = item.deliveryInstruction
-        address.text = item.address
+        userAddress.text = item.address
         if (item.scheduleType == 2) {
             scheduleAt.text = item.scheduleTime
         } else {
@@ -66,7 +67,9 @@ class OrderDetailsActivity : BaseActivity() {
             JSONKeys.DELIVERY
         }*/
 
-
+        leftIcon.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onStart() {
@@ -84,16 +87,10 @@ class OrderDetailsActivity : BaseActivity() {
 
     private fun setHeaderData() {
 
-        toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
-        toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
-        toolbar_layout.title = "#" + item.orderId
+        order_id.text = "#" + item.orderId
 
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
 
     override fun onResume() {
         super.onResume()
