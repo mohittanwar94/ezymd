@@ -45,7 +45,7 @@ class OrderDetailsActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-        order_id.text =getString(R.string.orderID)+ "#" + item.orderId
+        order_id.text =getString(R.string.orderID)+ " #" + item.orderId
         restaurantname.text = item.restaurantName
         username.text = userInfo?.userName
         order_info.text =
