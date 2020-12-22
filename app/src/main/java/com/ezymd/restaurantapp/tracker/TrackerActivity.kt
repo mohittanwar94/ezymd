@@ -101,7 +101,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 blackPolyline?.remove()
                 pointsList.clear()
                 generateRouteOnMap(it)
-                showPath(pointsList)
+                if (pointsList.size > 0)
+                    showPath(pointsList)
 
                 // showMovingCab(pointsList)
             }

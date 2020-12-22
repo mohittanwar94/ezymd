@@ -35,7 +35,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_location" />
+                    app:srcCompat="@drawable/ic_live_status" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                         android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
-                        app:textFont="bold" />
+                        app:textFont="medium" />
 
                 </LinearLayout>
 
@@ -110,26 +110,26 @@
                     android:paddingEnd="@dimen/_10sdp"
                     android:textColor="@color/color_002366"
                     android:textSize="@dimen/_13sdp"
-                    app:textFont="bold" />
+                    app:textFont="medium" />
 
 
-                <com.ezymd.restaurantapp.customviews.CircularImageView
+                <ImageView
                     android:id="@+id/call"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_order_success" />
+                    app:srcCompat="@drawable/ic_phone_call" />
 
 
-                <com.ezymd.restaurantapp.customviews.CircularImageView
+                <ImageView
                     android:id="@+id/chat"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_order_success" />
+                    app:srcCompat="@drawable/ic_chat" />
 
 
             </LinearLayout>
@@ -146,6 +146,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:orientation="horizontal">
 
                 <com.ezymd.restaurantapp.customviews.CircularImageView
@@ -155,14 +156,13 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_order_success" />
+                    app:srcCompat="@drawable/ic_chat_grey" />
 
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_4sdp"
                     android:layout_weight="1"
                     android:enabled="false"
                     android:gravity="start|center"
@@ -171,7 +171,7 @@
                     android:text="@string/have_an_issue_chat_with_us"
                     android:textColor="@color/color_002366"
                     android:textSize="@dimen/_13sdp"
-                    app:textFont="bold" />
+                    app:textFont="medium" />
             </LinearLayout>
 
         </LinearLayout>

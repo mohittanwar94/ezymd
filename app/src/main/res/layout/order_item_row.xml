@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/order_row_bg"
-    android:orientation="vertical"
     android:layout_marginLeft="@dimen/_9sdp"
     android:layout_marginRight="@dimen/_9sdp"
+    android:background="@drawable/order_row_bg"
+    android:orientation="vertical"
     android:padding="@dimen/_7sdp">
 
 
@@ -29,8 +29,8 @@
             android:maxLines="1"
             android:text="@string/orderID"
             android:textColor="@color/color_002366"
-            android:textSize="@dimen/_12sdp"
-            app:textFont="bold" />
+            android:textSize="@dimen/_13sdp"
+            app:textFont="medium" />
 
         <com.ezymd.restaurantapp.customviews.SnapTextView
             android:id="@+id/totalAmount"
@@ -44,7 +44,7 @@
             android:maxLines="1"
             android:text="@string/order_status"
             android:textColor="@color/color_002366"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_13sdp"
             app:textFont="bold" />
     </LinearLayout>
 
@@ -60,17 +60,18 @@
         android:maxLines="1"
         android:paddingBottom="@dimen/_5sdp"
         android:text="@string/pizza"
-        android:textColor="@color/color_3b3b3b"
-        android:textSize="@dimen/_10sdp"
-        app:textFont="medium" />
+        android:textColor="@color/color_667ba3"
+        android:textSize="@dimen/_11sdp"
+        app:textFont="roman" />
 
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_9sdp"
-        android:layout_marginBottom="@dimen/_9sdp"
-        android:background="@drawable/dotted_line" />
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layerType="software"
+        android:src="@drawable/dotted_line" />
 
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -82,8 +83,8 @@
         android:gravity="start"
         android:letterSpacing="0.01"
         android:text="@string/completed"
-        android:textColor="@color/color_3b3b3b"
-        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/color_667ba3"
+        android:textSize="@dimen/_11sdp"
         app:textFont="roman" />
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -91,14 +92,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_9sdp"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:ellipsize="end"
         android:gravity="start"
         android:letterSpacing="0.01"
         android:lineSpacingExtra="@dimen/_4sdp"
         android:maxLines="1"
         android:text="@string/resurant_name"
-        android:textColor="@color/color_c3c2c2"
+        android:textColor="@color/color_b2bdd1"
         android:textSize="@dimen/_10sdp"
         app:textFont="roman" />
 
@@ -106,7 +108,7 @@
     <com.ezymd.restaurantapp.customviews.SnapButton
         android:id="@+id/trackOrder"
         android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_22sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_gravity="start"
         android:background="@drawable/ic_gray_btn_pressed"
         android:gravity="center"
@@ -114,7 +116,7 @@
         android:text="@string/track_order"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/_9sdp"
+        android:textSize="@dimen/_11sdp"
         app:textFont="roman" />
 
 </LinearLayout>
