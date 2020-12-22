@@ -259,9 +259,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun addOriginDestinationMarkerAndGet(latLng: LatLng): Marker {
+    private fun addOriginDestinationMarkerAndGet(isSource: Boolean, latLng: LatLng): Marker {
         val bitmapDescriptor =
-            BitmapDescriptorFactory.fromBitmap(MapUtils.getOriginDestinationMarkerBitmap())
+            if (isSource) {
+                MapUtils.getSourceBitmap(this)
+            } else {
+                MapUtils.getDestinationBitmap(this)
+            }
+
         return mMap!!.addMarker(
             MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
         )
@@ -290,14 +295,16 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         grayPolyline = mMap!!.addPolyline(polylineOptions)
 
         val blackPolylineOptions = PolylineOptions()
-        blackPolylineOptions.color(Color.BLACK)
+        blackPolylineOptions.color(ContextCompat.getColor(this, R.color.color_002366))
         blackPolylineOptions.width(12f)
         blackPolyline = mMap!!.addPolyline(blackPolylineOptions)
 
-        originMarker = addOriginDestinationMarkerAndGet(latLngList[0])
-        originMarker?.setAnchor(0.5f, 0.5f)
-        destinationMarker = addOriginDestinationMarkerAndGet(latLngList[latLngList.size - 1])
-        destinationMarker?.setAnchor(0.5f, 0.5f)
+        originMarker = addOriginDestinationMarkerAndGet(true, latLngList[0])
+        //originMarker?.setAnchor(0.5f, 0.5f)
+        originMarker?.isDraggable = false
+        destinationMarker = addOriginDestinationMarkerAndGet(false, latLngList[latLngList.size - 1])
+        //destinationMarker?.setAnchor(0.5f, 0.5f)
+        destinationMarker?.isDraggable = false
 
         val polylineAnimator = AnimationUtils.polylineAnimator()
         polylineAnimator.addUpdateListener { valueAnimator ->

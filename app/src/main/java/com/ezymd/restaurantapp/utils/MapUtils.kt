@@ -1,7 +1,10 @@
 package com.ezymd.restaurantapp.utils
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.VectorDrawable
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.R
@@ -14,11 +17,50 @@ import kotlin.math.atan
 object MapUtils {
 
 
-     fun getCarBitmap(
+    fun getCarBitmap(
         context: Context
     ): BitmapDescriptor? {
         val vectorDrawable =
             ContextCompat.getDrawable(context, R.drawable.ic_delivery_man) as VectorDrawable?
+
+        val h = vectorDrawable!!.intrinsicHeight
+        val w = vectorDrawable.intrinsicWidth
+
+        vectorDrawable.setBounds(0, 0, w, h)
+
+        val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bm)
+        vectorDrawable.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bm)
+
+    }
+
+    fun getSourceBitmap(
+        context: Context
+    ): BitmapDescriptor? {
+        val vectorDrawable =
+            ContextCompat.getDrawable(context, R.drawable.ic_home_location) as VectorDrawable?
+
+        val h = vectorDrawable!!.intrinsicHeight
+        val w = vectorDrawable.intrinsicWidth
+
+        vectorDrawable.setBounds(0, 0, w, h)
+
+        val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bm)
+        vectorDrawable.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bm)
+
+    }
+
+
+    fun getDestinationBitmap(
+        context: Context
+    ): BitmapDescriptor? {
+        val vectorDrawable =
+            ContextCompat.getDrawable(context, R.drawable.ic_restaurant_location) as VectorDrawable?
 
         val h = vectorDrawable!!.intrinsicHeight
         val w = vectorDrawable.intrinsicWidth

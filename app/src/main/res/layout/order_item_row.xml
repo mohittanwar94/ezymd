@@ -107,7 +107,7 @@
 
     <com.ezymd.restaurantapp.customviews.SnapButton
         android:id="@+id/trackOrder"
-        android:layout_width="@dimen/_80sdp"
+        android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_25sdp"
         android:layout_gravity="start"
         android:background="@drawable/ic_gray_btn_pressed"
