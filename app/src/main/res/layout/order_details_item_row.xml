@@ -53,7 +53,7 @@
         android:letterSpacing="0.01"
         android:text="@string/dummmy_price"
         android:textColor="@color/color_002366"
-        android:textSize="@dimen/_15sdp"
+        android:textSize="@dimen/_11sdp"
         android:textStyle="normal"
         app:textFont="medium" />
 

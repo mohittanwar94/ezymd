@@ -156,15 +156,16 @@
                     app:textFont="roman" />
 
 
-                <View
+                <ImageView
                     android:id="@+id/view"
-                    android:layout_width="@dimen/_1sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/resutaurnatLocation"
                     android:layout_gravity="top|left"
-                    android:layout_marginStart="@dimen/_17sdp"
-                    android:background="@color/color_002366" />
-
+                    android:layerType="software"
+                    android:rotation="90"
+                    android:background="@drawable/dotted_line_yellow"
+                    app:tint="@color/dark_yellow" />
 
                 <ImageView
                     android:id="@+id/userLocation"

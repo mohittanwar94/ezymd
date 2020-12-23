@@ -67,11 +67,11 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_12sdp"
         android:layerType="software"
-        android:src="@drawable/dotted_line" />
+        android:background="@drawable/dotted_line" />
 
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
