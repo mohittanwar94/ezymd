@@ -72,7 +72,7 @@ public class StoreActivity {
 
                 // if `true`, will show "Google Pay" as an option on the
                 // Payment Methods selection screen
-                .setShouldShowGooglePay(true)
+                .setShouldShowGooglePay(false)
 
                 .build();
     }

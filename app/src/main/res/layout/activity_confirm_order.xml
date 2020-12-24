@@ -447,6 +447,8 @@
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="5sp"
                 android:text="@string/pay"
+                android:alpha="0.6"
+                android:enabled="false"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"
@@ -465,7 +467,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            style="@style/progressBarTheme"
+            android:theme="@style/progressBarTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

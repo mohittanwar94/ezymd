@@ -416,6 +416,7 @@ class ConfirmOrder : BaseActivity() {
 
     private fun checkStartPaymentSession() {
         if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.deliveryAddress == "") {
+            showError(null, false, "Please fill above details first.")
             return
         }
         checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {
@@ -427,6 +428,7 @@ class ConfirmOrder : BaseActivity() {
             checkoutModel.delivery_time = viewModel.dateSelected.value!!
 
         startPaymentSession()
+
 
     }
 
@@ -470,8 +472,10 @@ class ConfirmOrder : BaseActivity() {
                     SnapLog.print("onPaymentSessionDataChanged")
                     paymentSessionData = data
 
-                    payButton.isEnabled = data.isPaymentReadyToCharge
+                   // payButton.isEnabled = data.isPaymentReadyToCharge
                     shippingAddress.text = getAddress(paymentSessionData!!)
+                    checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
+                    checkPayButtomEnableDisable()
 
                     when {
                         data.useGooglePay -> {
@@ -487,6 +491,17 @@ class ConfirmOrder : BaseActivity() {
 
                 }
             })
+    }
+
+    private fun checkPayButtomEnableDisable() {
+        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.shippingAddress == "Add Shipping Details" || checkoutModel.deliveryAddress == "") {
+            showError(null, false, "Please fill above details first.")
+            return
+        } else {
+            payButton.isEnabled = true
+            payButton.alpha = 1f
+        }
+
     }
 
     private fun getAddress(paymentSessionData: PaymentSessionData): String {

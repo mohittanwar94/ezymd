@@ -48,6 +48,7 @@ class OrderDetailsActivity : BaseActivity() {
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         restaurantname.text = item.restaurantName
         username.text = userInfo?.userName
+        address.text = item.restaurantAddress
         order_info.text =
             TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
                 R.string.dollor

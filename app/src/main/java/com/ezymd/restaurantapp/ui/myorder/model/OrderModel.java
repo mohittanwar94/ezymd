@@ -15,6 +15,9 @@ public class OrderModel implements Serializable {
     @SerializedName("restaurant_name")
     @Expose
     private String restaurantName;
+    @SerializedName("restaurant_address")
+    @Expose
+    private String restaurantAddress;
     @SerializedName("username")
     @Expose
     private String username;
@@ -90,6 +93,54 @@ public class OrderModel implements Serializable {
 
     public String getRestaurantName() {
         return TextUtils.isEmpty(restaurantName) ? "" : restaurantName;
+    }
+
+    public String getRestaurantAddress() {
+        return TextUtils.isEmpty(restaurantAddress) ? "" : restaurantAddress;
+    }
+
+    public void setRestaurantAddress(String restaurantAddress) {
+        this.restaurantAddress = restaurantAddress;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public String getTransactionCharges() {
+        return transactionCharges;
+    }
+
+    public void setTransactionCharges(String transactionCharges) {
+        this.transactionCharges = transactionCharges;
+    }
+
+    public String getDeliveryCharges() {
+        return deliveryCharges;
+    }
+
+    public void setDeliveryCharges(String deliveryCharges) {
+        this.deliveryCharges = deliveryCharges;
     }
 
     public void setRestaurantName(String restaurantName) {

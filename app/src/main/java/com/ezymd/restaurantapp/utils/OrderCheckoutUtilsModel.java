@@ -1,5 +1,7 @@
 package com.ezymd.restaurantapp.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class OrderCheckoutUtilsModel implements Serializable {
@@ -12,9 +14,18 @@ public class OrderCheckoutUtilsModel implements Serializable {
     private int delivery_type = 1;
     private String delivery_time = "";
     private String delivery_instruction = "";
+    private   String shippingAddress="";
 
     public String getDeliveryAddress() {
         return deliveryAddress;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
