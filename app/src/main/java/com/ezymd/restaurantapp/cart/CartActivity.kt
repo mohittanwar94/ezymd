@@ -95,11 +95,21 @@ class CartActivity : BaseActivity() {
 
 
     private fun startConfirmOrder() {
+        val price = getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
+        if (price < restaurant.minOrder.toInt()) {
+            val msg = TextUtils.concat(
+                "Add ",
+                "$" + (restaurant.minOrder.toInt() - price),
+                " to reach minimum order amount"
+            ).toString()
+            showError(false, msg, null)
+            return
+        }
         val intent = Intent(this, ConfirmOrder::class.java)
         intent.putExtra(JSONKeys.OBJECT, restaurant)
         intent.putExtra(
             JSONKeys.TOTAL_CASH,
-            getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
+            price
         )
         intent.putExtra(JSONKeys.FEE_CHARGES, serviceAmount)
         intent.putExtra(JSONKeys.DELIVERY_CHARGES, deliveryAmount)

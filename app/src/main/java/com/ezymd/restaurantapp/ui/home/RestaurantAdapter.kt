@@ -108,7 +108,7 @@ class RestaurantAdapter(
         if (!item.minOrder.equals("0")) {
             discount.append(" | ")
             discount.append(mContext.getString(R.string.minimum))
-            discount.append(" ")
+            discount.append(" $")
             discount.append(item.minOrder)
         }
 
