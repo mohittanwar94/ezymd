@@ -12,6 +12,7 @@ import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
+import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.TimeUtils
@@ -86,6 +87,10 @@ class OrdersAdapter(
             startIntent.putExtra(JSONKeys.OBJECT, data[position])
             (mContext as MainActivity).startActivity(startIntent)
         }
+        if (item.orderStatus == OrderStatus.ORDER_COMPLETED)
+            holder.itemView.trackOrder.visibility = View.GONE
+        else
+            holder.itemView.trackOrder.visibility = View.VISIBLE
 
         holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)

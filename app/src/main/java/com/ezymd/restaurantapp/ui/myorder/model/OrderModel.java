@@ -12,12 +12,20 @@ public class OrderModel implements Serializable {
     @SerializedName("order_id")
     @Expose
     private Integer orderId;
+
+    @SerializedName("key")
+    @Expose
+    private String key;
+
     @SerializedName("restaurant_name")
     @Expose
     private String restaurantName;
+
     @SerializedName("restaurant_address")
     @Expose
     private String restaurantAddress;
+
+
     @SerializedName("username")
     @Expose
     private String username;
@@ -27,6 +35,9 @@ public class OrderModel implements Serializable {
     @SerializedName("phone_no")
     @Expose
     private String phoneNo;
+    @SerializedName("restaurant_phone_no")
+    @Expose
+    private String restPhoneNO;
     @SerializedName("total")
     @Expose
     private Double total;
@@ -42,6 +53,23 @@ public class OrderModel implements Serializable {
     @SerializedName("address")
     @Expose
     private String address;
+
+
+    @SerializedName("feedback")
+    @Expose
+    private String feedback;
+
+
+    @SerializedName("delivery_rating")
+    @Expose
+    private String delivery_rating;
+
+
+    @SerializedName("restaurant_rating")
+    @Expose
+    private String restaurant_rating;
+
+    // for deliverty type self or delivery
     @SerializedName("order_pickup_status")
     @Expose
     private Integer orderPickupStatus;
@@ -83,6 +111,14 @@ public class OrderModel implements Serializable {
     @Expose
     private ArrayList<OrderItems> orderItems = new ArrayList<>();
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public Integer getOrderId() {
         return orderId;
     }
@@ -93,6 +129,18 @@ public class OrderModel implements Serializable {
 
     public String getRestaurantName() {
         return TextUtils.isEmpty(restaurantName) ? "" : restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getUsername() {
+        return TextUtils.isEmpty(username) ? "" : username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRestaurantAddress() {
@@ -141,18 +189,6 @@ public class OrderModel implements Serializable {
 
     public void setDeliveryCharges(String deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
-    }
-
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public String getUsername() {
-        return TextUtils.isEmpty(username) ? "" : username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -216,7 +252,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getRestaurant_lang() {
-        return TextUtils.isEmpty(restaurant_lang) ? "0.0" : restaurant_lang;
+        return TextUtils.isEmpty(restaurant_lang) ? "" : restaurant_lang;
     }
 
     public void setRestaurant_lang(String restaurant_lang) {
@@ -224,7 +260,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getDelivery_lat() {
-        return TextUtils.isEmpty(delivery_lat) ? "0.0" : delivery_lat;
+        return TextUtils.isEmpty(delivery_lat) ? "" : delivery_lat;
     }
 
     public void setDelivery_lat(String delivery_lat) {
@@ -232,7 +268,31 @@ public class OrderModel implements Serializable {
     }
 
     public String getRestaurant_lat() {
-        return TextUtils.isEmpty(restaurant_lat) ? "0.0" : restaurant_lat;
+        return TextUtils.isEmpty(restaurant_lat) ? "" : restaurant_lat;
+    }
+
+    public String getFeedback() {
+        return TextUtils.isEmpty(feedback) ? "" : feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getDelivery_rating() {
+        return TextUtils.isEmpty(delivery_rating) ? "0.0" : delivery_rating;
+    }
+
+    public void setDelivery_rating(String delivery_rating) {
+        this.delivery_rating = delivery_rating;
+    }
+
+    public String getRestaurant_rating() {
+        return TextUtils.isEmpty(restaurant_rating) ? "0.0" : restaurant_rating;
+    }
+
+    public void setRestaurant_rating(String restaurant_rating) {
+        this.restaurant_rating = restaurant_rating;
     }
 
     public void setRestaurant_lat(String restaurant_lat) {
@@ -240,7 +300,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getDelivery_lang() {
-        return TextUtils.isEmpty(delivery_lang) ? "0.0" : delivery_lang;
+        return TextUtils.isEmpty(delivery_lang) ? "" : delivery_lang;
     }
 
     public void setDelivery_lang(String delivery_lang) {
@@ -259,6 +319,13 @@ public class OrderModel implements Serializable {
         this.scheduleType = scheduleType;
     }
 
+    public String getRestPhoneNO() {
+        return TextUtils.isEmpty(restPhoneNO) ? "" : restPhoneNO;
+    }
+
+    public void setRestPhoneNO(String restPhoneNO) {
+        this.restPhoneNO = restPhoneNO;
+    }
 
     public Integer getOrderPickupStatus() {
         return orderPickupStatus;

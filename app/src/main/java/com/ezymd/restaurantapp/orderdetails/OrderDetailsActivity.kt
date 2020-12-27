@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.orderdetails
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
@@ -61,15 +62,36 @@ class OrderDetailsActivity : BaseActivity() {
         } else {
             scheduleAt.text = getString(R.string.now)
         }
+        serviceCharge.text = getString(R.string.dollor) + "" + item.transactionCharges
 
-        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
-            status.text = getString(R.string.your_order_processing)
-        }
-
-
+        setOrderStatus(item.orderStatus)
         leftIcon.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun setOrderStatus(orderStatus: Int) {
+        review.visibility = View.GONE
+        feedback.visibility = View.GONE
+        val ratingGivent = item.delivery_rating.toFloat()
+        rating.rating = ratingGivent
+        feedback.text = item.feedback
+        if (orderStatus != OrderStatus.ORDER_COMPLETED) {
+            status.text = getString(R.string.your_order_processing)
+        } else {
+            if (ratingGivent == 0.0f && item.feedback.equals("")) {
+                review.visibility = View.VISIBLE
+                rating.visibility = View.GONE
+            }else{
+                rating.visibility = View.VISIBLE
+
+            }
+            if (item.feedback != "")
+                feedback.visibility = View.VISIBLE
+            status.text = getString(R.string.your_order_is_completed)
+        }
+
+
     }
 
     override fun onStart() {
