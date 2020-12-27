@@ -118,5 +118,19 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_11sdp"
         app:textFont="roman" />
+    <com.ezymd.restaurantapp.customviews.SnapButton
+        android:id="@+id/reorder"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_gravity="start"
+        android:background="@drawable/review_bg"
+        android:gravity="center"
+        android:letterSpacing="0.01"
+        android:visibility="gone"
+        android:text="@string/reorder"
+        android:textAllCaps="true"
+        android:textColor="@color/color_ffb912"
+        android:textSize="@dimen/_11sdp"
+        app:textFont="roman" />
 
 </LinearLayout>

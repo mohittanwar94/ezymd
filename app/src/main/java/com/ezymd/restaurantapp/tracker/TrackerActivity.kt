@@ -1,16 +1,19 @@
 package com.ezymd.restaurantapp.tracker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
@@ -64,17 +67,66 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 R.string.dollor
             ) + item.total
 
-        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
-            liveStatus.text = getString(R.string.your_order_processing)
-        } else if (item.orderPickupStatus == OrderStatus.ORDER_PREPARING) {
-            liveStatus.text = getString(R.string.your_order_is_cooking)
-        } else if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY) {
+
+        if (item.orderPickupStatus == JSONKeys.FROM_RESTAURANT && item.orderStatus == OrderStatus.ORDER_COMPLETED) {
+            liveStatus.text = getString(R.string.your_order_is_completed)
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
-            //liveStatus.text = getString(R.string.your_order_processing)
+            call.visibility = View.GONE
+            userImage.visibility = View.GONE
+            userDetails.text = getString(R.string.go_and_pick_your_order)
+        } else if (item.orderPickupStatus == JSONKeys.FROM_RESTAURANT && item.orderStatus == OrderStatus.PROCESSING) {
+            liveStatus.text = getString(R.string.your_order_processing)
+        } else {
+            setOrderStatus()
         }
         leftIcon.setOnClickListener {
             onBackPressed()
+        }
+    }
+
+    private fun setOrderStatus() {
+        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
+            liveStatus.text = getString(R.string.your_order_processing)
+        } else if (item.orderPickupStatus == OrderStatus.ORDER_ACCEPTED) {
+            liveStatus.text = getString(R.string.your_order_is_cooking)
+        } else if (item.orderPickupStatus == OrderStatus.ORDER_ACCEPT_DELIVERY_BOY) {
+            deliveyLay.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            liveStatus.text = getString(R.string.order_accepted_by_delivery_boy)
+            setDeliveryInfo()
+        } else if (item.orderPickupStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
+            deliveyLay.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            liveStatus.text = getString(R.string.delivery_boy_reached_at_your_location)
+            setDeliveryInfo()
+        } else if (item.orderPickupStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT) {
+            deliveyLay.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            liveStatus.text = getString(R.string.order_pick_up)
+            setDeliveryInfo()
+        } else {
+            deliveyLay.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            liveStatus.text = getString(R.string.your_order_is_completed)
+            setDeliveryInfo()
+        }
+    }
+
+    private fun setDeliveryInfo() {
+        userDetails.text = item.delivery_name
+
+        if (item.delivery_pic != "") {
+            GlideApp.with(applicationContext)
+                .load(item.delivery_pic).centerCrop().dontAnimate()
+                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
+        }
+        call.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse(item.delivey_phone)
+            startActivity(intent)
+
         }
     }
 

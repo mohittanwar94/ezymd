@@ -87,10 +87,13 @@ class OrdersAdapter(
             startIntent.putExtra(JSONKeys.OBJECT, data[position])
             (mContext as MainActivity).startActivity(startIntent)
         }
-        if (item.orderStatus == OrderStatus.ORDER_COMPLETED)
+        if (item.orderStatus == OrderStatus.ORDER_COMPLETED) {
             holder.itemView.trackOrder.visibility = View.GONE
-        else
+            holder.itemView.reorder.visibility = View.VISIBLE
+        } else {
             holder.itemView.trackOrder.visibility = View.VISIBLE
+            holder.itemView.reorder.visibility = View.GONE
+        }
 
         holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)

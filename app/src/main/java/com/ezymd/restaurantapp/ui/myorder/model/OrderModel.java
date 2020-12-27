@@ -12,14 +12,12 @@ public class OrderModel implements Serializable {
     @SerializedName("order_id")
     @Expose
     private Integer orderId;
-
-    @SerializedName("key")
-    @Expose
-    private String key;
-
     @SerializedName("restaurant_name")
     @Expose
     private String restaurantName;
+    @SerializedName("feedback")
+    @Expose
+    private String feedback;
 
     @SerializedName("restaurant_address")
     @Expose
@@ -35,9 +33,6 @@ public class OrderModel implements Serializable {
     @SerializedName("phone_no")
     @Expose
     private String phoneNo;
-    @SerializedName("restaurant_phone_no")
-    @Expose
-    private String restPhoneNO;
     @SerializedName("total")
     @Expose
     private Double total;
@@ -53,23 +48,6 @@ public class OrderModel implements Serializable {
     @SerializedName("address")
     @Expose
     private String address;
-
-
-    @SerializedName("feedback")
-    @Expose
-    private String feedback;
-
-
-    @SerializedName("delivery_rating")
-    @Expose
-    private String delivery_rating;
-
-
-    @SerializedName("restaurant_rating")
-    @Expose
-    private String restaurant_rating;
-
-    // for deliverty type self or delivery
     @SerializedName("order_pickup_status")
     @Expose
     private Integer orderPickupStatus;
@@ -111,13 +89,25 @@ public class OrderModel implements Serializable {
     @Expose
     private ArrayList<OrderItems> orderItems = new ArrayList<>();
 
-    public String getKey() {
-        return key;
-    }
+    @SerializedName("delivery_phone")
+    @Expose
+    public String delivey_phone;
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+    @SerializedName("delivery_name")
+    @Expose
+    public String delivery_name;
+
+    @SerializedName("delivery_pic")
+    @Expose
+    public String delivery_pic;
+
+    @SerializedName("delivery_rating")
+    @Expose
+    public String delivey_rating;
+
+    @SerializedName("delivery_boy_rating")
+    @Expose
+    public String delivery_boy_rating;
 
     public Integer getOrderId() {
         return orderId;
@@ -182,6 +172,23 @@ public class OrderModel implements Serializable {
     public void setTransactionCharges(String transactionCharges) {
         this.transactionCharges = transactionCharges;
     }
+
+    public String getDelivery_boy_rating() {
+        return TextUtils.isEmpty(delivey_rating) ? "0.0" : delivey_rating;
+    }
+
+    public void setDelivery_boy_rating(String delivey_rating) {
+        this.delivey_rating = delivey_rating;
+    }
+
+    public String getFeedback() {
+        return TextUtils.isEmpty(feedback) ? "" : feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
 
     public String getDeliveryCharges() {
         return deliveryCharges;
@@ -271,36 +278,45 @@ public class OrderModel implements Serializable {
         return TextUtils.isEmpty(restaurant_lat) ? "" : restaurant_lat;
     }
 
-    public String getFeedback() {
-        return TextUtils.isEmpty(feedback) ? "" : feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public String getDelivery_rating() {
-        return TextUtils.isEmpty(delivery_rating) ? "0.0" : delivery_rating;
-    }
-
-    public void setDelivery_rating(String delivery_rating) {
-        this.delivery_rating = delivery_rating;
-    }
-
-    public String getRestaurant_rating() {
-        return TextUtils.isEmpty(restaurant_rating) ? "0.0" : restaurant_rating;
-    }
-
-    public void setRestaurant_rating(String restaurant_rating) {
-        this.restaurant_rating = restaurant_rating;
-    }
-
     public void setRestaurant_lat(String restaurant_lat) {
         this.restaurant_lat = restaurant_lat;
     }
 
     public String getDelivery_lang() {
         return TextUtils.isEmpty(delivery_lang) ? "" : delivery_lang;
+    }
+
+
+    public String getDelivey_phone() {
+        return TextUtils.isEmpty(delivey_phone) ? "" : delivey_phone;
+    }
+
+    public void setDelivey_phone(String delivey_phone) {
+        this.delivey_phone = delivey_phone;
+    }
+
+    public String getDelivery_name() {
+        return TextUtils.isEmpty(delivery_name) ? "" : delivery_name;
+    }
+
+    public void setDelivery_name(String delivery_name) {
+        this.delivery_name = delivery_name;
+    }
+
+    public String getDelivery_pic() {
+        return TextUtils.isEmpty(delivery_pic) ? "" : delivery_pic;
+    }
+
+    public void setDelivery_pic(String delivery_pic) {
+        this.delivery_pic = delivery_pic;
+    }
+
+    public String getDelivey_rating() {
+        return TextUtils.isEmpty(delivey_rating) ? "0.0" : delivey_rating;
+    }
+
+    public void setDelivey_rating(String delivey_rating) {
+        this.delivey_rating = delivey_rating;
     }
 
     public void setDelivery_lang(String delivery_lang) {
@@ -319,13 +335,6 @@ public class OrderModel implements Serializable {
         this.scheduleType = scheduleType;
     }
 
-    public String getRestPhoneNO() {
-        return TextUtils.isEmpty(restPhoneNO) ? "" : restPhoneNO;
-    }
-
-    public void setRestPhoneNO(String restPhoneNO) {
-        this.restPhoneNO = restPhoneNO;
-    }
 
     public Integer getOrderPickupStatus() {
         return orderPickupStatus;

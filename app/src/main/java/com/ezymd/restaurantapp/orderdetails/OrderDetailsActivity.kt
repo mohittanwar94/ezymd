@@ -73,7 +73,7 @@ class OrderDetailsActivity : BaseActivity() {
     private fun setOrderStatus(orderStatus: Int) {
         review.visibility = View.GONE
         feedback.visibility = View.GONE
-        val ratingGivent = item.delivery_rating.toFloat()
+        val ratingGivent = item.getDelivey_rating().toFloat()
         rating.rating = ratingGivent
         feedback.text = item.feedback
         if (orderStatus != OrderStatus.ORDER_COMPLETED) {
