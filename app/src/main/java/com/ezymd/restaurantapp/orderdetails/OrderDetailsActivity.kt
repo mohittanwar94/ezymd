@@ -78,6 +78,7 @@ class OrderDetailsActivity : BaseActivity() {
         feedback.text = item.feedback
         if (orderStatus != OrderStatus.ORDER_COMPLETED) {
             status.text = getString(R.string.your_order_processing)
+            trackOrder.visibility=View.GONE
         } else {
             if (ratingGivent == 0.0f && item.feedback.equals("")) {
                 review.visibility = View.VISIBLE
