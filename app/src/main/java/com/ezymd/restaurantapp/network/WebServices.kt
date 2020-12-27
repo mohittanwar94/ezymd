@@ -155,5 +155,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): LocationValidatorModel
 
+
+    @FormUrlEncoded
+    @POST(ServerConfig.SAVE_RATING)
+    suspend fun saveRating(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): LocationValidatorModel
+
 }
 

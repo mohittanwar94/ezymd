@@ -220,5 +220,13 @@
     <string name="order_accepted_by_delivery_boy">Order Accepted</string>
     <string name="order_pick_up">Order pick up from restaurant</string>
     <string name="go_and_pick_your_order">Go and pick your order from restaurant</string>
+    <string name="rate_your_restaurant">Tell us how was the food</string>
+    <string name="rate_your_delivery_rating">Rate delivery experience</string>
+    <string name="submit">Submit</string>
+    <string name="very_bad">Very Bad</string>
+    <string name="bad">Bad</string>
+    <string name="good">Good</string>
+    <string name="very_good">Very Good</string>
+    <string name="write_your_valuable_feedback">Write your valuable feedback</string>
 
 </resources>

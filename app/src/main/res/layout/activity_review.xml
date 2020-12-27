@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_new" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_40sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_4sdp"
+                android:maxLines="1"
+                android:padding="@dimen/_15sdp"
+                android:text="@string/rate_your_restaurant"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_12sdp"
+                app:textFont="bold"
+                tools:ignore="RtlSymmetry" />
+
+            <RatingBar
+                android:id="@+id/restRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:max="5"
+                android:min="1"
+                android:numStars="5"
+                android:progressTint="@color/dark_yellow"
+                android:rating="5"
+                android:stepSize="0.5" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_4sdp"
+                android:maxLines="1"
+                android:padding="@dimen/_15sdp"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_12sdp"
+                app:textFont="bold"
+                tools:ignore="RtlSymmetry" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_4sdp"
+                android:maxLines="1"
+                android:padding="@dimen/_15sdp"
+                android:text="@string/rate_your_delivery_rating"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_12sdp"
+                app:textFont="bold"
+                tools:ignore="RtlSymmetry" />
+
+            <RatingBar
+                android:id="@+id/deliveryRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:max="5"
+                android:min="1"
+                android:numStars="5"
+                android:progressTint="@color/dark_yellow"
+                android:rating="5"
+                android:stepSize="0.5" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/labelDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_4sdp"
+                android:maxLines="1"
+                android:padding="@dimen/_15sdp"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_12sdp"
+                app:textFont="bold"
+                tools:ignore="RtlSymmetry" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapEditText
+                android:id="@+id/deliveryInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/location_edit_text_bg"
+                android:gravity="top|start"
+                android:hint="@string/write_your_valuable_feedback"
+                android:maxLength="100"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_15sdp"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/charterCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:gravity="top|start"
+                android:padding="@dimen/_5sdp"
+                android:text="0/100"
+                android:textColor="@color/blue_667ba3"
+                android:textSize="@dimen/_10sdp"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                app:buttonFont="bold" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#6000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</FrameLayout>

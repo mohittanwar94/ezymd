@@ -9,14 +9,12 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.orderdetails.adapter.OrderDetailsAdapter
+import com.ezymd.restaurantapp.review.ReviewActivity
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.OnRecyclerView
-import com.ezymd.restaurantapp.utils.TimeUtils
-import com.ezymd.restaurantapp.utils.VerticalSpacesItemDecoration
+import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_order_details.*
 
 class OrderDetailsActivity : BaseActivity() {
@@ -68,6 +66,17 @@ class OrderDetailsActivity : BaseActivity() {
         leftIcon.setOnClickListener {
             onBackPressed()
         }
+
+        review.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivity(
+                Intent(this, ReviewActivity::class.java).putExtra(
+                    JSONKeys.OBJECT,
+                    item
+                )
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
     }
 
     private fun setOrderStatus(orderStatus: Int) {
@@ -78,12 +87,12 @@ class OrderDetailsActivity : BaseActivity() {
         feedback.text = item.feedback
         if (orderStatus != OrderStatus.ORDER_COMPLETED) {
             status.text = getString(R.string.your_order_processing)
-            trackOrder.visibility=View.GONE
+            trackOrder.visibility = View.GONE
         } else {
             if (ratingGivent == 0.0f && item.feedback.equals("")) {
                 review.visibility = View.VISIBLE
                 rating.visibility = View.GONE
-            }else{
+            } else {
                 rating.visibility = View.VISIBLE
 
             }
