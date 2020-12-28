@@ -135,7 +135,6 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:paddingRight="@dimen/_10sdp"
                     android:singleLine="true"
-                    android:text="@string/trending_food"
                     android:textColor="@color/gray_2a2f37"
                     android:textSize="@dimen/_18sdp"
                     android:visibility="visible"
@@ -147,12 +146,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_7sdp"
-                    android:paddingEnd="@dimen/_15sdp"
-                     android:clipToPadding="false"
                     android:layout_marginBottom="@dimen/_7sdp"
+                    android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
-                    />
+                    android:paddingEnd="@dimen/_15sdp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -173,7 +171,7 @@
                         android:ellipsize="end"
                         android:maxLength="50"
                         android:singleLine="true"
-                        android:text="@string/resurant_around_you"
+                        android:text=""
                         android:textColor="@color/gray_2a2f37"
                         android:textSize="@dimen/_18sdp"
                         android:visibility="visible"
@@ -187,6 +185,7 @@
                         android:layout_gravity="center"
                         android:background="@drawable/filter_icon_bg"
                         android:padding="@dimen/_5sdp"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/ic_filter" />
 
 
@@ -213,5 +212,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:theme="@style/progressBarTheme" />
+
+    <RelativeLayout
+        android:id="@+id/emptyLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center" />
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/emptymsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image"
+            android:layout_gravity="center|bottom"
+            android:layout_marginTop="@dimen/_17sdp"
+            android:text="N/A"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_13sdp"
+            android:visibility="visible"
+            app:textFont="medium" />
+
+
+    </RelativeLayout>
 
 </FrameLayout>

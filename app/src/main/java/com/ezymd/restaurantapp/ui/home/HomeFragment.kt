@@ -301,6 +301,8 @@ open class HomeFragment : Fragment() {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
+                if (it.data.size > 0)
+                    trending.text = getString(R.string.trending_food)
                 treandingAdapter!!.getData().let { it1 ->
                     dataTrending.addAll(it1)
                 }
@@ -316,6 +318,10 @@ open class HomeFragment : Fragment() {
                 restaurantAdapter?.setData(it.data)
                 restaurantAdapter?.getData()?.let { it1 ->
                     dataResturant.addAll(it1)
+                    if (it.data.size > 0)
+                        filter.visibility = View.VISIBLE
+                    else
+                        filter.visibility = View.GONE
                     resturantCount.text =
                         TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
                 }
