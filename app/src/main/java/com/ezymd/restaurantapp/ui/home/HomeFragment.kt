@@ -177,6 +177,7 @@ open class HomeFragment : Fragment() {
             //applyAllFilter()
             dataResturant.clear()
             restaurantAdapter?.clearData()
+            restaurantAdapter?.notifyDataSetChanged()
             val baseRequest = BaseRequest(userInfo)
             baseRequest.paramsMap.putAll(data?.getSerializableExtra(JSONKeys.FILTER_MAP) as HashMap<String, String>)
             homeViewModel.getResturants(baseRequest)

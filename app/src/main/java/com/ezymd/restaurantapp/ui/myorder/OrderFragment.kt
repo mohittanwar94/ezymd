@@ -84,6 +84,9 @@ class OrderFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        dataResturant.clear()
+        restaurantAdapter?.clearData()
+        searchViewModel.orderList(BaseRequest(userInfo))
         setObservers()
     }
 

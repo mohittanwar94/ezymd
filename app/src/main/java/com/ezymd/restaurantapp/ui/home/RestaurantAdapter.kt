@@ -13,6 +13,7 @@ import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.ui.home.trending.DiffUtilsCallBack
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
+import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.android.synthetic.main.restaurant_item_row.view.*
 
 class RestaurantAdapter(
@@ -75,7 +76,7 @@ class RestaurantAdapter(
 
         holder.itemView.tvTitle.text = item.name
         holder.itemView.setOnClickListener {
-            onRecyclerView.onClick(position, it)
+            onRecyclerView.onClick(holder.adapterPosition, it)
         }
     }
 
@@ -120,6 +121,7 @@ class RestaurantAdapter(
     fun clearData() {
         data.clear()
         notifyDataSetChanged()
+        SnapLog.print("notify data set changed=========")
     }
 
 
