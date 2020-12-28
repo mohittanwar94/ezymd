@@ -29,6 +29,21 @@ class CouponRepository private constructor() {
 
     }
 
+    suspend fun applyCoupon(
+        loginRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LocationValidatorModel> {
+
+        SnapLog.print("Login repositry=====")
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.applyCoupon(
+                loginRequest.paramsMap, loginRequest.accessToken
+            )
+        }
+
+
+    }
 
     companion object {
         @Volatile

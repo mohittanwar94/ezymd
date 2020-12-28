@@ -1,17 +1,24 @@
 package com.ezymd.restaurantapp.coupon
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.coupon.adapter.CouponAdapter
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.utils.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_coupon.*
 
@@ -41,7 +48,7 @@ class CouponActivity : BaseActivity() {
 
     private fun getData() {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("id", "" + id)
+        baseRequest.paramsMap["id"] = "" + id
         viewModel.listCoupon(baseRequest)
     }
 
@@ -50,13 +57,14 @@ class CouponActivity : BaseActivity() {
             showError(false, it, null)
         })
 
-        viewModel.loginResponse.observe(this, Observer {
+        viewModel.applyCoupon.observe(this, Observer {
 
             if (it != null && it.status == ErrorCodes.SUCCESS) {
                 showError(true, it.message, object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
-                        onBackPressed()
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
 
                     override fun onShown(sb: Snackbar?) {
@@ -64,6 +72,14 @@ class CouponActivity : BaseActivity() {
                     }
 
                 })
+            } else {
+                showError(false, it.message, null)
+            }
+        })
+        viewModel.loginResponse.observe(this, Observer {
+
+            if (it != null && it.status == ErrorCodes.SUCCESS) {
+
             } else {
                 showError(false, it.message, null)
             }
@@ -109,17 +125,39 @@ class CouponActivity : BaseActivity() {
         resturantRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resturantRecyclerView.addItemDecoration(
-            VerticalSpacesItemDecoration(
-                (resources.getDimensionPixelSize(
-                    R.dimen._5sdp
-                ))
-            )
+            DividerItemDecoration(this, RecyclerView.VERTICAL)
         )
         val restaurantAdapter = CouponAdapter(this, OnRecyclerView { position, view ->
-
+            applyCoupon(view)
         }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
 
     }
+
+
+    fun applyCoupon(it: View) {
+        UIUtil.clickAlpha(it)
+        val baseRequest = BaseRequest(userInfo)
+        viewModel.applyCoupon(baseRequest)
+
+    }
+
+    fun showBottomSheet(it: View, itemModel: ItemModel) {
+        UIUtil.clickAlpha(it)
+        val sheetDialog = BottomSheetDialog(this)
+        sheetDialog.setContentView(R.layout.tnc_bottom_sheet)
+        val promoName = sheetDialog.findViewById<TextView>(R.id.name)
+
+        promoName!!.text = ""
+        val description = sheetDialog.findViewById<TextView>(R.id.description)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            description!!.text = Html.fromHtml("", HtmlCompat.FROM_HTML_MODE_COMPACT)
+        } else {
+            description!!.text = Html.fromHtml("")
+        }
+        sheetDialog.setCanceledOnTouchOutside(true)
+        sheetDialog.show()
+    }
+
 }

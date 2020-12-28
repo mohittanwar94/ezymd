@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.review
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,10 +14,10 @@ import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.utils.ErrorCodes
 import com.ezymd.restaurantapp.utils.JSONKeys
+import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.charterCount
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.deliveryInstruction
-import kotlinx.android.synthetic.main.activity_add_delivery_instruction.done
 import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.header_new.*
 
@@ -53,7 +54,8 @@ class ReviewActivity : BaseActivity() {
                 showError(true, it.message, object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
-                        onBackPressed()
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
 
                     override fun onShown(sb: Snackbar?) {
@@ -73,23 +75,29 @@ class ReviewActivity : BaseActivity() {
     }
 
     private fun setGUI() {
+        leftIcon.setOnClickListener {
+            onBackPressed()
+        }
         deliveryRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            setRatingStatus(labelDelivery, rating)
+            SnapLog.print("ratingBar=======" + ratingBar.rating)
+            setRatingStatus(labelDelivery, ratingBar.rating)
         }
 
         restRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            setRatingStatus(label, rating)
+            SnapLog.print("ratingBar=======" + ratingBar.rating)
+            setRatingStatus(label, ratingBar.rating)
         }
     }
 
     private fun setRatingStatus(labelDelivery: SnapTextView, rating: Float) {
-        if (rating == 2f) {
+        SnapLog.print("rating=======" + rating)
+        if (rating <= 2f) {
             labelDelivery.text = getString(R.string.very_bad)
-        } else if (rating > 2.5f) {
+        } else if (rating > 2f && rating < 3f) {
             labelDelivery.text = getString(R.string.bad)
-        } else if (rating == 3f || rating < 4f) {
+        } else if (rating == 3f && rating < 4f) {
             labelDelivery.text = getString(R.string.good)
-        } else {
+        } else if (rating >= 4f) {
             labelDelivery.text = getString(R.string.very_good)
         }
     }
@@ -100,18 +108,12 @@ class ReviewActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setHeaderData() {
+        headertext.visibility = View.VISIBLE
         headertext.text = getString(R.string.orderID) + " #" + item.orderId
 
     }
 
     private fun setToolBar() {
-
-        setSupportActionBar(findViewById(R.id.toolbar))
-
-
-        done.setOnClickListener {
-
-        }
 
         deliveryInstruction.addTextChangedListener(object : TextWatcher {
 

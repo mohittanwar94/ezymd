@@ -18,6 +18,7 @@ class CouponViewModel : ViewModel() {
     private var errorRequest: MutableLiveData<String>
     private var loginRepository: CouponRepository? = null
     val loginResponse: MutableLiveData<LocationValidatorModel>
+    val applyCoupon= MutableLiveData<LocationValidatorModel>()
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -64,6 +65,24 @@ class CouponViewModel : ViewModel() {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> loginResponse.postValue(result.value)
+            }
+        }
+
+    }
+
+
+    fun applyCoupon(it: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.applyCoupon(
+                it,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> applyCoupon.postValue(result.value)
             }
         }
 

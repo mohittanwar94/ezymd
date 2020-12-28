@@ -19,7 +19,7 @@ public class OrderItems implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Integer id=0;
 
     public Integer getId() {
         return id;
