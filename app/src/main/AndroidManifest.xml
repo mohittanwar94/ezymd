@@ -113,6 +113,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
 
+
+        <activity
+            android:name=".coupon.CouponActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
+
         <activity
             android:name=".cart.CartActivity"
             android:screenOrientation="portrait"

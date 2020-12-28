@@ -17,6 +17,18 @@ public class OrderItems implements Serializable {
     @Expose
     private Integer qty;
 
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getItem() {
         return item;
     }

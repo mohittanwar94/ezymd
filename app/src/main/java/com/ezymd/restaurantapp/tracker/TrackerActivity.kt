@@ -86,21 +86,21 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun setOrderStatus() {
-        if (item.orderPickupStatus == OrderStatus.PROCESSING) {
+        if (item.orderStatus == OrderStatus.PROCESSING) {
             liveStatus.text = getString(R.string.your_order_processing)
-        } else if (item.orderPickupStatus == OrderStatus.ORDER_ACCEPTED) {
+        } else if (item.orderStatus == OrderStatus.ORDER_ACCEPTED) {
             liveStatus.text = getString(R.string.your_order_is_cooking)
-        } else if (item.orderPickupStatus == OrderStatus.ORDER_ACCEPT_DELIVERY_BOY) {
+        } else if (item.orderStatus == OrderStatus.ORDER_ACCEPT_DELIVERY_BOY) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             liveStatus.text = getString(R.string.order_accepted_by_delivery_boy)
             setDeliveryInfo()
-        } else if (item.orderPickupStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
+        } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             liveStatus.text = getString(R.string.delivery_boy_reached_at_your_location)
             setDeliveryInfo()
-        } else if (item.orderPickupStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT) {
+        } else if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             liveStatus.text = getString(R.string.order_pick_up)

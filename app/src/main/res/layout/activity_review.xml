@@ -170,7 +170,7 @@
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6000000"
+        android:background="#60000000"
         android:visibility="gone">
 
         <ProgressBar

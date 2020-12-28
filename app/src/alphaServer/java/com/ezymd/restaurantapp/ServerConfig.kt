@@ -33,6 +33,7 @@ interface ServerConfig {
         const val LOCATION_VALIDATE="validateLocations"
         const val SAVE_PAYMENT="paymentVerify"
         const val SAVE_RATING=""
+        const val LIST_COUPON="listCoupon/{restaurant_id}"
         const val TRANSACTION_CHARGES="transactionAmount"
         const val UPDATED_COORDINATES="orderTracking/{name}"
 

@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.coupon.CouponActivity
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.editprofile.EditProfileActivity
 import com.ezymd.restaurantapp.font.CustomTypeFace
@@ -90,6 +91,17 @@ class CartActivity : BaseActivity() {
             } else {
                 startConfirmOrder()
             }
+        }
+
+        couponCode.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityForResult(
+                Intent(
+                    this@CartActivity,
+                    CouponActivity::class.java
+                ).putExtra(JSONKeys.ID,restaurant.id), JSONKeys.LOCATION_REQUEST
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
     }
 

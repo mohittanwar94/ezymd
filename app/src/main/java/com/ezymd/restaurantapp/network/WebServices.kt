@@ -162,5 +162,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): LocationValidatorModel
 
+
+    @GET(ServerConfig.LIST_COUPON)
+    suspend fun listCoupon(
+        @Path("restaurant_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): LocationValidatorModel
+
 }
 

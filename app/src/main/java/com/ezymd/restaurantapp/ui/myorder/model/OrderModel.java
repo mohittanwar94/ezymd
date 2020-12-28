@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -108,6 +110,9 @@ public class OrderModel implements Serializable {
     @SerializedName("delivery_boy_rating")
     @Expose
     public String delivery_boy_rating;
+    @SerializedName("restaurant_id")
+    @Expose
+    public  Integer restaurantID;
 
     public Integer getOrderId() {
         return orderId;
@@ -135,6 +140,14 @@ public class OrderModel implements Serializable {
 
     public String getRestaurantAddress() {
         return TextUtils.isEmpty(restaurantAddress) ? "" : restaurantAddress;
+    }
+
+    public Integer getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(Integer restaurantID) {
+        this.restaurantID = restaurantID;
     }
 
     public void setRestaurantAddress(String restaurantAddress) {
