@@ -195,6 +195,9 @@ class ConfirmOrder : BaseActivity() {
             ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
                 JSONKeys.FEE_CHARGES,
                 0.0
+            ) - intent.getDoubleExtra(
+                JSONKeys.DISCOUNT_AMOUNT,
+                0.0
             ))
         if (restaurant.isPick) {
             viewModel.isNowSelectd.postValue(true)
@@ -472,7 +475,7 @@ class ConfirmOrder : BaseActivity() {
                     SnapLog.print("onPaymentSessionDataChanged")
                     paymentSessionData = data
 
-                   // payButton.isEnabled = data.isPaymentReadyToCharge
+                    // payButton.isEnabled = data.isPaymentReadyToCharge
                     shippingAddress.text = getAddress(paymentSessionData!!)
                     checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
                     checkPayButtomEnableDisable()
@@ -591,6 +594,15 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("restaurant_address", restaurant.address)
         jsonObject.addProperty("delivery_lat", viewModel.locationSelected.value?.lat)
         jsonObject.addProperty("delivery_lang", viewModel.locationSelected.value?.lang)
+
+        if (intent.hasExtra(JSONKeys.PROMO)) {
+            jsonObject.addProperty("coupon_id", intent.getIntExtra(JSONKeys.PROMO, 0))
+            jsonObject.addProperty(
+                "coupon_amount",
+                intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
+            )
+
+        }
         jsonObject.addProperty(
             "order_pickup_status", if (restaurant.isPick) {
                 JSONKeys.FROM_RESTAURANT
@@ -635,7 +647,10 @@ class ConfirmOrder : BaseActivity() {
         ) + intent.getDoubleExtra(
             JSONKeys.DELIVERY_CHARGES,
             0.0
-        ) + intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
+        ) + intent.getDoubleExtra(
+            JSONKeys.FEE_CHARGES,
+            0.0
+        ) - intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
         jsonObject.addProperty("total", totalPrice)
 
         paymentSession?.setCartTotal(price.toLong())

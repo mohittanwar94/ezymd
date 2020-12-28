@@ -66,7 +66,8 @@ class OrderDetailsActivity : BaseActivity() {
         leftIcon.setOnClickListener {
             onBackPressed()
         }
-
+        if (!item.deliveryCharges.equals("0"))
+            shippingCharge.text = getString(R.string.dollor) + item.deliveryCharges
         review.setOnClickListener {
             UIUtil.clickAlpha(it)
             startActivity(

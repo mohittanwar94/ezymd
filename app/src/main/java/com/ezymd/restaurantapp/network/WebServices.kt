@@ -4,6 +4,7 @@ package com.ezymd.restaurantapp.network
 import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
+import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
@@ -172,7 +173,7 @@ interface WebServices {
     suspend fun listCoupon(
         @Path("restaurant_id") id: String,
         @Header("Authorization") accessToken: String
-    ): LocationValidatorModel
+    ): CoupanBaseModel
 
 }
 

@@ -204,7 +204,7 @@ public class OrderModel implements Serializable {
 
 
     public String getDeliveryCharges() {
-        return deliveryCharges;
+        return TextUtils.isEmpty(deliveryCharges) ? "0" : deliveryCharges;
     }
 
     public void setDeliveryCharges(String deliveryCharges) {

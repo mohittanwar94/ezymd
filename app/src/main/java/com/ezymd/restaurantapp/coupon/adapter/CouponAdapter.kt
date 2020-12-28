@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.coupon.CouponActivity
+import com.ezymd.restaurantapp.coupon.model.CoupanModel
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import kotlinx.android.synthetic.main.coupon_item_row.view.*
@@ -14,13 +15,13 @@ import kotlinx.android.synthetic.main.coupon_item_row.view.*
 class CouponAdapter(
     context: Context,
     onRecyclerViewClick: OnRecyclerView,
-    dataRestaurant: ArrayList<ItemModel>
+    dataRestaurant: ArrayList<CoupanModel>
 ) : RecyclerView.Adapter<CouponAdapter.NotesHolder>() {
 
 
     private val onRecyclerView: OnRecyclerView
     private val mContext: Context
-    private val data = ArrayList<ItemModel>()
+    private val data = ArrayList<CoupanModel>()
 
 
     init {
@@ -36,7 +37,7 @@ class CouponAdapter(
         )
     }
 
-    fun setData(itemList: ArrayList<ItemModel>) {
+    fun setData(itemList: ArrayList<CoupanModel>) {
         data.clear()
         data.addAll(itemList)
         notifyDataSetChanged()
@@ -49,7 +50,11 @@ class CouponAdapter(
 
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
 
-        holder.itemView.couponCode.setOnClickListener {
+        val item=data[position]
+
+        holder.itemView.couponCode.text=item.couponCode
+        holder.itemView.shortDes.text= item.discountValue.toString()+" off"
+        holder.itemView.apply.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }
 

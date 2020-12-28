@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
+import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 class CouponViewModel : ViewModel() {
     private var errorRequest: MutableLiveData<String>
     private var loginRepository: CouponRepository? = null
-    val loginResponse: MutableLiveData<LocationValidatorModel>
+    val loginResponse: MutableLiveData<CoupanBaseModel>
     val applyCoupon= MutableLiveData<LocationValidatorModel>()
     val isLoading: MutableLiveData<Boolean>
 

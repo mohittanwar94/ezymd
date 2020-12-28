@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.cart
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,6 +14,7 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.coupon.CouponActivity
+import com.ezymd.restaurantapp.coupon.model.CoupanModel
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.editprofile.EditProfileActivity
 import com.ezymd.restaurantapp.font.CustomTypeFace
@@ -22,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_cart.*
 
 class CartActivity : BaseActivity() {
+    private var discountApplied = 0.0
     var serviceAmount = 0.0
     var deliveryAmount = 0.0
     private var restaurantAdapter: CartAdapter? = null
@@ -47,6 +50,7 @@ class CartActivity : BaseActivity() {
         setHeaderData()
         setAdapter()
         setGUI()
+        setObserver()
 
 
     }
@@ -99,12 +103,19 @@ class CartActivity : BaseActivity() {
                 Intent(
                     this@CartActivity,
                     CouponActivity::class.java
-                ).putExtra(JSONKeys.ID,restaurant.id), JSONKeys.LOCATION_REQUEST
+                ).putExtra(JSONKeys.ID, restaurant.id), JSONKeys.LOCATION_REQUEST
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
+            val coupanModel = data!!.getSerializableExtra(JSONKeys.OBJECT) as CoupanModel
+            viewModel.coupanModel.postValue(coupanModel)
+        }
+    }
 
     private fun startConfirmOrder() {
         val price = getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
@@ -124,6 +135,10 @@ class CartActivity : BaseActivity() {
             price
         )
         intent.putExtra(JSONKeys.FEE_CHARGES, serviceAmount)
+        if (discountApplied > 0.0) {
+            intent.putExtra(JSONKeys.PROMO, viewModel.coupanModel.value!!.id)
+            intent.putExtra(JSONKeys.DISCOUNT_AMOUNT, discountApplied)
+        }
         intent.putExtra(JSONKeys.DELIVERY_CHARGES, deliveryAmount)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
@@ -149,12 +164,13 @@ class CartActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        setObserver()
     }
 
     private fun setObserver() {
         EzymdApplication.getInstance().cartData.observe(this, Observer {
             if (it != null) {
+                viewModel.coupanModel.postValue(null)
+                discountApplied=0.0
                 if (it.size > 0) {
                     notifyAdapter(it)
                     val baseRequest = BaseRequest(userInfo)
@@ -166,6 +182,27 @@ class CartActivity : BaseActivity() {
             }
         })
 
+
+        viewModel.coupanModel.observe(this, Observer {
+            if (it != null) {
+                promoLayout.visibility = View.GONE
+                promoApply.visibility = View.VISIBLE
+                if (it.isFixed == 0) {
+                    val price = getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
+                    discountApplied = (price * it.discountValue.toDouble()) / 100
+                } else {
+                    discountApplied = it.discountValue.toDouble()
+                }
+                promoCharge.text = "$" + discountApplied
+                notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap.put("amount", "" +( getTotalPrice(EzymdApplication.getInstance().cartData.value!!)-discountApplied))
+                viewModel.getCharges(baseRequest)
+            } else {
+                promoLayout.visibility = View.VISIBLE
+                promoApply.visibility = View.GONE
+            }
+        })
         viewModel.errorRequest.observe(this, Observer {
             showError(false, it, null)
         })
@@ -232,10 +269,6 @@ class CartActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.mTransactionCharge.removeObservers(this)
-        viewModel.errorRequest.removeObservers(this)
-        viewModel.isLoading.removeObservers(this)
-        EzymdApplication.getInstance().cartData.removeObservers(this)
     }
 
 
@@ -279,9 +312,10 @@ class CartActivity : BaseActivity() {
                 "" + String.format("%.2f", serviceAmount)
 
             )
+            SnapLog.print("discountApplied=========="+(discountApplied))
             totalAmount.text = TextUtils.concat(
                 getString(R.string.dollor),
-                "" + (serviceAmount + price)
+                "" + ((serviceAmount + price)-discountApplied)
             )
             subTotal.text = TextUtils.concat(
                 getString(R.string.dollor),
@@ -291,7 +325,7 @@ class CartActivity : BaseActivity() {
             if (price < restaurant.minOrder.toInt()) {
                 discount.text =
                     TextUtils.concat(
-                        "Add ",
+                        "Add $ ",
                         "" + (restaurant.minOrder.toInt() - price),
                         " to reach minimum order"
                     )

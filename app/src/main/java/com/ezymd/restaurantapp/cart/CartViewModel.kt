@@ -5,19 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
+import com.ezymd.restaurantapp.coupon.model.CoupanModel
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SingleLiveEvent
-import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
 
+    val coupanModel = MutableLiveData<CoupanModel>()
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: CartRepository? = null
     val mTransactionCharge: MutableLiveData<TransactionChargeModel>
@@ -74,12 +74,11 @@ class CartViewModel : ViewModel() {
     }
 
 
-
     fun getCharges(baseRequest: BaseRequest) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getTransactionCharges(
-                 baseRequest,
+                baseRequest,
                 Dispatchers.IO
             )
             isLoading.postValue(false)

@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.coupon
 
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
+import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -16,7 +17,7 @@ class CouponRepository private constructor() {
     suspend fun listCoupon(
         loginRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LocationValidatorModel> {
+    ): ResultWrapper<CoupanBaseModel> {
 
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)

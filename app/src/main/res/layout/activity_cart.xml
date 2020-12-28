@@ -298,6 +298,42 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/promoApply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp">
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:letterSpacing="0.02"
+                    android:text="Promo code applied"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="roman" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/promoCharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:letterSpacing="0.02"
+                    android:text="FREE"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:textFont="roman" />
+
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"

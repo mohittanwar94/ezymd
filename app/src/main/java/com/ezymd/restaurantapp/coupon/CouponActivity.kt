@@ -2,6 +2,7 @@ package com.ezymd.restaurantapp.coupon
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.coupon.adapter.CouponAdapter
-import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.coupon.model.CoupanModel
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -24,8 +25,8 @@ import kotlinx.android.synthetic.main.activity_coupon.*
 
 class CouponActivity : BaseActivity() {
 
-    private val dataResturant = ArrayList<ItemModel>()
-
+    private val dataResturant = ArrayList<CoupanModel>()
+    private var pos = 0
     private val id by lazy {
         intent.getIntExtra(JSONKeys.ID, 0)
     }
@@ -60,10 +61,12 @@ class CouponActivity : BaseActivity() {
         viewModel.applyCoupon.observe(this, Observer {
 
             if (it != null && it.status == ErrorCodes.SUCCESS) {
+                val intent = Intent()
+                intent.putExtra(JSONKeys.OBJECT, dataResturant[pos])
+                setResult(Activity.RESULT_OK, intent)
                 showError(true, it.message, object : Snackbar.Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
-                        setResult(Activity.RESULT_OK)
                         finish()
                     }
 
@@ -79,6 +82,9 @@ class CouponActivity : BaseActivity() {
         viewModel.loginResponse.observe(this, Observer {
 
             if (it != null && it.status == ErrorCodes.SUCCESS) {
+                dataResturant.clear()
+                dataResturant.addAll(it.data)
+                setAdapter()
 
             } else {
                 showError(false, it.message, null)
@@ -92,7 +98,7 @@ class CouponActivity : BaseActivity() {
     }
 
     private fun setGUI() {
-        setAdapter()
+        //setAdapter()
     }
 
 
@@ -128,7 +134,8 @@ class CouponActivity : BaseActivity() {
             DividerItemDecoration(this, RecyclerView.VERTICAL)
         )
         val restaurantAdapter = CouponAdapter(this, OnRecyclerView { position, view ->
-            applyCoupon(view)
+            applyCoupon(view, dataResturant[position])
+            pos = position
         }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -136,25 +143,26 @@ class CouponActivity : BaseActivity() {
     }
 
 
-    fun applyCoupon(it: View) {
+    fun applyCoupon(it: View, coupanModel: CoupanModel) {
         UIUtil.clickAlpha(it)
         val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["coupon_id"] = "" + coupanModel.id
+        baseRequest.paramsMap["user_id"] = "" + userInfo!!.userID
         viewModel.applyCoupon(baseRequest)
 
     }
 
-    fun showBottomSheet(it: View, itemModel: ItemModel) {
+    fun showBottomSheet(it: View, item: CoupanModel) {
         UIUtil.clickAlpha(it)
         val sheetDialog = BottomSheetDialog(this)
         sheetDialog.setContentView(R.layout.tnc_bottom_sheet)
         val promoName = sheetDialog.findViewById<TextView>(R.id.name)
-
-        promoName!!.text = ""
+        promoName!!.text = item.couponCode
         val description = sheetDialog.findViewById<TextView>(R.id.description)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            description!!.text = Html.fromHtml("", HtmlCompat.FROM_HTML_MODE_COMPACT)
+            description!!.text = Html.fromHtml(item.description, HtmlCompat.FROM_HTML_MODE_COMPACT)
         } else {
-            description!!.text = Html.fromHtml("")
+            description!!.text = Html.fromHtml(item.description)
         }
         sheetDialog.setCanceledOnTouchOutside(true)
         sheetDialog.show()

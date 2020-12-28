@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
+    android:paddingBottom="@dimen/_30sdp"
     android:orientation="vertical">
 
 
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/_15sdp"
+        android:textAllCaps="true"
         android:text=""
         android:textColor="@color/color_002366"
         android:textSize="@dimen/_15sdp"

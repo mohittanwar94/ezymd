@@ -12,14 +12,15 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
-import com.ezymd.restaurantapp.utils.ErrorCodes
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.charterCount
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.deliveryInstruction
+import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.activity_review.*
+import kotlinx.android.synthetic.main.activity_review.progress
 import kotlinx.android.synthetic.main.header_new.*
+import kotlinx.android.synthetic.main.header_new.leftIcon
 
 class ReviewActivity : BaseActivity() {
 
@@ -86,6 +87,16 @@ class ReviewActivity : BaseActivity() {
         restRating.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             SnapLog.print("ratingBar=======" + ratingBar.rating)
             setRatingStatus(label, ratingBar.rating)
+        }
+
+        submit.setOnClickListener {
+            UIUtil.clickHandled(it)
+            val baseRequest = BaseRequest(userInfo)
+            baseRequest.paramsMap["order_id"] = "" + item.orderId
+            baseRequest.paramsMap["delivery_rating"] = "" + deliveryRating.rating
+            baseRequest.paramsMap["restaurant_rating"] = "" + restRating.rating
+            baseRequest.paramsMap["feedback"] = feedback.text.toString().trim()
+            viewModel.saveRating(baseRequest)
         }
     }
 

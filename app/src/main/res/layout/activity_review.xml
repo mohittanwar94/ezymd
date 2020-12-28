@@ -150,7 +150,7 @@
                 app:textFont="medium" />
 
             <com.ezymd.restaurantapp.customviews.SnapButton
-                android:id="@+id/done"
+                android:id="@+id/submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
