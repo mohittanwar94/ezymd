@@ -68,6 +68,7 @@
                 android:layout_marginEnd="@dimen/_9sdp"
                 android:letterSpacing="0.01"
                 android:maxLines="2"
+                android:ellipsize="end"
                 android:text="@string/pizza"
                 android:textColor="@color/color_667ba3"
                 android:textSize="@dimen/_13sdp"

@@ -134,12 +134,12 @@ class CartActivity : BaseActivity() {
             JSONKeys.TOTAL_CASH,
             price
         )
-        intent.putExtra(JSONKeys.FEE_CHARGES, serviceAmount)
+        intent.putExtra(JSONKeys.FEE_CHARGES, String.format("%.2f",serviceAmount).toDouble())
         if (discountApplied > 0.0) {
             intent.putExtra(JSONKeys.PROMO, viewModel.coupanModel.value!!.id)
             intent.putExtra(JSONKeys.DISCOUNT_AMOUNT, discountApplied)
         }
-        intent.putExtra(JSONKeys.DELIVERY_CHARGES, deliveryAmount)
+        intent.putExtra(JSONKeys.DELIVERY_CHARGES,  String.format("%.2f",deliveryAmount).toDouble())
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
@@ -190,8 +190,10 @@ class CartActivity : BaseActivity() {
                 if (it.isFixed == 0) {
                     val price = getTotalPrice(EzymdApplication.getInstance().cartData.value!!)
                     discountApplied = (price * it.discountValue.toDouble()) / 100
+                    discountApplied= String.format("%.2f",discountApplied).toDouble()
                 } else {
                     discountApplied = it.discountValue.toDouble()
+                    discountApplied= String.format("%.2f",discountApplied).toDouble()
                 }
                 promoCharge.text = "$" + discountApplied
                 notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
@@ -241,7 +243,7 @@ class CartActivity : BaseActivity() {
 
 
 
-        return price
+        return String.format("%.2f",price).toDouble()
     }
 
     private fun showEmpty() {
@@ -315,7 +317,7 @@ class CartActivity : BaseActivity() {
             SnapLog.print("discountApplied=========="+(discountApplied))
             totalAmount.text = TextUtils.concat(
                 getString(R.string.dollor),
-                "" + ((serviceAmount + price)-discountApplied)
+                "" +  String.format("%.2f",((serviceAmount + price)-discountApplied))
             )
             subTotal.text = TextUtils.concat(
                 getString(R.string.dollor),

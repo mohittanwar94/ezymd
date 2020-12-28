@@ -498,7 +498,7 @@ class ConfirmOrder : BaseActivity() {
 
     private fun checkPayButtomEnableDisable() {
         if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.shippingAddress == "Add Shipping Details" || checkoutModel.deliveryAddress == "") {
-            showError(null, false, "Please fill above details first.")
+           // showError(false,  "Please fill above details first.",null)
             return
         } else {
             payButton.isEnabled = true
