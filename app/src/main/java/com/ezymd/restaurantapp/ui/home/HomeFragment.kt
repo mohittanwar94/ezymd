@@ -240,20 +240,20 @@ open class HomeFragment : Fragment() {
         bannerPager.pageMargin = 20;
 
         // bannerPager.setPageTransformer(true, AlphaPageTransformation())
-        val registerationTutorialPagerAdapter =
+        val registrationTutorialPagerAdapter =
             BannerPagerAdapter(
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
                     val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
                     val intent = Intent(activity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                    intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
                     val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                     )
                     (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
                     EzymdApplication.getInstance().cartData.postValue(null)
                 })
-        bannerPager.adapter = registerationTutorialPagerAdapter
+        bannerPager.adapter = registrationTutorialPagerAdapter
         dots_indicator.setViewPager(bannerPager)
 
         setPageChangeListener()
@@ -289,7 +289,9 @@ open class HomeFragment : Fragment() {
         homeViewModel.mPagerData.observe(this, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataBanner.clear()
+                bannerPager.adapter?.notifyDataSetChanged()
                 dataBanner.addAll(it.data)
+                SnapLog.print("size========="+dataBanner.size)
                 bannerPager.adapter?.notifyDataSetChanged()
 
             } else {
