@@ -14,9 +14,8 @@ import kotlinx.android.synthetic.main.coupon_item_row.view.*
 class CouponAdapter(
     context: Context,
     onRecyclerViewClick: OnRecyclerView,
-    dataResturant: ArrayList<ItemModel>
-) :
-    RecyclerView.Adapter<CouponAdapter.NotesHolder>() {
+    dataRestaurant: ArrayList<ItemModel>
+) : RecyclerView.Adapter<CouponAdapter.NotesHolder>() {
 
 
     private val onRecyclerView: OnRecyclerView
@@ -27,7 +26,7 @@ class CouponAdapter(
     init {
         this.onRecyclerView = onRecyclerViewClick
         this.mContext = context
-        data.addAll(dataResturant)
+        data.addAll(dataRestaurant)
     }
 
 
