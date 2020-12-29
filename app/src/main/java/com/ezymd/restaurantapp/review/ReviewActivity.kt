@@ -16,7 +16,6 @@ import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.charterCount
 import kotlinx.android.synthetic.main.activity_add_delivery_instruction.deliveryInstruction
-import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.activity_review.progress
 import kotlinx.android.synthetic.main.header_new.*
@@ -95,7 +94,7 @@ class ReviewActivity : BaseActivity() {
             baseRequest.paramsMap["order_id"] = "" + item.orderId
             baseRequest.paramsMap["delivery_rating"] = "" + deliveryRating.rating
             baseRequest.paramsMap["restaurant_rating"] = "" + restRating.rating
-            baseRequest.paramsMap["feedback"] = feedback.text.toString().trim()
+            baseRequest.paramsMap["feedback"] = deliveryInstruction.text.toString().trim()
             viewModel.saveRating(baseRequest)
         }
     }

@@ -53,7 +53,13 @@ class CouponAdapter(
         val item=data[position]
 
         holder.itemView.couponCode.text=item.couponCode
-        holder.itemView.shortDes.text= item.discountValue.toString()+" off"
+        var off=""
+
+        holder.itemView.shortDes.text=  if(item.isFixed==0) {
+            item.discountValue.toString()+  "% off"
+        }else{
+            "$"+item.discountValue.toString()+" Flat off"
+        }
         holder.itemView.apply.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }

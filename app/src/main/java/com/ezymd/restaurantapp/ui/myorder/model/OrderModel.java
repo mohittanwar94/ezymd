@@ -96,6 +96,11 @@ public class OrderModel implements Serializable {
     @Expose
     public String delivey_rating;
 
+    @SerializedName("discount")
+    @Expose
+    public String discount;
+
+
     @SerializedName("delivery_boy_rating")
     @Expose
     public String delivery_boy_rating;
@@ -163,6 +168,14 @@ public class OrderModel implements Serializable {
 
     public void setDelivery_boy_rating(String delivey_rating) {
         this.delivey_rating = delivey_rating;
+    }
+
+    public String getDiscount() {
+        return TextUtils.isEmpty(discount) ? "0" : discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
     }
 
     public String getFeedback() {
