@@ -132,10 +132,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
         }
         call.setOnClickListener {
-            UIUtil.clickAlpha(it)
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse(item.delivery.phoneNo)
-            startActivity(intent)
+            try {
+                UIUtil.clickAlpha(it)
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:"+item.delivery.phoneNo)
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
         }
     }

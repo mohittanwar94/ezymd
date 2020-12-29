@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.orderdetails.OrderDetailsActivity
@@ -100,6 +102,15 @@ class OrderFragment : Fragment() {
     }
 
     private fun setObservers() {
+
+        EzymdApplication.getInstance().isRefresh.observe(this, Observer {
+            if (it) {
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
+                searchViewModel.orderList(BaseRequest(userInfo))
+            }
+        })
+
         searchViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
             if (!it) {
                 progress.visibility = View.GONE

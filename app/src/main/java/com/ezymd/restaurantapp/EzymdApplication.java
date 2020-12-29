@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ezymd.restaurantapp.details.model.ItemModel;
 import com.ezymd.restaurantapp.filters.model.DataModel;
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver;
+import com.ezymd.restaurantapp.utils.SingleLiveEvent;
 import com.ezymd.restaurantapp.utils.UserInfo;
 import com.facebook.FacebookSdk;
 import com.stripe.android.PaymentConfiguration;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 public class EzymdApplication extends Application implements Application.ActivityLifecycleCallbacks {
     private Activity mLastForegroundActivity;
+    public MutableLiveData<Boolean> isRefresh = new SingleLiveEvent();
     @Nullable
     public final String networkErrorMessage = "it seems network is not available right now";
     public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<>();
@@ -86,7 +88,7 @@ public class EzymdApplication extends Application implements Application.Activit
             Process.killProcess(Process.myPid());
         }
 
-        UserInfo userInfo=UserInfo.getInstance(mInstance);
+        UserInfo userInfo = UserInfo.getInstance(mInstance);
         if (userInfo.getDeviceID().length() < 1) {
             String deviceId = android.provider.Settings.System.getString(getContentResolver(),
                     android.provider.Settings.Secure.ANDROID_ID);

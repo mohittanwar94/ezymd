@@ -41,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:paddingStart="@dimen/_5sdp"
                     android:orientation="vertical">
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -123,14 +124,15 @@
                     app:srcCompat="@drawable/ic_phone_call" />
 
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/chat"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/ic_chat" />
-
+-->
 
             </LinearLayout>
 
