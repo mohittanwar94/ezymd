@@ -94,6 +94,7 @@ class DetailsActivity : BaseActivity() {
         val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap.put("id", "" + restaurant.id)
         viewModel.getDetails(baseRequest)
+
     }
 
     override fun onResume() {
@@ -359,7 +360,23 @@ class DetailsActivity : BaseActivity() {
             disPlayCategoryData()
 
         }
+        share.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            try {
+                val share = Intent(Intent.ACTION_SEND)
+                share.type = "text/plain"
+                share.putExtra(Intent.EXTRA_SUBJECT, restaurant.name)
+                share.putExtra(
+                    Intent.EXTRA_TEXT,
+                    restaurant.address + "\n" + restaurant.lat + ", " + restaurant.longitude
+                )
+                startActivity(Intent.createChooser(share, "Share Restaurant"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
         address.setOnClickListener {
+            UIUtil.clickAlpha(it)
             val gmmIntentUri = Uri.parse("geo:${restaurant.lat},${restaurant.longitude}")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")

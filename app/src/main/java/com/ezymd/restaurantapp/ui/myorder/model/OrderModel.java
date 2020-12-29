@@ -16,6 +16,11 @@ public class OrderModel implements Serializable {
     @SerializedName("restaurant")
     @Expose
     private Resturant restaurant;
+
+    @SerializedName("delivery")
+    @Expose
+    private DeliveryBoy delivery;
+
     @SerializedName("feedback")
     @Expose
     private String feedback;
@@ -98,7 +103,7 @@ public class OrderModel implements Serializable {
 
     @SerializedName("discount")
     @Expose
-    public String discount;
+    private String discount;
 
 
     @SerializedName("delivery_boy_rating")
@@ -129,6 +134,13 @@ public class OrderModel implements Serializable {
         this.username = username;
     }
 
+    public DeliveryBoy getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(DeliveryBoy delivery) {
+        this.delivery = delivery;
+    }
 
     public Integer getStatus() {
         return status;
@@ -155,7 +167,7 @@ public class OrderModel implements Serializable {
     }
 
     public String getTransactionCharges() {
-        return transactionCharges;
+        return TextUtils.isEmpty(transactionCharges) ? "0.0" : transactionCharges;
     }
 
     public void setTransactionCharges(String transactionCharges) {

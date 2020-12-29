@@ -89,6 +89,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         leftIcon.setOnClickListener {
             onBackPressed()
         }
+
     }
 
     private fun setOrderStatus() {
@@ -104,7 +105,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
-            liveStatus.text = getString(R.string.delivery_boy_reached_at_your_location)
+            liveStatus.text =
+                item.delivery?.name + " " + getString(R.string.delivery_boy_reached_at_your_location)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
@@ -120,17 +122,19 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun setDeliveryInfo() {
-        userDetails.text = item.delivery_name
+        if (item.delivery == null)
+            return
+        userDetails.text = item.delivery?.name
 
-        if (item.delivery_pic != "") {
+        if (item.delivery?.photo != "") {
             GlideApp.with(applicationContext)
-                .load(item.delivery_pic).centerCrop().dontAnimate()
+                .load(item.delivery.photo).centerCrop().dontAnimate()
                 .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
         }
         call.setOnClickListener {
             UIUtil.clickAlpha(it)
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse(item.delivey_phone)
+            intent.data = Uri.parse(item.delivery.phoneNo)
             startActivity(intent)
 
         }

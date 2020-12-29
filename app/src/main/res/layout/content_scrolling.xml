@@ -57,16 +57,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
-                android:layout_toStartOf="@+id/bookmark"
+                android:layout_alignParentEnd="true"
                 android:contentDescription="@string/share"
                 android:paddingTop="@dimen/_15sdp"
-                app:srcCompat="@drawable/ic_share" />
+                app:srcCompat="@drawable/ic_share"
+                tools:ignore="RtlSymmetry"/>
 
             <ImageView
                 android:id="@+id/bookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:visibility="gone"
                 android:contentDescription="@string/bookmark"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_15sdp"

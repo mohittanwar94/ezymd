@@ -216,7 +216,7 @@
     <string name="have_an_issue_chat_with_us">Have an issue chat with us?</string>
     <string name="your_order_processing">Your order is processing</string>
     <string name="your_order_is_cooking">Your order is cooking </string>
-    <string name="delivery_boy_reached_at_your_location">Delivery Boy reach at you at restaurant</string>
+    <string name="delivery_boy_reached_at_your_location">has reached at you at restaurant</string>
     <string name="order_accepted_by_delivery_boy">Order Accepted</string>
     <string name="order_pick_up">Order pick up from restaurant</string>
     <string name="go_and_pick_your_order">Go and pick your order from restaurant</string>
