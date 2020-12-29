@@ -10,6 +10,12 @@ public class OrderItems implements Serializable {
     @SerializedName("item")
     @Expose
     private String item;
+
+    @SerializedName("description")
+    @Expose
+    private String description;
+
+
     @SerializedName("price")
     @Expose
     private Integer price;
@@ -19,7 +25,21 @@ public class OrderItems implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private Integer id=0;
+    private Integer id = 0;
+
+
+    @SerializedName("image")
+    @Expose
+    private String image = "";
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Integer getId() {
         return id;
@@ -53,4 +73,11 @@ public class OrderItems implements Serializable {
         this.qty = qty;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

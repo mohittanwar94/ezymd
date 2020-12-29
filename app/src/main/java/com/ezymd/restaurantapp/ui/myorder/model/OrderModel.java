@@ -2,10 +2,9 @@ package com.ezymd.restaurantapp.ui.myorder.model;
 
 import android.text.TextUtils;
 
+import com.ezymd.restaurantapp.ui.home.model.Resturant;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,16 +13,12 @@ public class OrderModel implements Serializable {
     @SerializedName("order_id")
     @Expose
     private Integer orderId;
-    @SerializedName("restaurant_name")
+    @SerializedName("restaurant")
     @Expose
-    private String restaurantName;
+    private Resturant restaurant;
     @SerializedName("feedback")
     @Expose
     private String feedback;
-
-    @SerializedName("restaurant_address")
-    @Expose
-    private String restaurantAddress;
 
 
     @SerializedName("username")
@@ -53,12 +48,6 @@ public class OrderModel implements Serializable {
     @SerializedName("order_pickup_status")
     @Expose
     private Integer orderPickupStatus;
-    @SerializedName("restaurant_lat")
-    @Expose
-    private String restaurant_lat;
-    @SerializedName("restaurant_lang")
-    @Expose
-    private String restaurant_lang;
     @SerializedName("delivery_lat")
     @Expose
     private String delivery_lat;
@@ -110,9 +99,6 @@ public class OrderModel implements Serializable {
     @SerializedName("delivery_boy_rating")
     @Expose
     public String delivery_boy_rating;
-    @SerializedName("restaurant_id")
-    @Expose
-    public  Integer restaurantID;
 
     public Integer getOrderId() {
         return orderId;
@@ -122,12 +108,12 @@ public class OrderModel implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getRestaurantName() {
-        return TextUtils.isEmpty(restaurantName) ? "" : restaurantName;
+    public Resturant getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setRestaurant(Resturant restaurantName) {
+        this.restaurant = restaurantName;
     }
 
     public String getUsername() {
@@ -138,21 +124,6 @@ public class OrderModel implements Serializable {
         this.username = username;
     }
 
-    public String getRestaurantAddress() {
-        return TextUtils.isEmpty(restaurantAddress) ? "" : restaurantAddress;
-    }
-
-    public Integer getRestaurantID() {
-        return restaurantID;
-    }
-
-    public void setRestaurantID(Integer restaurantID) {
-        this.restaurantID = restaurantID;
-    }
-
-    public void setRestaurantAddress(String restaurantAddress) {
-        this.restaurantAddress = restaurantAddress;
-    }
 
     public Integer getStatus() {
         return status;
@@ -271,13 +242,6 @@ public class OrderModel implements Serializable {
         return TextUtils.isEmpty(deliveryInstruction) ? "N/A" : deliveryInstruction;
     }
 
-    public String getRestaurant_lang() {
-        return TextUtils.isEmpty(restaurant_lang) ? "" : restaurant_lang;
-    }
-
-    public void setRestaurant_lang(String restaurant_lang) {
-        this.restaurant_lang = restaurant_lang;
-    }
 
     public String getDelivery_lat() {
         return TextUtils.isEmpty(delivery_lat) ? "" : delivery_lat;
@@ -287,13 +251,6 @@ public class OrderModel implements Serializable {
         this.delivery_lat = delivery_lat;
     }
 
-    public String getRestaurant_lat() {
-        return TextUtils.isEmpty(restaurant_lat) ? "" : restaurant_lat;
-    }
-
-    public void setRestaurant_lat(String restaurant_lat) {
-        this.restaurant_lat = restaurant_lat;
-    }
 
     public String getDelivery_lang() {
         return TextUtils.isEmpty(delivery_lang) ? "" : delivery_lang;

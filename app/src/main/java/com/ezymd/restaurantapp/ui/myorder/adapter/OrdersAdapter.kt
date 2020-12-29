@@ -15,7 +15,6 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.tracker.TrackerActivity
-import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.*
@@ -70,7 +69,7 @@ class OrdersAdapter(
         val item = data[position]
         holder.itemView.order_id.text =
             holder.itemView.order_id.context.getString(R.string.orderID) + " #" + item.orderId
-        holder.itemView.name.text = item.restaurantName
+        holder.itemView.name.text = item.restaurant.name
 
         holder.itemView.totalAmount.text =
             holder.itemView.context.getString(R.string.dollor) + item.total
@@ -89,7 +88,7 @@ class OrdersAdapter(
             val startIntent = Intent(holder.itemView.context, TrackerActivity::class.java)
             startIntent.putExtra(JSONKeys.OBJECT, data[position])
             (mContext as MainActivity).startActivity(startIntent)
-            SnapLog.print("status==="+data[position].orderStatus)
+            SnapLog.print("status===" + data[position].orderStatus)
         }
 
         holder.itemView.reorder.setOnClickListener {
@@ -117,21 +116,16 @@ class OrdersAdapter(
             model.id = item.id
             model.quantity = item.qty
             model.price = item.price
+            model.item = item.item
+            model.description=item.description
+            model.image = item.image
 
             list.add(model)
         }
         EzymdApplication.getInstance().cartData.postValue(list)
 
-        val restaurnt = Resturant()
-        restaurnt.id = orderModel.restaurantID
-        restaurnt.name = orderModel.restaurantName
-        restaurnt.address = orderModel.address
-        restaurnt.lat = orderModel.restaurant_lat.toDouble()
-        restaurnt.longitude = orderModel.restaurant_lang.toDouble()
-        restaurnt.address = orderModel.address
-
         val intent = Intent(mContext, CartActivity::class.java)
-        intent.putExtra(JSONKeys.OBJECT, restaurnt)
+        intent.putExtra(JSONKeys.OBJECT, orderModel.restaurant)
         mContext.startActivity(intent)
         (mContext as BaseActivity).overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }

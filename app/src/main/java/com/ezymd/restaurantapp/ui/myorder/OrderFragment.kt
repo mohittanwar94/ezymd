@@ -55,7 +55,9 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (isNullViewRoot) {
             setAdapterRestaurant()
-            searchViewModel.orderList(BaseRequest(userInfo))
+            val baseRequest = BaseRequest(userInfo)
+            baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
+            searchViewModel.orderList(baseRequest)
         }
 
     }
@@ -74,8 +76,13 @@ class OrderFragment : Fragment() {
         )
         restaurantAdapter =
             OrdersAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-                startActivity(Intent(requireActivity(), OrderDetailsActivity::class.java).putExtra(JSONKeys.OBJECT,dataResturant[position]))
-                requireActivity().overridePendingTransition(R.anim.left_in,R.anim.left_out)
+                startActivity(
+                    Intent(requireActivity(), OrderDetailsActivity::class.java).putExtra(
+                        JSONKeys.OBJECT,
+                        dataResturant[position]
+                    )
+                )
+                requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -86,6 +93,8 @@ class OrderFragment : Fragment() {
         super.onResume()
         dataResturant.clear()
         restaurantAdapter?.clearData()
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
         searchViewModel.orderList(BaseRequest(userInfo))
         setObservers()
     }
@@ -115,7 +124,8 @@ class OrderFragment : Fragment() {
         })
 
         searchViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
-            (activity as BaseActivity).showError(false, it, null)
+            if (it != null)
+                (activity as BaseActivity).showError(false, it, null)
         })
 
 

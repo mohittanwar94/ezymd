@@ -125,7 +125,10 @@ interface WebServices {
 
 
     @GET(ServerConfig.CREATE_ORDER)
-    suspend fun orderList(@Header("Authorization") accessToken: String): OrderBaseModel
+    suspend fun orderList(
+        @Query("customer_id") customer_id: String,
+        @Header("Authorization") accessToken: String
+    ): OrderBaseModel
 
     @GET(ServerConfig.UPDATED_COORDINATES)
     suspend fun locationUpdates(

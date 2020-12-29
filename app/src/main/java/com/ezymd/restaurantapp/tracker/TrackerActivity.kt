@@ -137,8 +137,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         var lat = item.delivery_lat.toDouble()
         var lng = item.delivery_lang.toDouble()
         val source = LatLng(lat, lng)
-        lat = item.restaurant_lat.toDouble()
-        lng = item.restaurant_lang.toDouble()
+        lat = item.restaurant.lat.toDouble()
+        lng = item.restaurant.longitude.toDouble()
         val destination = LatLng(lat, lng)
 
         val hashMap = trackViewModel.getDirectionsUrl(
@@ -194,8 +194,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         var lat = item.delivery_lat.toDouble()
         var lng = item.delivery_lang.toDouble()
         val source = LatLng(lat, lng)
-        lat = item.restaurant_lat.toDouble()
-        lng = item.restaurant_lang.toDouble()
+        lat = item.restaurant.lat.toDouble()
+        lng = item.restaurant.longitude.toDouble()
         val destination = LatLng(lat, lng)
 
         val hashMap = trackViewModel.getDirectionsUrl(

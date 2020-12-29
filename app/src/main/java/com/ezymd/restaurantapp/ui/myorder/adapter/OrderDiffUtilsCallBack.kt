@@ -27,8 +27,8 @@ class OrderDiffUtilsCallBack(data: ArrayList<OrderModel>, neData: ArrayList<Orde
         val oldLog: OrderModel = mOldEmployeeList[oldItemPosition]
         val newLog: OrderModel = mNewEmployeeList[newItemPosition]
         val isMatched =
-            oldLog.paymentId.equals(newLog.paymentId, true) && oldLog.restaurantName.equals(
-                newLog.restaurantName,
+            oldLog.paymentId.equals(newLog.paymentId, true) && oldLog.restaurant.name.equals(
+                newLog.restaurant.name,
                 true
             ) && oldLog.total == newLog.total
         return isMatched

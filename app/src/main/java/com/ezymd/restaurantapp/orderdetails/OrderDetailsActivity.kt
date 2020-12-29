@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.orderdetails.adapter.OrderDetailsAdapter
 import com.ezymd.restaurantapp.review.ReviewActivity
@@ -44,10 +46,14 @@ class OrderDetailsActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
+        trackOrder.setOnClickListener {
+            UIUtil.clickHandled(it)
+            makeReorder(item)
+        }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
-        restaurantname.text = item.restaurantName
+        restaurantname.text = item.restaurant?.name
         username.text = userInfo?.userName
-        address.text = item.restaurantAddress
+        address.text = item.restaurant?.address
         order_info.text =
             TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
                 R.string.dollor
@@ -78,6 +84,29 @@ class OrderDetailsActivity : BaseActivity() {
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
+    }
+
+    private fun makeReorder(orderModel: OrderModel) {
+        val list = ArrayList<ItemModel>()
+        for (item in orderModel.orderItems) {
+            val model = ItemModel()
+
+            model.id = item.id
+            model.quantity = item.qty
+            model.price = item.price
+            model.item = item.item
+            model.description = item.description
+            model.image = item.image
+
+            list.add(model)
+        }
+        EzymdApplication.getInstance().cartData.postValue(list)
+
+        val intent = Intent(this@OrderDetailsActivity, CartActivity::class.java)
+        intent.putExtra(JSONKeys.OBJECT, orderModel.restaurant)
+        startActivity(intent)
+        overridePendingTransition(R.anim.left_in, R.anim.left_out)
+
     }
 
     private fun setOrderStatus(orderStatus: Int) {
