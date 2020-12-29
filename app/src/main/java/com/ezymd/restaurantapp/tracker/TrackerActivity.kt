@@ -19,6 +19,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.*
+import com.ezymd.restaurantapp.utils.SupportChat.Companion.startChatSupport
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -61,6 +62,11 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
+
+        chatLay.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startChatSupport(this, userInfo!!)
+        }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         order_info.text =
             TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(

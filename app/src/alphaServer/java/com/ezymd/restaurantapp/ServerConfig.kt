@@ -6,6 +6,7 @@ package com.ezymd.restaurantapp
 interface ServerConfig {
     companion object {
 
+
         const val PAYMENT_ACCOUNT_ID = "acct_1HhzYpJDOhLt3uxI"
         const val PAYMENT_PUBLISHABLE_KEY =
             "pk_test_51HhzYpJDOhLt3uxIvDleCx6AuZhRyxcbqjlcDDpT0T5eJpcsn75VDkvIwFBPGrZbcqMgOpYcW8orGH8e38SmimGC00isW5kwyM"
@@ -37,6 +38,10 @@ interface ServerConfig {
         const val LIST_COUPON="listCoupon/{restaurant_id}"
         const val TRANSACTION_CHARGES="transactionAmount"
         const val UPDATED_COORDINATES="orderTracking/{name}"
+
+        val ZENDESK_CHAT_KEY = "X40lrThEJB7Lgs6XSUGf9kVbzDjbWNQa";
+        val APPID = "220869949208236033"
+
 
     }
 }

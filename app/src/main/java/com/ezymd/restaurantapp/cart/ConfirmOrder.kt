@@ -598,7 +598,7 @@ class ConfirmOrder : BaseActivity() {
         if (intent.hasExtra(JSONKeys.PROMO)) {
             jsonObject.addProperty("coupon_id", intent.getIntExtra(JSONKeys.PROMO, 0))
             jsonObject.addProperty(
-                "coupon_amount",
+                "discount",
                 intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
             )
 

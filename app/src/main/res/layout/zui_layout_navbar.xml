@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/zui_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/zui_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/abc_action_bar_up_description"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            app:title="@string/zui_toolbar_title"
+            tools:layout_height="56dp"
+            app:titleTextColor="@color/black"
+            tools:ignore="PrivateResource"/>
+
+        <zendesk.commonui.AlmostRealProgressBar
+            android:id="@+id/zui_progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zui_toolbar_progress_bar_height"
+            android:layout_gravity="bottom"
+            android:indeterminate="false"
+            android:visibility="visible"
+            android:progressDrawable="@drawable/zui_background_progressbar"
+            tools:progressTint="@color/zui_color_black_100"
+            tools:progress="50"/>
+
+    </FrameLayout>
+
+</com.google.android.material.appbar.AppBarLayout>

@@ -108,6 +108,7 @@ repositories {
     mavenCentral()
     maven { url "https://maven.google.com" }
     maven { url "https://jitpack.io" }
+    maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
     flatDir {
         dirs 'libs'
     }
@@ -170,6 +171,9 @@ dependencies {
     implementation 'com.github.sureshmaidaragi1919:CircularTimer:1.1'
 
     implementation 'com.stripe:stripe-android:16.1.1'
+
+    implementation group: 'com.zendesk', name: 'chat', version: '3.0.0'
+    implementation group: 'com.zendesk', name: 'messaging', version: '5.0.0'
 
 
 }
