@@ -327,7 +327,11 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (permissionListener == null || permissions == null || grantResults == null) return
         when (requestCode) {

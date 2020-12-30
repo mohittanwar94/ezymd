@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class EzymdApplication extends Application implements Application.ActivityLifecycleCallbacks {
     private Activity mLastForegroundActivity;
-    public MutableLiveData<Boolean> isRefresh = new SingleLiveEvent();
+    public MutableLiveData<Boolean> isRefresh = new MutableLiveData<>();
     @Nullable
     public final String networkErrorMessage = "it seems network is not available right now";
     public MutableLiveData<ArrayList<ItemModel>> cartData = new MutableLiveData<>();

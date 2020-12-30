@@ -93,11 +93,6 @@ class OrderFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        dataResturant.clear()
-        restaurantAdapter?.clearData()
-        val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
-        searchViewModel.orderList(BaseRequest(userInfo))
         setObservers()
     }
 
@@ -105,6 +100,9 @@ class OrderFragment : Fragment() {
 
         EzymdApplication.getInstance().isRefresh.observe(this, Observer {
             if (it) {
+                SnapLog.print("refresh called==================")
+                dataResturant.clear()
+                restaurantAdapter?.clearData()
                 val baseRequest = BaseRequest(userInfo)
                 baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
                 searchViewModel.orderList(BaseRequest(userInfo))

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
@@ -58,7 +59,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         mapFragment!!.getMapAsync(this)
 
 
+
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
@@ -90,6 +93,12 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             onBackPressed()
         }
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.right_in,R.anim.right_out)
+        EzymdApplication.getInstance().isRefresh.postValue(true)
     }
 
     private fun setOrderStatus() {
