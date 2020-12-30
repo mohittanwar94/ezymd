@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.MainActivity
@@ -19,7 +20,7 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_orders.*
 
-class OrderFragment : Fragment() {
+class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var restaurantAdapter: OrdersAdapter? = null
     private var isNullViewRoot = false
@@ -32,6 +33,14 @@ class OrderFragment : Fragment() {
         (activity as MainActivity).userInfo
     }
 
+    override fun onRefresh() {
+        swipeLayout.isRefreshing = true
+        dataResturant.clear()
+        restaurantAdapter?.clearData()
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
+        searchViewModel.orderList(BaseRequest(userInfo))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +74,7 @@ class OrderFragment : Fragment() {
     }
 
     private fun setAdapterRestaurant() {
+        swipeLayout.setOnRefreshListener(this)
         resturantRecyclerView.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         resturantRecyclerView.addItemDecoration(
@@ -111,6 +121,7 @@ class OrderFragment : Fragment() {
 
         searchViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
             if (!it) {
+                swipeLayout.isRefreshing = false
                 progress.visibility = View.GONE
             } else {
                 progress.visibility = View.VISIBLE
