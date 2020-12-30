@@ -39,7 +39,7 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         restaurantAdapter?.clearData()
         val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
-        searchViewModel.orderList(BaseRequest(userInfo))
+        searchViewModel.orderList(baseRequest)
     }
 
     override fun onCreateView(
@@ -98,28 +98,28 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
+        setObservers()
 
     }
 
     override fun onResume() {
         super.onResume()
-        setObservers()
     }
 
     private fun setObservers() {
 
-        EzymdApplication.getInstance().isRefresh.observe(this, Observer {
+        EzymdApplication.getInstance().isRefresh.observe(requireActivity(), Observer {
             if (it) {
                 SnapLog.print("refresh called==================")
                 dataResturant.clear()
                 restaurantAdapter?.clearData()
                 val baseRequest = BaseRequest(userInfo)
                 baseRequest.paramsMap["customer_id"] = "" + userInfo!!.userID
-                searchViewModel.orderList(BaseRequest(userInfo))
+                searchViewModel.orderList(baseRequest)
             }
         })
 
-        searchViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.isLoading.observe(requireActivity(), androidx.lifecycle.Observer {
             if (!it) {
                 swipeLayout.isRefreshing = false
                 progress.visibility = View.GONE
@@ -128,7 +128,7 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         })
 
-        searchViewModel.baseResponse.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.baseResponse.observe(requireActivity(), androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS && it.data != null) {
                 dataResturant.clear()
                 restaurantAdapter?.clearData()
@@ -153,9 +153,6 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onStop() {
         super.onStop()
-        searchViewModel.isLoading.removeObservers(this)
-        searchViewModel.errorRequest.removeObservers(this)
-        searchViewModel.baseResponse.removeObservers(this)
     }
 
 

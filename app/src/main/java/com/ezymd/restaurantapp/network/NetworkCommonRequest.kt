@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.network
 
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -39,6 +40,7 @@ class NetworkCommonRequest {
             try {
                 ResultWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
+              //  SnapLog.print(""+throwable.localizedMessage)
                 when (throwable) {
                     is IOException -> ResultWrapper.NetworkError
                     is HttpException -> {
