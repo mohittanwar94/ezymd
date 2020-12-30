@@ -337,9 +337,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     private fun addOriginDestinationMarkerAndGet(isSource: Boolean, latLng: LatLng): Marker {
         val bitmapDescriptor =
             if (isSource) {
-                MapUtils.getSourceBitmap(this)
+                MapUtils.getSourceBitmap(this, R.drawable.ic_user_location)
             } else {
-                MapUtils.getDestinationBitmap(this)
+                MapUtils.getDestinationBitmap(this, R.drawable.ic_dining_large)
             }
 
         return mMap!!.addMarker(
