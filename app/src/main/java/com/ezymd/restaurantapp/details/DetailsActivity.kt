@@ -392,6 +392,12 @@ class DetailsActivity : BaseActivity() {
 
     private fun setToolBar() {
 
+        call.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:987654321")
+            startActivity(intent)
+        }
         setSupportActionBar(findViewById(R.id.toolbar))
         window.statusBarColor = Color.TRANSPARENT
 

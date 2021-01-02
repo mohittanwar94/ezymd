@@ -5,6 +5,7 @@ import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.gson.JsonObject
@@ -40,7 +41,7 @@ class TrackerRepository private constructor() {
     suspend fun updateCoordinates(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LocationModel> {
+    ): ResultWrapper<BaseUpdateLocationModel> {
 
         SnapLog.print("track repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)

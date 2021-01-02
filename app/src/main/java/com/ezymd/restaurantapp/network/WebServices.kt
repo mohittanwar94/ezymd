@@ -10,6 +10,7 @@ import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
+import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderBaseModel
@@ -134,7 +135,7 @@ interface WebServices {
     suspend fun locationUpdates(
         @Path("name") id: String,
         @Header("Authorization") accessToken: String
-    ): LocationModel
+    ): BaseUpdateLocationModel
 
 
     @FormUrlEncoded

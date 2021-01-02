@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.tracker.model.UpdateLocationModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.*
@@ -59,7 +60,6 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         mapFragment!!.getMapAsync(this)
 
 
-
     }
 
 
@@ -76,7 +76,20 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 R.string.dollor
             ) + item.total
 
+        setOrderStatus()
+        leftIcon.setOnClickListener {
+            onBackPressed()
+        }
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
+        EzymdApplication.getInstance().isRefresh.postValue(true)
+    }
+
+    private fun setOrderStatus() {
         if (item.orderPickupStatus == JSONKeys.FROM_RESTAURANT && item.orderStatus == OrderStatus.ORDER_COMPLETED) {
             liveStatus.text = getString(R.string.your_order_is_completed)
             deliveyLay.visibility = View.VISIBLE
@@ -87,21 +100,13 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         } else if (item.orderPickupStatus == JSONKeys.FROM_RESTAURANT && item.orderStatus == OrderStatus.PROCESSING) {
             liveStatus.text = getString(R.string.your_order_processing)
         } else {
-            setOrderStatus()
-        }
-        leftIcon.setOnClickListener {
-            onBackPressed()
-        }
 
+
+            setOrderStatusDelivery()
+        }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.right_in,R.anim.right_out)
-        EzymdApplication.getInstance().isRefresh.postValue(true)
-    }
-
-    private fun setOrderStatus() {
+    private fun setOrderStatusDelivery() {
         if (item.orderStatus == OrderStatus.PROCESSING) {
             liveStatus.text = getString(R.string.your_order_processing)
         } else if (item.orderStatus == OrderStatus.ORDER_ACCEPTED) {
@@ -144,7 +149,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             try {
                 UIUtil.clickAlpha(it)
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:"+item.delivery.phoneNo)
+                intent.data = Uri.parse("tel:" + item.delivery.phoneNo)
                 startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -155,7 +160,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun setObserver() {
         //if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY)
-        trackViewModel.startTimer(item.orderId.toString(), userInfo!!)
+        if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
+            trackViewModel.startTimer(item.orderId.toString(), userInfo!!)
+        }
 
         var lat = item.delivery_lat.toDouble()
         var lng = item.delivery_lang.toDouble()
@@ -184,8 +191,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         })
 
         trackViewModel.locationUpdate.observe(this, Observer {
-            if (it != null) {
-                getUpdateRoot()
+            if (it != null && it.data != null) {
+                //to be change
+                getUpdateRoot(it.data)
             }
         })
 
@@ -213,20 +221,18 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
 
-    private fun getUpdateRoot() {
-        var lat = item.delivery_lat.toDouble()
-        var lng = item.delivery_lang.toDouble()
-        val source = LatLng(lat, lng)
-        lat = item.restaurant.lat.toDouble()
-        lng = item.restaurant.longitude.toDouble()
-        val destination = LatLng(lat, lng)
+    private fun getUpdateRoot(data: ArrayList<UpdateLocationModel>) {
+        if (data.size > 0) {
+            if (data[0].orderStatus != item.orderStatus) {
+                item.orderStatus = data[0].orderStatus
+                setOrderStatus()
+            }
 
-        val hashMap = trackViewModel.getDirectionsUrl(
-            source,
-            destination,
-            getString(R.string.google_maps_key)
-        )
-        trackViewModel.downloadRoute(hashMap)
+            val latLng = LatLng(data[0].lat, data[0].lang)
+            updateCarLocation(latLng)
+        }
+
+
     }
 
 

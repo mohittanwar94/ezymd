@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
@@ -23,11 +24,11 @@ import java.util.concurrent.ConcurrentHashMap
 
 
 class TrackerViewModel : ViewModel() {
-    var errorRequest: SingleLiveEvent<String>
+    var errorRequest: SingleLiveEvent<String> = SingleLiveEvent()
     private var loginRepository: TrackerRepository? = null
     val routeInfoResponse: MutableLiveData<ArrayList<List<HashMap<String, String>>>>
     val firebaseResponse: MutableLiveData<DataSnapshot>
-    val locationUpdate = MutableLiveData<LocationModel>()
+    val locationUpdate = MutableLiveData<BaseUpdateLocationModel>()
     val isLoading: MutableLiveData<Boolean>
     val timer = Timer()
 
@@ -46,7 +47,6 @@ class TrackerViewModel : ViewModel() {
     }
 
     init {
-        errorRequest = SingleLiveEvent()
         loginRepository = TrackerRepository.instance
         firebaseResponse = MutableLiveData()
         isLoading = MutableLiveData()
@@ -64,7 +64,7 @@ class TrackerViewModel : ViewModel() {
             }
 
 
-        }, 120000, 120000);
+        }, 30000, 30000)
     }
 
     private fun showNetworkError() {
