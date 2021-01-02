@@ -395,7 +395,7 @@ class DetailsActivity : BaseActivity() {
         call.setOnClickListener {
             UIUtil.clickAlpha(it)
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:987654321")
+            intent.data = Uri.parse("tel:" + restaurant.phoneNo)
             startActivity(intent)
         }
         setSupportActionBar(findViewById(R.id.toolbar))

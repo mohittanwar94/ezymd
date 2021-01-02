@@ -1,5 +1,7 @@
 package com.ezymd.restaurantapp.ui.home.model;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -51,6 +53,9 @@ public class Resturant implements Serializable {
     private Double distance = 0.0;
 
     private boolean isPick = false;
+    @SerializedName("phone_no")
+    @Expose
+    private String phoneNo;
 
     public boolean isPick() {
         return isPick;
@@ -143,6 +148,14 @@ public class Resturant implements Serializable {
     public Integer getDiscount() {
         return discount != null ? discount : 0;
 
+    }
+
+    public String getPhoneNo() {
+        return TextUtils.isEmpty(phoneNo) ? "0" : phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
     public void setDiscount(Integer discount) {
