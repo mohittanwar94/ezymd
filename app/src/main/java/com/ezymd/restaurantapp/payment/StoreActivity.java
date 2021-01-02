@@ -45,7 +45,7 @@ public class StoreActivity {
                 ))
 
                 // collect shipping information
-                .setShippingInfoRequired(true)
+                .setShippingInfoRequired(false)
 
                 // collect shipping method
                 .setShippingMethodsRequired(false)

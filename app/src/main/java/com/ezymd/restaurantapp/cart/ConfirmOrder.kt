@@ -189,16 +189,18 @@ class ConfirmOrder : BaseActivity() {
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
         payButton.text =
-            getString(R.string.pay) + " " + getString(R.string.dollor) + (intent.getDoubleExtra(
-                JSONKeys.TOTAL_CASH,
-                0.0
-            ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
-                JSONKeys.FEE_CHARGES,
-                0.0
-            ) - intent.getDoubleExtra(
-                JSONKeys.DISCOUNT_AMOUNT,
-                0.0
-            ))
+            getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+                "%.2f", (intent.getDoubleExtra(
+                    JSONKeys.TOTAL_CASH,
+                    0.0
+                ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+                    JSONKeys.FEE_CHARGES,
+                    0.0
+                ) - intent.getDoubleExtra(
+                    JSONKeys.DISCOUNT_AMOUNT,
+                    0.0
+                )).toDouble()
+            )
         if (restaurant.isPick) {
             viewModel.isNowSelectd.postValue(true)
             resturantAddressLay.visibility = View.VISIBLE
@@ -476,8 +478,8 @@ class ConfirmOrder : BaseActivity() {
                     paymentSessionData = data
 
                     // payButton.isEnabled = data.isPaymentReadyToCharge
-                    shippingAddress.text = getAddress(paymentSessionData!!)
-                    checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
+                  //  shippingAddress.text = getAddress(paymentSessionData!!)
+                   // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
                     checkPayButtomEnableDisable()
 
                     when {
@@ -497,8 +499,8 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun checkPayButtomEnableDisable() {
-        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.shippingAddress == "Add Shipping Details" || checkoutModel.deliveryAddress == "") {
-           // showError(false,  "Please fill above details first.",null)
+        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null)) {
+            // showError(false,  "Please fill above details first.",null)
             return
         } else {
             payButton.isEnabled = true
@@ -641,16 +643,18 @@ class ConfirmOrder : BaseActivity() {
             "delivery_charges",
             intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
         )
-        totalPrice = intent.getDoubleExtra(
-            JSONKeys.TOTAL_CASH,
-            0.0
-        ) + intent.getDoubleExtra(
-            JSONKeys.DELIVERY_CHARGES,
-            0.0
-        ) + intent.getDoubleExtra(
-            JSONKeys.FEE_CHARGES,
-            0.0
-        ) - intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
+        totalPrice = String.format(
+            "%.2f", (intent.getDoubleExtra(
+                JSONKeys.TOTAL_CASH,
+                0.0
+            ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+                JSONKeys.FEE_CHARGES,
+                0.0
+            ) - intent.getDoubleExtra(
+                JSONKeys.DISCOUNT_AMOUNT,
+                0.0
+            ))
+        ).toDouble()
         jsonObject.addProperty("total", totalPrice)
 
         paymentSession?.setCartTotal(price.toLong())
@@ -875,11 +879,11 @@ class ConfirmOrder : BaseActivity() {
             "country" to "US",
             "customer_id" to userInfo!!.customerID,
             "data" to getJsonObject()
-        ).plus(
+        )/*.plus(
             shippingInformation?.let {
                 mapOf("shipping" to it.toParamMap())
             }.orEmpty()
-        ).plus(
+        )*/.plus(
             stripeAccountId?.let {
                 mapOf("stripe_account" to it)
             }.orEmpty()
