@@ -233,7 +233,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             }
 
             val latLng = LatLng(data[0].lat, data[0].lang)
-            if (!PolyUtil.isLocationOnPath(latLng, pointsList, true, 150.0)) {
+            if (!PolyUtil.isLocationOnPath(latLng, pointsList, true, 50.0)) {
                 var lat = item.restaurant.lat.toDouble()
                 var lng = item.restaurant.longitude.toDouble()
                 val source = LatLng(lat, lng)
