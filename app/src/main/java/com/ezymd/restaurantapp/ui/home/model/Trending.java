@@ -17,6 +17,11 @@ public class Trending implements Serializable {
     @Expose
     private String image;
 
+    @SerializedName("restaurant")
+    @Expose
+    private Resturant restaurant;
+
+
     public Integer getFoodId() {
         return foodId;
     }
@@ -41,5 +46,11 @@ public class Trending implements Serializable {
         this.image = image;
     }
 
+    public Resturant getRestaurant() {
+        return restaurant;
+    }
 
+    public void setRestaurant(Resturant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

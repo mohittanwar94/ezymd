@@ -101,7 +101,8 @@ interface WebServices {
         @Query("sensor") sensor: String,
         @Query("destination") destination: String,
         @Query("mode") mode: String,
-        @Query("key") key: String
+        @Query("key") key: String,
+        @Query("waypoints") waypoints: String
     ): JsonObject
 
     @POST(ServerConfig.CREATE_ORDER/*"create_payment_intent"*/)

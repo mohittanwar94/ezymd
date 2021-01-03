@@ -15,7 +15,10 @@ import com.ezymd.restaurantapp.ui.home.model.Trending
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
+import kotlinx.android.synthetic.main.restaurant_item_row.view.*
 import kotlinx.android.synthetic.main.trending_item_row.view.*
+import kotlinx.android.synthetic.main.trending_item_row.view.ivNotesThumb
+import kotlinx.android.synthetic.main.trending_item_row.view.tvTitle
 
 
 class TrendingAdapter(
@@ -55,9 +58,10 @@ class TrendingAdapter(
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.itemView.ivNotesThumb)
 
+
         SnapLog.print("trending===" + data[position].image)
         holder.itemView.setOnClickListener {
-            onRecyclerView.onClick(position, it)
+            onRecyclerView.onClick(holder.adapterPosition, it)
         }
 
     }

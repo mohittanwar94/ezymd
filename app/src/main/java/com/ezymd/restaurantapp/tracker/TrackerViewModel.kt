@@ -64,7 +64,7 @@ class TrackerViewModel : ViewModel() {
             }
 
 
-        }, 30000, 30000)
+        }, 100, 30000)
     }
 
     private fun showNetworkError() {
@@ -114,6 +114,7 @@ class TrackerViewModel : ViewModel() {
 
     fun getDirectionsUrl(
         origin: LatLng,
+        wayPoints: LatLng,
         dest: LatLng,
         key: String
     ): ConcurrentHashMap<String, String> {
@@ -122,6 +123,7 @@ class TrackerViewModel : ViewModel() {
         val str_dest = "" + dest.latitude + "," + dest.longitude
 
 
+        haspMap.put("waypoints","via:" + wayPoints.latitude + "," + wayPoints.longitude)
         haspMap.put("origin", str_origin)
         haspMap.put("destination", str_dest)
         haspMap.put("sensor", "false")

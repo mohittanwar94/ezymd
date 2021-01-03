@@ -28,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
+import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.tracker_activity.*
 import kotlinx.android.synthetic.main.user_live_tracking.*
 
@@ -162,21 +163,24 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         //if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY)
         if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
             trackViewModel.startTimer(item.orderId.toString(), userInfo!!)
+        } else {
+
+            var lat = item.restaurant.lat.toDouble()
+            var lng = item.restaurant.longitude.toDouble()
+
+            val source = LatLng(lat, lng)
+            lat = item.delivery_lat.toDouble()
+            lng = item.delivery_lang.toDouble()
+
+            val destination = LatLng(lat, lng)
+
+            val hashMap = trackViewModel.getDirectionsUrl(
+                source, source,
+                destination,
+                getString(R.string.google_maps_key)
+            )
+            trackViewModel.downloadRoute(hashMap)
         }
-
-        var lat = item.delivery_lat.toDouble()
-        var lng = item.delivery_lang.toDouble()
-        val source = LatLng(lat, lng)
-        lat = item.restaurant.lat.toDouble()
-        lng = item.restaurant.longitude.toDouble()
-        val destination = LatLng(lat, lng)
-
-        val hashMap = trackViewModel.getDirectionsUrl(
-            source,
-            destination,
-            getString(R.string.google_maps_key)
-        )
-        trackViewModel.downloadRoute(hashMap)
         trackViewModel.routeInfoResponse.observe(this, Observer {
             if (it != null) {
                 grayPolyline?.remove()
@@ -229,16 +233,31 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             }
 
             val latLng = LatLng(data[0].lat, data[0].lang)
+            if (!PolyUtil.isLocationOnPath(latLng, pointsList, true, 150.0)) {
+                var lat = item.restaurant.lat.toDouble()
+                var lng = item.restaurant.longitude.toDouble()
+                val source = LatLng(lat, lng)
+                lat = item.delivery_lat.toDouble()
+                lng = item.delivery_lang.toDouble()
+                val destination = LatLng(lat, lng)
+
+                val hashMap = trackViewModel.getDirectionsUrl(
+                    source, latLng,
+                    destination,
+                    getString(R.string.google_maps_key)
+                )
+                trackViewModel.downloadRoute(hashMap)
+
+            }
             updateCarLocation(latLng)
+
         }
-
-
     }
 
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
-        mMap!!.setMaxZoomPreference(16f)
+        mMap!!.setMaxZoomPreference(20f)
         defaultLocation = LatLng(item.delivery_lat.toDouble(), item.delivery_lang.toDouble())
         mMap!!.uiSettings.isMyLocationButtonEnabled = false
         showDefaultLocationOnMap(defaultLocation)
@@ -329,7 +348,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun animateCamera(latLng: LatLng) {
-        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(15.5f).build()
+        val cameraPosition = CameraPosition.Builder().target(latLng).zoom(16f).build()
         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
@@ -371,19 +390,21 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
         val polylineOptions = PolylineOptions()
         polylineOptions.color(Color.GRAY)
+        polylineOptions.geodesic(true)
         polylineOptions.width(12f)
         polylineOptions.addAll(latLngList)
         grayPolyline = mMap!!.addPolyline(polylineOptions)
 
         val blackPolylineOptions = PolylineOptions()
+        blackPolylineOptions.geodesic(true)
         blackPolylineOptions.color(ContextCompat.getColor(this, R.color.color_002366))
         blackPolylineOptions.width(12f)
         blackPolyline = mMap!!.addPolyline(blackPolylineOptions)
 
-        originMarker = addOriginDestinationMarkerAndGet(true, latLngList[0])
+        originMarker = addOriginDestinationMarkerAndGet(false, latLngList[0])
         //originMarker?.setAnchor(0.5f, 0.5f)
         originMarker?.isDraggable = false
-        destinationMarker = addOriginDestinationMarkerAndGet(false, latLngList[latLngList.size - 1])
+        destinationMarker = addOriginDestinationMarkerAndGet(true, latLngList[latLngList.size - 1])
         //destinationMarker?.setAnchor(0.5f, 0.5f)
         destinationMarker?.isDraggable = false
 

@@ -155,6 +155,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'com.github.Jay-Goo:RangeSeekBar:3.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+
 
 
     //facebook

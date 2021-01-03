@@ -291,7 +291,7 @@ open class HomeFragment : Fragment() {
                 dataBanner.clear()
                 bannerPager.adapter?.notifyDataSetChanged()
                 dataBanner.addAll(it.data)
-                SnapLog.print("size========="+dataBanner.size)
+                SnapLog.print("size=========" + dataBanner.size)
                 bannerPager.adapter?.notifyDataSetChanged()
 
             } else {
@@ -375,7 +375,13 @@ open class HomeFragment : Fragment() {
         trendingRecyclerView.setLayoutManager(LinearLayoutManager(activity, HORIZONTAL, false))
         treandingAdapter =
             TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-
+                val obj = dataTrending[position]
+                if (obj.restaurant != null) {
+                    val intent = Intent(activity, DetailsActivity::class.java)
+                    intent.putExtra(JSONKeys.OBJECT, obj.restaurant)
+                    (activity as MainActivity).startActivity(intent)
+                    EzymdApplication.getInstance().cartData.postValue(null)
+                }
             }, dataTrending)
         trendingRecyclerView.adapter = treandingAdapter
 
