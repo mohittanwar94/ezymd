@@ -32,7 +32,6 @@ class OrderSuccess : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_success)
-        trackViewModel.loginToFirebase(FirebaseConstants.email, FirebaseConstants.password, "")
         setObserver()
     }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".location.places.AutoCompleteActivity">
+
+    <include layout="@layout/header_new" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_1sdp"
+        app:cardUseCompatPadding="true">
+
+        <com.ezymd.restaurantapp.customviews.SnapEditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:drawablePadding="@dimen/_15sdp"
+            android:hint="@string/search_location"
+            android:paddingStart="@dimen/_5sdp"
+            android:textColor="@color/color_002366"
+            android:textColorHint="@color/dividerColor"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/_15sdp"
+            app:customDrawableLeft="@drawable/ic_search"
+            app:textFontEdit="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:text="@string/places_powered_by_google"
+        android:textColor="@color/dividerColor" />
+
+</LinearLayout>

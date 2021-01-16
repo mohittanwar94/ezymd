@@ -16,6 +16,7 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.cart.AddressBottomSheet
 import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.location.places.AutoCompleteActivity
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
@@ -36,7 +37,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.bottom_sheet_location.*
 import java.util.*
@@ -129,21 +129,22 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(R.anim.right_in,R.anim.right_out)
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
     private fun startSearchPlacesApi() {
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, getString(R.string.google_maps_key))
         }
-        val fields = listOf(
-            Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.LAT_LNG,
-            Place.Field.PHOTO_METADATAS
-        )
-        val intent =
-            Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this)
+        /*  val fields = listOf(
+              Place.Field.ID,
+              Place.Field.NAME,
+              Place.Field.LAT_LNG,
+              Place.Field.PHOTO_METADATAS
+          )
+      */
+        val intent = Intent(this@LocationActivity, AutoCompleteActivity::class.java)
+        //Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this)
         startActivityForResult(intent, CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE)
     }
 
@@ -277,7 +278,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         var add = address
         if (add.startsWith("Unnamed Road,"))
             add = add.replace("Unnamed Road,", "")
-        locationModel.location=add
+        locationModel.location = add
         toLocationTxt.setText(add.trim())
     }
 
@@ -306,7 +307,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQUEST_CHECK_SETTINGS -> {
                 if (resultCode == Activity.RESULT_OK) {
@@ -320,11 +321,10 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
                 }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 AutocompleteActivity.RESULT_OK -> {
-                    val place = Autocomplete.getPlaceFromIntent(data!!)
+                    val place = data!!.getParcelableExtra(JSONKeys.OBJECT) as Place
                     val latLng = place.latLng.toString()
                     val location = latLng.substring(latLng.indexOf("(") + 1, latLng.indexOf(")"))
                     val loc = location.split(",")
