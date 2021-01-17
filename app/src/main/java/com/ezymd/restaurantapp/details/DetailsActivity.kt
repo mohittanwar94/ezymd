@@ -4,13 +4,16 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.transition.TransitionInflater
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,7 @@ import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.cart_view.*
@@ -129,6 +133,23 @@ class DetailsActivity : BaseActivity() {
 
 
         })
+    }
+
+
+    fun showBottomSheet(it: View, item: ItemModel) {
+        UIUtil.clickAlpha(it)
+        val sheetDialog = BottomSheetDialog(this)
+        sheetDialog.setContentView(R.layout.tnc_bottom_sheet)
+        val promoName = sheetDialog.findViewById<TextView>(R.id.name)
+        promoName!!.text = item.item
+        val description = sheetDialog.findViewById<TextView>(R.id.description)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            description!!.text = Html.fromHtml(item.description, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        } else {
+            description!!.text = Html.fromHtml(item.description)
+        }
+        sheetDialog.setCanceledOnTouchOutside(true)
+        sheetDialog.show()
     }
 
     private fun checkDataChanges(it: ArrayList<ItemModel>) {

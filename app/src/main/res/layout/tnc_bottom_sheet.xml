@@ -38,11 +38,11 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left|center"
             android:paddingLeft="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
-            android:textColor="@color/color_b2bdd1"
-            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/blue_667ba3"
+            android:textSize="@dimen/_13sdp"
             app:textFont="roman" />
     </LinearLayout>
 

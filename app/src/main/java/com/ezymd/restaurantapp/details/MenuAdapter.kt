@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.details
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,8 @@ import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.menu_item_row.view.*
-import kotlinx.android.synthetic.main.restaurant_item_row.view.ivNotesThumb
 
 class MenuAdapter(
     viewModel: DetailViewModel,
@@ -57,16 +58,24 @@ class MenuAdapter(
 
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
 
-        GlideApp.with(mContext.applicationContext)
-            .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
-            .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(holder.itemView.ivNotesThumb)
+        if (!TextUtils.isEmpty(data[position].image)) {
+            GlideApp.with(mContext.applicationContext)
+                .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
+                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.itemView.ivNotesThumb)
+        } else {
+            holder.itemView.ivNotesThumb.visibility = View.GONE
+        }
 
         // holder.itemView.ivNotesThumb.transitionName = "thumbnailTransition";
         val item = data[position]
-        item.stock =5
+        item.stock = 5
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
+        holder.itemView.addOn.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            (mContext as DetailsActivity).showBottomSheet(it, data[holder.adapterPosition])
+        }
         holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
         holder.itemView.quantityPicker.max = item.stock
 
