@@ -29,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
 import com.google.maps.android.PolyUtil
+import com.google.maps.android.SphericalUtil.computeHeading
 import kotlinx.android.synthetic.main.tracker_activity.*
 import kotlinx.android.synthetic.main.user_live_tracking.*
 
@@ -428,7 +429,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
-            movingCabMarker?.setAnchor(0.5f, 0.5f)
+           // movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
         } else {
             previousLatLng = currentLatLng
@@ -442,16 +443,20 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                         multiplier * currentLatLng!!.longitude + (1 - multiplier) * previousLatLng!!.longitude
                     )
                     movingCabMarker?.position = nextLocation
-                    val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
-                    if (!rotation.isNaN()) {
-                        movingCabMarker?.rotation = rotation
-                    }
-                    movingCabMarker?.setAnchor(0.5f, 0.5f)
+                    val heading = computeHeading(previousLatLng, nextLocation);
+                    movingCabMarker?.rotation = heading.toFloat()
+
+                    //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
+                    /* if (!rotation.isNaN()) {
+                         ?.rotation = rotation
+                     }*/
+                   // movingCabMarker?.setAnchor(0.5f, 0.5f)
                     animateCamera(nextLocation)
                 }
             }
             valueAnimator.start()
         }
+
     }
 
 
