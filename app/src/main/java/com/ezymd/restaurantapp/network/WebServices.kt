@@ -7,7 +7,6 @@ import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
-import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
@@ -129,6 +128,8 @@ interface WebServices {
     @GET(ServerConfig.CREATE_ORDER)
     suspend fun orderList(
         @Query("customer_id") customer_id: String,
+        @Query("device_id") device_id: String,
+        @Query("device_token") device_token: String,
         @Header("Authorization") accessToken: String
     ): OrderBaseModel
 

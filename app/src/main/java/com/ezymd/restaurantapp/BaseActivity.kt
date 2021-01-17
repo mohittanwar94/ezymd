@@ -397,7 +397,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                         Snackbar.LENGTH_INDEFINITE
                     )
                 val sbView = netWorkChange!!.view
-                sbView.setBackgroundColor(Color.parseColor("#CC0001"))
+                sbView.setBackgroundColor(Color.parseColor("#ff7675"))
                 val textView =
                     sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
                 textView.setTextColor(Color.WHITE)
@@ -405,7 +405,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                     TypedValue.COMPLEX_UNIT_PX,
                     resources.getDimension(R.dimen._13sdp)
                 )
-                textView.setTypeface(CustomTypeFace.book)
+                textView.typeface = CustomTypeFace.book
                 textView.maxLines = 5
                 textView.gravity = Gravity.CENTER
                 netWorkChange!!.show()
@@ -456,7 +456,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val sbView = snackbar!!.view
             sbView.setBackgroundColor(
                 if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#CC0001"
+                    "#ff7675"
                 )
             )
             val textView =
@@ -531,7 +531,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val sbView = snackbar!!.view
             sbView.setBackgroundColor(
                 if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#ff6666"
+                    "#FDB7B7"
                 )
             )
             val textView =
