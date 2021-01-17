@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.location.places
 
-import android.R
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,8 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Tasks
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -25,7 +26,7 @@ class AutoCompleteAdapter internal constructor(
     context: Context?,
     private val placesClient: PlacesClient
 ) : ArrayAdapter<AutocompletePrediction>(
-    context!!, R.layout.simple_expandable_list_item_2, R.id.text1
+    context!!, android.R.layout.simple_expandable_list_item_2, android.R.id.text1
 ), Filterable {
     private var mResultList: List<AutocompletePrediction>? = null
     override fun getCount(): Int {
@@ -39,8 +40,22 @@ class AutoCompleteAdapter internal constructor(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val row = super.getView(position, convertView, parent)
         val item = getItem(position)
-        val textView1 = row.findViewById<TextView>(R.id.text1)
-        val textView2 = row.findViewById<TextView>(R.id.text2)
+        val textView1 = row.findViewById<TextView>(android.R.id.text1)
+        val textView2 = row.findViewById<TextView>(android.R.id.text2)
+        textView1.typeface = CustomTypeFace.medium
+        textView2.typeface = CustomTypeFace.roman
+        textView1.setTextColor(
+            ContextCompat.getColor(
+                context,
+                com.ezymd.restaurantapp.R.color.color_002366
+            )
+        )
+        textView2.setTextColor(
+            ContextCompat.getColor(
+                context,
+                com.ezymd.restaurantapp.R.color.color_667ba3
+            )
+        )
         if (item != null) {
             textView1.text = item.getPrimaryText(null)
             textView2.text = item.getSecondaryText(null)
@@ -111,7 +126,7 @@ class AutoCompleteAdapter internal constructor(
             // Call either setLocationBias() OR setLocationRestriction().
             .setLocationBias(bounds) //                        .setLocationRestriction(bounds)
             .setSessionToken(AutocompleteSessionToken.newInstance())
-            .setTypeFilter(TypeFilter.ADDRESS)
+            .setTypeFilter(TypeFilter.ESTABLISHMENT)
         val results = placesClient.findAutocompletePredictions(requestBuilder.build())
 
 
