@@ -173,9 +173,9 @@ class CartActivity : BaseActivity() {
                 discountApplied=0.0
                 if (it.size > 0) {
                     notifyAdapter(it)
-                    val baseRequest = BaseRequest(userInfo)
+                   /* val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap.put("amount", "" + getTotalPrice(it))
-                    viewModel.getCharges(baseRequest)
+                    viewModel.getCharges(baseRequest)*/
 
                 } else
                     showEmpty()
@@ -229,7 +229,7 @@ class CartActivity : BaseActivity() {
             }
         })
         viewModel.isLoading.observe(this, Observer {
-            progress.visibility = if (it) View.VISIBLE else View.GONE
+          //  progress.visibility = if (it) View.VISIBLE else View.GONE
 
 
         })
@@ -309,11 +309,7 @@ class CartActivity : BaseActivity() {
 
     private fun setCartDetails(quantityCount: Int, price: Int) {
         runOnUiThread(Runnable {
-            serviceCharge.text = TextUtils.concat(
-                getString(R.string.dollor),
-                "" + String.format("%.2f", serviceAmount)
 
-            )
             SnapLog.print("discountApplied=========="+(discountApplied))
             totalAmount.text = TextUtils.concat(
                 getString(R.string.dollor),
