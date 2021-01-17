@@ -29,7 +29,7 @@
             android:maxLines="1"
             android:text="@string/orderID"
             android:textColor="@color/color_002366"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_15sdp"
             app:textFont="medium" />
 
         <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -44,7 +44,7 @@
             android:maxLines="1"
             android:text="@string/order_status"
             android:textColor="@color/color_002366"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_15sdp"
             app:textFont="bold" />
     </LinearLayout>
 
@@ -61,7 +61,7 @@
         android:paddingBottom="@dimen/_5sdp"
         android:text="@string/pizza"
         android:textColor="@color/color_667ba3"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
 
 
@@ -84,7 +84,7 @@
         android:letterSpacing="0.01"
         android:text="@string/completed"
         android:textColor="@color/color_667ba3"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -101,7 +101,7 @@
         android:maxLines="1"
         android:text="@string/resurant_name"
         android:textColor="@color/color_b2bdd1"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_11sdp"
         app:textFont="roman" />
 
 
@@ -116,7 +116,7 @@
         android:text="@string/track_order"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
     <com.ezymd.restaurantapp.customviews.SnapButton
         android:id="@+id/reorder"
@@ -130,7 +130,7 @@
         android:text="@string/reorder"
         android:textAllCaps="true"
         android:textColor="@color/color_ffb912"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
 
 </LinearLayout>

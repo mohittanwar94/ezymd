@@ -146,6 +146,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         val intent = Intent(this@LocationActivity, AutoCompleteActivity::class.java)
         //Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields).build(this)
         startActivityForResult(intent, CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE)
+        overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
 
     override fun onMapReady(map: GoogleMap?) {
