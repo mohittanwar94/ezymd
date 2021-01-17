@@ -197,9 +197,9 @@ class CartActivity : BaseActivity() {
                 }
                 promoCharge.text = "$" + discountApplied
                 notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
-                val baseRequest = BaseRequest(userInfo)
+               /* val baseRequest = BaseRequest(userInfo)
                 baseRequest.paramsMap.put("amount", "" +( getTotalPrice(EzymdApplication.getInstance().cartData.value!!)-discountApplied))
-                viewModel.getCharges(baseRequest)
+                viewModel.getCharges(baseRequest)*/
             } else {
                 promoLayout.visibility = View.VISIBLE
                 promoApply.visibility = View.GONE
@@ -211,7 +211,7 @@ class CartActivity : BaseActivity() {
 
         viewModel.mTransactionCharge.observe(this, Observer {
 
-            if (it != null && it.status == ErrorCodes.SUCCESS) {
+           /* if (it != null && it.status == ErrorCodes.SUCCESS) {
                 serviceAmount = it.transaction_charge
                 notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
             } else {
@@ -225,9 +225,8 @@ class CartActivity : BaseActivity() {
                         super.onShown(sb)
                     }
 
-                })
-            }
-        })
+                })*/
+            })
         viewModel.isLoading.observe(this, Observer {
           //  progress.visibility = if (it) View.VISIBLE else View.GONE
 

@@ -73,8 +73,6 @@ class OrderDetailsActivity : BaseActivity() {
         } else {
             scheduleAt.text = getString(R.string.now)
         }
-        serviceCharge.text =
-            getString(R.string.dollor) + String.format("%.2f", item.transactionCharges.toDouble())
 
         setOrderStatus(item.orderStatus)
         leftIcon.setOnClickListener {
