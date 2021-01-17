@@ -14,7 +14,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
-
+    val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: SearchRepository? = null
     val mResturantData: MutableLiveData<ResturantModel>
@@ -31,8 +31,9 @@ class SearchViewModel : ViewModel() {
 
         loginRepository = SearchRepository.instance
         isLoading = MutableLiveData()
-        mSearchData= MutableLiveData()
+        mSearchData = MutableLiveData()
         mResturantData = MutableLiveData()
+        isGPSEnable = MutableLiveData()
         errorRequest = SingleLiveEvent()
 
 

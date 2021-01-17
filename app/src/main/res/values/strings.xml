@@ -231,5 +231,8 @@
     <string name="title_promo_code">Promo codes</string>
     <string name="terms_and_conditions"><![CDATA[*Terms & Conditions]]></string>
     <string name="ezymd_support">Ezymd Support</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="enable_location_to_use_app">"Enable location for using Ezymd. "</string>
+    <string name="please_enable_location">Please enable location to use Ezymd</string>
 
 </resources>

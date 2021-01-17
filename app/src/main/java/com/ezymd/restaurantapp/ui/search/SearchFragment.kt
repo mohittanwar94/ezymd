@@ -1,8 +1,13 @@
 package com.ezymd.restaurantapp.ui.search
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.GpsLocationReceiver
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
@@ -62,13 +68,36 @@ class SearchFragment : Fragment() {
             setAdapterRestaurant()
             searchViewModel.getResturants(BaseRequest(userInfo))
             setSearchListerner()
+            requireActivity().registerReceiver(
+                mGpsSwitchStateReceiver,
+                IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+            )
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unregisterReceiver(
+            mGpsSwitchStateReceiver
+        )
     }
 
     private fun setSearchListerner() {
         search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
+                val locationManager =
+                    requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+                if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) && search.text.toString()
+                        .trim().length > 0
+                ) {
+                    (activity as BaseActivity).showError(
+                        false,
+                        requireActivity().getString(R.string.please_enable_location),
+                        null
+                    )
+                    return
+                }
                 if (search.text.toString().trim().length > 4) {
                     val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap.put("search", search.text.toString())
@@ -119,10 +148,57 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val locationManager =
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            setLocationEmpty()
+            return
+        } else {
+            emptyLay.visibility = View.GONE
+
+        }
         setObservers()
     }
 
+    private val mGpsSwitchStateReceiver: BroadcastReceiver = object : GpsLocationReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            if (intent.action!!.equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                val locationManager =
+                    requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+
+                searchViewModel.isGPSEnable.postValue(
+                    locationManager!!.isProviderEnabled(
+                        LocationManager.GPS_PROVIDER
+                    )
+                )
+
+            }
+        }
+    }
+
+    private fun setLocationEmpty() {
+        emptyLay.visibility = View.VISIBLE
+        emptymsg.text = getString(R.string.enable_location_to_use_app)
+        image.setImageResource(R.drawable.ic_location)
+        enableLocation.setOnClickListener {
+            UIUtil.clickHandled(it)
+            val callGPSSettingIntent = Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+            )
+            startActivity(callGPSSettingIntent)
+        }
+    }
+
     private fun setObservers() {
+        searchViewModel.isGPSEnable.observe(this, androidx.lifecycle.Observer {
+            if (!it) {
+                setLocationEmpty()
+            } else {
+
+                emptyLay.visibility = View.GONE
+
+            }
+        })
         searchViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
             if (!it) {
                 progress.visibility = View.GONE

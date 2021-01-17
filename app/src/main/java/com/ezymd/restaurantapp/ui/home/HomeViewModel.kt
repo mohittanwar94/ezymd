@@ -18,6 +18,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
+    val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
@@ -36,6 +37,7 @@ class HomeViewModel : ViewModel() {
 
         loginRepository = HomeRepository.instance
         address = MutableLiveData()
+        isGPSEnable= MutableLiveData()
         isLoading = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()

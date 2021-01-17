@@ -1,10 +1,16 @@
 package com.ezymd.restaurantapp.ui.home
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.IntentFilter
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import com.ezymd.restaurantapp.BaseActivity
-import com.ezymd.restaurantapp.EzymdApplication
-import com.ezymd.restaurantapp.MainActivity
-import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.customviews.RoundedImageView
 import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
@@ -82,9 +85,49 @@ open class HomeFragment : Fragment() {
             setListenerView()
             setAdapterRestaurant()
             homeViewModel.getFilters(BaseRequest(userInfo))
+            requireActivity().registerReceiver(
+                mGpsSwitchStateReceiver,
+                IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
+            )
+
 
         }
 
+    }
+
+    private fun setLocationEmpty() {
+        emptyLay.visibility = View.VISIBLE
+        emptymsg.text = getString(R.string.enable_location_to_use_app)
+        image.setImageResource(R.drawable.ic_location)
+        enableLocation.setOnClickListener {
+            UIUtil.clickHandled(it)
+            val callGPSSettingIntent = Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+            )
+            startActivity(callGPSSettingIntent)
+        }
+    }
+
+    private val mGpsSwitchStateReceiver: BroadcastReceiver = object : GpsLocationReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            if (intent.action!!.equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                val locationManager =
+                    requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
+
+                homeViewModel.isGPSEnable.postValue(
+                    locationManager!!.isProviderEnabled(
+                        LocationManager.GPS_PROVIDER
+                    )
+                )
+
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unregisterReceiver(mGpsSwitchStateReceiver)
     }
 
     private fun askPermission() {
@@ -262,16 +305,45 @@ open class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
-            homeViewModel.getBanners(BaseRequest(userInfo))
-            homeViewModel.getResturants(BaseRequest(userInfo))
-            homeViewModel.getTrending(BaseRequest(userInfo))
+        val locationManager =
+            requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
+        if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            setLocationEmpty()
+            return
+        } else {
+            if (delivery_location.text.equals("N/A")) {
+                SnapLog.print("n/a .............")
+                askPermission()
+            }
+            emptyLay.visibility = View.GONE
+            if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+                homeViewModel.getBanners(BaseRequest(userInfo))
+                homeViewModel.getResturants(BaseRequest(userInfo))
+                homeViewModel.getTrending(BaseRequest(userInfo))
+            }
+            setObservers()
         }
-        setObservers()
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
     }
 
     private fun setObservers() {
+        homeViewModel.isGPSEnable.observe(this, androidx.lifecycle.Observer {
+            if (!it) {
+                setLocationEmpty()
+            } else {
+                if (delivery_location.text.equals("N/A")) {
+                    SnapLog.print("n/a .............")
+                    askPermission()
+                }
+                emptyLay.visibility = View.GONE
+                if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+                    homeViewModel.getBanners(BaseRequest(userInfo))
+                    homeViewModel.getResturants(BaseRequest(userInfo))
+                    homeViewModel.getTrending(BaseRequest(userInfo))
+                }
+
+            }
+        })
         homeViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
             if (!it) {
                 content.visibility = View.VISIBLE
