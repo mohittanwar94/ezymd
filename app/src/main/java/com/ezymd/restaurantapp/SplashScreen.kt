@@ -1,9 +1,14 @@
 package com.ezymd.restaurantapp
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -16,11 +21,39 @@ class SplashScreen : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        try {
+            val mNotifyManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager.getNotificationChannel(
+                    getString(R.string.default_notification_channel_id)
+                ) != null
+            ) {
+                mNotifyManager.deleteNotificationChannel(getString(R.string.default_notification_channel_id))
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager.getNotificationChannel(
+                    getString(R.string.default_notification_channel_id)
+                ) == null
+            ) {
+                val mChannel = NotificationChannel(
+                    getString(R.string.default_notification_channel_id),
+                    "Ezymd",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+                val attributes = AudioAttributes.Builder()
+                    .setLegacyStreamType(AudioManager.STREAM_RING)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build()
+                mChannel.enableLights(true)
+                mChannel.enableVibration(true)
+                mNotifyManager.createNotificationChannel(mChannel)
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-       // printKeyHash(this)
+        // printKeyHash(this)
         if (userInfo!!.userID != 0)
             startActivity(Intent(this, MainActivity::class.java))
         else
