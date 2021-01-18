@@ -456,7 +456,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val sbView = snackbar!!.view
             sbView.setBackgroundColor(
                 if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#ff7675"
+                    "#ff7212"
                 )
             )
             val textView =
@@ -531,7 +531,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val sbView = snackbar!!.view
             sbView.setBackgroundColor(
                 if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#FDB7B7"
+                    "#FF7212"
                 )
             )
             val textView =
