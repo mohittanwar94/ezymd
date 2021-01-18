@@ -97,8 +97,8 @@ open class HomeFragment : Fragment() {
 
     private fun setLocationEmpty() {
         emptyLay.visibility = View.VISIBLE
-        emptymsg.text = getString(R.string.enable_location_to_use_app)
-        image.setImageResource(R.drawable.ic_location)
+        emptymsg.text = getString(R.string.no_location_detected)
+        image.setImageResource(R.drawable.ic_no_location)
         enableLocation.setOnClickListener {
             UIUtil.clickHandled(it)
             val callGPSSettingIntent = Intent(
