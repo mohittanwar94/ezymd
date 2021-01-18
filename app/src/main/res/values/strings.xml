@@ -237,5 +237,7 @@
     <string name="no_location_detected">No location detected</string>
     <string name="regular">Regular</string>
     <string name="contactless">Contact less</string>
+    <string name="your_order_will_be_deliver_shortly">Your order will be deliver shortly</string>
+    <string name="cancel_order">Cancel Order</string>
 
 </resources>

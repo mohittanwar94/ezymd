@@ -86,6 +86,36 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             onBackPressed()
         }
 
+        checkCancelTimer()
+    }
+
+    private fun checkCancelTimer() {
+        if (TimeUtils.isOrderLive(item.created)) {
+            cancelOrder.visibility = View.VISIBLE
+            val duration = TimeUtils.getDuration(item.created)
+            progressCancel.progressMax = duration.toFloat()
+            startCancelTimer(duration)
+
+
+            cancelOrder.setOnClickListener {
+                UIUtil.clickAlpha(it)
+            }
+        }
+
+    }
+
+    private fun startCancelTimer(duration: Long) {
+        countTimer = object : CountDownTimer(duration, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                progressCancel.progress = (duration - millisUntilFinished).toFloat()
+
+
+            }
+
+            override fun onFinish() {
+                cancelOrder.visibility = View.GONE
+            }
+        }.start()
     }
 
     override fun onBackPressed() {
@@ -196,7 +226,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             }
 
             override fun onFinish() {
-                deliverTime.text = "Your order will be deliver shortly"
+                deliverTime.text = getString(R.string.your_order_will_be_deliver_shortly)
             }
         }.start()
     }
