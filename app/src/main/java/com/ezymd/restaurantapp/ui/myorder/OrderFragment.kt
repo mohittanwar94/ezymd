@@ -137,6 +137,8 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     dataResturant.addAll(it1)
                 }
 
+
+                showEmpty(dataResturant.size)
             } else {
                 (activity as BaseActivity).showError(false, it.message, null)
             }
@@ -149,6 +151,10 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         })
 
 
+    }
+
+    fun showEmpty(size: Int) {
+        emptyView.visibility = if (size == 0) View.VISIBLE else View.GONE
     }
 
     override fun onStop() {

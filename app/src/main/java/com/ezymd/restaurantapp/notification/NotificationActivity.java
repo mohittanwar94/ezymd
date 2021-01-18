@@ -29,7 +29,7 @@ import com.ezymd.restaurantapp.utils.OnSwipeTouchListener;
 public class NotificationActivity extends BaseActivity {
     Sizes size;
     Context mActivity;
-    int type;
+    //int type;
     boolean isCancel = false;
     private FrameLayout frameLayout, cardView, frameimageAnim;
     private AppCompatImageView imageAnim, image;
@@ -49,8 +49,6 @@ public class NotificationActivity extends BaseActivity {
         size = new Sizes(getResources().getDisplayMetrics());
 
         cardView = findViewById(R.id.cardView);
-        if (Build.VERSION.SDK_INT < 21)
-            cardView.setBackgroundDrawable(null);
         imageAnim = findViewById(R.id.imageAnim);
         frameimageAnim = findViewById(R.id.frameimageAnim);
         image = findViewById(R.id.image);
@@ -75,7 +73,7 @@ public class NotificationActivity extends BaseActivity {
         frameLayout = findViewById(R.id.frameLayout);
         mActivity = NotificationActivity.this;
 
-        type = Integer.parseInt(getIntent().getStringExtra("type"));
+       // type = Integer.parseInt(getIntent().getStringExtra("type"));
         SnapTextView header = findViewById(R.id.header);
         SnapTextView msg = findViewById(R.id.msg);
         SnapTextView checkNow = findViewById(R.id.ok);

@@ -19,6 +19,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -60,6 +63,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             for (Map.Entry<String, String> entry : data.entrySet()) {
                 SnapLog.print(entry.getKey() + ":" + entry.getValue());
             }
+            generateNotification(this,userInfo,remoteMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +75,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Bundle bundle = new Bundle();
             bundle.putString(JSONKeys.SUB_TITLE, data.get(JSONKeys.SUB_TITLE));
             bundle.putString(JSONKeys.TITLE, data.get(JSONKeys.TITLE));
-            bundle.putString(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
+          //  bundle.putString(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
 
             Intent mIntent = new Intent(this, NotificationActivity.class);
             mIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -91,18 +95,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notification.setContentText(subTitle);
             bigTextStyle.bigText(subTitle);
             notification.setStyle(bigTextStyle);
-           /* try {
-                if (userInfo.hasNotificationSound()) {
-                    Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.shutter);
-                    Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), uri);
-                    ringtone.play();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-           */
+
             Intent activityIntent = new Intent(context, MainActivity.class);
-            activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
+           // activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
             activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent intents = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             notification.setContentText(subTitle);

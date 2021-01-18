@@ -85,7 +85,7 @@ class CouponActivity : BaseActivity() {
                 dataResturant.clear()
                 dataResturant.addAll(it.data)
                 setAdapter()
-
+                showEmpty(dataResturant.size)
             } else {
                 showError(false, it.message, null)
             }
@@ -95,6 +95,10 @@ class CouponActivity : BaseActivity() {
 
 
         })
+    }
+
+    private fun showEmpty(size: Int) {
+        emptyView.visibility = if (size == 0) View.VISIBLE else View.GONE
     }
 
     private fun setGUI() {
