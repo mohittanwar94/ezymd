@@ -324,7 +324,7 @@
 
                 <com.ezymd.restaurantapp.customviews.SnapButton
                     android:id="@+id/contactless"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/promocode"
                     android:layout_marginTop="@dimen/_13sdp"
@@ -342,7 +342,7 @@
 
                 <com.ezymd.restaurantapp.customviews.SnapButton
                     android:id="@+id/regular"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_13sdp"

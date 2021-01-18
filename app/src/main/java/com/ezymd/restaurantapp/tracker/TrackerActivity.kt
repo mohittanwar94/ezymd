@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -35,6 +36,8 @@ import kotlinx.android.synthetic.main.user_live_tracking.*
 
 
 class TrackerActivity : BaseActivity(), OnMapReadyCallback {
+    private var countTimer: CountDownTimer? = null
+    private var duration: String = "0"
     private lateinit var defaultLocation: LatLng
     private var originMarker: Marker? = null
     private var destinationMarker: Marker? = null
@@ -116,7 +119,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         } else if (item.orderStatus == OrderStatus.ORDER_ACCEPT_DELIVERY_BOY) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
-            liveStatus.text = getString(R.string.order_accepted_by_delivery_boy)
+            liveStatus.text =
+                getString(R.string.order_accepted_by_delivery_boy) + " " + item.delivery?.name
+            SnapLog.print("duration==" + duration)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
@@ -137,6 +142,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setDeliveryInfo() {
         if (item.delivery == null)
             return
@@ -160,9 +166,44 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        countTimer?.cancel()
+
+    }
+
+    private fun startTimer() {
+        countTimer = object : CountDownTimer((duration.toLong() * 1000), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val seconds: Long = (millisUntilFinished / 1000)
+                SnapLog.print("seconds==" + seconds)
+                val remaining = duration.toInt() - seconds.toInt()
+                progress.setProgress(remaining)
+
+                val hours: Long = (seconds / (60 * 60))
+                val minutes: Int = ((seconds % 3600) / 60).toInt()
+                var time = ""
+                if (hours > 0L) {
+                    time = "Delivery in " + hours + " hour: " + minutes + " mins"
+                } else {
+                    if (minutes > 1)
+                        time = "Delivery in " + minutes + " min"
+                    else
+                        time = "Delivery in " + minutes + " min"
+                }
+                deliverTime.text = time
+
+            }
+
+            override fun onFinish() {
+                deliverTime.text = "Your order will be deliver shortly"
+            }
+        }.start()
+    }
+
     private fun setObserver() {
         //if (item.orderPickupStatus == OrderStatus.ORDER_ASSIGN_FOR_DELIVERY)
-        if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
+        if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
             trackViewModel.startTimer(item.orderId.toString(), userInfo!!)
         } else {
 
@@ -231,6 +272,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             if (data[0].orderStatus != item.orderStatus) {
                 item.orderStatus = data[0].orderStatus
                 setOrderStatus()
+                (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY)
+                setDuration()
             }
 
             val latLng = LatLng(data[0].lat, data[0].lang)
@@ -329,6 +372,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 val point: HashMap<String, String> = path[j]
                 val lat: Double = point.get("lat")!!.toDouble()
                 val lng: Double = point.get("lng")!!.toDouble()
+                duration = point.get("duration")!!
+                SnapLog.print("duration==========" + duration)
                 val position = LatLng(lat, lng)
                 pointsList.add(position)
                 //points.add(position)
@@ -338,9 +383,35 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             // lineOptions.color(Color.BLACK)
             // lineOptions.geodesic(true)
         }
+
+        setDuration()
+
+
         // Drawing polyline in the Google Map for the i-th route
         // mMap!!.addPolyline(lineOptions)
 
+    }
+
+    private fun setDuration() {
+        progressLay.visibility = View.VISIBLE
+        if (duration != "0") {
+            val hours: Long = (duration.toLong() / (60 * 60))
+            val minutes: Int = (duration.toInt() % 3600) / 60
+            var time = ""
+            if (hours > 0L) {
+                time = "Delivery in " + hours + " hour: " + minutes + " mins"
+            } else {
+                if (minutes > 1)
+                    time = "Delivery in " + minutes + " min"
+                else
+                    time = "Delivery in " + minutes + " min"
+            }
+
+            deliverTime.text = time
+            progress.max = duration.toInt()
+            countTimer?.cancel()
+            startTimer()
+        }
     }
 
 
@@ -429,7 +500,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
-           // movingCabMarker?.setAnchor(0.5f, 0.5f)
+            // movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
         } else {
             previousLatLng = currentLatLng
@@ -450,7 +521,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                     /* if (!rotation.isNaN()) {
                          ?.rotation = rotation
                      }*/
-                   // movingCabMarker?.setAnchor(0.5f, 0.5f)
+                    // movingCabMarker?.setAnchor(0.5f, 0.5f)
                     animateCamera(nextLocation)
                 }
             }
