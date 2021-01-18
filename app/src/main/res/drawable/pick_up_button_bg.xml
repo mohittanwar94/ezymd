@@ -5,6 +5,8 @@
         <shape android:shape="rectangle">
             <solid android:color="@color/dividerColor" />
             <corners android:radius="@dimen/_6sdp" />
+            <stroke android:width="0.02dp"
+                android:color="@android:color/darker_gray"/>
         </shape>
     </item>
 
@@ -16,8 +18,8 @@
                 android:height="@dimen/_35sdp" />
             <corners android:radius="@dimen/_6sdp" />
 
-            <stroke android:width="@dimen/_1sdp"
-                android:color="@android:color/transparent"/>
+            <stroke android:width="0.02dp"
+                android:color="@android:color/darker_gray"/>
         </shape>
     </item>
 </ripple>

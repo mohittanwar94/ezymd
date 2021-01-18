@@ -235,5 +235,7 @@
     <string name="enable_location_to_use_app">"Enable location for using Ezymd. "</string>
     <string name="please_enable_location">Please enable location to use Ezymd</string>
     <string name="no_location_detected">No location detected</string>
+    <string name="regular">Regular</string>
+    <string name="contactless">Contact less</string>
 
 </resources>

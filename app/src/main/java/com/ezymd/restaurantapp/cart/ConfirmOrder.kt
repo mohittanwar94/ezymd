@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
@@ -26,7 +27,10 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.stripe.android.*
 import com.stripe.android.model.*
+import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_confirm_order.*
+import kotlinx.android.synthetic.main.activity_confirm_order.payButton
+import kotlinx.android.synthetic.main.activity_confirm_order.toolbar_layout
 import org.json.JSONObject
 import java.util.*
 
@@ -37,6 +41,7 @@ class ConfirmOrder : BaseActivity() {
     private var paymentSession: PaymentSession? = null
     val checkoutModel = OrderCheckoutUtilsModel()
     private val LOAD_PAYMENT_DATA_REQUEST_CODE = 5000
+    private var deliveryIns = "Regular"
 
 
     private val stripe: Stripe by lazy {
@@ -188,6 +193,24 @@ class ConfirmOrder : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
+        contactless.setOnClickListener {
+            UIUtil.clickHandled(it)
+            deliveryIns = "Contact less"
+            regular.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+            contactless.setTextColor(ContextCompat.getColor(this, R.color.white))
+            contactless.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            regular.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+        }
+        regular.setOnClickListener {
+            UIUtil.clickHandled(it)
+            deliveryIns = "Regular"
+            contactless.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+            regular.setTextColor(ContextCompat.getColor(this, R.color.white))
+            regular.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            contactless.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+        }
+
+
         payButton.text =
             getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
                 "%.2f", (intent.getDoubleExtra(
@@ -215,7 +238,7 @@ class ConfirmOrder : BaseActivity() {
         nowcheckBox.isClickable = false
         schedulecheckBox.isClickable = false
 
-        couponCode.setOnClickListener {
+        /*couponCode.setOnClickListener {
             startActivityForResult(
                 Intent(
                     this@ConfirmOrder,
@@ -224,7 +247,7 @@ class ConfirmOrder : BaseActivity() {
                 JSONKeys.OTP_REQUEST
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
-        }
+        }*/
         selectAddress.setOnClickListener {
             val locationModel = LocationModel()
             locationModel.city = ""
@@ -478,8 +501,8 @@ class ConfirmOrder : BaseActivity() {
                     paymentSessionData = data
 
                     // payButton.isEnabled = data.isPaymentReadyToCharge
-                  //  shippingAddress.text = getAddress(paymentSessionData!!)
-                   // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
+                    //  shippingAddress.text = getAddress(paymentSessionData!!)
+                    // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
                     checkPayButtomEnableDisable()
 
                     when {
@@ -614,7 +637,7 @@ class ConfirmOrder : BaseActivity() {
         )
         jsonObject.addProperty(
             "delivery_instruction",
-            checkoutModel.delivery_instruction
+            deliveryIns
         )
         jsonObject.addProperty("restaurant_id", restaurant.id)
         jsonObject.addProperty("schedule_type", checkoutModel.delivery_type)
