@@ -309,9 +309,13 @@ class ConfirmOrder : BaseActivity() {
 
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (paymentSession == null)
-                return@setOnClickListener
-            createPaymentIntent(paymentSessionData!!)
+            if (paymentType == PaymentMethodTYPE.COD) {
+
+            } else {
+                if (paymentSession == null)
+                    return@setOnClickListener
+                createPaymentIntent(paymentSessionData!!)
+            }
 
         }
 
