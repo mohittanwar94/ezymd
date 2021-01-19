@@ -7,4 +7,5 @@ public interface OrderStatus {
     int DELIVERY_BOY_REACHED_AT_RESTAURANT = 4;
     int ITEMS_PICKED_FROM_RESTAURANT = 5;
     int ORDER_COMPLETED = 6;
+    int ORDER_CANCEL = 7;
 }

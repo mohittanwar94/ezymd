@@ -95,7 +95,7 @@ class OrdersAdapter(
             UIUtil.clickHandled(it)
             makeReorder(data[position])
         }
-        if (item.orderStatus == OrderStatus.ORDER_COMPLETED) {
+        if (item.orderStatus == OrderStatus.ORDER_COMPLETED || item.orderStatus == OrderStatus.ORDER_CANCEL) {
             holder.itemView.trackOrder.visibility = View.GONE
             holder.itemView.reorder.visibility = View.VISIBLE
         } else {
@@ -117,7 +117,7 @@ class OrdersAdapter(
             model.quantity = item.qty
             model.price = item.price
             model.item = item.item
-            model.description=item.description
+            model.description = item.description
             model.image = item.image
 
             list.add(model)

@@ -86,11 +86,12 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             onBackPressed()
         }
 
+
         checkCancelTimer()
     }
 
     private fun checkCancelTimer() {
-        if (TimeUtils.isOrderLive(item.created)) {
+        if (TimeUtils.isOrderLive(item.created) && item.orderStatus != OrderStatus.ORDER_CANCEL) {
             cancelOrder.visibility = View.VISIBLE
             val duration = TimeUtils.getDuration(item.created)
             progressCancel.progressMax = duration.toFloat()
@@ -99,6 +100,10 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
             cancelOrder.setOnClickListener {
                 UIUtil.clickAlpha(it)
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap["order_id"] = "" + item.orderId
+                baseRequest.paramsMap["order_status"] = "" + OrderStatus.ORDER_CANCEL
+                trackViewModel.cancelOrder(baseRequest)
             }
         }
 
@@ -144,6 +149,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     private fun setOrderStatusDelivery() {
         if (item.orderStatus == OrderStatus.PROCESSING) {
             liveStatus.text = getString(R.string.your_order_processing)
+        } else if (item.orderStatus == OrderStatus.ORDER_CANCEL) {
+            liveStatus.text = getString(R.string.your_order_cancel)
+            cancelOrder.visibility = View.GONE
         } else if (item.orderStatus == OrderStatus.ORDER_ACCEPTED) {
             liveStatus.text = getString(R.string.your_order_is_cooking)
         } else if (item.orderStatus == OrderStatus.ORDER_ACCEPT_DELIVERY_BOY) {
@@ -253,6 +261,18 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             )
             trackViewModel.downloadRoute(hashMap)
         }
+
+        trackViewModel.orderCancel.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    showError(false, it.message, null)
+                    item.orderStatus = OrderStatus.ORDER_CANCEL
+                    setOrderStatus()
+                } else
+                    showError(false, it.message, null)
+
+            }
+        })
         trackViewModel.routeInfoResponse.observe(this, Observer {
             if (it != null) {
                 grayPolyline?.remove()

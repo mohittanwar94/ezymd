@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.tracker
 
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -53,6 +54,21 @@ class TrackerRepository private constructor() {
 
 
     }
+
+    suspend fun cancelOrder(baseRequest: BaseRequest, dispatcher: CoroutineDispatcher): ResultWrapper<LocationValidatorModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.cancelOrder(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+
 
     companion object {
         @Volatile

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
-import com.ezymd.restaurantapp.location.model.LocationModel
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.utils.*
@@ -29,6 +29,7 @@ class TrackerViewModel : ViewModel() {
     val routeInfoResponse: MutableLiveData<ArrayList<List<HashMap<String, String>>>>
     val firebaseResponse: MutableLiveData<DataSnapshot>
     val locationUpdate = MutableLiveData<BaseUpdateLocationModel>()
+    val orderCancel = MutableLiveData<LocationValidatorModel>()
     val isLoading: MutableLiveData<Boolean>
     val timer = Timer()
 
@@ -123,7 +124,7 @@ class TrackerViewModel : ViewModel() {
         val str_dest = "" + dest.latitude + "," + dest.longitude
 
 
-        haspMap.put("waypoints","via:" + wayPoints.latitude + "," + wayPoints.longitude)
+        haspMap.put("waypoints", "via:" + wayPoints.latitude + "," + wayPoints.longitude)
         haspMap.put("origin", str_origin)
         haspMap.put("destination", str_dest)
         haspMap.put("sensor", "false")
@@ -168,6 +169,25 @@ class TrackerViewModel : ViewModel() {
                 is ResultWrapper.Success -> {
                     SnapLog.print(result.value.toString())
                     routeInfoResponse.postValue(parseResponse(result.value.toString()))
+                }
+            }
+        }
+
+    }
+
+    fun cancelOrder(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.cancelOrder(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    orderCancel.postValue(result.value)
                 }
             }
         }

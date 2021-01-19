@@ -33,6 +33,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>
     ): OtpModel
 
+    @FormUrlEncoded
+    @POST(ServerConfig.ACCEPT_ORDER)
+    suspend fun cancelOrder(
+        @FieldMap commonParameters: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): LocationValidatorModel
 
     @FormUrlEncoded
     @POST(ServerConfig.LOGIN_USER)

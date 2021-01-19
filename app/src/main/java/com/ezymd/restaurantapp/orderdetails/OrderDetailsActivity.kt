@@ -129,10 +129,9 @@ class OrderDetailsActivity : BaseActivity() {
         val ratingGivent = item.getDelivey_rating().toFloat()
         rating.rating = ratingGivent
         feedback.text = item.feedback
-        if (orderStatus != OrderStatus.ORDER_COMPLETED) {
-            status.text = getString(R.string.your_order_processing)
-            trackOrder.visibility = View.GONE
-        } else {
+        if (orderStatus == OrderStatus.ORDER_CANCEL) {
+            status.text = getString(R.string.your_order_cancel_money_refund)
+        } else if (orderStatus == OrderStatus.ORDER_COMPLETED) {
             if (ratingGivent == 0.0f && item.feedback.equals("")) {
                 review.visibility = View.VISIBLE
                 rating.visibility = View.GONE
@@ -143,6 +142,9 @@ class OrderDetailsActivity : BaseActivity() {
             if (item.feedback != "")
                 feedback.visibility = View.VISIBLE
             status.text = getString(R.string.your_order_is_completed)
+        }else{
+            status.text = getString(R.string.your_order_processing)
+            trackOrder.visibility = View.GONE
         }
 
 

@@ -239,5 +239,7 @@
     <string name="contactless">Contact less</string>
     <string name="your_order_will_be_deliver_shortly">Your order will be deliver shortly</string>
     <string name="cancel_order">Cancel Order</string>
+    <string name="your_order_cancel">Your order has been cancelled</string>
+    <string name="your_order_cancel_money_refund">Your order has been cancelled. your money will be refunded back in 2 days</string>
 
 </resources>

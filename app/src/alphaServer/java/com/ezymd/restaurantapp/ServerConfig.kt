@@ -29,18 +29,20 @@ interface ServerConfig {
         const val LOGIN_USER = "loginRegister"
         const val LIST_TRENDING = "trendingFoods"
         const val CREATE_ORDER = "order"
-        const val CREATE_CUSTOMER="stripe/createCustomer"
-        const val EPHEMERAL_KEYS="stripe/ephemeralKey"
-        const val LOCATION_VALIDATE="validateLocations"
-        const val SAVE_PAYMENT="paymentVerify"
-        const val SAVE_RATING="addReview"
-        const val APPLY_COUPON="applyCoupon"
-        const val LIST_COUPON="listCoupon/{restaurant_id}"
-        const val TRANSACTION_CHARGES="transactionAmount"
-        const val UPDATED_COORDINATES="orderTracking/{name}"
+        const val CREATE_CUSTOMER = "stripe/createCustomer"
+        const val EPHEMERAL_KEYS = "stripe/ephemeralKey"
+        const val LOCATION_VALIDATE = "validateLocations"
+        const val SAVE_PAYMENT = "paymentVerify"
+        const val SAVE_RATING = "addReview"
+        const val APPLY_COUPON = "applyCoupon"
+        const val LIST_COUPON = "listCoupon/{restaurant_id}"
+        const val TRANSACTION_CHARGES = "transactionAmount"
+        const val UPDATED_COORDINATES = "orderTracking/{name}"
 
         val ZENDESK_CHAT_KEY = "X40lrThEJB7Lgs6XSUGf9kVbzDjbWNQa";
         val APPID = "220869949208236033"
+
+        const val ACCEPT_ORDER = "updateOrderStatus"
 
 
     }
