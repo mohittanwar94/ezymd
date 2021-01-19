@@ -52,6 +52,9 @@ class OrderDetailsActivity : BaseActivity() {
             makeReorder(item)
         }
 
+
+        subTotal.text =
+            getString(R.string.dollor) + String.format("%.2f", getTotalPrice(item.orderItems))
         if (!item.discount.equals("0")) {
             discountLay.visibility = View.VISIBLE
             discount.text =
@@ -142,7 +145,7 @@ class OrderDetailsActivity : BaseActivity() {
             if (item.feedback != "")
                 feedback.visibility = View.VISIBLE
             status.text = getString(R.string.your_order_is_completed)
-        }else{
+        } else {
             status.text = getString(R.string.your_order_processing)
             trackOrder.visibility = View.GONE
         }
@@ -175,10 +178,10 @@ class OrderDetailsActivity : BaseActivity() {
     }
 
 
-    private fun getTotalPrice(arrayList: ArrayList<ItemModel>): Double {
+    private fun getTotalPrice(arrayList: ArrayList<OrderItems>): Double {
         var price = 0.0
         for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
+            price += (itemModel.price * itemModel.qty)
         }
 
 
@@ -204,7 +207,6 @@ class OrderDetailsActivity : BaseActivity() {
 
 
     }
-
 
 
     override fun onStop() {
