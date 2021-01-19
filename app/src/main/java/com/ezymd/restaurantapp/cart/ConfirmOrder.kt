@@ -444,7 +444,7 @@ class ConfirmOrder : BaseActivity() {
 
     private fun checkStartPaymentSession() {
         if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.deliveryAddress == "") {
-            showError(null, false, "Please fill above details first.")
+            showError( false, "Please fill above details first.",null)
             return
         }
         checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {

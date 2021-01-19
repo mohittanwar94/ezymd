@@ -1,6 +1,8 @@
 package com.ezymd.restaurantapp.tracker
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -96,20 +98,44 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         if (TimeUtils.isOrderLive(item.created) && item.orderStatus != OrderStatus.ORDER_CANCEL) {
             cancelOrder.visibility = View.VISIBLE
             view2.visibility = View.VISIBLE
-            val duration = TimeUtils.getDuration(item.created)+60000L
-            SnapLog.print("cancell time====="+duration)
+            val duration = TimeUtils.getDuration(item.created) + 60000L
+            SnapLog.print("cancell time=====" + duration)
             progressCancel.progressMax = duration.toFloat()
             startCancelTimer(duration)
 
 
             cancelOrder.setOnClickListener {
                 UIUtil.clickAlpha(it)
-                val baseRequest = BaseRequest(userInfo)
-                baseRequest.paramsMap["order_id"] = "" + item.orderId
-                baseRequest.paramsMap["order_status"] = "" + OrderStatus.ORDER_CANCEL
-                trackViewModel.cancelOrder(baseRequest)
+                showConfirmationDialog()
+
             }
         }
+
+    }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Do you want to cancel this order?")
+            .setCancelable(false)
+            .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, id: Int) {
+                    dialog?.dismiss()
+                    val baseRequest = BaseRequest(userInfo)
+                    baseRequest.paramsMap["order_id"] = "" + item.orderId
+                    baseRequest.paramsMap["order_status"] = "" + OrderStatus.ORDER_CANCEL
+                    trackViewModel.cancelOrder(baseRequest)
+                    progressBarCancel.visibility = View.VISIBLE
+                }
+            })
+            .setNegativeButton("No", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, id: Int) {
+                    dialog.dismiss()
+
+                }
+            })
+        val alert: AlertDialog = builder.create()
+        alert.setTitle("Cancel Order")
+        alert.show()
 
     }
 
@@ -165,7 +191,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             view.visibility = View.VISIBLE
             liveStatus.text =
                 getString(R.string.order_accepted_by_delivery_boy) + " " + item.delivery?.name
-          //  SnapLog.print("duration==" + duration)
+            //  SnapLog.print("duration==" + duration)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
@@ -270,6 +296,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         }
 
         trackViewModel.orderCancel.observe(this, Observer {
+            progressBarCancel.visibility = View.GONE
             if (it != null) {
                 if (it.status == ErrorCodes.SUCCESS) {
                     showError(false, it.message, null)
@@ -430,7 +457,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 val lat: Double = point.get("lat")!!.toDouble()
                 val lng: Double = point.get("lng")!!.toDouble()
                 duration = point.get("duration")!!
-              //  SnapLog.print("duration==========" + duration)
+                //  SnapLog.print("duration==========" + duration)
                 val position = LatLng(lat, lng)
                 pointsList.add(position)
                 //points.add(position)

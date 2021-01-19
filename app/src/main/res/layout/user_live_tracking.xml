@@ -185,18 +185,18 @@
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="0.01dp"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@color/dividerColor" />
+                    android:background="@color/dividerColor"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/cancelOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.mikhaellopez.circularprogressbar.CircularProgressBar
                         android:id="@+id/progressCancel"
@@ -215,14 +215,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
                         android:gravity="left|center"
                         android:letterSpacing="0.01"
-                        android:layout_marginLeft="@dimen/_8sdp"
                         android:text="@string/cancel_order"
                         android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
                         app:textFont="roman" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarCancel"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="end|center"
+                        android:theme="@style/progressBarTheme"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp" />
+
+
                 </LinearLayout>
 
                 <View
