@@ -241,5 +241,12 @@
     <string name="cancel_order">Cancel Order</string>
     <string name="your_order_cancel">Your order has been cancelled</string>
     <string name="your_order_cancel_money_refund">Your order has been cancelled. your money will be refunded back in 2 days</string>
+    <string name="credit_debit_cards">Credit/Debit cards</string>
+    <string name="online_payment">Online Payment</string>
+    <string name="pay_on_delivery">Pay on delivery</string>
+    <string name="cash">Cash</string>
+    <string name="done">Done</string>
+    <string name="payment_options">Select Payment Mode</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
 
 </resources>

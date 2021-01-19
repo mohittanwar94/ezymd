@@ -43,53 +43,156 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/_15sdp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_15sdp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="@dimen/_4sdp"
-            app:cardElevation="@dimen/_4sdp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/_4sdp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/online"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                >
 
-                <com.stripe.android.view.CardInputWidget
-                    android:id="@+id/cardInputWidget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
-                <com.ezymd.restaurantapp.customviews.SnapButton
-                    android:id="@+id/payButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/ic_gray_btn_pressed"
-                    android:letterSpacing="0.01"
-                    android:lineSpacingExtra="5sp"
-                    android:text="@string/pay"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_13sdp"
-                    android:textStyle="normal"
-                    app:buttonFont="bold" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="@style/progressBarTheme"
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/credit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:text="@string/credit_debit_cards"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/online_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/credit"
+                    android:layout_toStartOf="@+id/onlineCheckBox"
+                    android:letterSpacing="0.01"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/online_payment"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/onlineCheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_below="@+id/credit"
+                    android:layout_alignParentEnd="true"
+                    app:color_checked="@color/dark_yellow"
+                    app:color_tick="@color/white"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_alignRight="@+id/credit"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/dividerColor"
+                    app:duration="150"
+                    app:stroke_width="@dimen/_1sdp" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
+            <RelativeLayout
+                android:id="@+id/cod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:text="@string/pay_on_delivery"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/selectAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/location"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/cash"
+                    android:textColor="#002366"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/codCheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_below="@+id/location"
+                    android:layout_alignParentEnd="true"
+                    app:color_checked="@color/dark_yellow"
+                    app:color_tick="@color/white"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_alignEnd="@+id/location"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/dividerColor"
+                    app:duration="150"
+                    app:stroke_width="@dimen/_1sdp" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/payButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/ic_gray_btn_pressed"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="normal"
+                app:buttonFont="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/progressBarTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>

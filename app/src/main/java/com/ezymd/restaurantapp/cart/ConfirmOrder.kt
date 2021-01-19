@@ -18,6 +18,7 @@ import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.payment.ExampleEphemeralKeyProvider
+import com.ezymd.restaurantapp.payment.PaymentOptionActivity
 import com.ezymd.restaurantapp.payment.StoreActivity
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
@@ -36,6 +37,7 @@ import java.util.*
 
 
 class ConfirmOrder : BaseActivity() {
+    private var paymentType: Int = 0
     private var totalPrice = 0.0
     private var paymentSessionData: PaymentSessionData? = null
     private var paymentSession: PaymentSession? = null
@@ -108,14 +110,26 @@ class ConfirmOrder : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == JSONKeys.SELECT_PAYMENT && resultCode == Activity.RESULT_OK) {
+            val mode = data?.getIntExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
+            if (mode == PaymentMethodTYPE.ONLINE) {
+                if (paymentSession == null)
+                    startPaymentSession()
+                paymentType = PaymentMethodTYPE.ONLINE
+            } else {
+                paymentMethod.text = getString(R.string.cash_on_delivery)
+                paymentType = PaymentMethodTYPE.COD
+                checkPayButtomEnableDisable()
+                // checkStartPaymentSession()
+            }
+        } else if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             val location = data?.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
             viewModel.locationSelected.postValue(location)
         } else if (requestCode == JSONKeys.OTP_REQUEST && resultCode == Activity.RESULT_OK) {
             val deliveryInstructions = data?.getStringExtra(JSONKeys.DESCRIPTION)
             couponCode.text = deliveryInstructions
             checkoutModel.delivery_instruction = couponCode.text.toString()
-            checkStartPaymentSession()
+            // checkStartPaymentSession()
         } else if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -274,8 +288,13 @@ class ConfirmOrder : BaseActivity() {
         }
 
         paymentMethod.setOnClickListener {
-            if (paymentSession != null)
-                paymentSession?.presentPaymentMethodSelection()
+            UIUtil.clickAlpha(it)
+            startActivityForResult(
+                Intent(this@ConfirmOrder, PaymentOptionActivity::class.java),
+                JSONKeys.SELECT_PAYMENT
+            )
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+
         }
         scheduleLayout.setOnClickListener {
             viewModel.isNowSelectd.postValue(false)
@@ -399,7 +418,7 @@ class ConfirmOrder : BaseActivity() {
                 if (it.status == ErrorCodes.SUCCESS) {
                     selectAddress.text = viewModel.locationSelected.value?.location
                     checkoutModel.deliveryAddress = selectAddress.text.toString()
-                    checkStartPaymentSession()
+                    //checkStartPaymentSession()
 
                 } else {
                     showError(false, it.message, null)
@@ -444,7 +463,7 @@ class ConfirmOrder : BaseActivity() {
 
     private fun checkStartPaymentSession() {
         if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.deliveryAddress == "") {
-            showError( false, "Please fill above details first.",null)
+            // showError(false, "Please fill above details first.", null)
             return
         }
         checkoutModel.delivery_type = if (viewModel.isNowSelectd.value!!) {
@@ -452,10 +471,12 @@ class ConfirmOrder : BaseActivity() {
         } else {
             2
         }
-        if (checkoutModel.delivery_type == 2)
+        if (checkoutModel.delivery_type == 2 && viewModel.dateSelected.value != null)
             checkoutModel.delivery_time = viewModel.dateSelected.value!!
 
-        startPaymentSession()
+        checkPayButtomEnableDisable()
+
+        // startPaymentSession()
 
 
     }
@@ -504,6 +525,8 @@ class ConfirmOrder : BaseActivity() {
                     //  shippingAddress.text = getAddress(paymentSessionData!!)
                     // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
                     checkPayButtomEnableDisable()
+                    if (!data.isPaymentReadyToCharge)
+                        paymentSession?.presentPaymentMethodSelection()
 
                     when {
                         data.useGooglePay -> {
@@ -522,8 +545,10 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun checkPayButtomEnableDisable() {
-        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null)) {
+        if ((checkoutModel.delivery_type == 2 && viewModel.isNowSelectd.value == null) || checkoutModel.deliveryAddress == "" || paymentType == 0 || (checkoutModel.delivery_type == 2 && viewModel.dateSelected.value == null)) {
             // showError(false,  "Please fill above details first.",null)
+            payButton.isEnabled = false
+            payButton.alpha = 0.5f
             return
         } else {
             payButton.isEnabled = true

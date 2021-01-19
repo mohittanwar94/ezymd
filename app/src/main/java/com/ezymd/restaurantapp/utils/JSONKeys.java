@@ -398,4 +398,5 @@ public interface JSONKeys {
     String DELIVERY_CHARGES="delivery_charges";
     @Nullable
     String PROMO="promo_code";
+    int SELECT_PAYMENT=164;
 }
