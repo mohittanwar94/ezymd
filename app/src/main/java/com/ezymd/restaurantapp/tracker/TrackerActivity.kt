@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.user_live_tracking.*
 
 class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     private var countTimer: CountDownTimer? = null
+    private var cancelCountTimer: CountDownTimer? = null
     private var duration: String = "0"
     private lateinit var defaultLocation: LatLng
     private var originMarker: Marker? = null
@@ -91,9 +92,12 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun checkCancelTimer() {
+        SnapLog.print("order status==========" + item.orderStatus)
         if (TimeUtils.isOrderLive(item.created) && item.orderStatus != OrderStatus.ORDER_CANCEL) {
             cancelOrder.visibility = View.VISIBLE
-            val duration = TimeUtils.getDuration(item.created)
+            view2.visibility = View.VISIBLE
+            val duration = TimeUtils.getDuration(item.created)+60000L
+            SnapLog.print("cancell time====="+duration)
             progressCancel.progressMax = duration.toFloat()
             startCancelTimer(duration)
 
@@ -110,7 +114,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun startCancelTimer(duration: Long) {
-        countTimer = object : CountDownTimer(duration, 1000) {
+        cancelCountTimer = object : CountDownTimer(duration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 progressCancel.progress = (duration - millisUntilFinished).toFloat()
 
@@ -118,6 +122,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             }
 
             override fun onFinish() {
+                view2.visibility = View.GONE
                 cancelOrder.visibility = View.GONE
             }
         }.start()
@@ -151,6 +156,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             liveStatus.text = getString(R.string.your_order_processing)
         } else if (item.orderStatus == OrderStatus.ORDER_CANCEL) {
             liveStatus.text = getString(R.string.your_order_cancel)
+            view2.visibility = View.GONE
             cancelOrder.visibility = View.GONE
         } else if (item.orderStatus == OrderStatus.ORDER_ACCEPTED) {
             liveStatus.text = getString(R.string.your_order_is_cooking)
@@ -159,7 +165,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             view.visibility = View.VISIBLE
             liveStatus.text =
                 getString(R.string.order_accepted_by_delivery_boy) + " " + item.delivery?.name
-            SnapLog.print("duration==" + duration)
+          //  SnapLog.print("duration==" + duration)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
@@ -206,6 +212,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onDestroy() {
         super.onDestroy()
+        cancelCountTimer?.cancel()
         countTimer?.cancel()
 
     }
@@ -214,9 +221,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         countTimer = object : CountDownTimer((duration.toLong() * 1000), 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val seconds: Long = (millisUntilFinished / 1000)
-                SnapLog.print("seconds==" + seconds)
+                //SnapLog.print("seconds==" + seconds)
                 val remaining = duration.toInt() - seconds.toInt()
-                progress.setProgress(remaining)
+                progress.progress = remaining
 
                 val hours: Long = (seconds / (60 * 60))
                 val minutes: Int = ((seconds % 3600) / 60).toInt()
@@ -322,8 +329,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             if (data[0].orderStatus != item.orderStatus) {
                 item.orderStatus = data[0].orderStatus
                 setOrderStatus()
-                (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY)
-                setDuration()
+                if (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY && item.orderStatus < OrderStatus.ORDER_COMPLETED)
+                    setDuration()
             }
 
             val latLng = LatLng(data[0].lat, data[0].lang)
@@ -423,18 +430,18 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 val lat: Double = point.get("lat")!!.toDouble()
                 val lng: Double = point.get("lng")!!.toDouble()
                 duration = point.get("duration")!!
-                SnapLog.print("duration==========" + duration)
+              //  SnapLog.print("duration==========" + duration)
                 val position = LatLng(lat, lng)
                 pointsList.add(position)
                 //points.add(position)
             }
             //lineOptions.addAll(points)
-            /////lineOptions.width(12f)
+            /////clineOptions.width(12f)
             // lineOptions.color(Color.BLACK)
             // lineOptions.geodesic(true)
         }
-
-        setDuration()
+        if (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY && item.orderStatus < OrderStatus.ORDER_COMPLETED)
+            setDuration()
 
 
         // Drawing polyline in the Google Map for the i-th route

@@ -127,7 +127,11 @@ open class HomeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().unregisterReceiver(mGpsSwitchStateReceiver)
+        try {
+            requireActivity().unregisterReceiver(mGpsSwitchStateReceiver)
+
+        } catch (e: Exception) {
+        }
     }
 
     private fun askPermission() {

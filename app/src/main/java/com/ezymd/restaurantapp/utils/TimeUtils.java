@@ -22,8 +22,8 @@ public class TimeUtils {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(duedate);
             assert date != null;
-            SnapLog.print(""+(System.currentTimeMillis() - date.getTime() <= 60000L));
-            return System.currentTimeMillis() - date.getTime() <= 60000L;
+            SnapLog.print(""+(System.currentTimeMillis() - date.getTime() <= 120000L));
+            return System.currentTimeMillis() - date.getTime() <= 120000L;
         } catch (ParseException e) {
             e.printStackTrace();
         }

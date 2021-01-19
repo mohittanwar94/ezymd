@@ -182,8 +182,10 @@
 
 
                 <View
+                    android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="0.01dp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/dividerColor" />
@@ -193,6 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -204,7 +207,7 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
                         app:cpb_progressbar_color="@color/dark_yellow"
-                        app:cpb_progressbar_width="@dimen/_1sdp"
+                        app:cpb_progressbar_width="@dimen/_2sdp"
                         app:cpb_start_angle="0" />
 
 
@@ -219,7 +222,7 @@
                         android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
-                        app:textFont="bold" />
+                        app:textFont="roman" />
                 </LinearLayout>
 
                 <View
