@@ -114,7 +114,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun showConfirmationDialog() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this,R.style.alert_dialog_theme)
         builder.setMessage("Do you want to cancel this order?")
             .setCancelable(false)
             .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
