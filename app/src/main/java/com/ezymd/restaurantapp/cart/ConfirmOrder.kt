@@ -51,7 +51,7 @@ class ConfirmOrder : BaseActivity() {
             this,
             PaymentConfiguration.getInstance(this).publishableKey,
             PaymentConfiguration.getInstance(this).stripeAccountId,
-            true
+            ServerConfig.IS_TESTING
         )
 
     }
@@ -310,7 +310,7 @@ class ConfirmOrder : BaseActivity() {
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
             if (paymentType == PaymentMethodTYPE.COD) {
-
+                createCreatePaymentCod()
             } else {
                 if (paymentSession == null)
                     return@setOnClickListener
@@ -449,7 +449,8 @@ class ConfirmOrder : BaseActivity() {
             checkStartPaymentSession()
         })
         viewModel.errorRequest.observe(this, Observer {
-            showError(false, it, null)
+            if (it != null)
+                showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
             SnapLog.print("observer========" + it)
@@ -850,6 +851,22 @@ class ConfirmOrder : BaseActivity() {
                 "Unhandled Payment Intent Status: " + stripeIntent.status.toString()
             )
         }
+    }
+
+
+    private fun createCreatePaymentCod() {
+        val baseRequest = BaseRequest(userInfo)
+        viewModel.saveCodPaymentInfo(getJsonObject(PaymentMethodTYPE.COD), baseRequest)
+
+        viewModel.savePaymentResponse.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    finishPayment()
+                } else {
+                    showError(false, it.message, null)
+                }
+            }
+        })
     }
 
     private fun saveSuccessPayment(stripeIntent: PaymentIntent) {

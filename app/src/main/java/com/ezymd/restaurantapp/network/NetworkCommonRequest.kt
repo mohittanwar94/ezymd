@@ -28,7 +28,7 @@ class NetworkCommonRequest {
 
     init {
         if (networkRequest != null) {
-          //  throw RuntimeException("Use getInstance() method to get the single instance of NetworkCommonRequest class.")
+            //  throw RuntimeException("Use getInstance() method to get the single instance of NetworkCommonRequest class.")
         }
     }
 
@@ -40,7 +40,7 @@ class NetworkCommonRequest {
             try {
                 ResultWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
-              //  SnapLog.print(""+throwable.localizedMessage)
+                SnapLog.print("" + throwable.printStackTrace())
                 when (throwable) {
                     is IOException -> ResultWrapper.NetworkError
                     is HttpException -> {

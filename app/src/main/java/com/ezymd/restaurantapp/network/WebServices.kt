@@ -16,6 +16,7 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderBaseModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -166,6 +167,11 @@ interface WebServices {
     @POST(ServerConfig.SAVE_PAYMENT)
     suspend fun savePaymentInfo(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): LocationValidatorModel
+
+    @POST(ServerConfig.COD_ORDER)
+    suspend fun saveCodPayment(
+        @Body commonParameters: RequestBody, @Header("Authorization") token: String
     ): LocationValidatorModel
 
 

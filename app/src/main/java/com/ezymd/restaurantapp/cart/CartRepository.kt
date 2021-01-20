@@ -6,11 +6,15 @@ import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineDispatcher
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+
 
 class CartRepository {
 
@@ -25,7 +29,7 @@ class CartRepository {
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.startCheckout(
-                jsonObject.asJsonObject,baseRequest.accessToken
+                jsonObject.asJsonObject, baseRequest.accessToken
             )
         }
 
@@ -41,7 +45,7 @@ class CartRepository {
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.transactionCharge(
-                baseRequest.paramsMap,baseRequest.accessToken
+                baseRequest.paramsMap, baseRequest.accessToken
             )
         }
 
@@ -74,7 +78,7 @@ class CartRepository {
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.locationValidate(
-                baseRequest.paramsMap,baseRequest.accessToken
+                baseRequest.paramsMap, baseRequest.accessToken
             )
         }
 
@@ -92,6 +96,25 @@ class CartRepository {
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.savePaymentInfo(
                 baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+
+    suspend fun saveCodPayment(
+        jsonObj: JsonObject,
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LocationValidatorModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+        val body: RequestBody =
+            jsonObj.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.saveCodPayment(
+                body, baseRequest.accessToken
             )
         }
 

@@ -235,4 +235,25 @@ class OrderConfirmViewModel : ViewModel() {
     }
 
 
+    fun saveCodPaymentInfo(jsonObj: JsonObject, baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.saveCodPayment(jsonObj,
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    savePaymentResponse.postValue(result.value)
+
+                }
+            }
+        }
+
+    }
+
+
 }

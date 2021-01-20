@@ -43,6 +43,7 @@ interface ServerConfig {
         val APPID = "220869949208236033"
 
         const val ACCEPT_ORDER = "updateOrderStatus"
+        const val COD_ORDER = "codOrder"
 
 
     }

@@ -32,6 +32,16 @@ class PaymentOptionActivity : BaseActivity() {
             if (isChecked)
                 onlineCheckBox.setChecked(false, false)
         }
+
+        online.setOnClickListener {
+            onlineCheckBox.setChecked(true, true)
+            codCheckBox.setChecked(false, false)
+        }
+
+        cod.setOnClickListener {
+            onlineCheckBox.setChecked(false, false)
+            codCheckBox.setChecked(true, true)
+        }
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
             if (!codCheckBox.isChecked && !onlineCheckBox.isChecked) {
