@@ -248,5 +248,8 @@
     <string name="done">Done</string>
     <string name="payment_options">Select Payment Mode</string>
     <string name="cash_on_delivery">Cash on delivery</string>
+    <string name="payment_mode">Payment Mode</string>
+    <string name="card">Card</string>
+    <string name="wallet">Wallet</string>
 
 </resources>

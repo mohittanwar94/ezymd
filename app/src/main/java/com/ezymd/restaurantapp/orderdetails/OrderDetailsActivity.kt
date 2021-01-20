@@ -52,7 +52,7 @@ class OrderDetailsActivity : BaseActivity() {
             makeReorder(item)
         }
 
-
+        paymentMode.text = getPaymentMode(item.paymentType)
         subTotal.text =
             getString(R.string.dollor) + String.format("%.2f", getTotalPrice(item.orderItems))
         if (!item.discount.equals("0")) {
@@ -94,6 +94,15 @@ class OrderDetailsActivity : BaseActivity() {
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
+    }
+
+    private fun getPaymentMode(paymentType: Int): String {
+        if (paymentType == PaymentMethodTYPE.COD)
+            return getString(R.string.cash_on_delivery)
+        else if (paymentType == PaymentMethodTYPE.ONLINE)
+            return getString(R.string.card)
+        else
+            return getString(R.string.wallet)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

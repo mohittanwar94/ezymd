@@ -285,6 +285,38 @@
                     android:textColor="@color/color_002366"
                     android:textSize="@dimen/_12sdp"
                     app:textFont="roman" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:letterSpacing="0.01"
+                    android:lineSpacingExtra="@dimen/_4sdp"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp"
+                    android:text="@string/payment_mode"
+                    android:textColor="@color/blue_667ba3"
+                    android:textSize="@dimen/_10sdp"
+                    app:textFont="roman" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/paymentMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="start"
+                    android:letterSpacing="0.01"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_12sdp"
+                    app:textFont="roman" />
             </LinearLayout>
 
             <LinearLayout

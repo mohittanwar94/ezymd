@@ -25,7 +25,9 @@ public class OrderModel implements Serializable {
     @Expose
     private String feedback;
 
-
+    @SerializedName("payment_type")
+    @Expose
+    private int paymentType = 1;
     @SerializedName("username")
     @Expose
     private String username;
@@ -320,6 +322,14 @@ public class OrderModel implements Serializable {
 
     public void setDeliveryInstruction(String deliveryInstruction) {
         this.deliveryInstruction = deliveryInstruction;
+    }
+
+    public int getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(int paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Integer getScheduleType() {
