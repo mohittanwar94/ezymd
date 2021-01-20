@@ -637,7 +637,7 @@ class ConfirmOrder : BaseActivity() {
             .joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
     }
 
-    private fun getJsonObject(): JsonObject {
+    private fun getJsonObject(online: Int): JsonObject {
         val jsonObject = JsonObject()
         jsonObject.addProperty("name", userInfo!!.userName)
         jsonObject.addProperty("email", userInfo!!.email)
@@ -645,7 +645,7 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("address", checkoutModel.deliveryAddress)
         jsonObject.addProperty("lat", restaurant.lat)
         jsonObject.addProperty("lang", restaurant.longitude)
-        jsonObject.addProperty("payment_type", PaymentMethodTYPE.ONLINE)
+        jsonObject.addProperty("payment_type", online)
         jsonObject.addProperty("restaurant_address", restaurant.address)
         jsonObject.addProperty("delivery_lat", viewModel.locationSelected.value?.lat)
         jsonObject.addProperty("delivery_lang", viewModel.locationSelected.value?.lang)
@@ -931,7 +931,7 @@ class ConfirmOrder : BaseActivity() {
         return mapOf(
             "country" to "US",
             "customer_id" to userInfo!!.customerID,
-            "data" to getJsonObject()
+            "data" to getJsonObject(PaymentMethodTYPE.ONLINE)
         )/*.plus(
             shippingInformation?.let {
                 mapOf("shipping" to it.toParamMap())
