@@ -64,6 +64,10 @@ public class OrderModel implements Serializable {
     @SerializedName("order_created")
     @Expose
     private String created;
+
+    @SerializedName("order_updated")
+    @Expose
+    private String updated;
     @SerializedName("schedule_date")
     @Expose
     private String scheduleTime;
@@ -243,6 +247,14 @@ public class OrderModel implements Serializable {
 
     public void setCreated(String created) {
         this.created = created;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
     }
 
     public String getScheduleTime() {
