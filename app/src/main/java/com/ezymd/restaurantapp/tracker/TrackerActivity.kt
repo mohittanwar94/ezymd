@@ -356,7 +356,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             if (data[0].orderStatus != item.orderStatus) {
                 item.orderStatus = data[0].orderStatus
                 setOrderStatus()
-                if (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY && item.orderStatus < OrderStatus.ORDER_COMPLETED)
+                if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED)
                     setDuration()
             }
 
@@ -386,6 +386,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         mMap = map
         mMap!!.setMaxZoomPreference(20f)
+        mMap!!.isTrafficEnabled = false;
+        mMap!!.isIndoorEnabled = false;
+        mMap!!.isBuildingsEnabled = true;
         defaultLocation = LatLng(item.delivery_lat.toDouble(), item.delivery_lang.toDouble())
         mMap!!.uiSettings.isMyLocationButtonEnabled = false
         showDefaultLocationOnMap(defaultLocation)
@@ -467,7 +470,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             // lineOptions.color(Color.BLACK)
             // lineOptions.geodesic(true)
         }
-        if (item.orderStatus >= OrderStatus.ORDER_ACCEPT_DELIVERY_BOY && item.orderStatus < OrderStatus.ORDER_COMPLETED)
+        if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED)
             setDuration()
 
 

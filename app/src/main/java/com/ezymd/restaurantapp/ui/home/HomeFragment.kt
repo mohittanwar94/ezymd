@@ -1,14 +1,17 @@
 package com.ezymd.restaurantapp.ui.home
 
+import android.Manifest
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -16,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -101,10 +105,30 @@ open class HomeFragment : Fragment() {
         image.setImageResource(R.drawable.ic_no_location)
         enableLocation.setOnClickListener {
             UIUtil.clickHandled(it)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+
+                    val myAppSettings = Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:${requireActivity().packageName}")
+                    )
+                    myAppSettings.addCategory(Intent.CATEGORY_DEFAULT)
+                    myAppSettings.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    if (myAppSettings.resolveActivity(requireActivity().packageManager) != null)
+                        startActivity(myAppSettings)
+                    return@setOnClickListener
+                }
+            }
             val callGPSSettingIntent = Intent(
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
             )
             startActivity(callGPSSettingIntent)
+
         }
     }
 
@@ -141,12 +165,17 @@ open class HomeFragment : Fragment() {
                 if (isGranted) {
                     setLocationListener()
 
+                } else {
+                    setLocationEmpty()
                 }
 
             }
         })
         if (isGranted)
             setLocationListener()
+        else {
+            setLocationEmpty()
+        }
 
     }
 
@@ -311,10 +340,18 @@ open class HomeFragment : Fragment() {
         super.onResume()
         val locationManager =
             requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
+       // SnapLog.print( "start status=============" + !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                setLocationEmpty()
+                return
+            }
+        }
         if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             setLocationEmpty()
             return
-        } else {
+        }
+
             if (delivery_location.text.equals("N/A")) {
                 SnapLog.print("n/a .............")
                 askPermission()
@@ -326,7 +363,7 @@ open class HomeFragment : Fragment() {
                 homeViewModel.getTrending(BaseRequest(userInfo))
             }
             setObservers()
-        }
+
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
     }
 

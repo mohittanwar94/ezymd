@@ -1,11 +1,14 @@
 package com.ezymd.restaurantapp.ui.search
 
+import android.Manifest
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
@@ -14,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +70,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (isNullViewRoot) {
             setAdapterRestaurant()
+            askPermission()
             searchViewModel.getResturants(BaseRequest(userInfo))
             setSearchListerner()
             requireActivity().registerReceiver(
@@ -76,11 +81,30 @@ class SearchFragment : Fragment() {
 
     }
 
+    private fun askPermission() {
+        val isGranted = (activity as BaseActivity).checkLocationPermissions(object :
+            BaseActivity.PermissionListener {
+            override fun result(isGranted: Boolean) {
+                if (!isGranted) {
+                    setLocationEmpty()
+                }
+
+            }
+        })
+        if (!isGranted)
+            setLocationEmpty()
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().unregisterReceiver(
-            mGpsSwitchStateReceiver
-        )
+        try {
+            requireActivity().unregisterReceiver(
+                mGpsSwitchStateReceiver
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun setSearchListerner() {
@@ -89,7 +113,7 @@ class SearchFragment : Fragment() {
                 val locationManager =
                     requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?
                 if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) && search.text.toString()
-                        .trim().length > 0
+                        .trim().isNotEmpty()
                 ) {
                     (activity as BaseActivity).showError(
                         false,
@@ -150,13 +174,23 @@ class SearchFragment : Fragment() {
         super.onResume()
         val locationManager =
             requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        // SnapLog.print( "start status=============" + !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                setLocationEmpty()
+                return
+            }
+        }
         if (!locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             setLocationEmpty()
             return
-        } else {
-            emptyLay.visibility = View.GONE
-
         }
+
+        emptyLay.visibility = View.GONE
         setObservers()
     }
 
@@ -182,10 +216,30 @@ class SearchFragment : Fragment() {
         image.setImageResource(R.drawable.ic_no_location)
         enableLocation.setOnClickListener {
             UIUtil.clickHandled(it)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+
+                    val myAppSettings = Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:${requireActivity().packageName}")
+                    )
+                    myAppSettings.addCategory(Intent.CATEGORY_DEFAULT)
+                    myAppSettings.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    if (myAppSettings.resolveActivity(requireActivity().packageManager) != null)
+                        startActivity(myAppSettings)
+                    return@setOnClickListener
+                }
+            }
             val callGPSSettingIntent = Intent(
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
             )
             startActivity(callGPSSettingIntent)
+
         }
     }
 
