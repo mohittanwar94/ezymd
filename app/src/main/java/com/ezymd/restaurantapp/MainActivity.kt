@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
+import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.KeepStateNavigator
@@ -42,6 +43,12 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
         if (intent.hasExtra(JSONKeys.LABEL)) {
             intent.removeExtra(JSONKeys.LABEL)
             navView.selectedItemId = R.id.navigation_order
+            if (intent.hasExtra(JSONKeys.OBJECT)) {
+                val startIntent = Intent(this@MainActivity, TrackerActivity::class.java)
+                startIntent.putExtra(JSONKeys.OBJECT, intent.getSerializableExtra(JSONKeys.OBJECT))
+                startActivity(startIntent)
+                overridePendingTransition(R.anim.left_in, R.anim.left_out)
+            }
         }
 
     }

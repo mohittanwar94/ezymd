@@ -88,6 +88,7 @@ class OrdersAdapter(
             val startIntent = Intent(holder.itemView.context, TrackerActivity::class.java)
             startIntent.putExtra(JSONKeys.OBJECT, data[position])
             (mContext as MainActivity).startActivity(startIntent)
+            mContext.overridePendingTransition(R.anim.left_in,R.anim.left_out)
             SnapLog.print("status===" + data[position].orderStatus)
         }
 

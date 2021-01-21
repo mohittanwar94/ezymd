@@ -13,6 +13,7 @@ import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderBaseModel
+import com.ezymd.restaurantapp.ui.myorder.model.OrderSuccessModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
@@ -167,12 +168,12 @@ interface WebServices {
     @POST(ServerConfig.SAVE_PAYMENT)
     suspend fun savePaymentInfo(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): LocationValidatorModel
+    ): OrderSuccessModel
 
     @POST(ServerConfig.COD_ORDER)
     suspend fun saveCodPayment(
         @Body commonParameters: RequestBody, @Header("Authorization") token: String
-    ): LocationValidatorModel
+    ): OrderSuccessModel
 
 
     @FormUrlEncoded

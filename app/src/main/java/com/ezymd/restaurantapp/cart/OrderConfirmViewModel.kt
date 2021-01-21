@@ -8,6 +8,7 @@ import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.ui.myorder.model.OrderSuccessModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.gson.JsonObject
 import com.stripe.android.ApiResultCallback
@@ -27,7 +28,7 @@ class OrderConfirmViewModel : ViewModel() {
     val isNowSelectd: MutableLiveData<Boolean>
     val locationSelected: SingleLiveEvent<LocationModel>
     val isAddressValid: SingleLiveEvent<LocationValidatorModel>
-    val savePaymentResponse: SingleLiveEvent<LocationValidatorModel>
+    val savePaymentResponse: SingleLiveEvent<OrderSuccessModel>
     val isCustomerIDAvailable: MutableLiveData<Boolean>
     val baseResponse: MutableLiveData<BaseResponse>
 

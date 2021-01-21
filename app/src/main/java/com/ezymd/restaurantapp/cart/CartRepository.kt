@@ -6,6 +6,7 @@ import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.ui.myorder.model.OrderSuccessModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
@@ -89,7 +90,7 @@ class CartRepository {
     suspend fun savePayment(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LocationValidatorModel> {
+    ): ResultWrapper<OrderSuccessModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
@@ -107,7 +108,7 @@ class CartRepository {
         jsonObj: JsonObject,
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LocationValidatorModel> {
+    ): ResultWrapper<OrderSuccessModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val body: RequestBody =

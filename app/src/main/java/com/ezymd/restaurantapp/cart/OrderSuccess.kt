@@ -9,7 +9,6 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.OrderFragment
-import com.ezymd.restaurantapp.utils.FirebaseConstants
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.UIUtil
 import com.view.circulartimerview.CircularTimerListener
@@ -101,6 +100,7 @@ class OrderSuccess : BaseActivity() {
     private fun startHomeScreen() {
         val i = Intent(this, MainActivity::class.java)
         i.putExtra(JSONKeys.LABEL, OrderFragment::class.java.name)
+        i.putExtra(JSONKeys.OBJECT, intent.getSerializableExtra(JSONKeys.OBJECT))
         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(i)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)

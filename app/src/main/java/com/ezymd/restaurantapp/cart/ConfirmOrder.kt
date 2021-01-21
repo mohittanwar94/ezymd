@@ -21,6 +21,7 @@ import com.ezymd.restaurantapp.payment.ExampleEphemeralKeyProvider
 import com.ezymd.restaurantapp.payment.PaymentOptionActivity
 import com.ezymd.restaurantapp.payment.StoreActivity
 import com.ezymd.restaurantapp.ui.home.model.Resturant
+import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.gms.wallet.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -818,7 +819,7 @@ class ConfirmOrder : BaseActivity() {
         if (response.has("success")) {
             val success = response.getBoolean("success")
             if (success) {
-                finishPayment()
+               // finishPayment(orderModel)
             } else {
                 displayError("Payment failed")
             }
@@ -904,7 +905,7 @@ class ConfirmOrder : BaseActivity() {
         viewModel.savePaymentResponse.observe(this, Observer {
             if (it != null) {
                 if (it.status == ErrorCodes.SUCCESS) {
-                    finishPayment()
+                    finishPayment(it.orderModel)
                 } else {
                     showError(false, it.message, null)
                 }
@@ -924,7 +925,7 @@ class ConfirmOrder : BaseActivity() {
         viewModel.savePaymentResponse.observe(this, Observer {
             if (it != null) {
                 if (it.status == ErrorCodes.SUCCESS) {
-                    finishPayment()
+                    finishPayment(it.orderModel)
                 } else {
                     showError(false, it.message, null)
                 }
@@ -944,7 +945,7 @@ class ConfirmOrder : BaseActivity() {
         viewModel.savePaymentResponse.observe(this, Observer {
             if (it != null) {
                 if (it.status == ErrorCodes.SUCCESS) {
-                    finishPayment()
+                    finishPayment(it.orderModel)
                 } else {
                     showError(false, it.message, null)
                 }
@@ -1016,10 +1017,11 @@ class ConfirmOrder : BaseActivity() {
             .show()
     }
 
-    private fun finishPayment() {
+    private fun finishPayment(orderModel: OrderModel) {
 
         val intent = Intent(this@ConfirmOrder, OrderSuccess::class.java)
         intent.putExtra(JSONKeys.IS_PICKUP, true)
+        intent.putExtra(JSONKeys.OBJECT, orderModel)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
         finishWithResult(
