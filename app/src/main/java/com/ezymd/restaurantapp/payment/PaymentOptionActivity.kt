@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.payment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
@@ -24,6 +25,17 @@ class PaymentOptionActivity : BaseActivity() {
     }
 
     private fun setGUI() {
+        if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.ONLINE) {
+            onlineCheckBox.setChecked(true, true)
+        } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.COD) {
+            codCheckBox.setChecked(true, true)
+        } else {
+            // wallet
+        }
+
+        if (intent.getStringExtra(JSONKeys.DELIVERY_CHARGES).equals("Contact less", true)) {
+            cod.visibility = View.GONE
+        }
         onlineCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
             if (isChecked)
                 codCheckBox.setChecked(false, false)

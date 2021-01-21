@@ -113,9 +113,14 @@ class ConfirmOrder : BaseActivity() {
         if (requestCode == JSONKeys.SELECT_PAYMENT && resultCode == Activity.RESULT_OK) {
             val mode = data?.getIntExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
             if (mode == PaymentMethodTYPE.ONLINE) {
+                paymentType = PaymentMethodTYPE.ONLINE
+                paymentMethod.text = getString(R.string.card)
                 if (paymentSession == null)
                     startPaymentSession()
-                paymentType = PaymentMethodTYPE.ONLINE
+                else {
+                    paymentSession?.clearPaymentMethod()
+                }
+
             } else {
                 paymentMethod.text = getString(R.string.cash_on_delivery)
                 paymentType = PaymentMethodTYPE.COD
@@ -162,10 +167,32 @@ class ConfirmOrder : BaseActivity() {
             )
             if (isPaymentIntentResult) {
                 viewModel.isLoading.postValue(true)
+            } else {
+                val isSetupIntentResult = stripe.onSetupResult(
+                    requestCode,
+                    data,
+                    object : ApiResultCallback<SetupIntentResult> {
+                        override fun onSuccess(result: SetupIntentResult) {
+                            viewModel.isLoading.postValue(false)
+                            processStripeIntent(
+                                result.intent,
+                                paymentMethod = null
+                            )
+                        }
+
+                        override fun onError(e: Exception) {
+                            viewModel.isLoading.postValue(false)
+                            displayError(e.message)
+                        }
+                    }
+                )
+                if (!isSetupIntentResult) {
+                    paymentSession?.handlePaymentData(requestCode, resultCode, data)
+                }
+
+
+                // paymentSession?.handlePaymentData(requestCode, resultCode, data)
             }
-
-
-            paymentSession?.handlePaymentData(requestCode, resultCode, data)
         }
     }
 
@@ -212,8 +239,15 @@ class ConfirmOrder : BaseActivity() {
             deliveryIns = "Contact less"
             regular.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             contactless.setTextColor(ContextCompat.getColor(this, R.color.white))
-            contactless.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            contactless.background =
+                ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             regular.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            if (paymentType == PaymentMethodTYPE.COD) {
+                paymentMethod.text = "Select Payment Method"
+                paymentType = 0
+                // paymentSession?.clearPaymentMethod()
+                checkPayButtomEnableDisable()
+            }
         }
         regular.setOnClickListener {
             UIUtil.clickHandled(it)
@@ -221,7 +255,8 @@ class ConfirmOrder : BaseActivity() {
             contactless.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             regular.setTextColor(ContextCompat.getColor(this, R.color.white))
             regular.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            contactless.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            contactless.background =
+                ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
         }
 
 
@@ -230,7 +265,10 @@ class ConfirmOrder : BaseActivity() {
                 "%.2f", (intent.getDoubleExtra(
                     JSONKeys.TOTAL_CASH,
                     0.0
-                ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+                ) + intent.getDoubleExtra(
+                    JSONKeys.DELIVERY_CHARGES,
+                    0.0
+                ) + intent.getDoubleExtra(
                     JSONKeys.FEE_CHARGES,
                     0.0
                 ) - intent.getDoubleExtra(
@@ -290,7 +328,11 @@ class ConfirmOrder : BaseActivity() {
         paymentMethod.setOnClickListener {
             UIUtil.clickAlpha(it)
             startActivityForResult(
-                Intent(this@ConfirmOrder, PaymentOptionActivity::class.java),
+                Intent(
+                    this@ConfirmOrder,
+                    PaymentOptionActivity::class.java
+                ).putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                    .putExtra(JSONKeys.DELIVERY_CHARGES, deliveryIns),
                 JSONKeys.SELECT_PAYMENT
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
@@ -422,7 +464,7 @@ class ConfirmOrder : BaseActivity() {
                 if (it.status == ErrorCodes.SUCCESS) {
                     selectAddress.text = viewModel.locationSelected.value?.location
                     checkoutModel.deliveryAddress = selectAddress.text.toString()
-                    //checkStartPaymentSession()
+                    checkPayButtomEnableDisable()
 
                 } else {
                     showError(false, it.message, null)
@@ -521,6 +563,7 @@ class ConfirmOrder : BaseActivity() {
                     displayError(errorMessage)
                     // handle error
                 }
+
 
                 override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
                     SnapLog.print("onPaymentSessionDataChanged")
