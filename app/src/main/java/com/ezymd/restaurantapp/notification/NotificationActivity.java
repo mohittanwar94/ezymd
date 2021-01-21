@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,20 +22,24 @@ import androidx.core.content.ContextCompat;
 
 import com.ezymd.restaurantapp.BaseActivity;
 import com.ezymd.restaurantapp.EzymdApplication;
+import com.ezymd.restaurantapp.MainActivity;
 import com.ezymd.restaurantapp.R;
 import com.ezymd.restaurantapp.customviews.SnapTextView;
 import com.ezymd.restaurantapp.font.Sizes;
+import com.ezymd.restaurantapp.tracker.TrackerActivity;
+import com.ezymd.restaurantapp.ui.myorder.OrderFragment;
+import com.ezymd.restaurantapp.utils.JSONKeys;
 import com.ezymd.restaurantapp.utils.OnSwipeTouchListener;
 
 public class NotificationActivity extends BaseActivity {
     Sizes size;
     Context mActivity;
-    //int type;
+    int type;
     boolean isCancel = false;
     private FrameLayout frameLayout, cardView, frameimageAnim;
     private AppCompatImageView imageAnim, image;
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint({"SourceLockedOrientationActivity", "ClickableViewAccessibility"})
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +78,12 @@ public class NotificationActivity extends BaseActivity {
         frameLayout = findViewById(R.id.frameLayout);
         mActivity = NotificationActivity.this;
 
-       // type = Integer.parseInt(getIntent().getStringExtra("type"));
+        type = Integer.parseInt(getIntent().getStringExtra(JSONKeys.TYPE));
         SnapTextView header = findViewById(R.id.header);
         SnapTextView msg = findViewById(R.id.msg);
+
+        header.setText(getIntent().getStringExtra(JSONKeys.TITLE));
+        msg.setText(getIntent().getStringExtra(JSONKeys.SUB_TITLE));
         SnapTextView checkNow = findViewById(R.id.ok);
         checkNow.setVisibility(View.GONE);
 
@@ -84,11 +92,10 @@ public class NotificationActivity extends BaseActivity {
         image.setBackgroundDrawable(ContextCompat.getDrawable(mActivity, R.drawable.blue_circle));
         image.setImageResource(R.drawable.ic_location);
         Activity mLastActivity = ((EzymdApplication) getApplicationContext()).getLastForegroundActivity();
-            /*if (type == ActivityType.CHAT_MESSAGE_NOTIFICATION && mLastActivity != null && !mLastActivity.isFinishing() && (mLastActivity instanceof ChatActivity)) {
-                finish();
-                return;
-            }
-*/
+        if (type == 1 && mLastActivity != null && !mLastActivity.isFinishing() && (mLastActivity instanceof TrackerActivity)) {
+            finish();
+            return;
+        }
 
         checkNow.postDelayed(() -> {
             if (!isCancel) {
@@ -124,8 +131,11 @@ public class NotificationActivity extends BaseActivity {
 
 
     public void onBackPressed(boolean isClicked) {
-        if (isCancel)
+        if (isCancel) {
+
             return;
+        }
+
         try {
             isCancel = true;
             cardView.animate().translationY(-frameLayout.getHeight()).setDuration(300).setListener(new AnimatorListenerAdapter() {
@@ -133,8 +143,20 @@ public class NotificationActivity extends BaseActivity {
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     try {
-                        NotificationActivity.super.onBackPressed();
-                        overridePendingTransition(0, 0);
+                        if (isClicked) {
+                            if (type == 1) {
+                                Intent intent = new Intent(mActivity, TrackerActivity.class);
+                                intent.putExtra(JSONKeys.LABEL, OrderFragment.class.getSimpleName());
+                                intent.putExtra(JSONKeys.OBJECT, getIntent().getSerializableExtra(JSONKeys.OBJECT));
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(mActivity, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        } else {
+                            NotificationActivity.super.onBackPressed();
+                            overridePendingTransition(0, 0);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

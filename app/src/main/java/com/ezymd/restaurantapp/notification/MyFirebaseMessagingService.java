@@ -19,9 +19,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -31,11 +28,15 @@ import androidx.core.app.NotificationCompat;
 import com.ezymd.restaurantapp.EzymdApplication;
 import com.ezymd.restaurantapp.MainActivity;
 import com.ezymd.restaurantapp.R;
+import com.ezymd.restaurantapp.tracker.TrackerActivity;
+import com.ezymd.restaurantapp.ui.myorder.OrderFragment;
+import com.ezymd.restaurantapp.ui.myorder.model.OrderModel;
 import com.ezymd.restaurantapp.utils.JSONKeys;
 import com.ezymd.restaurantapp.utils.SnapLog;
 import com.ezymd.restaurantapp.utils.UserInfo;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             for (Map.Entry<String, String> entry : data.entrySet()) {
                 SnapLog.print(entry.getKey() + ":" + entry.getValue());
             }
-            generateNotification(this,userInfo,remoteMessage);
+            generateNotification(this, userInfo, remoteMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,8 +76,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Bundle bundle = new Bundle();
             bundle.putString(JSONKeys.SUB_TITLE, data.get(JSONKeys.SUB_TITLE));
             bundle.putString(JSONKeys.TITLE, data.get(JSONKeys.TITLE));
-          //  bundle.putString(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
-
+            bundle.putString(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
+            if (Integer.parseInt(data.get(JSONKeys.TYPE)) == 1) {
+                if (data.containsKey("order")) {
+                    String value = data.get("order");
+                    OrderModel orderModel = new Gson().fromJson(value, OrderModel.class);
+                    bundle.putSerializable(JSONKeys.OBJECT, orderModel);
+                }
+            }
             Intent mIntent = new Intent(this, NotificationActivity.class);
             mIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             mIntent.putExtras(bundle);
@@ -96,8 +103,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             bigTextStyle.bigText(subTitle);
             notification.setStyle(bigTextStyle);
 
-            Intent activityIntent = new Intent(context, MainActivity.class);
-           // activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
+            Intent activityIntent = null;
+            if (Integer.parseInt(data.get(JSONKeys.TYPE)) == 1) {
+                activityIntent = new Intent(context, MainActivity.class);
+                if (data.containsKey("order")) {
+                    String value = data.get("order");
+                    OrderModel orderModel = new Gson().fromJson(value, OrderModel.class);
+                    activityIntent.putExtra(JSONKeys.OBJECT, orderModel);
+                    activityIntent.putExtra(JSONKeys.LABEL, OrderFragment.class.getSimpleName());
+                }
+            } else
+                activityIntent = new Intent(context, MainActivity.class);
+            // activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
             activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent intents = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             notification.setContentText(subTitle);
