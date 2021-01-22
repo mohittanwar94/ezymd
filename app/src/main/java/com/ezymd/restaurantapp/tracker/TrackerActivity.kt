@@ -8,6 +8,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -114,7 +116,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun showConfirmationDialog() {
-        val builder = AlertDialog.Builder(this,R.style.alert_dialog_theme)
+        val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme)
         builder.setMessage("Do you want to cancel this order?")
             .setCancelable(false)
             .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
@@ -157,14 +159,13 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
-        EzymdApplication.getInstance().isRefresh.postValue(true)
     }
 
     private fun setOrderStatus() {
         if (item.orderPickupStatus == JSONKeys.FROM_RESTAURANT && item.orderStatus == OrderStatus.ORDER_COMPLETED) {
             liveStatus.text = getString(R.string.your_order_is_completed)
-            deliveyLay.visibility = View.VISIBLE
-            view.visibility = View.VISIBLE
+            deliveyLay.visibility = View.GONE
+            view.visibility = View.GONE
             call.visibility = View.GONE
             userImage.visibility = View.GONE
             userDetails.text = getString(R.string.go_and_pick_your_order)
@@ -253,14 +254,17 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
                 val hours: Long = (seconds / (60 * 60))
                 val minutes: Int = ((seconds % 3600) / 60).toInt()
+                val second: Int = (seconds % 60).toInt()
+
+
                 var time = ""
                 if (hours > 0L) {
-                    time = "Delivery in " + hours + " hour: " + minutes + " mins"
+                    time = "Delivery in $hours hour: $minutes min : $second sec"
                 } else {
                     if (minutes > 1)
-                        time = "Delivery in " + minutes + " min"
+                        time = "Delivery in $minutes mins : $second sec"
                     else
-                        time = "Delivery in " + minutes + " min"
+                        time = "Delivery in $minutes min : $second sec"
                 }
                 deliverTime.text = time
 
@@ -319,7 +323,23 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 // showMovingCab(pointsList)
             }
         })
+        trackViewModel.timeInfoResponse.observe(this, Observer {
+            if (it != null) {
+                for (element in it) {
+                    //  points = ArrayList()
+                    // lineOptions = PolylineOptions()
+                    val path: List<HashMap<String, String>> = element
+                    for (j in path.indices) {
+                        val point: HashMap<String, String> = path[j]
+                        duration = point.get("duration")!!
 
+                        break
+                    }
+                }
+            }
+            setDuration()
+
+        })
         trackViewModel.locationUpdate.observe(this, Observer {
             if (it != null && it.data != null) {
                 //to be change
@@ -353,14 +373,26 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun getUpdateRoot(data: ArrayList<UpdateLocationModel>) {
         if (data.size > 0) {
+            val latLng = LatLng(data[0].lat, data[0].lang)
+
             if (data[0].orderStatus != item.orderStatus) {
                 item.orderStatus = data[0].orderStatus
                 setOrderStatus()
-                if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED)
-                    setDuration()
+                EzymdApplication.getInstance().isRefresh.postValue(true)
+                if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
+                    val lat = item.delivery_lat.toDouble()
+                    val lng = item.delivery_lang.toDouble()
+                    val destination = LatLng(lat, lng)
+                    val map = trackViewModel.getDirectionsUrl(
+                        latLng,
+                        latLng,
+                        destination,
+                        getString(R.string.google_maps_key)
+                    )
+                    trackViewModel.calculateDuration(map)
+                }
             }
 
-            val latLng = LatLng(data[0].lat, data[0].lang)
             if (!PolyUtil.isLocationOnPath(latLng, pointsList, true, 50.0)) {
                 var lat = item.restaurant.lat.toDouble()
                 var lng = item.restaurant.longitude.toDouble()
@@ -376,12 +408,37 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 )
                 trackViewModel.downloadRoute(hashMap)
 
+                val map = trackViewModel.getDirectionsUrl(
+                    latLng,
+                    latLng,
+                    destination,
+                    getString(R.string.google_maps_key)
+                )
+                trackViewModel.calculateDuration(map)
+
             }
-            updateCarLocation(latLng)
+            if (previousLatLng == null) {
+                updateCarLocation(latLng)
+
+            } else {
+                if (distanceBetween(previousLatLng!!, latLng) > 10f) {
+                    updateCarLocation(latLng)
+
+                }
+            }
 
         }
     }
 
+    private fun distanceBetween(latLng1: LatLng, latLng2: LatLng): Float {
+        val loc1 = Location(LocationManager.GPS_PROVIDER)
+        val loc2 = Location(LocationManager.GPS_PROVIDER)
+        loc1.latitude = latLng1.latitude
+        loc1.longitude = latLng1.longitude
+        loc2.latitude = latLng2.latitude
+        loc2.longitude = latLng2.longitude
+        return loc1.distanceTo(loc2)
+    }
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
@@ -459,7 +516,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                 val point: HashMap<String, String> = path[j]
                 val lat: Double = point.get("lat")!!.toDouble()
                 val lng: Double = point.get("lng")!!.toDouble()
-                duration = point.get("duration")!!
+                //duration = point.get("duration")!!
                 //  SnapLog.print("duration==========" + duration)
                 val position = LatLng(lat, lng)
                 pointsList.add(position)
@@ -470,9 +527,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             // lineOptions.color(Color.BLACK)
             // lineOptions.geodesic(true)
         }
-        if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED)
+        /*if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED)
             setDuration()
-
+*/
 
         // Drawing polyline in the Google Map for the i-th route
         // mMap!!.addPolyline(lineOptions)
@@ -481,19 +538,23 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun setDuration() {
         progressLay.visibility = View.VISIBLE
+        // trackViewModel.calculateTime()
+        if (duration.toInt() < 120) {
+            duration = "120"
+        }
         if (duration != "0") {
             val hours: Long = (duration.toLong() / (60 * 60))
             val minutes: Int = (duration.toInt() % 3600) / 60
             var time = ""
             if (hours > 0L) {
-                time = "Delivery in " + hours + " hour: " + minutes + " mins"
+                time = "Delivery in $hours hour: $minutes mins"
             } else {
                 if (minutes > 1)
-                    time = "Delivery in " + minutes + " min"
+                    time = "Delivery in $minutes mins"
                 else
-                    time = "Delivery in " + minutes + " min"
+                    time = "Delivery in $minutes min"
             }
-
+            progress.progress = 0
             deliverTime.text = time
             progress.max = duration.toInt()
             countTimer?.cancel()
@@ -602,7 +663,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
                     )
                     movingCabMarker?.position = nextLocation
                     val heading = computeHeading(previousLatLng, nextLocation);
-                    movingCabMarker?.rotation = heading.toFloat()
+                    movingCabMarker?.rotation = heading.toFloat() - 90
 
                     //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
                     /* if (!rotation.isNaN()) {

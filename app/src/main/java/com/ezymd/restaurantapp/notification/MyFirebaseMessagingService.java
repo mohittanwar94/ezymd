@@ -28,7 +28,6 @@ import androidx.core.app.NotificationCompat;
 import com.ezymd.restaurantapp.EzymdApplication;
 import com.ezymd.restaurantapp.MainActivity;
 import com.ezymd.restaurantapp.R;
-import com.ezymd.restaurantapp.tracker.TrackerActivity;
 import com.ezymd.restaurantapp.ui.myorder.OrderFragment;
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel;
 import com.ezymd.restaurantapp.utils.JSONKeys;

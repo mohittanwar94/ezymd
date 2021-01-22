@@ -27,6 +27,7 @@ class TrackerViewModel : ViewModel() {
     var errorRequest: SingleLiveEvent<String> = SingleLiveEvent()
     private var loginRepository: TrackerRepository? = null
     val routeInfoResponse: MutableLiveData<ArrayList<List<HashMap<String, String>>>>
+    val timeInfoResponse= MutableLiveData<ArrayList<List<HashMap<String, String>>>>()
     val firebaseResponse: MutableLiveData<DataSnapshot>
     val locationUpdate = MutableLiveData<BaseUpdateLocationModel>()
     val orderCancel = MutableLiveData<LocationValidatorModel>()
@@ -205,6 +206,25 @@ class TrackerViewModel : ViewModel() {
         }
         return routes
 
+
+    }
+
+    fun calculateDuration(map: ConcurrentHashMap<String, String>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.downloadRouteInfo(
+                map,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    SnapLog.print(result.value.toString())
+                    timeInfoResponse.postValue(parseResponse(result.value.toString()))
+                }
+            }
+        }
 
     }
 
