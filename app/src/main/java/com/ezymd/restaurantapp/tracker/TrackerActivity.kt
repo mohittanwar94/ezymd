@@ -97,10 +97,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun checkCancelTimer() {
         SnapLog.print("order status==========" + item.orderStatus)
-        if (TimeUtils.isOrderLive(item.updated) && item.orderStatus != OrderStatus.ORDER_CANCEL) {
+        if (TimeUtils.isOrderLive(
+                item.created,
+                item.updated
+            ) && item.orderStatus < OrderStatus.ORDER_ACCEPT_DELIVERY_BOY
+        ) {
             cancelOrder.visibility = View.VISIBLE
             view2.visibility = View.VISIBLE
-            val duration = TimeUtils.getDuration(item.updated)
+            val duration = TimeUtils.getDuration(item.updated, item.created)
             SnapLog.print("cancell time=====" + duration)
             progressCancel.progressMax = duration.toFloat()
             startCancelTimer(duration)

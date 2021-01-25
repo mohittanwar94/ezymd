@@ -18,12 +18,13 @@ public class TimeUtils {
         return "";
     }
 
-    public static boolean isOrderLive(String duedate) {
+    public static boolean isOrderLive(String create, String updated) {
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(duedate);
-            assert date != null;
-            SnapLog.print("" + (System.currentTimeMillis() - date.getTime() <= 90000L));
-            return System.currentTimeMillis() - date.getTime() <= 90000L;
+            Date created = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(create);
+            Date updatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updated);
+            assert created != null;
+            SnapLog.print("" + (updatedDate.getTime() - created.getTime() <= 60000L));
+            return (updatedDate.getTime() - created.getTime() < 60000L);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -31,12 +32,21 @@ public class TimeUtils {
         return true;
     }
 
-    public static long getDuration(String duedate) {
+    public static long getDuration(String updated, String created) {
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(duedate);
-            assert date != null;
-            SnapLog.print("" + (System.currentTimeMillis() - date.getTime() <= 60000L));
-            return 60000L;
+            Date updatedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(updated);
+            Date createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created);
+            assert createdDate != null;
+            SnapLog.print("" + (updatedDate.getTime() - createdDate.getTime() <= 60000L));
+
+            if ((updatedDate.getTime() - createdDate.getTime() < 10000L) || (updatedDate.getTime() - createdDate.getTime() == 0L)) {
+                return 60000L;
+            } else if ((updatedDate.getTime() - createdDate.getTime() > 60000L)) {
+                return 0L;
+            } else {
+                return (updatedDate.getTime() - createdDate.getTime());
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
