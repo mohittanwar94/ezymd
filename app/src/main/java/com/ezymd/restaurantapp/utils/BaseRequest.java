@@ -18,7 +18,7 @@ public class BaseRequest {
         paramsMap.put("user_id", "" + userInfo.getUserID());
         paramsMap.put("device_token", userInfo.getDeviceToken());
         paramsMap.put("device_id", userInfo.getDeviceID());
-        paramsMap.put("long", userInfo.getLang());
+        paramsMap.put("lang", userInfo.getLang());
 
     }
 }

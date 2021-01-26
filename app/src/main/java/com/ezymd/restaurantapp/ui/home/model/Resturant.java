@@ -18,7 +18,7 @@ public class Resturant implements Serializable {
     @Expose
     private Double lat = 0.0;
 
-    @SerializedName("long")
+    @SerializedName("lang")
     @Expose
     private Double longitude = 0.0;
     @SerializedName("id")

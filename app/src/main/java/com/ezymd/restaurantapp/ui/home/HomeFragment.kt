@@ -340,9 +340,13 @@ open class HomeFragment : Fragment() {
         super.onResume()
         val locationManager =
             requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-       // SnapLog.print( "start status=============" + !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        // SnapLog.print( "start status=============" + !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER))
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 setLocationEmpty()
                 return
             }
@@ -352,17 +356,17 @@ open class HomeFragment : Fragment() {
             return
         }
 
-            if (delivery_location.text.equals("N/A")) {
-                SnapLog.print("n/a .............")
-                askPermission()
-            }
-            emptyLay.visibility = View.GONE
-            if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
-                homeViewModel.getBanners(BaseRequest(userInfo))
-                homeViewModel.getResturants(BaseRequest(userInfo))
-                homeViewModel.getTrending(BaseRequest(userInfo))
-            }
-            setObservers()
+        if (delivery_location.text.equals("N/A")) {
+            SnapLog.print("n/a .............")
+            askPermission()
+        }
+        emptyLay.visibility = View.GONE
+        if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+            homeViewModel.getBanners(BaseRequest(userInfo))
+            homeViewModel.getResturants(BaseRequest(userInfo))
+            homeViewModel.getTrending(BaseRequest(userInfo))
+        }
+        setObservers()
 
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
     }
@@ -447,7 +451,8 @@ open class HomeFragment : Fragment() {
 
         })
         homeViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
-            (activity as BaseActivity).showError(false, it, null)
+            if (it != null)
+                (activity as BaseActivity).showError(false, it, null)
         })
 
 
