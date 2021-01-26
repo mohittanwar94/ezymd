@@ -22,8 +22,8 @@ public class TimeUtils {
         try {
             Date created = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(create);
             assert created != null;
-            SnapLog.print("" + (System.currentTimeMillis() - created.getTime() <= 60000L));
-            return (System.currentTimeMillis() - created.getTime() <= 60000L);
+            SnapLog.print("" + (created.getTime() - System.currentTimeMillis() <= 60000L));
+            return (created.getTime() - System.currentTimeMillis()) > 0L;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -35,8 +35,8 @@ public class TimeUtils {
         try {
             Date createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created);
             assert createdDate != null;
-            SnapLog.print("" + (System.currentTimeMillis() - createdDate.getTime() <= 60000L));
-            return  Math.abs(System.currentTimeMillis() - createdDate.getTime());
+            SnapLog.print("" + (createdDate.getTime() - System.currentTimeMillis() <= 60000L));
+            return Math.abs(createdDate.getTime() - System.currentTimeMillis());
                /* return 60000L;
             else
                 return 0L;*/

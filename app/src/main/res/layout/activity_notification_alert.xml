@@ -4,7 +4,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#33000000">
+    android:background="#0C000000">
 
     <FrameLayout
         android:id="@+id/frameimageAnim"
@@ -20,7 +20,6 @@
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="top|center"
-            android:background="@drawable/blue_circle"
             android:padding="@dimen/_13sdp"
             app:srcCompat="@drawable/ic_location" />
 
@@ -96,7 +95,6 @@
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/blue_circle"
                     android:padding="@dimen/_13sdp"
                     app:srcCompat="@drawable/ic_location" />
 

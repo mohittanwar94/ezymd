@@ -381,6 +381,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
             if (data[0].orderStatus != item.orderStatus) {
                 item.orderStatus = data[0].orderStatus
                 setOrderStatus()
+                if (item.orderStatus == OrderStatus.ORDER_COMPLETED)
+                    progressLay.visibility = View.GONE
                 EzymdApplication.getInstance().isRefresh.postValue(true)
                 if (item.orderStatus >= OrderStatus.ITEMS_PICKED_FROM_RESTAURANT && item.orderStatus < OrderStatus.ORDER_COMPLETED) {
                     val lat = item.delivery_lat.toDouble()

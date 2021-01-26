@@ -19,13 +19,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.ezymd.restaurantapp.EzymdApplication;
 import com.ezymd.restaurantapp.MainActivity;
 import com.ezymd.restaurantapp.R;
 import com.ezymd.restaurantapp.ui.myorder.OrderFragment;
@@ -71,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void generateNotification(Context context, UserInfo userInfo, RemoteMessage remoteData) {
         Map<String, String> data = remoteData.getData();
-        if (EzymdApplication.isAppForeground(this)) {
+        /*if (EzymdApplication.isAppForeground(this)) {
             Bundle bundle = new Bundle();
             bundle.putString(JSONKeys.SUB_TITLE, data.get(JSONKeys.SUB_TITLE));
             bundle.putString(JSONKeys.TITLE, data.get(JSONKeys.TITLE));
@@ -88,43 +86,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             mIntent.putExtras(bundle);
             startActivity(mIntent);
         } else {
-            String subTitle = data.get(JSONKeys.SUB_TITLE);
-            String title = data.get(JSONKeys.TITLE);
-            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.default_notification_channel_id));
-            notification.setPriority(NotificationCompat.PRIORITY_MAX);
-            notification.setContentTitle(title);
-            notification.setSmallIcon(R.drawable.ic_location);
-            notification.setAutoCancel(true);
-            NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-            bigTextStyle.setBigContentTitle(title);
-            notification.setContentText(subTitle);
-            bigTextStyle.bigText(subTitle);
-            notification.setStyle(bigTextStyle);
+        */
+        String subTitle = data.get(JSONKeys.SUB_TITLE);
+        String title = data.get(JSONKeys.TITLE);
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.default_notification_channel_id));
+        notification.setPriority(NotificationCompat.PRIORITY_MAX);
+        notification.setContentTitle(title);
+        notification.setSmallIcon(R.drawable.ic_location);
+        notification.setAutoCancel(true);
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(title);
+        notification.setContentText(subTitle);
+        bigTextStyle.bigText(subTitle);
+        notification.setStyle(bigTextStyle);
 
-            Intent activityIntent = null;
-            if (Integer.parseInt(data.get(JSONKeys.TYPE)) == 1) {
-                activityIntent = new Intent(context, MainActivity.class);
-                if (data.containsKey("order")) {
-                    String value = data.get("order");
-                    OrderModel orderModel = new Gson().fromJson(value, OrderModel.class);
-                    activityIntent.putExtra(JSONKeys.OBJECT, orderModel);
-                    activityIntent.putExtra(JSONKeys.LABEL, OrderFragment.class.getSimpleName());
-                }
-            } else
-                activityIntent = new Intent(context, MainActivity.class);
-            // activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
-            activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent intents = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            notification.setContentText(subTitle);
-            bigTextStyle.bigText(subTitle);
-            notification.setContentTitle(title);
-            bigTextStyle.setBigContentTitle(title);
-            notification.setContentIntent(intents);
-            notification.setStyle(bigTextStyle);
-            notificationManager.notify((int) System.currentTimeMillis(), notification.build());
-        }
-
+        Intent activityIntent = null;
+        if (Integer.parseInt(data.get(JSONKeys.TYPE)) == 1) {
+            activityIntent = new Intent(context, MainActivity.class);
+            if (data.containsKey("order")) {
+                String value = data.get("order");
+                OrderModel orderModel = new Gson().fromJson(value, OrderModel.class);
+                activityIntent.putExtra(JSONKeys.OBJECT, orderModel);
+                activityIntent.putExtra(JSONKeys.LABEL, OrderFragment.class.getSimpleName());
+            }
+        } else
+            activityIntent = new Intent(context, MainActivity.class);
+        // activityIntent.putExtra(JSONKeys.TYPE, data.get(JSONKeys.TYPE));
+        activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent intents = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentText(subTitle);
+        bigTextStyle.bigText(subTitle);
+        notification.setContentTitle(title);
+        bigTextStyle.setBigContentTitle(title);
+        notification.setContentIntent(intents);
+        notification.setStyle(bigTextStyle);
+        notificationManager.notify((int) System.currentTimeMillis(), notification.build());
     }
+
 
 }
