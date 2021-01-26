@@ -65,6 +65,10 @@ public class OrderModel implements Serializable {
     @Expose
     private String created;
 
+    @SerializedName("cancel_time")
+    @Expose
+    private String cancel_time;
+
     @SerializedName("order_updated")
     @Expose
     private String updated;
@@ -235,6 +239,14 @@ public class OrderModel implements Serializable {
 
     public String getCreated() {
         return created;
+    }
+
+    public String getCancel_time() {
+        return cancel_time;
+    }
+
+    public void setCancel_time(String cancel_time) {
+        this.cancel_time = cancel_time;
     }
 
     public String getAddress() {

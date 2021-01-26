@@ -120,6 +120,8 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         })
 
         searchViewModel.isLoading.observe(requireActivity(), androidx.lifecycle.Observer {
+            if (swipeLayout == null)
+                return@Observer
             if (!it) {
                 swipeLayout.isRefreshing = false
                 progress.visibility = View.GONE

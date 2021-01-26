@@ -36,10 +36,10 @@ public class TimeUtils {
             Date createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(created);
             assert createdDate != null;
             SnapLog.print("" + (System.currentTimeMillis() - createdDate.getTime() <= 60000L));
-            if (System.currentTimeMillis() - createdDate.getTime() < 0)
-                return 60000L;
+            return  Math.abs(System.currentTimeMillis() - createdDate.getTime() );
+               /* return 60000L;
             else
-                return (System.currentTimeMillis() - createdDate.getTime());
+                return 0L;*/
 
 
         } catch (ParseException e) {
