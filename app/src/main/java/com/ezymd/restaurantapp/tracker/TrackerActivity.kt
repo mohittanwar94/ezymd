@@ -10,10 +10,10 @@ import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.location.Location
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -22,6 +22,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.push.CallScreenActivity
+import com.ezymd.restaurantapp.push.SinchService
 import com.ezymd.restaurantapp.tracker.model.UpdateLocationModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
@@ -35,11 +37,12 @@ import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
 import com.google.maps.android.PolyUtil
 import com.google.maps.android.SphericalUtil.computeHeading
+import com.sinch.android.rtc.SinchError
 import kotlinx.android.synthetic.main.tracker_activity.*
 import kotlinx.android.synthetic.main.user_live_tracking.*
 
 
-class TrackerActivity : BaseActivity(), OnMapReadyCallback {
+class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFailedListener {
     private var countTimer: CountDownTimer? = null
     private var cancelCountTimer: CountDownTimer? = null
     private var duration: String = "0"
@@ -229,16 +232,71 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback {
         }
         call.setOnClickListener {
             try {
-                UIUtil.clickAlpha(it)
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:" + item.delivery.phoneNo)
-                startActivity(intent)
+                val isGranted = checkPhoneAudioPermissions(object : PermissionListener {
+                    override fun result(isGranted: Boolean) {
+                        if (isGranted) {
+                            UIUtil.clickAlpha(it)
+                            loginClicked()
+                        }
+
+                    }
+                })
+
+                if (isGranted) {
+                    UIUtil.clickAlpha(it)
+                    loginClicked()
+                }
+
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
         }
     }
+
+    override fun onServiceConnected() {
+        getSinchServiceInterface()?.setStartListener(this)
+    }
+
+
+    override fun onStartFailed(error: SinchError) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStarted() {
+        openPlaceCallActivity()
+    }
+
+    private fun loginClicked() {
+        val userName = ""+userInfo?.userID
+        if (userName != getSinchServiceInterface()?.userName) {
+            getSinchServiceInterface()?.stopClient()
+        }
+        if (!getSinchServiceInterface()?.isStarted!!) {
+            getSinchServiceInterface()?.startClient(userName)
+        } else {
+            openPlaceCallActivity()
+        }
+    }
+
+    private fun openPlaceCallActivity() {
+        //item.delivery.phoneNo
+       callConnect()
+
+    }
+
+    private fun callConnect() {
+        //item.delivery.phoneNo
+        val call = getSinchServiceInterface()!!.callPhoneNumber("+46000000000")
+        val callId = call.callId
+        val callScreen = Intent(this, CallScreenActivity::class.java)
+        callScreen.putExtra(SinchService.CALL_ID, callId)
+        callScreen.putExtra(JSONKeys.NAME, item.delivery.name)
+        callScreen.putExtra(JSONKeys.AVATAR, item.delivery.photo)
+        startActivity(callScreen)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

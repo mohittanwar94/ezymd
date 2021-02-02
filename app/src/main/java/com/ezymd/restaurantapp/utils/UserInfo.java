@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -44,11 +42,11 @@ public class UserInfo {
     }
 
     public String getCustomerID() {
-        return preferences.getString("getCustomerID"+userInfo.getUserID(), null);
+        return preferences.getString("getCustomerID" + userInfo.getUserID(), null);
     }
 
     public void setCustomerID(String custID) {
-        preferences.edit().putString("getCustomerID"+userInfo.getUserID(), custID).apply();
+        preferences.edit().putString("getCustomerID" + userInfo.getUserID(), custID).apply();
     }
 
     public String getDeviceID() {
@@ -73,6 +71,13 @@ public class UserInfo {
         preferences.edit().putInt("user_id", userid).apply();
     }
 
+    public String getSinchUserName() {
+        return preferences.getString("sinchUserName" + userInfo.getUserID(), "");
+    }
+
+    public void setSinchUserName(String userid) {
+        preferences.edit().putString("sinchUserName" + userInfo.getUserID(), userid).apply();
+    }
 
 
     public String getUserName() {
@@ -115,6 +120,7 @@ public class UserInfo {
         userInfo.mUserUpdate.postValue(true);
         preferences.edit().putString("profilePic", pic).apply();
     }
+
     public String getAddress() {
         return preferences.getString("address", "");
     }
@@ -122,7 +128,6 @@ public class UserInfo {
     public void setAddress(String address) {
         preferences.edit().putString("address", address).apply();
     }
-
 
 
     public void clear() {
@@ -133,10 +138,9 @@ public class UserInfo {
         preferences.getString("lang", "0.0");
         preferences.edit().putString("address", "").apply();
         preferences.edit().putString("profilePic", "").apply();
-        preferences.edit().putInt("user_id",0).apply();
+        preferences.edit().putInt("user_id", 0).apply();
 
     }
-
 
 
     public String getLat() {

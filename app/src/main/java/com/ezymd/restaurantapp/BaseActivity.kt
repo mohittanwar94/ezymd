@@ -1,29 +1,37 @@
 package com.ezymd.restaurantapp
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
 import android.provider.Settings
 import android.util.TypedValue
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
+import com.ezymd.restaurantapp.push.SinchService
+import com.ezymd.restaurantapp.push.SinchService.SinchServiceInterface
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
-open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
+
+open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener,
+    ServiceConnection {
+
+    var mSinchServiceInterface: SinchServiceInterface? = null
     private var size: Sizes? = null
     val PERMISSIONS_REQUEST_CAMERA = 3333
     val PERMISSIONS_REQUEST_CAMERA_AUDIO = 3331
@@ -45,11 +53,64 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     private var handler: Handler? = null
 
 
+    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder?) {
+        if ((SinchService::class.java.name == componentName.className)) {
+            mSinchServiceInterface = iBinder as SinchServiceInterface?
+            onServiceConnected()
+        }
+    }
+
+    override fun onServiceDisconnected(componentName: ComponentName) {
+        if ((SinchService::class.java.name == componentName.className)) {
+            mSinchServiceInterface = null
+            onServiceDisconnected()
+        }
+    }
+
+
+    open fun onServiceConnected() {}
+    open fun onServiceDisconnected() {}
+    fun getSinchServiceInterface(): SinchServiceInterface? {
+        return mSinchServiceInterface
+    }
+
+    private val messenger = Messenger(object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
+                    val bundle = msg.data
+                    val requiredPermission = bundle.getString(SinchService.REQUIRED_PERMISSION)
+                    ActivityCompat.requestPermissions(
+                        this@BaseActivity,
+                        arrayOf(requiredPermission),
+                        0
+                    )
+                }
+            }
+        }
+    })
+
+
+    private fun bindService() {
+        val serviceIntent = Intent(this, SinchService::class.java)
+        serviceIntent.putExtra(SinchService.MESSENGER, messenger)
+        getApplicationContext().bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             window.statusBarColor = Color.GRAY
         }
         super.onCreate(savedInstanceState)
+
+        bindService()
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        getWindow().addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+
+        )
+
         if (ServerConfig.IS_TESTING)
             Thread.setDefaultUncaughtExceptionHandler(TopExceptionHandler(this))
         mActivity = this
@@ -270,6 +331,26 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         return true
     }
 
+    fun checkPhoneAudioPermissions(listener: PermissionListener): Boolean {
+        if (Build.VERSION.SDK_INT >= 23) {
+            permissionListener = listener
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                val notGranted = ArrayList<String>()
+                val permissions =
+                    arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO)
+                for (permission in permissions) {
+                    if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
+                        notGranted.add(permission)
+                }
+                if (!notGranted.isEmpty()) {
+                    requestPermissions(notGranted.toTypedArray(), PERMISSIONS_REQUEST_CAMERA_AUDIO)
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
 
     fun checkReadWritePermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -353,6 +434,20 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 permissionListener!!.result(false)
                 showPermissionAlert("Camera & Audio access denied.Please enable permissions to access.")
             }
+            0 -> if (grantResults.size > 0) {
+                if (isGrant(grantResults))
+                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                else {
+                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                    showPermissionAlert("Camera & Audio access denied.Please enable permissions to access.")
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Ezymd application needs permission to use your microphone and camera to function properly.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
             PERMISSIONS_REQUEST_AUDIO -> if (grantResults.size > 0) {
                 if (isGrant(grantResults)) permissionListener!!.result(true) else {
                     permissionListener!!.result(false)
@@ -375,6 +470,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             }
         }
     }
+
 
     private fun isGrant(grantResults: IntArray): Boolean {
         for (i in grantResults) {
