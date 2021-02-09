@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Vibrator
 import android.text.*
 import android.text.style.ForegroundColorSpan
-import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -129,7 +128,7 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         val spann = SpannableString(getString(R.string.did_not_receive_otp))
         val spannResend = SpannableString(getString(R.string.resend))
         spannResend.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_ffb912)),
+            ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_002366)),
             0,
             spannResend.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -138,14 +137,14 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
 
         val spannMsg = SpannableString(getString(R.string.enter_four_digit_code))
         val mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
-        val mask = mobileNo.replace("\\w(?=\\w{4})".toRegex(), "x")
-
+        var mask = mobileNo.replace("\\w(?=\\w{4})".toRegex(), "x")
+        mask = mask.chunked(3).joinToString(separator = "-")
         val spannMobile = SpannableString(mask)
         spannMobile.setSpan(
             ForegroundColorSpan(
                 ContextCompat.getColor(
                     this,
-                    R.color.blue_002366
+                    R.color.color_010a1d
                 )
             ), 0, spannMobile.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
@@ -269,10 +268,10 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         } else {
             SuspendKeyPad.suspendKeyPad(this)
             progressLogin.visibility = View.VISIBLE
-            if (intent.hasExtra(IS_MOBILE)){
+            if (intent.hasExtra(IS_MOBILE)) {
                 setResult(Activity.RESULT_OK)
                 finish()
-            }else {
+            } else {
                 val loginRequest = LoginRequest()
                 loginRequest.mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
                 loginRequest.otp =

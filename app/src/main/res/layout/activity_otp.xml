@@ -45,7 +45,7 @@
         android:gravity="center"
         android:padding="@dimen/_5sdp"
         android:text="@string/otp_verification"
-        android:textColor="@color/blue_667ba3"
+        android:textColor="@color/color_676c77"
         android:textSize="@dimen/_15sdp"
         android:visibility="visible"
         app:textFont="book" />
@@ -67,6 +67,7 @@
             android:background="@drawable/otp_edittext_bg"
             android:gravity="center"
             android:imeOptions="actionNext"
+            android:textCursorDrawable="@color/color_002366"
             android:inputType="number"
             android:maxLength="1"
             android:textColor="@color/blue_002366"
@@ -79,6 +80,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_15sdp"
+            android:textCursorDrawable="@color/color_002366"
             android:background="@drawable/otp_edittext_bg"
             android:gravity="center"
             android:imeOptions="actionNext"
@@ -96,6 +98,7 @@
             android:gravity="center"
             android:imeOptions="actionNext"
             android:inputType="number"
+            android:textCursorDrawable="@color/color_002366"
             android:maxLength="1"
             android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
@@ -111,6 +114,7 @@
             android:gravity="center"
             android:imeOptions="actionDone"
             android:inputType="number"
+            android:textCursorDrawable="@color/color_002366"
             android:maxLength="1"
             android:textColor="@color/blue_002366"
             android:textSize="@dimen/_23sdp" />
@@ -133,9 +137,9 @@
             android:gravity="center"
             android:text="@string/continue_string"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_002366"
             android:textSize="@dimen/_17sdp"
-            app:buttonFont="book" />
+            app:buttonFont="medium" />
 
         <ProgressBar
             android:id="@+id/progressLogin"
@@ -163,7 +167,7 @@
         android:maxLines="1"
         android:padding="@dimen/_5sdp"
         android:text="@string/did_not_receive_otp"
-        android:textColor="@color/color_667ba3"
+        android:textColor="@color/color_676c77"
         android:textSize="@dimen/_13sdp"
         android:visibility="visible"
         app:textFont="medium" />

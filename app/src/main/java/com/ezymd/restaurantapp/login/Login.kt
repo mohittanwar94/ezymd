@@ -25,7 +25,7 @@ import java.util.*
 
 
 class Login : BaseActivity() {
-    private var counCode: String="+1"
+    private var counCode: String="US"
     private val RC_SIGN_IN = 100
     val gso by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

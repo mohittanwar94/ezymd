@@ -8,6 +8,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Tasks
@@ -26,7 +27,7 @@ class AutoCompleteAdapter internal constructor(
     context: Context?,
     private val placesClient: PlacesClient
 ) : ArrayAdapter<AutocompletePrediction>(
-    context!!, android.R.layout.simple_expandable_list_item_2, android.R.id.text1
+    context!!, R.layout.simple_expandable_list_item_2, android.R.id.text1
 ), Filterable {
     private var mResultList: List<AutocompletePrediction>? = null
     override fun getCount(): Int {

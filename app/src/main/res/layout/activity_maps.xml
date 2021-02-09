@@ -63,9 +63,11 @@
             app:backgroundTint="@color/white"
             app:elevation="@dimen/_4sdp"
             app:fabSize="mini"
+            android:tint="@color/blue_002366"
             app:rippleColor="@color/dividerColor"
             app:srcCompat="@drawable/ic_center_location"
-            app:useCompatPadding="true" />
+            app:useCompatPadding="true"
+            android:contentDescription="@string/image" />
     </FrameLayout>
 
     <include
