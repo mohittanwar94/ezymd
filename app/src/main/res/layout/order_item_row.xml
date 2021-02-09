@@ -60,7 +60,7 @@
         android:maxLines="1"
         android:paddingBottom="@dimen/_5sdp"
         android:text="@string/pizza"
-        android:textColor="@color/color_667ba3"
+        android:textColor="@color/color_787a7f"
         android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
 
@@ -70,8 +70,8 @@
         android:layout_height="@dimen/_1sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_12sdp"
-        android:layerType="software"
-        android:background="@drawable/dotted_line" />
+        android:background="@drawable/dotted_line"
+        android:layerType="software" />
 
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -83,7 +83,7 @@
         android:gravity="start"
         android:letterSpacing="0.01"
         android:text="@string/completed"
-        android:textColor="@color/color_667ba3"
+        android:textColor="@color/color_787a7f"
         android:textSize="@dimen/_12sdp"
         app:textFont="roman" />
 
@@ -100,37 +100,38 @@
         android:lineSpacingExtra="@dimen/_4sdp"
         android:maxLines="1"
         android:text="@string/resurant_name"
-        android:textColor="@color/color_b2bdd1"
+        android:textColor="@color/color_bbbcbf"
         android:textSize="@dimen/_11sdp"
         app:textFont="roman" />
 
 
     <com.ezymd.restaurantapp.customviews.SnapButton
         android:id="@+id/trackOrder"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_gravity="start"
         android:background="@drawable/ic_gray_btn_pressed"
         android:gravity="center"
         android:letterSpacing="0.01"
         android:text="@string/track_order"
         android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:textColor="@color/color_002366"
         android:textSize="@dimen/_12sdp"
-        app:textFont="roman" />
+        app:textFont="bold" />
+
     <com.ezymd.restaurantapp.customviews.SnapButton
         android:id="@+id/reorder"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_gravity="start"
         android:background="@drawable/review_bg"
         android:gravity="center"
         android:letterSpacing="0.01"
-        android:visibility="gone"
         android:text="@string/reorder"
         android:textAllCaps="true"
-        android:textColor="@color/color_ffb912"
+        android:textColor="@color/color_002366"
         android:textSize="@dimen/_12sdp"
-        app:textFont="roman" />
+        android:visibility="gone"
+        app:textFont="bold" />
 
 </LinearLayout>

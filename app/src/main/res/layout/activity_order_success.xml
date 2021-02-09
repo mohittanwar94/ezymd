@@ -118,7 +118,7 @@
             android:lineSpacingExtra="5sp"
             android:text="@string/track_order"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/color_002366"
             android:textSize="@dimen/_17sdp"
             android:textStyle="normal"
             app:buttonFont="medium" />

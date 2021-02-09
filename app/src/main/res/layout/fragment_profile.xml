@@ -64,8 +64,8 @@
                         android:layout_width="@dimen/_85sdp"
                         android:layout_height="@dimen/_85sdp"
                         android:layout_gravity="center"
-                        android:visibility="visible"
                         android:padding="@dimen/_2sdp"
+                        android:visibility="visible"
                         app:civ_border_overlay="true"
                         app:civ_fill_color="@color/white"
                         app:srcCompat="@drawable/ic_profile_png" />
@@ -359,7 +359,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:layout_marginRight="@dimen/_15sdp">
 
 
@@ -368,10 +368,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_gray_logout"
+                    android:background="@drawable/ic_gray_btn_pressed"
                     android:text="@string/logout"
                     android:textAllCaps="false"
-                    android:textColor="@color/color_3b3b3b"
+                    android:textColor="@color/color_002366"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="normal"
                     app:textFont="medium" />

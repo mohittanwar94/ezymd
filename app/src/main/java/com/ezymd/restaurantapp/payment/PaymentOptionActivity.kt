@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
@@ -11,6 +12,9 @@ import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.PaymentMethodTYPE
 import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.activity_checkout.*
+import kotlinx.android.synthetic.main.activity_checkout.payButton
+import kotlinx.android.synthetic.main.activity_checkout.toolbar_layout
+import kotlinx.android.synthetic.main.activity_confirm_order.*
 
 
 class PaymentOptionActivity : BaseActivity() {
@@ -94,6 +98,9 @@ class PaymentOptionActivity : BaseActivity() {
     private fun setHeaderData() {
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
+        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this,R.color.color_002366))
+        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this,R.color.color_002366))
+
         toolbar_layout.title = getString(R.string.payment_options)
 
     }

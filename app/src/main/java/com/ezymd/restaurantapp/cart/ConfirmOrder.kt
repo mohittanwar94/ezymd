@@ -238,8 +238,8 @@ class ConfirmOrder : BaseActivity() {
         contactless.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Contact less"
-            regular.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            contactless.setTextColor(ContextCompat.getColor(this, R.color.white))
+            regular.setTextColor(ContextCompat.getColor(this, R.color.white))
+            contactless.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             contactless.background =
                 ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             regular.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
@@ -253,8 +253,8 @@ class ConfirmOrder : BaseActivity() {
         regular.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Regular"
-            contactless.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            regular.setTextColor(ContextCompat.getColor(this, R.color.white))
+            contactless.setTextColor(ContextCompat.getColor(this, R.color.white))
+            regular.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             regular.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             contactless.background =
                 ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
@@ -424,6 +424,8 @@ class ConfirmOrder : BaseActivity() {
 
     private fun setHeaderData() {
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
+        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this,R.color.color_002366))
+        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this,R.color.color_002366))
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.title = getString(R.string.title_confirm_order)
 
