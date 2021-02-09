@@ -46,7 +46,7 @@
                 android:max="5"
                 android:min="1"
                 android:numStars="5"
-                android:progressTint="@color/dark_yellow"
+                android:progressTint="@color/color_ffe600"
                 android:rating="5"
                 android:stepSize="0.5" />
 
@@ -95,7 +95,7 @@
                 android:max="5"
                 android:min="1"
                 android:numStars="5"
-                android:progressTint="@color/dark_yellow"
+                android:progressTint="@color/color_ffe600"
                 android:rating="5"
                 android:stepSize="0.5" />
 

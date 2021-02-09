@@ -165,7 +165,7 @@
                     android:background="@drawable/dotted_line_yellow"
                     android:layerType="software"
                     android:rotation="90"
-                    app:tint="@color/dark_yellow" />
+                    app:tint="@color/color_ffe600" />
 
                 <ImageView
                     android:id="@+id/userLocation"
@@ -358,7 +358,7 @@
                         android:paddingTop="@dimen/_2sdp"
                         android:paddingBottom="@dimen/_2sdp"
                         android:text="@string/review"
-                        android:textColor="@color/color_ffb912"
+                        android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
                         app:textFont="bold" />
@@ -624,7 +624,7 @@
                 android:lineSpacingExtra="5sp"
                 android:text="@string/reorder"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/color_002366"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="normal"
                 app:buttonFont="bold" />
