@@ -128,7 +128,7 @@
                         android:lineSpacingExtra="@dimen/_3sdp"
                         android:text="@string/edit"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_ffb912"
+                        android:textColor="@color/color_002366"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
                         app:drawableLeftCompat="@drawable/ic_edit"
@@ -366,7 +366,7 @@
                 <com.ezymd.restaurantapp.customviews.SnapButton
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_gray_btn_pressed"
                     android:text="@string/logout"
@@ -382,7 +382,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:elevation="@dimen/_9sdp"
-                    android:theme="@style/progressBarTheme"
+                    android:theme="@style/progressBarThemeWhite"
                     android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>

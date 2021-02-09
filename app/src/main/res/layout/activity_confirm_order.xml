@@ -237,7 +237,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@drawable/otp_edittext_bg"
+                android:background="@drawable/ic_gray_logout"
                 android:letterSpacing="0.01"
                 android:text="@string/choose_date_time"
                 android:textAllCaps="false"

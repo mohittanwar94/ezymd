@@ -118,6 +118,10 @@ class CouponActivity : BaseActivity() {
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
     private fun setToolBar() {
 
         setSupportActionBar(findViewById(R.id.toolbar))

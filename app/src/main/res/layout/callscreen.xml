@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_1e222a"
@@ -73,6 +74,30 @@
             android:layout_centerInParent="true"
             android:background="@android:drawable/ic_menu_info_details"
             android:padding="@dimen/_4sdp" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapButton
+            android:id="@+id/speaker"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_alignParentBottom="true"
+            android:enabled="false"
+            android:background="@android:drawable/ic_menu_info_details"
+            android:padding="@dimen/_4sdp" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapButton
+            android:id="@+id/mute"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:enabled="false"
+            android:layout_alignParentBottom="true"
+            android:background="@android:drawable/ic_menu_info_details"
+            android:padding="@dimen/_4sdp"
+            tools:ignore="RelativeOverlap" />
 
     </RelativeLayout>
 

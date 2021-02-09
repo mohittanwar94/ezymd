@@ -352,6 +352,8 @@ class DetailsActivity : BaseActivity() {
     private fun onChildChanged() {
         dataResturant.clear()
         restaurantAdapter!!.notifyDataSetChanged()
+        if (foodType.size==0)
+            return
         val category = foodType[selectedStudentPosition]
         for (item in mData.data) {
             if (category.categoryID == item.category_id)

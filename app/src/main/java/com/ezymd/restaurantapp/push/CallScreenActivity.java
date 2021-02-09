@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ezymd.restaurantapp.BaseActivity;
@@ -16,6 +15,7 @@ import com.ezymd.restaurantapp.customviews.SnapButton;
 import com.ezymd.restaurantapp.customviews.SnapTextView;
 import com.ezymd.restaurantapp.utils.GlideApp;
 import com.ezymd.restaurantapp.utils.JSONKeys;
+import com.ezymd.restaurantapp.utils.UIUtil;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
@@ -36,10 +36,11 @@ public class CallScreenActivity extends BaseActivity {
     private UpdateCallDurationTask mDurationTask;
 
     private String mCallId;
-
+    private SnapButton speaker, mute;
     private SnapTextView mCallDuration;
     private SnapTextView mCallState;
     private SnapTextView mCallerName;
+    private boolean isEnableSpeaker, isEnableMute = false;
 
     private class UpdateCallDurationTask extends TimerTask {
 
@@ -61,6 +62,9 @@ public class CallScreenActivity extends BaseActivity {
 
         mAudioPlayer = new AudioPlayer(this);
         mCallDuration = findViewById(R.id.callDuration);
+
+        speaker = findViewById(R.id.speaker);
+        mute = findViewById(R.id.mute);
         mCallerName = findViewById(R.id.remoteUser);
         mCallState = findViewById(R.id.callState);
         SnapButton endCallButton = findViewById(R.id.hangupButton);
@@ -74,6 +78,30 @@ public class CallScreenActivity extends BaseActivity {
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
 
         loadUserImage();
+
+        speaker.setOnClickListener(v -> {
+            UIUtil.clickAlpha(v);
+            AudioController audioController = getSinchServiceInterface().getAudioController();
+            if (audioController != null && isEnableSpeaker) {
+                audioController.disableSpeaker();
+                isEnableSpeaker = false;
+            } else if (audioController != null && !isEnableSpeaker) {
+                isEnableSpeaker = true;
+                audioController.enableSpeaker();
+            }
+        });
+
+        mute.setOnClickListener(v -> {
+            UIUtil.clickAlpha(v);
+            AudioController audioController = getSinchServiceInterface().getAudioController();
+            if (audioController != null && isEnableMute) {
+                audioController.unmute();
+                isEnableMute = false;
+            } else if (audioController != null && !isEnableMute) {
+                isEnableMute = true;
+                audioController.mute();
+            }
+        });
     }
 
     private void loadUserImage() {
@@ -117,7 +145,7 @@ public class CallScreenActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        // User should exit activity by ending call, not by going back.
+
     }
 
     private void endCall() {
@@ -157,6 +185,8 @@ public class CallScreenActivity extends BaseActivity {
 
         @Override
         public void onCallEstablished(Call call) {
+            speaker.setEnabled(true);
+            mute.setEnabled(true);
             Log.d(TAG, "Call established");
             mAudioPlayer.stopProgressTone();
             mCallState.setText(call.getState().toString());
@@ -167,6 +197,8 @@ public class CallScreenActivity extends BaseActivity {
 
         @Override
         public void onCallProgressing(Call call) {
+            speaker.setEnabled(false);
+            mute.setEnabled(false);
             Log.d(TAG, "Call progressing");
             mAudioPlayer.playProgressTone();
         }

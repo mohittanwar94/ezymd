@@ -351,7 +351,7 @@
                     <com.ezymd.restaurantapp.customviews.SnapButton
                         android:id="@+id/review"
                         android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_height="@dimen/_25sdp"
                         android:layout_gravity="end"
                         android:background="@drawable/review_bg"
                         android:letterSpacing="0.02"
@@ -616,7 +616,7 @@
             <com.ezymd.restaurantapp.customviews.SnapButton
                 android:id="@+id/trackOrder"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_45sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_40sdp"
                 android:background="@drawable/ic_gray_btn_pressed"
