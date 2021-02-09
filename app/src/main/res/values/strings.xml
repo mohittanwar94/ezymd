@@ -251,5 +251,6 @@
     <string name="payment_mode">Payment Mode</string>
     <string name="card">Card</string>
     <string name="wallet">Wallet</string>
+    <string name="add">+ ADD</string>
 
 </resources>

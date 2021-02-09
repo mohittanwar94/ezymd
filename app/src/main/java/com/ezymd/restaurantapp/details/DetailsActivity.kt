@@ -306,7 +306,7 @@ class DetailsActivity : BaseActivity() {
                 foodType[i].categoryName,
                 " (" + foodType[i].count + ")"
             ) else foodType[i].categoryName
-            studentName.setTextColor(ContextCompat.getColor(this, R.color.color_667ba3))
+            studentName.setTextColor(ContextCompat.getColor(this, R.color.color_787a7f))
             if (i == selectedStudentPosition) {
                 studentName.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
                 tabs.addTab(tabs.newTab().setCustomView(studentName), true)
@@ -332,7 +332,7 @@ class DetailsActivity : BaseActivity() {
                                 unSelView!!.setTextColor(
                                     ContextCompat.getColor(
                                         this@DetailsActivity,
-                                        R.color.color_667ba3
+                                        R.color.color_787a7f
                                     )
                                 )
                             }

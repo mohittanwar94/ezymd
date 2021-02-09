@@ -59,16 +59,16 @@ class CartActivity : BaseActivity() {
         pickUp.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = true
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
+            delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
+            pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             delivery.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
         }
         delivery.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = false
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
+            pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
+            delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
             delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
             pickUp.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
         }
@@ -151,6 +151,8 @@ class CartActivity : BaseActivity() {
 
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
+        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this,R.color.color_1e222a))
+        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this,R.color.color_1e222a))
         toolbar_layout.title = getString(R.string.title_cart)
         tvTitle.text = restaurant.name
         foodType.text = restaurant.category

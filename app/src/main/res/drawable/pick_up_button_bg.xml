@@ -3,23 +3,23 @@
     android:color="@color/dividerColor">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@color/dividerColor" />
-            <corners android:radius="@dimen/_6sdp" />
+            <solid android:color="@color/white" />
+            <corners android:radius="@dimen/_20sdp" />
             <stroke android:width="0.02dp"
-                android:color="@android:color/darker_gray"/>
+                android:color="@color/white"/>
         </shape>
     </item>
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <solid android:color="@color/white" />
+            <solid android:color="@color/color_1e222a" />
             <size
                 android:width="@dimen/_90sdp"
                 android:height="@dimen/_35sdp" />
-            <corners android:radius="@dimen/_6sdp" />
+            <corners android:radius="@dimen/_20sdp" />
 
             <stroke android:width="0.02dp"
-                android:color="@android:color/darker_gray"/>
+                android:color="@color/color_1e222a"/>
         </shape>
     </item>
 </ripple>

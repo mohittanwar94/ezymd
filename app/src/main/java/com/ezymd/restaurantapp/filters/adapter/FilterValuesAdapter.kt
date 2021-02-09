@@ -106,11 +106,11 @@ class FilterValuesAdapter(
     private fun setSelectedViews(myViewHolder: MyViewHolder, isSelected: Boolean) {
         if (isSelected) {
             myViewHolder.name.typeface = CustomTypeFace.medium
-            myViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.color_0a0a0a))
+            myViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.color_1e222a))
             myViewHolder.checkBox.isChecked = true
         } else {
             myViewHolder.name.typeface = CustomTypeFace.roman
-            myViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.color_6c6c6c))
+            myViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.color_787a7f))
             myViewHolder.checkBox.isChecked = false
         }
 

@@ -29,8 +29,8 @@
         app:stroke_width="@dimen/_1sdp"
         app:color_unchecked="@android:color/white"
         app:color_unchecked_stroke="@color/color_6c6c6c"
-        app:color_tick="@color/white"
-        app:color_checked="@color/color_ffb912"
+        app:color_tick="@color/blue_002366"
+        app:color_checked="@color/color_ffe600"
       />
 
 </LinearLayout>

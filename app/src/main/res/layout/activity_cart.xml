@@ -103,7 +103,7 @@
                         android:lineSpacingExtra="@dimen/_2sdp"
                         android:maxLines="2"
                         android:paddingBottom="@dimen/_4sdp"
-                        android:textColor="@color/color_667ba3"
+                        android:textColor="@color/color_787a7f"
                         android:textSize="@dimen/_13sdp"
                         app:textFont="roman" />
 
@@ -115,7 +115,7 @@
                         android:gravity="center_vertical"
                         android:letterSpacing="0.01"
                         android:maxLines="2"
-                        android:textColor="@color/color_ffb912"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp"
                         app:textFont="roman" />
                 </LinearLayout>
@@ -174,7 +174,7 @@
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/apply_coupan"
-                    android:textColor="#002366"
+                    android:textColor="@color/color_002366"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="normal"
                     app:drawableRightCompat="@drawable/ic_arrow_right"
@@ -448,7 +448,7 @@
                     android:lineSpacingExtra="5sp"
                     android:text="@string/pick_up"
                     android:textAllCaps="false"
-                    android:textColor="@color/color_ffb912"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="normal"
                     app:buttonFont="bold" />
@@ -468,7 +468,7 @@
                     android:lineSpacingExtra="5sp"
                     android:text="@string/delivery"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/color_1e222a"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="normal"
                     app:buttonFont="bold" />
@@ -486,7 +486,7 @@
                 android:lineSpacingExtra="5sp"
                 android:text="@string/next"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/color_1e222a"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="normal"
                 app:buttonFont="bold" />

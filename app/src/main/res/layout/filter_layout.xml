@@ -132,7 +132,7 @@
                 android:background="@drawable/ic_gray_btn_pressed"
                 android:text="@string/apply"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/color_1e222a"
                 android:textSize="@dimen/_17sdp"
                 app:buttonFont="bold" />
 

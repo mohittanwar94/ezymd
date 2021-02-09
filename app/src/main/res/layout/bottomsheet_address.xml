@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.01"
                 android:text="@string/enter_address_details"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="normal"
                 app:textFont="medium" />
@@ -60,7 +60,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 app:textFont="medium" />
 
@@ -89,7 +90,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 app:textFont="medium" />
 
@@ -119,7 +121,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 app:textFont="medium" />
 
@@ -149,7 +152,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 app:textFont="medium" />
 
@@ -179,7 +183,8 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:singleLine="true"
-                android:textColor="@color/color_002366"
+                android:textColor="@color/blue_002366"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_15sdp"
                 app:textFont="medium" />
 
@@ -192,7 +197,7 @@
                 android:background="@drawable/ic_gray_btn_pressed"
                 android:text="@string/confirm_and_proceed"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/blue_002366"
                 android:textSize="@dimen/_17sdp"
                 app:buttonFont="bold" />
 

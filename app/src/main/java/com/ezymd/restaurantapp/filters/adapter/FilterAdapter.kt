@@ -63,9 +63,9 @@ class FilterAdapter(
 
     private fun setSelectedViews(myViewHolder: MyViewHolder, isSelected: Boolean) {
         if (isSelected) {
-            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_ffb912))
+            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_1e222a))
         } else {
-            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_6c6c6c))
+            myViewHolder.title.setTextColor(ContextCompat.getColor(context, R.color.color_787a7f))
         }
 
     }

@@ -71,7 +71,7 @@
         android:letterSpacing="0.01"
         android:padding="@dimen/_5sdp"
         android:text="@string/apply"
-        android:textColor="@color/color_ffb912"
+        android:textColor="@color/color_ffe600"
         android:textSize="@dimen/_11sdp"
         android:textStyle="normal"
         app:buttonFont="medium" />

@@ -302,7 +302,8 @@ class FilterActivity : BaseActivity() {
         filterValuesRV.layoutManager = LinearLayoutManager(this)
         done.visibility = View.VISIBLE
         done.text = getString(R.string.clear_filters)
-        done.setTextColor(ContextCompat.getColor(this, R.color.color_ffb912))
+        done.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+        done.setTextColor(ContextCompat.getColor(this, R.color.blue_002366))
         headertext.visibility = View.VISIBLE
         headertext.text = getString(R.string.filters)
 

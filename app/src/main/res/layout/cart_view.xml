@@ -44,7 +44,7 @@
             android:lineSpacingExtra="@dimen/_7sdp"
             android:text="@string/view_cart"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/color_1e222a"
             android:textSize="@dimen/_13sdp"
             android:textStyle="normal"
             app:buttonFont="bold" />
