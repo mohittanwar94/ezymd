@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:background="@drawable/snackbar_bg"
+    tools:ignore="HardcodedText">
+
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:textAlignment="center"
+        android:textColor="@color/color_1e222a"
+        android:textSize="@dimen/_15sdp"
+        app:textFont="medium" />
+
+
+</RelativeLayout>

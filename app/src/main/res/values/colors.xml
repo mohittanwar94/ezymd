@@ -178,6 +178,7 @@
     <color name="color_ffe600">#ffe600</color>
     <color name="color_f3f4f4">#f3f4f4</color>
     <color name="color_e8e8e9">#e8e8e9</color>
+    <color name="color_fff7b2">#fff7b2</color>
 
     <array name="smoothProgressBarColorArray">
         <item>@color/coordinatorheader</item>

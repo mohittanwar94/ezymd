@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -11,20 +12,20 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
-import android.util.TypedValue
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
 import com.ezymd.restaurantapp.push.SinchService
 import com.ezymd.restaurantapp.push.SinchService.SinchServiceInterface
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import java.util.*
 
 
@@ -334,7 +335,9 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     fun checkPhoneAudioPermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
             permissionListener = listener
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
+                    Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED) {
                 val notGranted = ArrayList<String>()
                 val permissions =
                     arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO)
@@ -479,6 +482,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         return true
     }
 
+    @SuppressLint("InflateParams")
     fun onNetWorkChange(isNetworkAvailable: Boolean) {
         if (netWorkChange != null && netWorkChange!!.isShown) netWorkChange!!.dismiss()
         if (Math.abs(System.currentTimeMillis() - mLastTimeNoInternet) < 3000)
@@ -489,10 +493,22 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 netWorkChange = Snackbar
                     .make(
                         (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
-                        getString(R.string.no_internet_connection),
+                        "",
                         Snackbar.LENGTH_INDEFINITE
                     )
-                val sbView = netWorkChange!!.view
+
+                val customSnackView: View =
+                    layoutInflater.inflate(R.layout.custom_snackbar_view, null)
+                netWorkChange!!.view.setBackgroundColor(Color.TRANSPARENT)
+                val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
+                textMsg.text=getString(R.string.no_internet_connection)
+                val snackbarLayout = netWorkChange!!.view as SnackbarLayout
+                snackbarLayout.setPadding(0, 0, 0, 0)
+                snackbarLayout.addView(customSnackView, 0)
+
+                netWorkChange?.show()
+
+                /*val sbView = netWorkChange!!.view
                 sbView.setBackgroundColor(Color.parseColor("#ff7675"))
                 val textView =
                     sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
@@ -504,7 +520,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 textView.typeface = CustomTypeFace.book
                 textView.maxLines = 5
                 textView.gravity = Gravity.CENTER
-                netWorkChange!!.show()
+                netWorkChange!!.show()*/
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -546,25 +562,18 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             snackbar = Snackbar
                 .make(
                     (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
-                    message,
+                    "",
                     5000
                 )
-            val sbView = snackbar!!.view
-            sbView.setBackgroundColor(
-                if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#ff7212"
-                )
-            )
-            val textView =
-                sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            textView.setTextColor(Color.WHITE)
-            textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                resources.getDimension(R.dimen._13sdp)
-            )
-            textView.setTypeface(CustomTypeFace.book)
-            textView.maxLines = 5
-            textView.gravity = Gravity.CENTER
+            val customSnackView: View =
+                layoutInflater.inflate(R.layout.custom_snackbar_view, null)
+            snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
+            val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
+            textMsg.text=getString(message)
+            val snackbarLayout = snackbar!!.view as SnackbarLayout
+            snackbarLayout.setPadding(0, 0, 0, 0)
+            snackbarLayout.addView(customSnackView, 0)
+
             if (callback != null) snackbar!!.addCallback(callback)
             snackbar!!.show()
         } catch (e: Exception) {
@@ -575,19 +584,15 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     fun showError(view: View?, noError: Boolean, message: Int) {
         try {
             if (snackbar != null && snackbar!!.isShown) snackbar!!.dismiss()
-            snackbar = Snackbar.make(view!!, message, 5000)
-            val sbView = snackbar!!.view
-            //            sbView.setBackgroundColor(noError ? Color.parseColor("#3bb162") : Color.parseColor("#CC0001"));
-            val textView =
-                sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            textView.setTextColor(Color.WHITE)
-            textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                resources.getDimension(R.dimen._13sdp)
-            )
-            textView.setTypeface(CustomTypeFace.book)
-            textView.maxLines = 5
-            textView.gravity = Gravity.CENTER
+            snackbar = Snackbar.make(view!!, "", 5000)
+            val customSnackView: View =
+                layoutInflater.inflate(R.layout.custom_snackbar_view, null)
+            snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
+            val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
+            textMsg.text=getString(message)
+            val snackbarLayout = snackbar!!.view as SnackbarLayout
+            snackbarLayout.setPadding(0, 0, 0, 0)
+            snackbarLayout.addView(customSnackView, 0)
             snackbar!!.show()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -597,19 +602,17 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     fun showError(view: View?, noError: Boolean, message: String?) {
         try {
             if (snackbar != null && snackbar!!.isShown) snackbar!!.dismiss()
-            snackbar = Snackbar.make(view!!, message!!, 5000)
-            val sbView = snackbar!!.view
-            //            sbView.setBackgroundColor(noError ? Color.parseColor("#3bb162") : Color.parseColor("#CC0001"));
-            val textView =
-                sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            textView.setTextColor(Color.WHITE)
-            textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                resources.getDimension(R.dimen._13sdp)
-            )
-            textView.setTypeface(CustomTypeFace.book)
-            textView.maxLines = 5
-            textView.gravity = Gravity.CENTER
+            snackbar = Snackbar.make(view!!, "", 5000)
+            val customSnackView: View =
+                layoutInflater.inflate(R.layout.custom_snackbar_view, null)
+            snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
+            val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
+            textMsg.text=message
+            val snackbarLayout = snackbar!!.view as SnackbarLayout
+            snackbarLayout.setPadding(0, 0, 0, 0)
+            snackbarLayout.addView(customSnackView, 0)
+
+
             snackbar!!.show()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -622,24 +625,17 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             snackbar = Snackbar
                 .make(
                     (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0),
-                    message!!, 5000
+                    "", 5000
                 )
-            val sbView = snackbar!!.view
-            sbView.setBackgroundColor(
-                if (noError) Color.parseColor("#3bb162") else Color.parseColor(
-                    "#FF7212"
-                )
-            )
-            val textView =
-                sbView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            textView.setTextColor(Color.WHITE)
-            textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                resources.getDimension(R.dimen._13sdp)
-            )
-            textView.setTypeface(CustomTypeFace.book)
-            textView.maxLines = 5
-            textView.gravity = Gravity.CENTER
+            val customSnackView: View =
+                layoutInflater.inflate(R.layout.custom_snackbar_view, null)
+            val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
+            textMsg.text=message
+            snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
+            val snackbarLayout = snackbar!!.view as SnackbarLayout
+            snackbarLayout.setPadding(0, 0, 0, 0)
+            snackbarLayout.addView(customSnackView, 0)
+
             if (callback != null) snackbar!!.addCallback(callback)
             snackbar!!.show()
         } catch (e: Exception) {
