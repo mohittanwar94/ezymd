@@ -93,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:letterSpacing="0.01"
                             android:text="@string/live_status"
-                            android:textColor="@color/color_b2bdd1"
+                            android:textColor="@color/color_bbbcbf"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="normal"
                             app:textFont="bold" />
@@ -139,7 +139,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        app:srcCompat="@drawable/ic_order_success" />
+                        app:srcCompat="@drawable/ic_no_order" />
 
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -206,7 +206,7 @@
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        app:cpb_progressbar_color="@color/dark_yellow"
+                        app:cpb_progressbar_color="@color/color_ffe600"
                         app:cpb_progressbar_width="@dimen/_2sdp"
                         app:cpb_start_angle="0" />
 
@@ -228,12 +228,12 @@
                         android:id="@+id/progressBarCancel"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:visibility="gone"
                         android:layout_gravity="end|center"
-                        android:theme="@style/progressBarTheme"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:padding="@dimen/_5sdp" />
+                        android:padding="@dimen/_5sdp"
+                        android:theme="@style/progressBarTheme"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>

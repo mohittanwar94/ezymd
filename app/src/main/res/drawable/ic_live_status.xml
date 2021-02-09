@@ -7,7 +7,7 @@
       android:pathData="M10,10m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
       android:strokeAlpha="0.1"
       android:strokeWidth="4"
-      android:fillColor="#FFB912"
-      android:strokeColor="#FFB912"
+      android:fillColor="#ffe600"
+      android:strokeColor="#19ffe600"
       android:fillType="evenOdd"/>
 </vector>
