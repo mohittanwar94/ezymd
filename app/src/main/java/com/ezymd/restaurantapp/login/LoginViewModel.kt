@@ -12,6 +12,8 @@ import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -43,29 +45,37 @@ class LoginViewModel : ViewModel() {
         loginRepository = LoginRepository.instance
         loginRequest = MutableLiveData()
         isLoading = MutableLiveData()
-        otpResponse= MutableLiveData()
-        loginResponse= MutableLiveData()
+        otpResponse = MutableLiveData()
+        loginResponse = MutableLiveData()
     }
 
-    fun generateOtp(otp: String) {
-        if (otp.length < 5)
-            errorRequest.postValue("Phone No. not valid")
-        else {
-            isLoading.postValue(true)
-            viewModelScope.launch(Dispatchers.IO) {
-                val result = loginRepository!!.generateOtp(
-                    otp,
-                    Dispatchers.IO
-                )
-                isLoading.postValue(false)
-                when (result) {
-                    is ResultWrapper.NetworkError -> showNetworkError()
-                    is ResultWrapper.GenericError -> showGenericError(result.error)
-                    is ResultWrapper.Success -> otpResponse.postValue(result.value)
+    fun generateOtp(otp: String, counCode: String) {
+        val phoneUtil = PhoneNumberUtil.getInstance()
+        try {
+            val swissNumberProto = phoneUtil.parse(otp, counCode)
+            val isValid = phoneUtil.isValidNumber(swissNumberProto) // returns true
+            if (!isValid)
+                errorRequest.postValue("Phone No. not valid")
+            else {
+                isLoading.postValue(true)
+                viewModelScope.launch(Dispatchers.IO) {
+                    val result = loginRepository!!.generateOtp(
+                        otp,
+                        Dispatchers.IO
+                    )
+                    isLoading.postValue(false)
+                    when (result) {
+                        is ResultWrapper.NetworkError -> showNetworkError()
+                        is ResultWrapper.GenericError -> showGenericError(result.error)
+                        is ResultWrapper.Success -> otpResponse.postValue(result.value)
+                    }
                 }
-            }
 
+            }
+        } catch (e: NumberParseException) {
+            System.err.println("NumberParseException was thrown: $e")
         }
+
 
     }
 
@@ -109,6 +119,6 @@ class LoginViewModel : ViewModel() {
 
     }
 
-    }
+}
 
 

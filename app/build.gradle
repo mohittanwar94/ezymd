@@ -178,6 +178,9 @@ dependencies {
     implementation group: 'com.zendesk', name: 'chat', version: '3.0.0'
     implementation group: 'com.zendesk', name: 'messaging', version: '5.0.0'
     implementation project(path: ':sinch-android-rtc-3.17.5')
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
+    implementation 'com.github.yesterselga:country-picker-android:1.0'
+
     //implementationProject(name:'sinch-android-rtc', version:'+', ext:'aar')
 
 

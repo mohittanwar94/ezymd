@@ -19,11 +19,13 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.ybs.countrypicker.CountryPicker
 import kotlinx.android.synthetic.main.login.*
 import java.util.*
 
 
 class Login : BaseActivity() {
+    private var counCode: String="+1"
     private val RC_SIGN_IN = 100
     val gso by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -50,6 +52,11 @@ class Login : BaseActivity() {
     }
 
     private fun setEventListener() {
+        countryCode.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            selectCountry()
+
+        }
         facebook.setOnClickListener {
             fbLogin(it)
         }
@@ -60,7 +67,7 @@ class Login : BaseActivity() {
         next.setOnClickListener {
             SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-            loginViewModel.generateOtp(phoneNo.text.toString())
+            loginViewModel.generateOtp(phoneNo.text.toString(),counCode)
         }
         loginViewModel.isLoading.observe(this, Observer {
 
@@ -103,6 +110,17 @@ class Login : BaseActivity() {
         loginViewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
         })
+    }
+
+    private fun selectCountry() {
+        val picker = CountryPicker.newInstance("Choose Your Country") // dialog title
+
+        picker.setListener { name, code, dialCode, flagDrawableResID ->
+            countryCode.text=dialCode
+            counCode=code
+            picker.dismissAllowingStateLoss()
+        }
+        picker.show(supportFragmentManager, "COUNTRY_PICKER")
     }
 
     private fun setLoginUser(it: LoginModel) {
