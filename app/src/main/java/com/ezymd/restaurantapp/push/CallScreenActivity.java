@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ezymd.restaurantapp.BaseActivity;
 import com.ezymd.restaurantapp.R;
@@ -36,7 +38,7 @@ public class CallScreenActivity extends BaseActivity {
     private UpdateCallDurationTask mDurationTask;
 
     private String mCallId;
-    private SnapButton speaker, mute;
+    private ImageView speaker, mute;
     private SnapTextView mCallDuration;
     private SnapTextView mCallState;
     private SnapTextView mCallerName;
@@ -89,6 +91,7 @@ public class CallScreenActivity extends BaseActivity {
                 isEnableSpeaker = true;
                 audioController.enableSpeaker();
             }
+            setSpeakerState(isEnableSpeaker);
         });
 
         mute.setOnClickListener(v -> {
@@ -101,7 +104,24 @@ public class CallScreenActivity extends BaseActivity {
                 isEnableMute = true;
                 audioController.mute();
             }
+            setMuteState(isEnableMute);
         });
+    }
+
+    private void setSpeakerState(boolean isEnableSpeaker) {
+        if (!isEnableSpeaker)
+            speaker.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
+        else
+            speaker.setColorFilter(ContextCompat.getColor(this, R.color.color_ffe600), android.graphics.PorterDuff.Mode.SRC_IN);
+
+    }
+
+    private void setMuteState(boolean isEnableSpeaker) {
+        if (!isEnableSpeaker)
+            mute.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
+        else
+            mute.setColorFilter(ContextCompat.getColor(this, R.color.color_ffe600), android.graphics.PorterDuff.Mode.SRC_IN);
+
     }
 
     private void loadUserImage() {
