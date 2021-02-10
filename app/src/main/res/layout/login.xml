@@ -64,7 +64,7 @@
                 android:gravity="start|center"
                 android:hint="@string/enter_your_phone_no"
                 android:inputType="phone"
-                android:letterSpacing="0.08"
+                android:letterSpacing="0.02"
                 android:text=""
                 android:textCursorDrawable="@color/blue_002366"
                 android:textColor="@color/blue_002366"
