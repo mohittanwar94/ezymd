@@ -49,7 +49,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:ellipsize="end"
                         android:gravity="start"
                         android:letterSpacing="0.01"
@@ -59,8 +58,8 @@
                         android:paddingRight="@dimen/_15sdp"
                         android:text="@string/address"
                         android:textColor="@color/color_002366"
-                        android:textSize="@dimen/_12sdp"
-                        app:textFont="bold" />
+                        android:textSize="@dimen/_17sdp"
+                        app:textFont="medium" />
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
                         android:id="@+id/order_info"
@@ -73,10 +72,9 @@
                         android:paddingRight="@dimen/_15sdp"
                         android:paddingBottom="@dimen/_5sdp"
                         android:text="@string/pizza"
-                        android:textColor="@color/blue_667ba3"
-                        android:textSize="@dimen/_10sdp"
-                        app:textFont="roman" />
-
+                        android:textColor="@color/color_667ba3"
+                        android:textSize="@dimen/_11sdp"
+                        app:textFont="medium" />
 
                 </LinearLayout>
 

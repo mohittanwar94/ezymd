@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/edit_text_bg"
+                android:background="@drawable/botton_tracking_text_bg"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp">
@@ -118,7 +118,7 @@
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/dividerColor"
@@ -184,7 +184,7 @@
                 <View
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/dividerColor"
@@ -240,7 +240,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/dividerColor" />
