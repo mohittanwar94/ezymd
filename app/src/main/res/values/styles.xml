@@ -131,12 +131,21 @@
         <item name="android:textColorSecondary">@color/color_787a7f</item>
         <item name="android:textColor">@color/color_002366</item>
         <item name="titleTextColor">@color/color_002366</item>
+
+        <!--
+            Applied to selected Payment Method; active field; links;
+            add new Payment Method call-to-action
+        -->
         <item name="colorAccent">@color/color_002366</item>
+
+        <!-- Applied to: Payment Method icon; inactive form field highlight -->
         <item name="colorControlNormal">@color/color_002366</item>
+
+        <!-- Applied to form field text -->
         <item name="android:editTextColor">@color/color_002366</item>
+
         <item name="editTextColor">@color/color_002366</item>
     </style>
-
 
     <style name="AppThemeDark" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->

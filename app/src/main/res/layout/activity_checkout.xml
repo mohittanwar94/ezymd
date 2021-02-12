@@ -97,7 +97,7 @@
                     app:color_checked="@color/color_ffe600"
                     app:color_tick="@color/color_002366"
                     app:color_unchecked="@color/white"
-                    app:color_unchecked_stroke="@color/dividerColor"
+                    app:color_unchecked_stroke="@color/color_002366"
                     app:duration="150"
                     app:stroke_width="@dimen/_1sdp" />
 
@@ -155,7 +155,7 @@
                     app:color_checked="@color/color_ffe600"
                     app:color_tick="@color/color_002366"
                     app:color_unchecked="@color/white"
-                    app:color_unchecked_stroke="@color/dividerColor"
+                    app:color_unchecked_stroke="@color/color_002366"
                     app:duration="150"
                     app:stroke_width="@dimen/_1sdp" />
 
