@@ -5,12 +5,12 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_bg" />
+            android:src="@drawable/login_bg" />
     </item>
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ezymd" />
+            android:src="@drawable/ic_ezymd" />
     </item>
 </layer-list>
