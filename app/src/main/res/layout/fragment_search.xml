@@ -88,7 +88,7 @@
             <com.ezymd.restaurantapp.customviews.SnapButton
                 android:id="@+id/enableLocation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_below="@+id/emptymsg"
                 android:layout_gravity="center|bottom"
                 android:layout_marginTop="@dimen/_40sdp"
@@ -96,8 +96,8 @@
                 android:gravity="center"
                 android:text="@string/enable_location"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_17sdp"
                 android:visibility="visible"
                 app:textFont="bold" />
 

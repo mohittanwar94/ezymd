@@ -5,7 +5,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/login_bg" />
+            android:src="@drawable/splash_bg" />
     </item>
 
     <item>

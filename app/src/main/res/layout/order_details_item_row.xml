@@ -21,7 +21,7 @@
             android:letterSpacing="0.01"
             android:text="@string/app_name"
             android:textColor="@color/color_002366"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_15sdp"
             android:textStyle="normal"
             app:textFont="medium" />
 
@@ -35,8 +35,8 @@
             android:letterSpacing="0.01"
             android:maxLines="2"
             android:text="@string/pizza"
-            android:textColor="@color/color_667ba3"
-            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/color_787a7f"
+            android:textSize="@dimen/_13sdp"
             android:textStyle="normal"
             app:textFont="roman" />
 
@@ -52,8 +52,8 @@
         android:gravity="center_vertical"
         android:letterSpacing="0.01"
         android:text="@string/dummmy_price"
-        android:textColor="@color/color_002366"
-        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/color_787a7f"
+        android:textSize="@dimen/_13sdp"
         android:textStyle="normal"
         app:textFont="medium" />
 

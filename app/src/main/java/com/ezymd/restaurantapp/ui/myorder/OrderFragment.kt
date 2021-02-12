@@ -156,7 +156,8 @@ class OrderFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     fun showEmpty(size: Int) {
-        emptyView.visibility = if (size == 0) View.VISIBLE else View.GONE
+        if (emptyView != null)
+            emptyView.visibility = if (size == 0) View.VISIBLE else View.GONE
     }
 
     override fun onStop() {

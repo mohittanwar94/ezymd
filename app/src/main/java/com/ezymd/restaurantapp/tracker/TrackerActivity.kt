@@ -269,7 +269,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     private fun loginClicked() {
-        val userName = ""+userInfo?.userID
+        val userName = "" + userInfo?.userID
         if (userName != getSinchServiceInterface()?.userName) {
             getSinchServiceInterface()?.stopClient()
         }
@@ -282,7 +282,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
     private fun openPlaceCallActivity() {
         //item.delivery.phoneNo
-       callConnect()
+        callConnect()
 
     }
 
@@ -726,7 +726,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                     )
                     movingCabMarker?.position = nextLocation
                     val heading = computeHeading(previousLatLng, nextLocation);
-                    movingCabMarker?.rotation = heading.toFloat() - 90
+                    movingCabMarker?.rotation = heading.toFloat()
 
                     //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
                     /* if (!rotation.isNaN()) {

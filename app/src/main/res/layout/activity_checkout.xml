@@ -81,7 +81,7 @@
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/online_payment"
-                    android:textColor="#002366"
+                    android:textColor="@color/color_002366"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="normal"
                     app:textFont="medium" />
@@ -138,7 +138,7 @@
                     android:paddingTop="@dimen/_12sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/cash"
-                    android:textColor="#002366"
+                    android:textColor="@color/color_002366"
                     android:textSize="@dimen/_17sdp"
                     android:textStyle="normal"
                     app:textFont="medium" />
@@ -180,7 +180,7 @@
                 android:text="@string/done"
                 android:textAllCaps="false"
                 android:textColor="@color/color_002366"
-                android:textSize="@dimen/_13sdp"
+                android:textSize="@dimen/_17sdp"
                 android:textStyle="normal"
                 app:buttonFont="bold" />
 

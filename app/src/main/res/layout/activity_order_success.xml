@@ -111,7 +111,7 @@
         <com.ezymd.restaurantapp.customviews.SnapButton
             android:id="@+id/payButton"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@drawable/ic_gray_btn_pressed"
             android:letterSpacing="0.01"

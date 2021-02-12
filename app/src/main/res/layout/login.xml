@@ -68,7 +68,7 @@
                 android:text=""
                 android:textCursorDrawable="@color/blue_002366"
                 android:textColor="@color/blue_002366"
-                android:textColorHint="@color/color_010a1d"
+                android:textColorHint="@color/color_787a7f"
                 android:textSize="@dimen/_17sdp"
                 app:textFontEdit="medium" />
 

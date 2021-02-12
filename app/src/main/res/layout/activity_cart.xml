@@ -105,7 +105,7 @@
                         android:paddingBottom="@dimen/_4sdp"
                         android:textColor="@color/color_787a7f"
                         android:textSize="@dimen/_13sdp"
-                        app:textFont="roman" />
+                        app:textFont="medium" />
 
                     <com.ezymd.restaurantapp.customviews.SnapTextView
                         android:id="@+id/discount"
@@ -341,7 +341,7 @@
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_7sdp"
-                android:background="@color/color_f2f4f7" />
+                android:background="@color/color_f3f4f4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -379,14 +379,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:layout_marginBottom="@dimen/_45sdp"
-                android:background="@color/color_f2f4f7" />
+                android:background="@color/color_f3f4f4" />
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/cart_delivery_option_bg"
@@ -396,11 +396,11 @@
 
                 <ImageView
                     android:id="@+id/ic_location"
-                    android:layout_width="@dimen/_45sdp"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:background="@drawable/edit_text_bg"
                     android:contentDescription="@string/title_cart"
-                    android:padding="@dimen/_10sdp"
+                    android:padding="@dimen/_12sdp"
                     app:srcCompat="@drawable/ic_location" />
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -429,7 +429,7 @@
                     android:letterSpacing="0.01"
                     android:lineSpacingExtra="5sp"
                     android:text="Select how do want to get your order."
-                    android:textColor="@color/color_667ba3"
+                    android:textColor="@color/color_002366"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="normal"
                     app:textFont="roman" />
@@ -459,7 +459,7 @@
                     android:layout_width="@dimen/_90sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_below="@+id/minOrder"
-                    android:layout_marginStart="@dimen/_13sdp"
+                    android:layout_marginStart="@dimen/_17sdp"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:layout_toEndOf="@+id/pickUp"
                     android:background="@drawable/ic_gray_btn_pressed"
@@ -479,7 +479,7 @@
             <com.ezymd.restaurantapp.customviews.SnapButton
                 android:id="@+id/payButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_45sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_15sdp"
                 android:background="@drawable/ic_gray_btn_pressed"
                 android:letterSpacing="0.01"
@@ -487,9 +487,10 @@
                 android:text="@string/next"
                 android:textAllCaps="false"
                 android:textColor="@color/color_1e222a"
-                android:textSize="@dimen/_13sdp"
+                android:textSize="@dimen/_17sdp"
                 android:textStyle="normal"
                 app:buttonFont="bold" />
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -499,8 +500,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center"
-        android:gravity="top|center"
         android:background="@color/white"
+        android:gravity="top|center"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -508,8 +509,8 @@
             android:id="@+id/image"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_200sdp"
-            android:layout_gravity="center"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_80sdp"
             android:contentDescription="@string/image"
             app:srcCompat="@drawable/ic_empty_cart" />
@@ -517,12 +518,12 @@
         <com.ezymd.restaurantapp.customviews.SnapTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_9sdp"
             android:layout_below="@+id/image"
-            android:letterSpacing="0.01"
-            android:lineSpacingExtra="5sp"
+            android:layout_marginStart="@dimen/_9sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:gravity="center"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="5sp"
             android:text="Empty Cart"
             android:textColor="@color/color_002366"
             android:textSize="@dimen/_15sdp"
