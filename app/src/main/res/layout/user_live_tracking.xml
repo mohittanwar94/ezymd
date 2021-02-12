@@ -118,10 +118,10 @@
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@color/dividerColor"
+                    android:background="@color/color_bbbcbf"
                     android:visibility="gone" />
 
 
@@ -184,10 +184,10 @@
                 <View
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@color/dividerColor"
+                    android:background="@color/color_bbbcbf"
                     android:visibility="gone" />
 
                 <LinearLayout
@@ -240,10 +240,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@color/dividerColor" />
+                    android:background="@color/color_bbbcbf" />
 
                 <LinearLayout
                     android:id="@+id/chatLay"
