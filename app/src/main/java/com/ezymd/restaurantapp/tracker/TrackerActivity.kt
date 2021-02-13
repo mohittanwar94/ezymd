@@ -726,7 +726,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                     )
                     movingCabMarker?.position = nextLocation
                     val heading = computeHeading(previousLatLng, nextLocation);
-                   // movingCabMarker?.rotation = heading.toFloat()
+                    movingCabMarker?.rotation = heading.toFloat() - 90
 
                     //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
                     /* if (!rotation.isNaN()) {

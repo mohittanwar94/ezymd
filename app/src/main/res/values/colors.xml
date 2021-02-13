@@ -158,7 +158,7 @@
     <color name="color_002366">#1e222a</color>
     <color name="color_f2f4f7">#f2f4f7</color>
     <color name="color_e5e9ef">#e5e9ef</color>
-    <color name="blue_667ba3">#787a7f</color>
+    <color name="blue_667ba3">#676c77</color>
     <color name="color_fff8e7">#fff8e7</color>
     <color name="color_667ba3">#667ba3</color>
     <color name="blue_tansparent">#66010a1d</color>
@@ -179,7 +179,7 @@
     <color name="color_f3f4f4">#f3f4f4</color>
     <color name="color_e8e8e9">#e8e8e9</color>
     <color name="color_fff7b2">#fff7b2</color>
-    <color name="color_787a7f">#787a7f</color>
+    <color name="color_787a7f">#676c77</color>
     <color name="color_bbbcbf">#bbbcbf</color>
 
     <array name="smoothProgressBarColorArray">

@@ -134,6 +134,7 @@
 
         <!-- Applied to inactive Shipping Method name and amount -->
         <item name="android:textColorPrimary">@color/color_002366</item>
+        <item name="android:windowBackground">@color/white</item>
 
         <!-- Applied to inactive Shipping Method description -->
         <item name="android:textColorSecondary">@color/gray_9e9e9e</item>
