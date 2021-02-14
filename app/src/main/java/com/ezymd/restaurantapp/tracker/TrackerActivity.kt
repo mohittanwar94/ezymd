@@ -711,7 +711,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
-            // movingCabMarker?.setAnchor(0.5f, 0.5f)
+            movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
         } else {
             previousLatLng = currentLatLng
