@@ -152,10 +152,10 @@
             Applied to selected Payment Method; active field; links;
             add new Payment Method call-to-action
         -->
-        <item name="colorAccent">@color/color_ffe600</item>
+        <item name="colorAccent">@color/color_002366</item>
 
         <!-- Applied to: Payment Method icon; inactive form field highlight -->
-        <item name="colorControlNormal">@color/color_ffe600</item>
+        <item name="colorControlNormal">@color/color_787a7f</item>
 
         <!-- Applied to form field text -->
         <item name="android:editTextColor">@color/color_002366</item>

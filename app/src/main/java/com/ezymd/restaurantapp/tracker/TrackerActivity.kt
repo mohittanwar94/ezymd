@@ -506,9 +506,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     override fun onMapReady(map: GoogleMap) {
         mMap = map
         mMap!!.setMaxZoomPreference(20f)
-        mMap!!.isTrafficEnabled = false;
-        mMap!!.isIndoorEnabled = false;
-        mMap!!.isBuildingsEnabled = true;
+        mMap!!.isTrafficEnabled = false
+        mMap!!.isIndoorEnabled = false
+        mMap!!.isBuildingsEnabled = true
         defaultLocation = LatLng(item.delivery_lat.toDouble(), item.delivery_lang.toDouble())
         mMap!!.uiSettings.isMyLocationButtonEnabled = false
         showDefaultLocationOnMap(defaultLocation)
