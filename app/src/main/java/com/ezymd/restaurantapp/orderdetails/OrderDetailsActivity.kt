@@ -164,7 +164,7 @@ class OrderDetailsActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        notifyAdapter(item.orderItems)
+//        notifyAdapter(item.orderItems)
 
     }
 
@@ -220,14 +220,6 @@ class OrderDetailsActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-    }
-
-
-    private fun notifyAdapter(it: ArrayList<OrderItems>) {
-        dataResturant.clear()
-        dataResturant.addAll(it)
-        restaurantAdapter!!.setData(it)
-
     }
 
 

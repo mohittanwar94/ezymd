@@ -22,6 +22,11 @@ import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_cart.*
+import kotlinx.android.synthetic.main.activity_cart.content
+import kotlinx.android.synthetic.main.activity_cart.payButton
+import kotlinx.android.synthetic.main.activity_cart.promoLayout
+import kotlinx.android.synthetic.main.activity_cart.toolbar_layout
+import kotlinx.android.synthetic.main.activity_confirm_order.*
 
 class CartActivity : BaseActivity() {
     private var discountApplied = 0.0
@@ -56,22 +61,23 @@ class CartActivity : BaseActivity() {
     }
 
     private fun setGUI() {
+        delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+        pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+        pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+        delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
         pickUp.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = true
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            delivery.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            delivery.alpha=0.5F
+            pickUp.alpha=1F
         }
         delivery.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = false
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            pickUp.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            pickUp.alpha=0.5F
+            delivery.alpha=1F
         }
+        delivery.callOnClick()
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
             if (TextUtils.isEmpty(userInfo!!.phoneNumber)) {
