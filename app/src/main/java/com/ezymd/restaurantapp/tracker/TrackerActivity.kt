@@ -69,7 +69,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         setContentView(R.layout.tracker_activity)
         setGUI()
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment?
+                .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
 
@@ -85,9 +85,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         order_info.text =
-            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
-                R.string.dollor
-            ) + item.total
+                TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
+                        R.string.dollor
+                ) + item.total
 
         setOrderStatus()
         leftIcon.setOnClickListener {
@@ -101,8 +101,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     private fun checkCancelTimer() {
         SnapLog.print("order status==========" + item.orderStatus)
         if (TimeUtils.isOrderLive(
-                item.cancel_time
-            ) && item.orderStatus < OrderStatus.ORDER_ACCEPT_DELIVERY_BOY
+                        item.cancel_time
+                ) && item.orderStatus < OrderStatus.ORDER_ACCEPT_DELIVERY_BOY
         ) {
             cancelOrder.visibility = View.VISIBLE
             view2.visibility = View.VISIBLE
@@ -124,23 +124,23 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     private fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme)
         builder.setMessage("Do you want to cancel this order?")
-            .setCancelable(false)
-            .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, id: Int) {
-                    dialog?.dismiss()
-                    val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap["order_id"] = "" + item.orderId
-                    baseRequest.paramsMap["order_status"] = "" + OrderStatus.ORDER_CANCEL
-                    trackViewModel.cancelOrder(baseRequest)
-                    progressBarCancel.visibility = View.VISIBLE
-                }
-            })
-            .setNegativeButton("No", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface, id: Int) {
-                    dialog.dismiss()
+                .setCancelable(false)
+                .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, id: Int) {
+                        dialog?.dismiss()
+                        val baseRequest = BaseRequest(userInfo)
+                        baseRequest.paramsMap["order_id"] = "" + item.orderId
+                        baseRequest.paramsMap["order_status"] = "" + OrderStatus.ORDER_CANCEL
+                        trackViewModel.cancelOrder(baseRequest)
+                        progressBarCancel.visibility = View.VISIBLE
+                    }
+                })
+                .setNegativeButton("No", object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface, id: Int) {
+                        dialog.dismiss()
 
-                }
-            })
+                    }
+                })
         val alert: AlertDialog = builder.create()
         alert.setTitle("Cancel Order")
         alert.show()
@@ -197,14 +197,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             liveStatus.text =
-                getString(R.string.order_accepted_by_delivery_boy) + " " + item.delivery?.name
+                    getString(R.string.order_accepted_by_delivery_boy) + " " + item.delivery?.name
             //  SnapLog.print("duration==" + duration)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.DELIVERY_BOY_REACHED_AT_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             liveStatus.text =
-                item.delivery?.name + " " + getString(R.string.delivery_boy_reached_at_your_location)
+                    item.delivery?.name + " " + getString(R.string.delivery_boy_reached_at_your_location)
             setDeliveryInfo()
         } else if (item.orderStatus == OrderStatus.ITEMS_PICKED_FROM_RESTAURANT) {
             deliveyLay.visibility = View.VISIBLE
@@ -227,8 +227,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
         if (item.delivery?.photo != "") {
             GlideApp.with(applicationContext)
-                .load(item.delivery.photo).centerCrop().dontAnimate()
-                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
+                    .load(item.delivery.photo).centerCrop().dontAnimate()
+                    .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(userImage)
         }
         call.setOnClickListener {
             try {
@@ -353,9 +353,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             val destination = LatLng(lat, lng)
 
             val hashMap = trackViewModel.getDirectionsUrl(
-                source, source,
-                destination,
-                getString(R.string.google_maps_key)
+                    source, source,
+                    destination,
+                    getString(R.string.google_maps_key)
             )
             trackViewModel.downloadRoute(hashMap)
         }
@@ -447,10 +447,10 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                     val lng = item.delivery_lang.toDouble()
                     val destination = LatLng(lat, lng)
                     val map = trackViewModel.getDirectionsUrl(
-                        latLng,
-                        latLng,
-                        destination,
-                        getString(R.string.google_maps_key)
+                            latLng,
+                            latLng,
+                            destination,
+                            getString(R.string.google_maps_key)
                     )
                     trackViewModel.calculateDuration(map)
                 }
@@ -465,17 +465,17 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                 val destination = LatLng(lat, lng)
 
                 val hashMap = trackViewModel.getDirectionsUrl(
-                    source, latLng,
-                    destination,
-                    getString(R.string.google_maps_key)
+                        source, latLng,
+                        destination,
+                        getString(R.string.google_maps_key)
                 )
                 trackViewModel.downloadRoute(hashMap)
 
                 val map = trackViewModel.getDirectionsUrl(
-                    latLng,
-                    latLng,
-                    destination,
-                    getString(R.string.google_maps_key)
+                        latLng,
+                        latLng,
+                        destination,
+                        getString(R.string.google_maps_key)
                 )
                 trackViewModel.calculateDuration(map)
 
@@ -505,6 +505,10 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+        mMap?.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.style_json));
+
         mMap!!.setMaxZoomPreference(20f)
         mMap!!.isTrafficEnabled = false
         mMap!!.isIndoorEnabled = false
@@ -530,9 +534,9 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         val location = LatLng(lat, lng)
         if (!mMarkers.containsKey(key)) {
             mMarkers[key!!] = mMap!!.addMarker(
-                MarkerOptions().title("Your Order")
-                    .icon(bitmapDescriptorFromVector(R.drawable.ic_delivery_man))
-                    .position(location)
+                    MarkerOptions().title("Your Order")
+                            .icon(bitmapDescriptorFromVector(R.drawable.ic_delivery_man))
+                            .position(location)
             )
 
         } else {
@@ -547,10 +551,10 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     private fun bitmapDescriptorFromVector(
-        @DrawableRes vectorDrawableResourceId: Int
+            @DrawableRes vectorDrawableResourceId: Int
     ): BitmapDescriptor? {
         val vectorDrawable =
-            ContextCompat.getDrawable(this, vectorDrawableResourceId) as VectorDrawable?
+                ContextCompat.getDrawable(this, vectorDrawableResourceId) as VectorDrawable?
 
         val h = vectorDrawable!!.intrinsicHeight
         val w = vectorDrawable.intrinsicWidth
@@ -630,6 +634,11 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
+    private fun animateCamera(latLng: LatLng, bearing: Float) {
+        val cameraPosition = CameraPosition.Builder().target(latLng).bearing(bearing).zoom(16f).build()
+        mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+    }
+
     private fun animateCamera(latLng: LatLng) {
         val cameraPosition = CameraPosition.Builder().target(latLng).zoom(16f).build()
         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -638,20 +647,20 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     private fun addCarMarkerAndGet(latLng: LatLng): Marker {
         val bitmapDescriptor = MapUtils.getCarBitmap(this)
         return mMap!!.addMarker(
-            MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
+                MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
         )
     }
 
     private fun addOriginDestinationMarkerAndGet(isSource: Boolean, latLng: LatLng): Marker {
         val bitmapDescriptor =
-            if (isSource) {
-                MapUtils.getSourceBitmap(this, R.drawable.ic_user_location)
-            } else {
-                MapUtils.getDestinationBitmap(this, R.drawable.ic_dining_large)
-            }
+                if (isSource) {
+                    MapUtils.getSourceBitmap(this, R.drawable.ic_user_location)
+                } else {
+                    MapUtils.getDestinationBitmap(this, R.drawable.ic_dining_large)
+                }
 
         return mMap!!.addMarker(
-            MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
+                MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
         )
     }
 
@@ -711,7 +720,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
-            movingCabMarker?.setAnchor(0.5f, 0.5f)
+//            movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
         } else {
             previousLatLng = currentLatLng
@@ -721,19 +730,20 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                 if (currentLatLng != null && previousLatLng != null) {
                     val multiplier = va.animatedFraction
                     val nextLocation = LatLng(
-                        multiplier * currentLatLng!!.latitude + (1 - multiplier) * previousLatLng!!.latitude,
-                        multiplier * currentLatLng!!.longitude + (1 - multiplier) * previousLatLng!!.longitude
+                            multiplier * currentLatLng!!.latitude + (1 - multiplier) * previousLatLng!!.latitude,
+                            multiplier * currentLatLng!!.longitude + (1 - multiplier) * previousLatLng!!.longitude
                     )
                     movingCabMarker?.position = nextLocation
                     val heading = computeHeading(previousLatLng, nextLocation);
-                    movingCabMarker?.rotation = heading.toFloat() - 90
+                    val bearing = heading.toFloat() - 90
+                    movingCabMarker?.rotation = bearing
 
                     //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
                     /* if (!rotation.isNaN()) {
                          ?.rotation = rotation
                      }*/
                     // movingCabMarker?.setAnchor(0.5f, 0.5f)
-                    animateCamera(nextLocation)
+                    animateCamera(nextLocation, bearing)
                 }
             }
             valueAnimator.start()
