@@ -660,7 +660,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                 }
 
         return mMap!!.addMarker(
-                MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
+                MarkerOptions().position(latLng).zIndex(1000F).flat(true).icon(bitmapDescriptor)
         )
     }
 
