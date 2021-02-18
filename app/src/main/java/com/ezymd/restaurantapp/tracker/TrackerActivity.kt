@@ -716,6 +716,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         if (movingCabMarker == null) {
             movingCabMarker = addCarMarkerAndGet(latLng)
         }
+        movingCabMarker?.zIndex=1000F
         if (previousLatLng == null) {
             currentLatLng = latLng
             previousLatLng = currentLatLng
