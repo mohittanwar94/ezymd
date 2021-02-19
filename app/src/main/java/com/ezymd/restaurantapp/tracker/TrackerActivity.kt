@@ -762,7 +762,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
 
                     movingCabMarker?.rotation =
-                        bearing/*bearingBetweenLocations(previousLatLng!!,nextLocation).toFloat()*/
+                        bearing-180/*bearingBetweenLocations(previousLatLng!!,nextLocation).toFloat()*/
                     /* computeHeading(previousLatLng, nextLocation).toFloat()*/
                     SnapLog.print("bearing============" + bearing)
                     movingCabMarker?.position = nextLocation
