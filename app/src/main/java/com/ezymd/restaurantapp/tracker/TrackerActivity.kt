@@ -683,14 +683,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         val polylineOptions = PolylineOptions()
         polylineOptions.color(Color.GRAY)
         polylineOptions.geodesic(true)
-        polylineOptions.width(12f)
+        polylineOptions.width(7f)
         polylineOptions.addAll(latLngList)
         grayPolyline = mMap!!.addPolyline(polylineOptions)
 
         val blackPolylineOptions = PolylineOptions()
         blackPolylineOptions.geodesic(true)
         blackPolylineOptions.color(ContextCompat.getColor(this, R.color.color_002366))
-        blackPolylineOptions.width(12f)
+        blackPolylineOptions.width(7f)
         blackPolyline = mMap!!.addPolyline(blackPolylineOptions)
 
         originMarker = addOriginDestinationMarkerAndGet(false, latLngList[0])
@@ -721,7 +721,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
-//            movingCabMarker?.setAnchor(0.5f, 0.5f)
+            movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
         } else {
             previousLatLng = currentLatLng
@@ -736,7 +736,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                     )
                     movingCabMarker?.position = nextLocation
                     val heading = computeHeading(previousLatLng, nextLocation);
-                    val bearing = heading.toFloat() - 90
+                    val bearing = heading.toFloat() - 225
                     movingCabMarker?.rotation = bearing
 
                     //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)

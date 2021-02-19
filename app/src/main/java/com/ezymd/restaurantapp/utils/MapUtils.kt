@@ -20,7 +20,7 @@ object MapUtils {
     fun getCarBitmap(
         context: Context
     ): BitmapDescriptor? {
-        val vectorDrawable =
+      /*  val vectorDrawable =
             ContextCompat.getDrawable(context, R.drawable.ic_delivery_man) as VectorDrawable?
 
         val h = vectorDrawable!!.intrinsicHeight
@@ -31,8 +31,8 @@ object MapUtils {
         val bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bm)
         vectorDrawable.draw(canvas)
-
-        return BitmapDescriptorFactory.fromBitmap(bm)
+*/
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_delivery_man)
 
     }
 
