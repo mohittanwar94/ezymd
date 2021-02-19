@@ -66,7 +66,7 @@ class TrackerViewModel : ViewModel() {
             }
 
 
-        }, 100, 15000)
+        }, 100, 5000)
     }
 
     private fun showNetworkError() {
