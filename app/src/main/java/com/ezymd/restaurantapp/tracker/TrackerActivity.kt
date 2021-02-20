@@ -58,6 +58,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     private var movingCabMarker: Marker? = null
     private var previousLatLng: LatLng? = null
     private var currentLatLng: LatLng? = null
+    private var previousLng: LatLng? = null
+    private var currentLng: LatLng? = null
     val pointsList = ArrayList<LatLng>()
 
     private val item by lazy {
@@ -489,10 +491,10 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
                 updateCarLocation(latLng)
 
             } else {
-                // if (distanceBetween(previousLatLng!!, latLng) > 3f) {
-                updateCarLocation(latLng)
+                if (distanceBetween(previousLatLng!!, latLng) > 3f) {
+                    updateCarLocation(latLng)
 
-                // }
+                }
             }
 
         }
@@ -691,14 +693,14 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         val polylineOptions = PolylineOptions()
         polylineOptions.color(Color.GRAY)
         polylineOptions.geodesic(true)
-        polylineOptions.width(7f)
+        polylineOptions.width(12f)
         polylineOptions.addAll(latLngList)
         grayPolyline = mMap!!.addPolyline(polylineOptions)
 
         val blackPolylineOptions = PolylineOptions()
         blackPolylineOptions.geodesic(true)
         blackPolylineOptions.color(ContextCompat.getColor(this, R.color.color_002366))
-        blackPolylineOptions.width(7f)
+        blackPolylineOptions.width(12f)
         blackPolyline = mMap!!.addPolyline(blackPolylineOptions)
 
         originMarker = addOriginDestinationMarkerAndGet(false, latLngList[0])
@@ -735,56 +737,30 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         } else {
             previousLatLng = currentLatLng
             currentLatLng = latLng
+            currentLng = previousLatLng
             val valueAnimator = AnimationUtils.carAnimator()
             valueAnimator.addUpdateListener { va ->
                 if (currentLatLng != null && previousLatLng != null) {
                     val multiplier = va.animatedFraction
+
+
                     val nextLocation = LatLng(
                         multiplier * currentLatLng!!.latitude + (1 - multiplier) * previousLatLng!!.latitude,
                         multiplier * currentLatLng!!.longitude + (1 - multiplier) * previousLatLng!!.longitude
                     )
 
-                    /*   val heading = computeHeading(previousLatLng, nextLocation);
-                       val bearing = heading.toFloat()
-                    */ /*  val prevLocation = Location(LocationManager.GPS_PROVIDER)
-                    prevLocation.latitude = previousLatLng!!.latitude
-                    prevLocation.longitude = previousLatLng!!.longitude
-*/
+                    previousLng = currentLng
+                    currentLng = nextLocation
+
                     val updatedLocation = Location(LocationManager.GPS_PROVIDER)
                     updatedLocation.latitude = nextLocation.latitude
                     updatedLocation.longitude = nextLocation.longitude
-                    // val toRotation = prevLocation.bearingTo(updatedLocation)
-                    var bearing = 0.0f
-                    if (updatedLocation.bearing < 180)
-                        bearing = bearing + 180
-                    else
-                        bearing = bearing - 180
+                    val bearing = bearingBetweenLocations(previousLatLng!!, latLng).toFloat()
 
 
-                    movingCabMarker?.rotation =
-                        bearing-180/*bearingBetweenLocations(previousLatLng!!,nextLocation).toFloat()*/
-                    /* computeHeading(previousLatLng, nextLocation).toFloat()*/
-                    SnapLog.print("bearing============" + bearing)
+                    movingCabMarker?.rotation = bearing
+                    SnapLog.print("bearing============$bearing")
                     movingCabMarker?.position = nextLocation
-
-                    /*  rotateMarker(
-                          movingCabMarker!!, toRotation
-                      )*/
-                    //movingCabMarker?.rotation =
-
-                    /*    movingCabMarker?.position = nextLocation
-                        val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
-                        if (!rotation.isNaN()) {
-                            movingCabMarker?.rotation = rotation
-                        }
-                        movingCabMarker?.setAnchor(0.5f, 0.5f)
-    */
-                    /*    val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
-                        if (!rotation.isNaN()) {
-                            movingCabMarker?.rotation = rotation
-                        }
-                       SnapLog.print("rotation=====$rotation")
-                       movingCabMarker?.setAnchor(0.5f, 0.5f)*/
                     movingCabMarker?.setAnchor(0.5f, 0.5f)
                     animateCamera(nextLocation)
                 }
