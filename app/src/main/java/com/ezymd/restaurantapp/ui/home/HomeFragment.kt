@@ -372,7 +372,7 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
-        homeViewModel.isGPSEnable.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.isGPSEnable.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 setLocationEmpty()
             } else {
@@ -389,13 +389,13 @@ open class HomeFragment : Fragment() {
 
             }
         })
-        homeViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 content.visibility = View.VISIBLE
                 progress.visibility = View.GONE
             }
         })
-        homeViewModel.address.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.address.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             locationModel = it
             userInfo!!.lang = it.lang.toString()
             userInfo!!.lat = it.lat.toString()
@@ -403,7 +403,7 @@ open class HomeFragment : Fragment() {
         })
 
 
-        homeViewModel.mPagerData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mPagerData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataBanner.clear()
                 bannerPager.adapter?.notifyDataSetChanged()
@@ -416,7 +416,7 @@ open class HomeFragment : Fragment() {
             }
         })
 
-        homeViewModel.mTrendingData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mTrendingData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
@@ -431,7 +431,7 @@ open class HomeFragment : Fragment() {
             }
         })
 
-        homeViewModel.mResturantData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mResturantData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataResturant.clear()
                 restaurantAdapter?.setData(it.data)
@@ -450,7 +450,7 @@ open class HomeFragment : Fragment() {
             }
 
         })
-        homeViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.errorRequest.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it != null)
                 (activity as BaseActivity).showError(false, it, null)
         })
@@ -461,12 +461,12 @@ open class HomeFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        homeViewModel.isLoading.removeObservers(this)
-        homeViewModel.mPagerData.removeObservers(this)
-        homeViewModel.mResturantData.removeObservers(this)
-        homeViewModel.mTrendingData.removeObservers(this)
-        homeViewModel.errorRequest.removeObservers(this)
-        homeViewModel.address.removeObservers(this)
+        homeViewModel.isLoading.removeObservers(viewLifecycleOwner)
+        homeViewModel.mPagerData.removeObservers(viewLifecycleOwner)
+        homeViewModel.mResturantData.removeObservers(viewLifecycleOwner)
+        homeViewModel.mTrendingData.removeObservers(viewLifecycleOwner)
+        homeViewModel.errorRequest.removeObservers(viewLifecycleOwner)
+        homeViewModel.address.removeObservers(viewLifecycleOwner)
         (bannerPager.adapter as BannerPagerAdapter).stopTimer()
     }
 

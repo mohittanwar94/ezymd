@@ -16,7 +16,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.login.otp.OTPScreen
-import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.ezymd.restaurantapp.utils.JSONKeys.OTP_REQUEST
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -31,9 +30,6 @@ class EditProfileActivity : BaseActivity() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(EditProfileViewModel::class.java)
-    }
-    private val restaurant by lazy {
-        intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -280,12 +276,6 @@ class EditProfileActivity : BaseActivity() {
         })
     }
 
-
-    private fun updateData() {
-        val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("id", "" + restaurant.id)
-        viewModel.getDetails(baseRequest)
-    }
 
     override fun onResume() {
         super.onResume()

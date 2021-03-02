@@ -16,6 +16,13 @@ public class UpdateLocationModel {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+    @SerializedName("bearing")
+    @Expose
+    private Float bearing=0.0f;
+    @SerializedName("hasBearing")
+    @Expose
+    private Boolean hasBearing=false;
+
     @SerializedName("lat")
     @Expose
     private Double lat;
@@ -93,4 +100,19 @@ public class UpdateLocationModel {
         this.updatedAt = updatedAt;
     }
 
+    public Float getBearing() {
+        return bearing;
+    }
+
+    public void setBearing(Float bearing) {
+        this.bearing = bearing;
+    }
+
+    public Boolean getHasBearing() {
+        return hasBearing;
+    }
+
+    public void setHasBearing(Boolean hasBearing) {
+        this.hasBearing = hasBearing;
+    }
 }

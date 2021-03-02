@@ -44,7 +44,7 @@ import java.util.*
 
 class LocationActivity : BaseActivity(), OnMapReadyCallback {
     private var bottomSheetDialogFragment: AddressBottomSheet? = null
-    private var mTimerIsRunning = false
+
     val REQUEST_CHECK_SETTINGS = 43
 
 
@@ -58,7 +58,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     private val gcd by lazy {
         Geocoder(this, Locale.getDefault())
     }
-
+    private var mTimerIsRunning = false
     private val handler by lazy {
         Handler()
     }
