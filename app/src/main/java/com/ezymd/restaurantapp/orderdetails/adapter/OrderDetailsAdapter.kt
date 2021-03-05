@@ -56,7 +56,7 @@ class OrderDetailsAdapter(
 
         val item = data[position]
         holder.itemView.dishName.text = item.item
-        holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
+        holder.itemView.price.text = mContext.getString(R.string.dollor) + (item.price*item.qty)
 
         holder.itemView.qty.text = "" + item.qty + "x" + item.price
 
