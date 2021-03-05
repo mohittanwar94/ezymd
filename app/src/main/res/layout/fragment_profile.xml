@@ -382,7 +382,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:elevation="@dimen/_9sdp"
-                    android:theme="@style/progressBarThemeWhite"
+                    android:theme="@style/progressBarThemeBlack"
                     android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>
