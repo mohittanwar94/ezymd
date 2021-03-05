@@ -252,5 +252,8 @@
     <string name="card">Card</string>
     <string name="wallet">Wallet</string>
     <string name="add">+ ADD</string>
+    <string name="food">Food</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="grocery">Grocery</string>
 
 </resources>
