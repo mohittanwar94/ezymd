@@ -71,6 +71,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:visibility="gone"
+                    android:theme="@style/progressBarThemeBlack"
                     android:paddingEnd="@dimen/_5sdp"
                     android:progressTint="@color/color_ffb912"
                     />

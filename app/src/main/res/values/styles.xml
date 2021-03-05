@@ -334,6 +334,9 @@
     <style name="progressBarTheme">
         <item name="colorAccent">@color/color_ffe600</item>
     </style>
+    <style name="progressBarThemeBlack">
+        <item name="colorAccent">@color/color_002366</item>
+    </style>
 
     <style name="progressBarThemeWhite">
         <item name="colorAccent">@color/white</item>
@@ -368,5 +371,6 @@
         <item name="colorPrimaryDark">@color/color_ffe600</item>
 
     </style>
+
      
 </resources>

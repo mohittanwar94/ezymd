@@ -200,6 +200,7 @@ class OrderDetailsActivity : BaseActivity() {
 
 
     private fun setAdapter() {
+        dataResturant.addAll(item.orderItems)
         resturantRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resturantRecyclerView.addItemDecoration(

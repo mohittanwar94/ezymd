@@ -715,7 +715,7 @@ class ConfirmOrder : BaseActivity() {
                 "delivery_instruction",
                 deliveryIns
         )
-        jsonObject.addProperty("restaurant_id", restaurant.id)
+        jsonObject.addProperty("shop_id", restaurant.id)
         jsonObject.addProperty("schedule_type", checkoutModel.delivery_type)
         if (checkoutModel.delivery_type == 2) {
             jsonObject.addProperty("schedule_time", checkoutModel.delivery_time)
@@ -727,7 +727,7 @@ class ConfirmOrder : BaseActivity() {
         var price = 0
         for (model in listItemModel!!) {
             val jsonObjectModel = JsonObject()
-            jsonObjectModel.addProperty("food_id", model.id)
+            jsonObjectModel.addProperty("product_id", model.id)
             jsonObjectModel.addProperty("price", model.price)
             jsonObjectModel.addProperty("qty", model.quantity)
             price += (model.price * model.quantity)

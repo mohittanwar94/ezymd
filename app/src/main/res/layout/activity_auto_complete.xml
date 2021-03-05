@@ -27,9 +27,10 @@
             android:hint="@string/search_location"
             android:paddingStart="@dimen/_5sdp"
             android:textColor="@color/color_002366"
-            android:textColorHint="@color/dividerColor"
+            android:textColorHint="@color/color_b2bdd1"
             android:textCursorDrawable="@null"
             android:textSize="@dimen/_15sdp"
+            android:maxLines="1"
             app:customDrawableLeft="@drawable/ic_search"
             app:textFontEdit="bold"
             tools:ignore="RtlSymmetry" />
