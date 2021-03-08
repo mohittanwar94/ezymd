@@ -89,6 +89,8 @@
         android:layout_marginTop="@dimen/_7sdp"
         android:layout_marginBottom="@dimen/_7sdp"
         android:clipToPadding="false"
+        android:paddingLeft="@dimen/_15sdp"
+        android:paddingRight="@dimen/_15sdp"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
         android:paddingEnd="@dimen/_15sdp"
