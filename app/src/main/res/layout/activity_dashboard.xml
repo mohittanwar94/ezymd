@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/color_f8f8f8"
+    android:fitsSystemWindows="true"
+    tools:context=".details.DetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:contentDescription="@string/back"
+            android:padding="@dimen/_5sdp"
+            app:srcCompat="@drawable/ic_back" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/nearBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toStartOf="@+id/search"
+            android:layout_toEndOf="@+id/back"
+            android:maxLines="1"
+            android:text="N/A"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_15sdp"
+            android:visibility="visible"
+            app:textFont="medium" />
+
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_search"
+
+            />
+
+
+    </RelativeLayout>
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/trending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_7sdp"
+        android:ellipsize="end"
+        android:maxLength="50"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:singleLine="true"
+        android:textColor="@color/color_002366"
+        android:textSize="@dimen/_18sdp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:textFont="bold" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trendingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginBottom="@dimen/_7sdp"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/trending" />
+
+    <RelativeLayout
+        android:id="@+id/filterRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_23sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView">
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/resturantCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="start"
+            android:layout_toLeftOf="@+id/filter"
+            android:ellipsize="end"
+            android:maxLength="50"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/color_010a1d"
+            android:textSize="@dimen/_18sdp"
+            android:visibility="visible"
+            app:textFont="bold" />
+
+        <ImageView
+            android:id="@+id/filter"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:background="@drawable/filter_icon_bg"
+            android:padding="@dimen/_5sdp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_filter" />
+
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resturantRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/filterRv" />
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:theme="@style/progressBarThemeBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

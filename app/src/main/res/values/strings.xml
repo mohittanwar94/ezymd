@@ -255,5 +255,11 @@
     <string name="food">Food</string>
     <string name="pharmacy">Pharmacy</string>
     <string name="grocery">Grocery</string>
+    <string name="near_by_grocery">Near By Groceries</string>
+    <string name="near_by_pharmacy">Near by Pharmacy</string>
+    <string name="near_by_restuarnts">Near by Restaurants</string>
+    <string name="trending_restaurnts">Trending Restaurants</string>
+    <string name="trending_pharmacy">Trending Pharmacies</string>
+    <string name="trending_grocery">Trending Stores</string>
 
 </resources>

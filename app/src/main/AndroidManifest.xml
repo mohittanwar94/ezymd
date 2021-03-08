@@ -98,6 +98,14 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".dashboard.DashBoardActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"

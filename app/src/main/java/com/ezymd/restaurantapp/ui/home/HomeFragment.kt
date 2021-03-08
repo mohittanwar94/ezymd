@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.customviews.RoundedImageView
+import com.ezymd.restaurantapp.dashboard.DashBoardActivity
 import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.location.LocationActivity
@@ -200,6 +201,19 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setListenerView() {
+        iv_food.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.RESTAURANT)
+        }
+
+        iv_grocery.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.Grocery)
+        }
+        iv_pharmacy.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.Pharmacy)
+        }
         locationValue.setOnClickListener {
             location.performClick()
         }
@@ -216,6 +230,13 @@ open class HomeFragment : Fragment() {
             )
 
         }
+    }
+
+    private fun startActivityDashBoard(grocery: Int) {
+        val valueIntent = Intent(requireActivity(), DashBoardActivity::class.java)
+        valueIntent.putExtra(JSONKeys.TYPE, grocery)
+        requireActivity().startActivity(valueIntent)
+        activity?.overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
 
     private fun setLocationListener() {

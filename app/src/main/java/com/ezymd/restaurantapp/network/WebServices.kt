@@ -5,6 +5,7 @@ import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.login.model.LoginModel
@@ -76,6 +77,14 @@ interface WebServices {
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel
+
+
+
+    @FormUrlEncoded
+    @POST(ServerConfig.TRENDING_STORES)
+    suspend fun trendingStores(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): TrendingDashboardModel
 
 
     @GET(ServerConfig.RESTURANT_FILTERS)

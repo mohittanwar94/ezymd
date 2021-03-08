@@ -45,6 +45,8 @@ interface ServerConfig {
         const val ACCEPT_ORDER = "updateOrderStatus"
         const val COD_ORDER = "codOrder"
 
+        const val TRENDING_STORES="trendingItems"
+
 
     }
 }
