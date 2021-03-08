@@ -30,6 +30,24 @@ class DashBoardRepository {
     }
 
 
+
+    suspend fun nearByShops(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<TrendingDashboardModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.nearByShops(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+
     companion object {
         @Volatile
         private var sportsFeeRepository: DashBoardRepository? = null

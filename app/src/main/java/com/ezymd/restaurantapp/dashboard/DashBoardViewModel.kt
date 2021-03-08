@@ -16,6 +16,7 @@ class DashBoardViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: DashBoardRepository? = null
     val mTrendingData: MutableLiveData<TrendingDashboardModel>
+    val mShopData: MutableLiveData<TrendingDashboardModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -29,6 +30,7 @@ class DashBoardViewModel : ViewModel() {
         loginRepository = DashBoardRepository.instance
         isLoading = MutableLiveData()
         mTrendingData = MutableLiveData()
+        mShopData = MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
 
@@ -51,8 +53,27 @@ class DashBoardViewModel : ViewModel() {
             }
 
         }
+    }
+
+
+    fun nearByShops(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.nearByShops(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> mTrendingData.postValue(result.value)
+            }
+
+        }
 
     }
+
 
     private fun showNetworkError() {
         errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)

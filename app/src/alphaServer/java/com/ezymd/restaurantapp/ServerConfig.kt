@@ -46,6 +46,7 @@ interface ServerConfig {
         const val COD_ORDER = "codOrder"
 
         const val TRENDING_STORES="trendingItems"
+        const val NEAR_BY_SHOPS="nearByShops"
 
 
     }

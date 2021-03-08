@@ -146,7 +146,7 @@ public class DataTrending implements Serializable {
     }
 
     public String getIs_free_delivery() {
-        return is_free_delivery;
+        return TextUtils.isEmpty(is_free_delivery)?"0":is_free_delivery;
     }
 
     public void setIs_free_delivery(String is_free_delivery) {
