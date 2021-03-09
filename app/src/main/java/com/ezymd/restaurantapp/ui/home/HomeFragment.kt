@@ -39,6 +39,7 @@ import com.ezymd.restaurantapp.ui.home.model.Trending
 import com.ezymd.restaurantapp.ui.home.trending.TrendingAdapter
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import mumayank.com.airlocationlibrary.AirLocation
 import java.util.*
 import kotlin.collections.ArrayList
