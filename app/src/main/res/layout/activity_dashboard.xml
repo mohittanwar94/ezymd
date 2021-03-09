@@ -61,6 +61,16 @@
 
 
     </RelativeLayout>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/header"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/trending"
@@ -79,7 +89,7 @@
         android:visibility="visible"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintTop_toTopOf="parent"
         app:textFont="bold" />
 
 
@@ -87,7 +97,7 @@
         android:id="@+id/trendingRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_7sdp"
+        android:paddingTop="@dimen/_7sdp"
         android:background="@color/white"
         android:layout_marginBottom="@dimen/_7sdp"
         android:clipToPadding="false"
@@ -103,7 +113,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_23sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView">
@@ -148,6 +157,7 @@
         android:overScrollMode="never"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         app:layout_constraintTop_toBottomOf="@+id/filterRv" />
 
 
@@ -161,5 +171,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

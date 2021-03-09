@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <declare-styleable name="SkyRoundCornerLayout">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="topEnabled" format="boolean" />
+        <attr name="bottomEnabled" format="boolean" />
+        <attr name="topLeftEnabled" format="boolean" />
+        <attr name="topRightEnabled" format="boolean" />
+        <attr name="bottomLeftEnabled" format="boolean" />
+        <attr name="bottomRightEnabled" format="boolean" />
+    </declare-styleable>
     <declare-styleable name="SnapButton">
         <attr name="buttonFont" format="integer">
             <flag name="book" value="0" />
@@ -74,16 +82,16 @@
         <attr name="color_unchecked_stroke" format="color" />
     </declare-styleable>
     <declare-styleable name="NumberPicker">
-        <attr name="min" format="integer"/>
-        <attr name="max" format="integer"/>
-        <attr name="value" format="integer"/>
+        <attr name="min" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="value" format="integer" />
         <attr name="unit" format="integer" />
         <attr name="custom_layout" format="reference" />
         <attr name="focusable" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="Themes">
-        <attr name="NumberPickerLayout" format="reference"/>
+        <attr name="NumberPickerLayout" format="reference" />
     </declare-styleable>
 
 </resources>

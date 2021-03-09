@@ -67,7 +67,7 @@ class DashBoardViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mTrendingData.postValue(result.value)
+                is ResultWrapper.Success -> mShopData.postValue(result.value)
             }
 
         }

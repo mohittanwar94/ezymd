@@ -64,8 +64,8 @@ class DashBoardTrendingAdapter(
 
         if (!TextUtils.isEmpty(data[position].banner)) {
             GlideApp.with(mContext.applicationContext)
-                .load(data[position].banner).centerCrop().override(250, 150).dontAnimate()
-                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
+                .load(data[position].banner).centerCrop().dontAnimate()
+                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).override(950,550).placeholder(R.drawable.ic_restaurant_location)
                 .into(holder.itemView.ivNotesThumb)
         }
 
@@ -74,7 +74,7 @@ class DashBoardTrendingAdapter(
         holder.itemView.shopName.text = item.name
 
         holder.itemView.shopCategory.text = item.cuisines
-        //  setDiscount(item, holder.itemView.shopRating)
+        //setDiscount(item, holder.itemView.shopRating)
         setRatings(item, holder.itemView.shopRating)
 
         holder.itemView.setOnClickListener {
@@ -92,10 +92,10 @@ class DashBoardTrendingAdapter(
             discount.append(mContext.getString(R.string.rating))
 
         }
-        /*   if (item.isFreeDelivery != 0) {
+        if (item.is_free_delivery.toInt() != 0) {
                discount.append(" | ")
                discount.append(mContext.getString(R.string.free_delivery))
-           }*/
+           }
         if (!item.min_order.equals("0")) {
             discount.append(" | ")
             discount.append(mContext.getString(R.string.minimum))

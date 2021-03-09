@@ -32,9 +32,9 @@ class DashBoardActivity : BaseActivity() {
         setContentView(R.layout.activity_dashboard)
         setToolBar()
         setHeaderData()
-        setObserver()
         setTrendingAdapter()
         setShopAdapter()
+        setObserver()
         getData()
     }
 
@@ -100,7 +100,7 @@ class DashBoardActivity : BaseActivity() {
         viewModel.mTrendingData.observe(this, Observer {
 
             if (it.data != null && it.data.size != 0) {
-                adapterTrending?.setData(dataTrending)
+                adapterTrending?.setData(it.data)
                 adapterTrending?.getData()?.let { it1 ->
                     dataTrending.addAll(it1)
 
@@ -114,7 +114,7 @@ class DashBoardActivity : BaseActivity() {
         viewModel.mShopData.observe(this, Observer {
 
             if (it.data != null && it.data.size != 0) {
-                adapterRestaurant?.setData(dataResturant)
+                adapterRestaurant?.setData(it.data )
                 adapterRestaurant?.getData()?.let { it1 ->
                     dataResturant.addAll(it1)
 
