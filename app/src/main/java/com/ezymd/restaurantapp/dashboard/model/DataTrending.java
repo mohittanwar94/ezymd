@@ -130,7 +130,7 @@ public class DataTrending implements Serializable {
     }
 
     public String getMin_order() {
-        return min_order;
+        return TextUtils.isEmpty(min_order)?"0":min_order;
     }
 
     public void setMin_order(String min_order) {

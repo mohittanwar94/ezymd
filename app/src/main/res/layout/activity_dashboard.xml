@@ -17,6 +17,7 @@
         android:paddingLeft="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -61,117 +62,119 @@
 
 
     </RelativeLayout>
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/header"
-    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
-
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/trending"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:paddingTop="@dimen/_25sdp"
-        android:paddingBottom="@dimen/_7sdp"
-        android:ellipsize="end"
-        android:maxLength="50"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        android:singleLine="true"
-        android:textColor="@color/color_002366"
-        android:textSize="@dimen/_18sdp"
-        android:visibility="visible"
-        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:textFont="bold" />
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trendingRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/_7sdp"
-        android:background="@color/white"
-        android:layout_marginBottom="@dimen/_7sdp"
-        android:clipToPadding="false"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:paddingEnd="@dimen/_15sdp"
-        app:layout_constraintTop_toBottomOf="@+id/trending" />
-
-    <RelativeLayout
-        android:id="@+id/filterRv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_23sdp"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView">
-
-
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/resturantCount"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="start"
-            android:layout_toLeftOf="@+id/filter"
-            android:ellipsize="end"
-            android:maxLength="50"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/color_010a1d"
-            android:textSize="@dimen/_18sdp"
-            android:visibility="visible"
-            app:textFont="bold" />
+            android:animateLayoutChanges="true">
 
-        <ImageView
-            android:id="@+id/filter"
-            android:layout_width="@dimen/_28sdp"
-            android:layout_height="@dimen/_28sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:background="@drawable/filter_icon_bg"
-            android:padding="@dimen/_5sdp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_filter" />
-
-
-    </RelativeLayout>
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/trending"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@color/white"
+                android:ellipsize="end"
+                android:maxLength="50"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_25sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:singleLine="true"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_18sdp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:textFont="bold" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resturantRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        app:layout_constraintTop_toBottomOf="@+id/filterRv" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trendingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                app:layout_constraintTop_toBottomOf="@+id/trending" />
+
+            <RelativeLayout
+                android:id="@+id/filterRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_23sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView">
 
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:theme="@style/progressBarThemeBlack"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/resturantCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="start"
+                    android:layout_toLeftOf="@+id/filter"
+                    android:ellipsize="end"
+                    android:maxLength="50"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/color_010a1d"
+                    android:textSize="@dimen/_18sdp"
+                    android:visibility="visible"
+                    app:textFont="bold" />
+
+                <ImageView
+                    android:id="@+id/filter"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/filter_icon_bg"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_filter" />
+
+
+            </RelativeLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/resturantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_35sdp"
+                app:layout_constraintTop_toBottomOf="@+id/filterRv" />
+
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/progressBarThemeBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
