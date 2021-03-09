@@ -82,7 +82,7 @@ public class DataTrending implements Serializable {
 
 
     public Double getRating() {
-        return rating;
+        return rating.isNaN() ? 0.0 : rating;
     }
 
     public void setRating(Double rating) {
@@ -130,7 +130,7 @@ public class DataTrending implements Serializable {
     }
 
     public String getMin_order() {
-        return TextUtils.isEmpty(min_order)?"0":min_order;
+        return TextUtils.isEmpty(min_order) ? "0" : min_order;
     }
 
     public void setMin_order(String min_order) {
@@ -146,7 +146,7 @@ public class DataTrending implements Serializable {
     }
 
     public String getIs_free_delivery() {
-        return TextUtils.isEmpty(is_free_delivery)?"0":is_free_delivery;
+        return TextUtils.isEmpty(is_free_delivery) ? "0" : is_free_delivery;
     }
 
     public void setIs_free_delivery(String is_free_delivery) {
