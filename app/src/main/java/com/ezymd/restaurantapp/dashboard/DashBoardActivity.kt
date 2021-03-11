@@ -13,6 +13,7 @@ import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
+import com.ezymd.restaurantapp.ui.search.SearchActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -153,6 +154,11 @@ class DashBoardActivity : BaseActivity() {
     private fun setHeaderData() {
         search.setOnClickListener {
             UIUtil.clickAlpha(it)
+            val valueIntent = Intent(this@DashBoardActivity, SearchActivity::class.java)
+            valueIntent.putExtra(JSONKeys.TYPE, typeCategory)
+            valueIntent.putExtra(JSONKeys.OBJECT, dataResturant)
+            startActivity(valueIntent)
+            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out)
         }
 
     }

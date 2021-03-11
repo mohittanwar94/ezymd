@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
@@ -17,8 +19,8 @@ class SearchViewModel : ViewModel() {
     val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: SearchRepository? = null
-    val mResturantData: MutableLiveData<ResturantModel>
-    val mSearchData: MutableLiveData<ResturantModel>
+    val mResturantData: MutableLiveData<TrendingDashboardModel>
+    val mSearchData: MutableLiveData<TrendingDashboardModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {

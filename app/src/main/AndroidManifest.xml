@@ -84,10 +84,12 @@
         <activity
             android:name=".editprofile.EditProfileActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".tracker.TrackerActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
 
@@ -96,6 +98,7 @@
         <activity
             android:name=".filters.FilterActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:screenOrientation="portrait" />
 
 
@@ -103,13 +106,22 @@
             android:name=".dashboard.DashBoardActivity"
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".details.CategoryActivity"
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysVisible" />
 
 
         <activity

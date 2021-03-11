@@ -261,5 +261,8 @@
     <string name="trending_restaurnts">Trending Restaurants</string>
     <string name="trending_pharmacy">Trending Pharmacies</string>
     <string name="trending_grocery">Trending Stores</string>
+    <string name="search_by_name">Search Shop by name</string>
+    <string name="search_grocery_stores">Search Groceries Stores</string>
+    <string name="search_pharmacy">Search Pharmacy</string>
 
 </resources>

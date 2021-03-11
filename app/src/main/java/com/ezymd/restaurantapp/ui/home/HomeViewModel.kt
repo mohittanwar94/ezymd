@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
-import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SingleLiveEvent
@@ -23,8 +23,8 @@ class HomeViewModel : ViewModel() {
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
     val mPagerData: MutableLiveData<ResturantModel>
-    val mTrendingData: MutableLiveData<TrendingModel>
-    val mResturantData: MutableLiveData<ResturantModel>
+    val mTrendingData: MutableLiveData<TrendingDashboardModel>
+    val mResturantData: MutableLiveData<TrendingDashboardModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -37,7 +37,7 @@ class HomeViewModel : ViewModel() {
 
         loginRepository = HomeRepository.instance
         address = MutableLiveData()
-        isGPSEnable= MutableLiveData()
+        isGPSEnable = MutableLiveData()
         isLoading = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()

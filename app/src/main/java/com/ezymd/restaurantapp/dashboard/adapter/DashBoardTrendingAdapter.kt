@@ -65,7 +65,7 @@ class DashBoardTrendingAdapter(
         if (!TextUtils.isEmpty(data[position].banner)) {
             GlideApp.with(mContext.applicationContext)
                 .load(data[position].banner).centerCrop().dontAnimate()
-                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).override(950,550).placeholder(R.drawable.ic_restaurant_location)
+                .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).override(950,550)
                 .into(holder.itemView.ivNotesThumb)
         }
 

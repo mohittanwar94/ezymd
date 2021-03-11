@@ -60,7 +60,7 @@ interface WebServices {
         @Header("Authorization") token: String
     ): LogoutModel
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @POST(ServerConfig.SEARCH_RESTURANTS)
     suspend fun searchRestaurant(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
@@ -72,7 +72,7 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): ResturantModel
 
-
+*/
     @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String

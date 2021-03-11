@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.ui.home
 import android.location.Address
 import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
@@ -86,12 +87,12 @@ class HomeRepository {
     suspend fun getResturants(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getResturants(
+            apiServices.nearByShops(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }
@@ -103,12 +104,12 @@ class HomeRepository {
     suspend fun getTrending(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<TrendingModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getTrending(
+            apiServices.trendingStores(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }

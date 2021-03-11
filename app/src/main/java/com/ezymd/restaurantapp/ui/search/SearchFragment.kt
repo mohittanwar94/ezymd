@@ -26,20 +26,20 @@ import com.ezymd.restaurantapp.GpsLocationReceiver
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.DetailsActivity
-import com.ezymd.restaurantapp.ui.home.RestaurantAdapter
-import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
 
-    private var restaurantAdapter: RestaurantAdapter? = null
+    private var restaurantAdapter: DashBoardNearByAdapter? = null
     private var isNullViewRoot = false
     private lateinit var searchViewModel: SearchViewModel
     private var viewRoot: View? = null
 
-    private val dataResturant = ArrayList<Resturant>()
+    private val dataResturant = ArrayList<DataTrending>()
 
     private val userInfo by lazy {
         (activity as MainActivity).userInfo
@@ -71,7 +71,9 @@ class SearchFragment : Fragment() {
         if (isNullViewRoot) {
             setAdapterRestaurant()
             askPermission()
-            searchViewModel.getResturants(BaseRequest(userInfo))
+            val baseRequest=BaseRequest(userInfo)
+            baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
+            searchViewModel.getResturants(baseRequest)
             setSearchListerner()
             requireActivity().registerReceiver(
                 mGpsSwitchStateReceiver,
@@ -124,6 +126,7 @@ class SearchFragment : Fragment() {
                 }
                 if (search.text.toString().trim().length > 4) {
                     val baseRequest = BaseRequest(userInfo)
+                    baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
                     baseRequest.paramsMap.put("search", search.text.toString())
                     searchViewModel.searchRestaurants(baseRequest)
                 }
@@ -132,6 +135,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (search.text.toString().trim().isEmpty()) {
                     val baseRequest = BaseRequest(userInfo)
+                    baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
                     searchViewModel.searchRestaurants(baseRequest)
                 }
             }
@@ -156,7 +160,7 @@ class SearchFragment : Fragment() {
             )
         )
         restaurantAdapter =
-            RestaurantAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+            DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
                 val intent = Intent(activity, DetailsActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
