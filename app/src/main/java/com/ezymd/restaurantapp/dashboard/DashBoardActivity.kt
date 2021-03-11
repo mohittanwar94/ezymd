@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -11,6 +12,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
@@ -51,6 +53,9 @@ class DashBoardActivity : BaseActivity() {
         adapterRestaurant = DashBoardNearByAdapter(this@DashBoardActivity, object : OnRecyclerView {
 
             override fun onClick(position: Int, view: View?) {
+                val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
+                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                startActivity(intent)
 
             }
         }, dataResturant)
@@ -74,7 +79,9 @@ class DashBoardActivity : BaseActivity() {
         adapterTrending = DashBoardTrendingAdapter(this@DashBoardActivity, object : OnRecyclerView {
 
             override fun onClick(position: Int, view: View?) {
-
+                val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
+                intent.putExtra(JSONKeys.OBJECT, dataTrending[position])
+                startActivity(intent)
             }
         }, dataTrending)
 
@@ -100,12 +107,13 @@ class DashBoardActivity : BaseActivity() {
         viewModel.mTrendingData.observe(this, Observer {
 
             if (it.data != null && it.data.size != 0) {
+                trending.visibility = View.VISIBLE
                 adapterTrending?.setData(it.data)
                 adapterTrending?.getData()?.let { it1 ->
                     dataTrending.addAll(it1)
 
                 }
-            } else {
+            } else if (it.status != ErrorCodes.SUCCESS) {
                 showError(false, it.message, null)
             }
         })
@@ -114,7 +122,7 @@ class DashBoardActivity : BaseActivity() {
         viewModel.mShopData.observe(this, Observer {
 
             if (it.data != null && it.data.size != 0) {
-                adapterRestaurant?.setData(it.data )
+                adapterRestaurant?.setData(it.data)
                 adapterRestaurant?.getData()?.let { it1 ->
                     dataResturant.addAll(it1)
 
@@ -125,13 +133,14 @@ class DashBoardActivity : BaseActivity() {
                     filter.visibility = View.GONE
                 resturantCount.text =
                     TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
-            } else {
+            } else if (it.status != ErrorCodes.SUCCESS) {
                 showError(false, it.message, null)
             }
         })
 
         viewModel.errorRequest.observe(this, Observer {
-            showError(false, it, null)
+            if (it != null)
+                showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE

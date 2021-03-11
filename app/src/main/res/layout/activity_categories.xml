@@ -1,264 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:animateLayoutChanges="true"
+    android:fitsSystemWindows="true"
+    tools:context=".details.CategoryActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:minHeight="@dimen/_150sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/leftIcon"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:background="@drawable/back_bg"
-        android:contentDescription="@string/back"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_7sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
-
-
-    <TextView
-        android:id="@+id/tv_header_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="5sp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_5sdp"
-        android:textColor="#1e222a"
-        android:textSize="17sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toStartOf="@id/shareIcon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_header"
-        tools:text="Met fresh" />
-
-    <TextView
-        android:id="@+id/addressLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="3sp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_5sdp"
-        android:textColor="#787a7f"
-        android:textSize="13sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_header_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_header_name"
-        tools:text="Shop No.E, 17A, Udhyog Marg, C Block (201301)" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/shareIcon"
-        android:layout_width="@dimen/_26sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:contentDescription="@string/back"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_7sdp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_header_name"
-        app:layout_constraintEnd_toStartOf="@id/bookmarkIcon"
-        app:layout_constraintTop_toTopOf="@id/tv_header_name"
-        app:srcCompat="@drawable/ic_share" />
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/bookmarkIcon"
-        android:layout_width="@dimen/_26sdp"
-        android:layout_height="@dimen/_26sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:contentDescription="@string/back"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_7sdp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_header_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_header_name"
-        app:srcCompat="@drawable/ic_bookmark" />
-
-    <LinearLayout
-        android:id="@+id/details"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:background="@drawable/detail_rating_bg"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressLayout">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/bookmark"
-                app:srcCompat="@drawable/ic_location" />
-
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_9sdp"
-                android:gravity="center_horizontal"
-                android:letterSpacing="0.02"
-                android:textColor="@color/color_787a7f"
-                android:textSize="@dimen/_11sdp"
-                android:textStyle="normal"
-                app:textFont="medium"
-                tools:text="5 km" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_1sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_gravity="center"
-            android:background="@color/color_b2bdd1" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/bookmark"
-                app:srcCompat="@drawable/ic_star" />
-
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_9sdp"
-                android:gravity="center_horizontal"
-                android:letterSpacing="0.02"
-                android:textColor="@color/color_787a7f"
-                android:textSize="@dimen/_11sdp"
-                android:textStyle="normal"
-                app:textFont="medium"
-                tools:text="5 km" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/_1sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_gravity="center"
-            android:background="@color/color_b2bdd1" />
+        android:layout_height="@dimen/_200sdp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/bookmark"
-                app:srcCompat="@drawable/ic_minimum_order" />
-
-            <com.ezymd.restaurantapp.customviews.SnapTextView
-                android:id="@+id/minimumOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_9sdp"
-                android:gravity="center_horizontal"
-                android:letterSpacing="0.02"
-                android:textColor="@color/color_787a7f"
-                android:textSize="@dimen/_11sdp"
-                android:textStyle="normal"
-                app:textFont="medium"
-                tools:text="5 km" />
-
-        </LinearLayout>
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="true"
+            app:toolbarId="@+id/toolbar">
 
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_240sdp"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_500sdp"
-        android:theme="@style/progressBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/CustomToolBarStyle">
 
-
-    <View
-        android:id="@+id/viewTop"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/color_e5e9ef"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details" />
+            </androidx.appcompat.widget.Toolbar>
 
 
-    <ImageView
-        android:id="@+id/counts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:contentDescription="@string/bookmark"
-        app:layout_constraintEnd_toStartOf="@id/tabs"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewTop"
-        app:srcCompat="@drawable/ic_menu_icon"
-        app:tint="@color/black_323232" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_40sdp"
-        app:layout_constraintBottom_toBottomOf="@id/counts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/counts"
-        app:layout_constraintTop_toTopOf="@id/counts"
-        app:srcCompat="@drawable/ic_menu_icon"
-        app:tabBackground="@color/white"
-        app:tabGravity="start"
-        app:tabIndicator="@null"
-        app:tabMode="scrollable" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/content_scrolling" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

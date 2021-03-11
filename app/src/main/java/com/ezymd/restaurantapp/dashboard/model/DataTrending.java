@@ -12,6 +12,9 @@ public class DataTrending implements Serializable {
     @Expose
     private Double rating = 0.0;
 
+    @SerializedName("distance")
+    @Expose
+    private Double distance = 0.0;
 
     @SerializedName("id")
     @Expose
@@ -191,5 +194,13 @@ public class DataTrending implements Serializable {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

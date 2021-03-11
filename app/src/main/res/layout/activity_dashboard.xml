@@ -89,7 +89,7 @@
                 android:singleLine="true"
                 android:textColor="@color/color_002366"
                 android:textSize="@dimen/_18sdp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:textFont="bold" />
