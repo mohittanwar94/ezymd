@@ -47,6 +47,8 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun setData() {
+        emptymsg.text = getString(R.string.no_record_found)
+        image.setImageResource(R.drawable.ic_search)
         if (StoreType.Grocery == typeCategory) {
             search.hint = getString(R.string.search_grocery_stores)
         } else if (StoreType.Pharmacy == typeCategory) {
@@ -61,8 +63,8 @@ class SearchActivity : BaseActivity() {
             override fun afterTextChanged(s: Editable?) {
                 if (search.text.toString().trim().length > 4) {
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("category_id",""+typeCategory)
-                    baseRequest.paramsMap.put("search", search.text.toString())
+                    baseRequest.paramsMap["category_id"] = "" + typeCategory
+                    baseRequest.paramsMap["search"] = search.text.toString()
                     viewModel.searchRestaurants(baseRequest)
                 }
             }
@@ -70,7 +72,7 @@ class SearchActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (search.text.toString().trim().isEmpty()) {
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("category_id",""+typeCategory)
+                    baseRequest.paramsMap["category_id"] = "" + typeCategory
                     viewModel.searchRestaurants(baseRequest)
                 }
             }
@@ -93,14 +95,14 @@ class SearchActivity : BaseActivity() {
             )
         )
         restaurantAdapter = DashBoardNearByAdapter(this, OnRecyclerView { position, view ->
-            if (typeCategory==StoreType.RESTAURANT){
+            if (typeCategory == StoreType.RESTAURANT) {
                 val intent = Intent(this@SearchActivity, DetailsActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(dataResturant[position]))
                 startActivity(intent)
-                overridePendingTransition(R.anim.left_in,R.anim.left_out)
+                overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 EzymdApplication.getInstance().cartData.postValue(null)
 
-            }else {
+            } else {
                 val intent = Intent(this@SearchActivity, CategoryActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
                 startActivity(intent)
@@ -131,6 +133,12 @@ class SearchActivity : BaseActivity() {
                 restaurantAdapter?.setData(it.data)
                 restaurantAdapter?.getData()?.let { it1 -> dataResturant.addAll(it1) }
             }
+            if (it.data != null && it.data.size == 0) {
+                restaurantAdapter?.clearData()
+            }
+            if (it.data != null)
+                setEmptyScreen(it.data.size)
+
         })
 
         viewModel.mSearchData.observe(this, Observer {
@@ -140,6 +148,11 @@ class SearchActivity : BaseActivity() {
                 restaurantAdapter?.setData(it.data)
                 restaurantAdapter?.getData()?.let { it1 -> dataResturant.addAll(it1) }
             }
+            if (it.data != null && it.data.size == 0) {
+                restaurantAdapter?.clearData()
+            }
+            if (it.data != null)
+                setEmptyScreen(it.data.size)
         })
 
         viewModel.errorRequest.observe(this, Observer {
@@ -152,6 +165,11 @@ class SearchActivity : BaseActivity() {
         })
     }
 
+    private fun setEmptyScreen(size: Int) {
+        emptyLay.visibility = if (size > 0) View.GONE else View.VISIBLE
+
+    }
+
 
     override fun onStop() {
         super.onStop()
@@ -161,7 +179,7 @@ class SearchActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
     override fun onDestroy() {

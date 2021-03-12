@@ -352,7 +352,7 @@ class DetailsActivity : BaseActivity() {
     private fun onChildChanged() {
         dataResturant.clear()
         restaurantAdapter!!.notifyDataSetChanged()
-        if (foodType.size==0)
+        if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
         for (item in mData.data) {
@@ -411,6 +411,11 @@ class DetailsActivity : BaseActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
     private fun setToolBar() {
