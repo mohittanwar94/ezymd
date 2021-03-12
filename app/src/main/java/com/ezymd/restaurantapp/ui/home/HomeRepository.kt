@@ -104,12 +104,12 @@ class HomeRepository {
     suspend fun getTrending(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<TrendingDashboardModel> {
+    ): ResultWrapper<TrendingModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.trendingStores(
+            apiServices.getTrending(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }

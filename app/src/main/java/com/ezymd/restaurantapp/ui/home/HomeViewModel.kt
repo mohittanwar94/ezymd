@@ -9,6 +9,7 @@ import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.ui.home.model.TrendingModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SingleLiveEvent
@@ -23,7 +24,7 @@ class HomeViewModel : ViewModel() {
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
     val mPagerData: MutableLiveData<ResturantModel>
-    val mTrendingData: MutableLiveData<TrendingDashboardModel>
+    val mTrendingData: MutableLiveData<TrendingModel>
     val mResturantData: MutableLiveData<TrendingDashboardModel>
     val isLoading: MutableLiveData<Boolean>
 

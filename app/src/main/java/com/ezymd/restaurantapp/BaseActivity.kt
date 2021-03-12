@@ -19,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.customviews.SnapTextView
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
 import com.ezymd.restaurantapp.push.SinchService
 import com.ezymd.restaurantapp.push.SinchService.SinchServiceInterface
+import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
@@ -135,6 +137,23 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         baseContext.resources.updateConfiguration(configuration, metrics)
     }
 
+    fun getRestaurantObject(dataTrending: DataTrending) = Resturant().apply {
+        address = dataTrending.address
+        lat = dataTrending.lat.toDouble()
+        longitude = dataTrending.lang.toDouble()
+        id = dataTrending.id
+        name = dataTrending.name
+        banner = dataTrending.banner
+        category = dataTrending.cuisines
+        cuisines = dataTrending.cuisines
+        rating = dataTrending.rating
+        minOrder = dataTrending.min_order
+        discount = dataTrending.discount.toInt()
+        isFreeDelivery = dataTrending.is_free_delivery.toInt()
+        distance = dataTrending.distance
+        phoneNo = dataTrending.phone_no
+
+    }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         onNetWorkChange(isConnected)
@@ -337,7 +356,8 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             permissionListener = listener
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED) {
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 val notGranted = ArrayList<String>()
                 val permissions =
                     arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO)
@@ -501,7 +521,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                     layoutInflater.inflate(R.layout.custom_snackbar_view, null)
                 netWorkChange!!.view.setBackgroundColor(Color.TRANSPARENT)
                 val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-                textMsg.text=getString(R.string.no_internet_connection)
+                textMsg.text = getString(R.string.no_internet_connection)
                 val snackbarLayout = netWorkChange!!.view as SnackbarLayout
                 snackbarLayout.setPadding(0, 0, 0, 0)
                 snackbarLayout.addView(customSnackView, 0)
@@ -569,7 +589,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=getString(message)
+            textMsg.text = getString(message)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -589,7 +609,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=getString(message)
+            textMsg.text = getString(message)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -607,7 +627,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=message
+            textMsg.text = message
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -630,7 +650,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val customSnackView: View =
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=message
+            textMsg.text = message
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)

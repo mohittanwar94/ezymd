@@ -316,6 +316,11 @@ class CategoryActivity : BaseActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.right_in,R.anim.right_out)
+    }
+
     fun showBottomSheet(it: View, item: ItemModel) {
         UIUtil.clickAlpha(it)
         val sheetDialog = BottomSheetDialog(this)
