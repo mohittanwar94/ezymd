@@ -105,7 +105,8 @@ class CategoryActivity : BaseActivity() {
             }
         })
         viewModel.errorRequest.observe(this, Observer {
-            showError(false, it, null)
+            if (it != null)
+                showError(false, it, null)
         })
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
