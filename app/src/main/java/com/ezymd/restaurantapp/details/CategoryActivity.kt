@@ -19,11 +19,8 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
-import com.ezymd.restaurantapp.details.model.FoodTypeModel
-import com.ezymd.restaurantapp.details.model.ItemModel
-import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
-import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -35,11 +32,11 @@ class CategoryActivity : BaseActivity() {
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
     private val dataResturant = ArrayList<ItemModel>()
-    private var mData = MenuItemModel()
+    private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
     private var restaurantAdapter: MenuAdapter? = null
     private val viewModel by lazy {
-        ViewModelProvider(this).get(DetailViewModel::class.java)
+        ViewModelProvider(this).get(CategoryViewModel::class.java)
     }
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
@@ -70,9 +67,9 @@ class CategoryActivity : BaseActivity() {
                 ))
             )
         )
-        restaurantAdapter = MenuAdapter(viewModel, this, OnRecyclerView { position, view ->
+        /*restaurantAdapter = MenuAdapter(viewModel, this, OnRecyclerView { position, view ->
 
-        }, dataResturant)
+        }, dataResturant)*/
         itmesRecyclerView.adapter = restaurantAdapter
 
 
@@ -80,8 +77,8 @@ class CategoryActivity : BaseActivity() {
 
     private fun getData() {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("id", "" + restaurant.id)
-        viewModel.getDetails(baseRequest)
+        baseRequest.paramsMap["shop_id"] = "" + restaurant.id
+        viewModel.loadShopDetail(baseRequest)
 
     }
 
@@ -93,51 +90,45 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun setObserver() {
-        viewModel.mResturantData.observe(this, Observer {
-
+        viewModel.mResturantData.observe(this, {
             if (it.data != null) {
-                mData = it
-                if (it.data.size > 0)
+                mData = it.data!!
+                if (it.data?.categories?.isNullOrEmpty() == false)
                     detailContent.visibility = View.VISIBLE
-                processDataFindTabs(it)
+                processDataFindTabs(it.data!!)
+
             }
-        })
-
-        viewModel.errorRequest.observe(this, Observer {
-            showError(false, it, null)
-        })
-        viewModel.isLoading.observe(this, Observer {
-            progress.visibility = if (it) View.VISIBLE else View.GONE
+            viewModel.errorRequest.observe(this, Observer {
+                showError(false, it, null)
+            })
+            viewModel.isLoading.observe(this, Observer {
+                progress.visibility = if (it) View.VISIBLE else View.GONE
 
 
+            })
         })
     }
 
 
-    override fun onStop() {
-        super.onStop()
-
-    }
-
-    private fun processDataFindTabs(it: MenuItemModel) {
+    private fun processDataFindTabs(it: CategoriesAndBannersData) {
         foodType.clear()
-
-        for (item in it.data) {
-            val model = FoodTypeModel()
-            model.categoryID = item.category_id
-            model.categoryName = item.category
-            var isPresent = false
-            for (foodCategory in foodType) {
-                if (foodCategory.categoryID == model.categoryID) {
-                    foodCategory.count = foodCategory.count + 1
-                    isPresent = true
+        if (!it.categories.isNullOrEmpty()) {
+            for (item in it.categories!!) {
+                val model = FoodTypeModel()
+                model.categoryID = item.id
+                model.categoryName = item.name
+                var isPresent = false
+                for (foodCategory in foodType) {
+                    if (foodCategory.categoryID == model.categoryID) {
+                        foodCategory.count = foodCategory.count + 1
+                        isPresent = true
+                    }
                 }
+                if (!isPresent)
+                    foodType.add(model)
+
             }
-            if (!isPresent)
-                foodType.add(model)
-
         }
-
         disPlayCategoryData()
     }
 
@@ -208,16 +199,16 @@ class CategoryActivity : BaseActivity() {
 
     private fun onChildChanged() {
         dataResturant.clear()
-        restaurantAdapter!!.notifyDataSetChanged()
+        restaurantAdapter?.notifyDataSetChanged()
         if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
-        for (item in mData.data) {
-            if (category.categoryID == item.category_id)
-                dataResturant.add(item)
-
+        for (item in mData.categories!!) {
+            /*  if (category.categoryID == item.id)
+                  dataResturant.add(item)
+  */
         }
-        restaurantAdapter!!.setData(dataResturant)
+        restaurantAdapter?.setData(dataResturant)
     }
 
     private fun setHeaderData() {
@@ -289,15 +280,15 @@ class CategoryActivity : BaseActivity() {
 
                 if (mCurrentState != State.EXPANDED) {
                 }
-                mCurrentState = State.EXPANDED;
-            } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                mCurrentState = State.EXPANDED
+            } else if (Math.abs(verticalOffset) >= appBarLayout.totalScrollRange) {
                 if (mCurrentState != State.COLLAPSED) {
                     toolbar.setTitleTextColor(Color.BLACK)
                     toolbar.setBackgroundColor(Color.WHITE)
                     window.statusBarColor = Color.WHITE
                     toolbar_layout.setCollapsedTitleTextColor(Color.BLACK)
                 }
-                mCurrentState = State.COLLAPSED;
+                mCurrentState = State.COLLAPSED
             } else {
                 if (mCurrentState != State.IDLE) {
                     toolbar.setBackgroundColor(Color.TRANSPARENT)
@@ -311,14 +302,9 @@ class CategoryActivity : BaseActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(R.anim.right_in,R.anim.right_out)
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
     fun showBottomSheet(it: View, item: ItemModel) {

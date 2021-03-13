@@ -1,7 +1,5 @@
 package com.ezymd.restaurantapp.editprofile
 
-import com.ezymd.restaurantapp.details.model.MenuItemModel
-import com.ezymd.restaurantapp.login.LoginRequest
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ApiClient

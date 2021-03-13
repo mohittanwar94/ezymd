@@ -6,6 +6,7 @@ import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
+import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.login.model.LoginModel
@@ -197,6 +198,12 @@ interface WebServices {
     suspend fun saveRating(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): LocationValidatorModel
+
+    @GET(ServerConfig.SHOP_DETAIL)
+    suspend fun shopDetail(
+        @Query("shop_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): CategoriesResponse
 
     @FormUrlEncoded
     @POST(ServerConfig.APPLY_COUPON)
