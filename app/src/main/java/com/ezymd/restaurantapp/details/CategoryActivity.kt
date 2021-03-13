@@ -55,6 +55,8 @@ class CategoryActivity : BaseActivity() {
         setHeaderData()
 
         setAdapter()
+        setObserver()
+
     }
 
     private fun setAdapter() {
@@ -84,13 +86,16 @@ class CategoryActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        setObserver()
 
 
     }
 
     private fun setObserver() {
-        viewModel.mResturantData.observe(this, {
+        viewModel.mCategoryWithProduct.observe(this, Observer {
+            if (it.data != null) {
+            }
+        })
+        viewModel.mResturantData.observe(this, Observer {
             if (it.data != null) {
                 mData = it.data!!
                 if (it.data?.categories?.isNullOrEmpty() == false)
@@ -98,15 +103,16 @@ class CategoryActivity : BaseActivity() {
                 processDataFindTabs(it.data!!)
 
             }
-            viewModel.errorRequest.observe(this, Observer {
-                showError(false, it, null)
-            })
-            viewModel.isLoading.observe(this, Observer {
-                progress.visibility = if (it) View.VISIBLE else View.GONE
-
-
-            })
         })
+        viewModel.errorRequest.observe(this, Observer {
+            showError(false, it, null)
+        })
+        viewModel.isLoading.observe(this, Observer {
+            progress.visibility = if (it) View.VISIBLE else View.GONE
+
+
+        })
+
     }
 
 
