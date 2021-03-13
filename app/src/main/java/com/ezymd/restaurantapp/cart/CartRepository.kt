@@ -11,7 +11,6 @@ import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineDispatcher
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

@@ -59,8 +59,8 @@ class DetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         window.sharedElementEnterTransition =
-            TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation);
-        image.transitionName = "thumbnailTransition";
+            TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation)
+        image.transitionName = "thumbnailTransition"
 
         getData()
         setToolBar()

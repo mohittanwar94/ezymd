@@ -1,5 +1,7 @@
-package com.ezymd.restaurantapp.ui.profile
+package com.ezymd.restaurantapp.details
 
+import com.ezymd.restaurantapp.details.model.CategoriesResponse
+import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -7,19 +9,19 @@ import com.ezymd.restaurantapp.network.WebServices
 import com.ezymd.restaurantapp.utils.BaseRequest
 import kotlinx.coroutines.CoroutineDispatcher
 
-class ProfileRepository {
+class CategoryRepository {
 
 
-    suspend fun logout(
+    suspend fun shopDetails(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LogoutModel> {
+    ): ResultWrapper<CategoriesResponse> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.logout(
-                baseRequest.accessToken
+            apiServices.shopDetail(
+                baseRequest.paramsMap["shop_id"]!!, baseRequest.accessToken
             )
         }
 
@@ -29,14 +31,14 @@ class ProfileRepository {
 
     companion object {
         @Volatile
-        private var sportsFeeRepository: ProfileRepository? = null
+        private var sportsFeeRepository: CategoryRepository? = null
 
         @JvmStatic
-        val instance: ProfileRepository?
+        val instance: CategoryRepository?
             get() {
                 if (sportsFeeRepository == null) {
-                    synchronized(ProfileRepository::class.java) {
-                        sportsFeeRepository = ProfileRepository()
+                    synchronized(CategoryRepository::class.java) {
+                        sportsFeeRepository = CategoryRepository()
                     }
                 }
                 return sportsFeeRepository
