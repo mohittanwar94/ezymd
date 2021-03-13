@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import CategoryWithProductResponse
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,7 @@ class CategoryViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var categoryRepository: CategoryRepository? = null
     val mResturantData: MutableLiveData<CategoriesResponse>
-    val mCategoryWithProduct: MutableLiveData<CategoriesResponse>
+    val mCategoryWithProduct: MutableLiveData<CategoryWithProductResponse>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {

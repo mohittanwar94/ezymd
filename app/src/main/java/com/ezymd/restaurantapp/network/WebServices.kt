@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.network
 
 
+import CategoryWithProductResponse
 import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
@@ -211,7 +212,7 @@ interface WebServices {
         @Query("shop_id") id: String,
         @Query("category_id") category_id: String,
         @Header("Authorization") accessToken: String
-    ): CategoriesResponse
+    ): CategoryWithProductResponse
 
     @FormUrlEncoded
     @POST(ServerConfig.APPLY_COUPON)

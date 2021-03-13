@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import CategoryWithProductResponse
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ApiClient
@@ -32,7 +33,7 @@ class CategoryRepository {
     suspend fun shopProductCategoryDetails(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<CategoriesResponse> {
+    ): ResultWrapper<CategoryWithProductResponse> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
