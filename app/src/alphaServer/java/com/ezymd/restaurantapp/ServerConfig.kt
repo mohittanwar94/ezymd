@@ -35,6 +35,7 @@ interface ServerConfig {
         const val SAVE_PAYMENT = "paymentVerify"
         const val SAVE_RATING = "addReview"
         const val SHOP_DETAIL = "shopDetail"
+        const val SHOP_PRODUCT_DETAIL="shopCategoryProducts"
         const val APPLY_COUPON = "applyCoupon"
         const val LIST_COUPON = "listCoupon/{restaurant_id}"
         const val TRANSACTION_CHARGES = "transactionAmount"

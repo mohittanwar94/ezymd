@@ -29,6 +29,23 @@ class CategoryRepository {
     }
 
 
+    suspend fun shopProductCategoryDetails(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<CategoriesResponse> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.shopProductCategoryDetail(
+                baseRequest.paramsMap["shop_id"]!!,baseRequest.paramsMap["category_id"]!!, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+
     companion object {
         @Volatile
         private var sportsFeeRepository: CategoryRepository? = null

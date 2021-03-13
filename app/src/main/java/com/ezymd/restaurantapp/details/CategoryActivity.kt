@@ -204,11 +204,10 @@ class CategoryActivity : BaseActivity() {
         if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
-        for (item in mData.categories!!) {
-            /*  if (category.categoryID == item.id)
-                  dataResturant.add(item)
-  */
-        }
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["shop_id"] = "" + restaurant.id
+        baseRequest.paramsMap["category_id"] = "" + category.categoryID
+        viewModel.loadShopCategoryWithProduct(baseRequest)
         restaurantAdapter?.setData(dataResturant)
     }
 

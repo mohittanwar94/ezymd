@@ -205,6 +205,14 @@ interface WebServices {
         @Header("Authorization") accessToken: String
     ): CategoriesResponse
 
+
+    @GET(ServerConfig.SHOP_PRODUCT_DETAIL)
+    suspend fun shopProductCategoryDetail(
+        @Query("shop_id") id: String,
+        @Query("category_id") category_id: String,
+        @Header("Authorization") accessToken: String
+    ): CategoriesResponse
+
     @FormUrlEncoded
     @POST(ServerConfig.APPLY_COUPON)
     suspend fun applyCoupon(

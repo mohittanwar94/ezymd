@@ -54,6 +54,25 @@ class CategoryViewModel : ViewModel() {
 
     }
 
+
+    fun loadShopCategoryWithProduct(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = categoryRepository!!.shopProductCategoryDetails(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success ->{} /*mResturantData.postValue(result.value)*/
+            }
+
+        }
+
+    }
+
     private fun showNetworkError() {
         errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
     }
