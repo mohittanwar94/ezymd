@@ -134,9 +134,10 @@ class CategoryActivity : BaseActivity() {
 
     private fun disPlayCategoryData() {
         if (foodType.size == 0) {
-            layoutTabs.visibility = View.VISIBLE
+            layoutTabs.visibility = View.GONE
             return
         }
+        layoutTabs.visibility = View.VISIBLE
         tabs.clearOnTabSelectedListeners()
         tabs.removeAllTabs()
         tabs.visibility = View.VISIBLE
