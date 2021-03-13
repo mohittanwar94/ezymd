@@ -57,20 +57,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_toLeftOf="@+id/share"
                 android:contentDescription="@string/share"
                 android:paddingTop="@dimen/_20sdp"
-                android:layout_toLeftOf="@+id/share"
                 app:srcCompat="@drawable/ic_phone_call"
-                tools:ignore="RtlSymmetry"/>
+                tools:ignore="RtlSymmetry" />
 
             <ImageView
                 android:id="@+id/share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:contentDescription="@string/bookmark"
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_15sdp"
-                android:layout_alignParentEnd="true"
                 app:srcCompat="@drawable/ic_share"
                 tools:ignore="RtlSymmetry" />
 
@@ -81,17 +81,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/category"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:letterSpacing="0.01"
-                app:drawableLeftCompat="@drawable/ic_location"
-                android:lineSpacingExtra="@dimen/_3sdp"
                 android:drawablePadding="@dimen/_15sdp"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_3sdp"
                 android:paddingLeft="@dimen/_15sdp"
                 android:paddingRight="@dimen/_15sdp"
                 android:textColor="@color/color_787a7f"
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="normal"
-                app:textFont="roman"
-                />
+                app:drawableLeftCompat="@drawable/ic_location"
+                app:textFont="roman" />
 
             <LinearLayout
                 android:id="@+id/details"
@@ -252,14 +251,17 @@
                         app:srcCompat="@drawable/ic_menu_icon" />
 
                     <com.google.android.material.tabs.TabLayout
-                        android:layout_width="match_parent"
                         android:id="@+id/tabs"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         app:tabBackground="@color/white"
                         app:tabGravity="start"
                         app:tabIndicator="@null"
                         app:tabMode="scrollable" />
 
+                    <pokercc.android.expandablerecyclerview.ExpandableRecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
                 <View
