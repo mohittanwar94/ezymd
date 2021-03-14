@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
@@ -12,6 +11,7 @@ import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.OnRecyclerViewClickType
+import com.ezymd.restaurantapp.utils.VerticalSpacesItemDecoration
 import kotlinx.android.synthetic.main.count_parent_item.view.*
 
 class SubCategoryWithProductAdapter(
@@ -50,7 +50,13 @@ class SubCategoryWithProductAdapter(
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-
+            myViewHolder.itemView.recycler.addItemDecoration(
+                VerticalSpacesItemDecoration(
+                    (context.resources.getDimensionPixelSize(
+                        R.dimen._13sdp
+                    ))
+                )
+            )
             myViewHolder.itemView.recycler.adapter = adapterProduct
 
 
