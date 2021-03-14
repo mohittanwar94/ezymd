@@ -10,14 +10,15 @@
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/title_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20sdp"
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="@dimen/_10sdp"
+        android:layout_toLeftOf="@+id/arrow_image"
         android:textColor="@color/color_002366"
         android:textSize="@dimen/_15sdp"
-        app:textFont="roman"
+        app:textFont="bold"
         tool:text="Dummy text" />
 
     <ImageView
