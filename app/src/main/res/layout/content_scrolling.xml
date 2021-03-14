@@ -224,6 +224,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/details"
                 android:layout_marginTop="@dimen/_28sdp"
+                tools:visibility="visible"
                 android:visibility="gone">
 
                 <View
@@ -259,10 +260,8 @@
                         app:tabIndicator="@null"
                         app:tabMode="scrollable" />
 
-                    <pokercc.android.expandablerecyclerview.ExpandableRecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
                 </LinearLayout>
+
 
                 <View
                     android:id="@+id/viewBottom"
@@ -278,9 +277,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/viewBottom"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:visibility="gone"
                     android:paddingLeft="@dimen/_15sdp"
                     android:paddingRight="@dimen/_15sdp" />
 
+                <pokercc.android.expandablerecyclerview.ExpandableRecyclerView
+                    android:id="@+id/expendableCategoryItemView"
+                    android:layout_width="match_parent"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/layoutTabs"/>
             </RelativeLayout>
         </RelativeLayout>
 

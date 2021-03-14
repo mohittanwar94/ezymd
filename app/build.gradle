@@ -28,6 +28,7 @@ android {
             storePassword keys.keyPassword
         }
     }
+    viewBinding.enabled = true
     defaultConfig {
         applicationId "com.ezymd.restaurantapp"
         minSdkVersion 21

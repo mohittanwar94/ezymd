@@ -8,6 +8,7 @@ import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.details.model.SubCategoriesResponse
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
@@ -211,7 +212,7 @@ interface WebServices {
         @Query("shop_id") id: String,
         @Query("category_id") category_id: String,
         @Header("Authorization") accessToken: String
-    ): CategoriesResponse
+    ): SubCategoriesResponse
 
     @FormUrlEncoded
     @POST(ServerConfig.APPLY_COUPON)

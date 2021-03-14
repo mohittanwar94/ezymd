@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -7,11 +8,12 @@ import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,6 +21,9 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
+import com.ezymd.restaurantapp.databinding.CountChildrenItemBinding
+import com.ezymd.restaurantapp.databinding.CountParentItemBinding
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.utils.*
@@ -27,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_categories.*
 import kotlinx.android.synthetic.main.content_scrolling.*
+import pokercc.android.expandablerecyclerview.ExpandableAdapter
 
 class CategoryActivity : BaseActivity() {
     private var isDisplayCount = false
@@ -34,13 +40,14 @@ class CategoryActivity : BaseActivity() {
     private val dataResturant = ArrayList<ItemModel>()
     private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
-    private var restaurantAdapter: MenuAdapter? = null
     private val viewModel by lazy {
         ViewModelProvider(this).get(CategoryViewModel::class.java)
     }
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
     }
+    private val binding by lazy { ActivityCategoriesBinding.inflate(layoutInflater) }
+
 
     enum class State {
         EXPANDED, COLLAPSED, IDLE
@@ -49,7 +56,7 @@ class CategoryActivity : BaseActivity() {
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_categories)
+        setContentView(binding.root)
         getData()
         setToolBar()
         setHeaderData()
@@ -69,11 +76,10 @@ class CategoryActivity : BaseActivity() {
                 ))
             )
         )
-        /*restaurantAdapter = MenuAdapter(viewModel, this, OnRecyclerView { position, view ->
 
-        }, dataResturant)*/
-        itmesRecyclerView.adapter = restaurantAdapter
 
+        expendableCategoryItemView.adapter = SubCategories()
+        expendableCategoryItemView.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -84,18 +90,22 @@ class CategoryActivity : BaseActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
     private fun setObserver() {
-        viewModel.mCategoryWithProduct.observe(this, Observer {
+        viewModel.mCategoryWithProduct.observe(this, {
             if (it.data != null) {
+
             }
         })
-        viewModel.mResturantData.observe(this, Observer {
+        viewModel.mSubCategoriesResponse.observe(this, {
+            if (it.data != null) {
+                it.data?.let { it1 ->
+                    (expendableCategoryItemView.adapter as? SubCategories)?.setNewData(
+                        it1
+                    )
+                }
+            }
+        })
+        viewModel.mResturantData.observe(this, {
             if (it.data != null) {
                 mData = it.data!!
                 if (it.data?.categories?.isNullOrEmpty() == false)
@@ -104,10 +114,10 @@ class CategoryActivity : BaseActivity() {
 
             }
         })
-        viewModel.errorRequest.observe(this, Observer {
+        viewModel.errorRequest.observe(this, {
             showError(false, it, null)
         })
-        viewModel.isLoading.observe(this, Observer {
+        viewModel.isLoading.observe(this, {
             progress.visibility = if (it) View.VISIBLE else View.GONE
 
 
@@ -206,7 +216,6 @@ class CategoryActivity : BaseActivity() {
 
     private fun onChildChanged() {
         dataResturant.clear()
-        restaurantAdapter?.notifyDataSetChanged()
         if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
@@ -214,7 +223,6 @@ class CategoryActivity : BaseActivity() {
         baseRequest.paramsMap["shop_id"] = "" + restaurant.id
         baseRequest.paramsMap["category_id"] = "" + category.categoryID
         viewModel.loadShopCategoryWithProduct(baseRequest)
-        restaurantAdapter?.setData(dataResturant)
     }
 
     private fun setHeaderData() {
@@ -329,4 +337,92 @@ class CategoryActivity : BaseActivity() {
         sheetDialog.show()
     }
 
+    private class ChildVH(val binding: CountChildrenItemBinding) :
+        ExpandableAdapter.ViewHolder(binding.root)
+
+    private class ParentVH(val binding: CountParentItemBinding) :
+        ExpandableAdapter.ViewHolder(binding.root)
+
+    private class SubCategories : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
+
+        private  var header: List<Header>?=null
+
+        fun setNewData(categories: List<Header>) {
+            this.header = categories
+            notifyDataSetChanged()
+        }
+
+
+        override fun onCreateGroupViewHolder(
+            viewGroup: ViewGroup,
+            viewType: Int
+        ): ViewHolder = LayoutInflater.from(viewGroup.context)
+            .let { CountParentItemBinding.inflate(it, viewGroup, false) }
+            .let(::ParentVH)
+
+        override fun onCreateChildViewHolder(
+            viewGroup: ViewGroup,
+            viewType: Int
+        ): ViewHolder = LayoutInflater.from(viewGroup.context)
+            .let { CountChildrenItemBinding.inflate(it, viewGroup, false) }
+            .let(::ChildVH)
+
+
+        override fun onBindChildViewHolder(
+            holder: ViewHolder,
+            groupPosition: Int,
+            childPosition: Int,
+            payloads: List<Any>
+        ) {
+            if (payloads.isEmpty()) {
+                (holder as? ChildVH)?.apply {
+                    binding.dishName.text = header?.getOrNull(groupPosition)?.childs?.getOrNull(childPosition)?.name
+                }
+            }
+        }
+
+        override fun onBindGroupViewHolder(
+            holder: ViewHolder,
+            groupPosition: Int,
+            expand: Boolean,
+            payloads: List<Any>
+        ) {
+            if (payloads.isEmpty()) {
+                (holder as? ParentVH)?.apply {
+                    binding.titleText.text = header?.getOrNull(groupPosition)?.name
+                    binding.arrowImage.rotation = if (expand) 0f else -90.0f
+                }
+            }
+        }
+
+
+        override fun onGroupViewHolderExpandChange(
+            holder: ViewHolder,
+            groupPosition: Int,
+            animDuration: Long,
+            expand: Boolean
+        ) {
+
+            holder as ParentVH
+            val arrowImage = holder.binding.arrowImage
+            if (expand) {
+                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, 0f)
+                    .setDuration(animDuration)
+                    .start()
+                // 不要使用这种动画，Item离屏之后，动画会取消
+//            arrowImage.animate()
+//                .setDuration(animDuration)
+//                .rotation(0f)
+//                .start()
+            } else {
+                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, -90f)
+                    .setDuration(animDuration)
+                    .start()
+            }
+
+        }
+
+        override fun getGroupCount(): Int = header?.size?:0
+        override fun getChildCount(groupPosition: Int): Int = header?.get(0)?.childs?.size?:0
+    }
 }

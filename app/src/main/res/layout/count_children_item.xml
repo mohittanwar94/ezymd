@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp">
+
+
+    <com.ezymd.restaurantapp.customviews.RoundedImageView
+        android:id="@+id/ivNotesThumb"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:scaleType="centerCrop"
+        app:corner_radius="@dimen/_7sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/dishName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_weight="1"
+        android:letterSpacing="0.01"
+        android:text="@string/app_name"
+        android:textColor="@color/color_002366"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@id/barrierEnd"
+        app:layout_constraintStart_toEndOf="@id/ivNotesThumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:textFont="medium" />
+
+
+    <com.ezymd.restaurantapp.customviews.QuantityPicker
+        android:id="@+id/quantityPicker"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_gravity="center"
+        android:gravity="end"
+        app:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivNotesThumb"
+        app:max="10"
+        app:min="0"
+        app:textFont="book"
+        app:unit="1"
+        app:value="-5" />
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/addOn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/_9sdp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:letterSpacing="0.01"
+        android:maxLines="2"
+        android:text="@string/pizza"
+        android:textColor="@color/color_787a7f"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@id/price"
+        app:layout_constraintStart_toStartOf="@id/dishName"
+        app:layout_constraintTop_toBottomOf="@id/dishName"
+        app:textFont="roman" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierEnd"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="quantityPicker,add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:gravity="center_vertical"
+        android:letterSpacing="0.01"
+        android:text="@string/dummmy_price"
+        android:textColor="@color/color_787a7f"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/dishName"
+        app:layout_constraintTop_toBottomOf="@id/addOn"
+        app:textFont="medium" />
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/add"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_gravity="end"
+        android:background="@drawable/add_button_bg"
+        android:gravity="center"
+        android:letterSpacing="0.02"
+        android:text="@string/add"
+        android:textAllCaps="true"
+        android:textColor="@color/color_002366"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivNotesThumb"
+        app:textFont="medium" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

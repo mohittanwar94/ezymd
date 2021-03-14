@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
+import com.ezymd.restaurantapp.details.model.SubCategoriesResponse
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -17,6 +18,7 @@ class CategoryViewModel : ViewModel() {
     private var categoryRepository: CategoryRepository? = null
     val mResturantData: MutableLiveData<CategoriesResponse>
     val mCategoryWithProduct: MutableLiveData<CategoriesResponse>
+    val mSubCategoriesResponse: MutableLiveData<SubCategoriesResponse>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -30,6 +32,7 @@ class CategoryViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mResturantData = MutableLiveData()
         mCategoryWithProduct = MutableLiveData()
+        mSubCategoriesResponse = MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
 
@@ -66,7 +69,7 @@ class CategoryViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> mCategoryWithProduct.postValue(result.value)
+                is ResultWrapper.Success -> mSubCategoriesResponse.postValue(result.value)
             }
 
         }
