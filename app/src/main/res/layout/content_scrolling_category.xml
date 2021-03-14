@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/_50sdp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
@@ -276,8 +275,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/viewBottom"
-                    android:layout_marginTop="@dimen/_15sdp"
                     android:paddingLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:paddingRight="@dimen/_15sdp" />
 
             </RelativeLayout>

@@ -76,8 +76,7 @@ class MenuAdapter(
             UIUtil.clickAlpha(it)
             if (mContext is DetailsActivity)
                 mContext.showBottomSheet(it, data[holder.adapterPosition])
-            if (mContext is CategoryActivity)
-                mContext.showBottomSheet(it, data[holder.adapterPosition])
+
         }
         holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
         holder.itemView.quantityPicker.max = item.stock

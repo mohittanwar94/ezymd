@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.details
 
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -8,9 +7,7 @@ import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -22,8 +19,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
-import com.ezymd.restaurantapp.databinding.CountChildrenItemBinding
-import com.ezymd.restaurantapp.databinding.CountParentItemBinding
+import com.ezymd.restaurantapp.details.adapter.SubCategoryWithProductAdapter
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.utils.*
@@ -32,12 +28,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_categories.*
 import kotlinx.android.synthetic.main.content_scrolling.*
-import pokercc.android.expandablerecyclerview.ExpandableAdapter
 
 class CategoryActivity : BaseActivity() {
+    private var adapter: SubCategoryWithProductAdapter? = null
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
     private val dataResturant = ArrayList<ItemModel>()
+    private val dataHeader = ArrayList<Header>()
     private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
     private val viewModel by lazy {
@@ -69,17 +66,16 @@ class CategoryActivity : BaseActivity() {
     private fun setAdapter() {
         itmesRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        itmesRecyclerView.addItemDecoration(
-            VerticalSpacesItemDecoration(
-                (resources.getDimensionPixelSize(
-                    R.dimen._13sdp
-                ))
-            )
-        )
 
 
-        expendableCategoryItemView.adapter = SubCategories()
-        expendableCategoryItemView.layoutManager = LinearLayoutManager(this)
+
+        itmesRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = SubCategoryWithProductAdapter(this, dataHeader,
+            OnRecyclerViewClickType { position, childposition, view ->
+
+
+            })
+        itmesRecyclerView.adapter = adapter
 
     }
 
@@ -99,9 +95,9 @@ class CategoryActivity : BaseActivity() {
         viewModel.mSubCategoriesResponse.observe(this, {
             if (it.data != null) {
                 it.data?.let { it1 ->
-                    (expendableCategoryItemView.adapter as? SubCategories)?.setNewData(
-                        it1
-                    )
+                    dataHeader.clear()
+                    dataHeader.addAll(it1)
+                    adapter?.notifyDataSetChanged()
                 }
             }
         })
@@ -321,7 +317,7 @@ class CategoryActivity : BaseActivity() {
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
-    fun showBottomSheet(it: View, item: ItemModel) {
+    fun showBottomSheet(it: View, item: Product) {
         UIUtil.clickAlpha(it)
         val sheetDialog = BottomSheetDialog(this)
         sheetDialog.setContentView(R.layout.tnc_bottom_sheet)
@@ -337,7 +333,7 @@ class CategoryActivity : BaseActivity() {
         sheetDialog.show()
     }
 
-    private class ChildVH(val binding: CountChildrenItemBinding) :
+    /*private class ChildVH(val binding: CountChildrenItemBinding) :
         ExpandableAdapter.ViewHolder(binding.root)
 
     private class ParentVH(val binding: CountParentItemBinding) :
@@ -345,7 +341,7 @@ class CategoryActivity : BaseActivity() {
 
     private class SubCategories : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
 
-        private  var header: List<Header>?=null
+        private var header: List<Header>? = null
 
         fun setNewData(categories: List<Header>) {
             this.header = categories
@@ -376,7 +372,8 @@ class CategoryActivity : BaseActivity() {
         ) {
             if (payloads.isEmpty()) {
                 (holder as? ChildVH)?.apply {
-                    binding.dishName.text = header?.getOrNull(groupPosition)?.childs?.getOrNull(childPosition)?.name
+                    binding.dishName.text =
+                        header?.getOrNull(groupPosition)?.childs?.getOrNull(childPosition)?.name
                 }
             }
         }
@@ -390,7 +387,7 @@ class CategoryActivity : BaseActivity() {
             if (payloads.isEmpty()) {
                 (holder as? ParentVH)?.apply {
                     binding.titleText.text = header?.getOrNull(groupPosition)?.name
-                    binding.arrowImage.rotation = if (expand) 0f else -90.0f
+                    binding.arrowImage.rotation = if (expand) 0f else 90.0f
                 }
             }
         }
@@ -405,8 +402,7 @@ class CategoryActivity : BaseActivity() {
 
             holder as ParentVH
             val arrowImage = holder.binding.arrowImage
-            if (expand) {
-                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, 0f)
+
                     .setDuration(animDuration)
                     .start()
                 // 不要使用这种动画，Item离屏之后，动画会取消
@@ -415,14 +411,15 @@ class CategoryActivity : BaseActivity() {
 //                .rotation(0f)
 //                .start()
             } else {
-                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, -90f)
+                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, 90f)
                     .setDuration(animDuration)
                     .start()
             }
 
         }
 
-        override fun getGroupCount(): Int = header?.size?:0
-        override fun getChildCount(groupPosition: Int): Int = header?.get(0)?.childs?.size?:0
-    }
+        override fun getGroupCount(): Int = header?.size ?: 0
+        override fun getChildCount(groupPosition: Int): Int =
+            header?.get(groupPosition)?.products?.size ?: 0
+    }*/
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/color_f8f8f8"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".details.DetailsActivity">
 
@@ -66,6 +66,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
@@ -79,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:background="@color/white"
+                android:background="@color/color_f8f8f8"
                 android:ellipsize="end"
                 android:maxLength="50"
                 android:paddingLeft="@dimen/_10sdp"
@@ -100,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_7sdp"
-                android:background="@color/white"
+                android:background="@color/color_f8f8f8"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
@@ -155,10 +156,10 @@
                 android:id="@+id/resturantRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_35sdp"
                 app:layout_constraintTop_toBottomOf="@+id/filterRv" />

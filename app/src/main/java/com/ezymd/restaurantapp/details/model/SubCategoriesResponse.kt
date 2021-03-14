@@ -23,6 +23,7 @@ class Child {
 class Header {
     var name: String? = null
     var id = 0
+    var isExpanded = false
     var products: List<Product>? = null
     var childs: List<Child>? = null
 }

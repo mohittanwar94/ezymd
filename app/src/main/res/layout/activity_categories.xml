@@ -51,7 +51,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_scrolling" />
+    <include layout="@layout/content_scrolling_category" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
