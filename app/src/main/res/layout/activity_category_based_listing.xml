@@ -77,7 +77,6 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_toLeftOf="@+id/cart"
                     android:padding="@dimen/_5sdp"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_launcher_background" />
