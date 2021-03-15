@@ -8,13 +8,17 @@ import android.text.Html
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
@@ -27,7 +31,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_categories.*
-import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.cart_view.*
+import kotlinx.android.synthetic.main.content_scrolling_category.*
 
 class CategoryActivity : BaseActivity() {
     private val bannerList = ArrayList<String>()
@@ -71,7 +76,7 @@ class CategoryActivity : BaseActivity() {
 
 
         itmesRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SubCategoryWithProductAdapter(this, dataHeader,
+        adapter = SubCategoryWithProductAdapter(this, dataHeader, viewModel,
             OnRecyclerViewClickType { position, childposition, view ->
 
 
@@ -88,6 +93,15 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun setObserver() {
+
+        EzymdApplication.getInstance().cartData.observe(this, Observer {
+            if (it != null) {
+                checkDataChanges(it)
+                processCartData(it)
+            }
+        })
+
+
         viewModel.mCategoryWithProduct.observe(this, {
             if (it.data != null) {
 
@@ -133,6 +147,108 @@ class CategoryActivity : BaseActivity() {
 
     }
 
+
+    private fun checkDataChanges(it: ArrayList<ItemModel>) {
+        var i = 0
+        for (item in dataResturant) {
+            SnapLog.print("data quantity===" + item.quantity)
+            if (it.size == 0)
+                item.quantity = 0
+            dataResturant[i] = item
+            for (itemModel in it) {
+                if (itemModel.id == item.id) {
+                    SnapLog.print("quantity===" + itemModel.quantity)
+                    dataResturant[i] = itemModel
+                    break
+                }
+            }
+            i++
+        }
+        onChildChanged()
+
+    }
+
+    private fun processCartData(arrayList: ArrayList<ItemModel>) {
+        var quantity = 0
+        var price = 0
+        for (itemModel in arrayList) {
+            price += (itemModel.price * itemModel.quantity)
+            quantity += itemModel.quantity
+        }
+
+
+        setCartData(quantity, price)
+
+    }
+
+    var isExanded = false
+    private fun setCartData(quantity: Int, price: Int) {
+
+        if (quantity == 0 && price == 0) {
+            //cartView.visibility= View.GONE
+            slideDown(cartView)
+            isExanded = false
+        } else {
+            // cartView.visibility= View.VISIBLE
+            if (!isExanded)
+                slideUp(cartView)
+            isExanded = true
+            setCartDetails(quantity, price)
+        }
+
+
+    }
+
+    private fun setCartDetails(quantityCount: Int, price: Int) {
+        runOnUiThread(Runnable {
+            quantity.text = TextUtils.concat(
+                "" + quantityCount,
+                " ",
+                getString(R.string.items),
+                " | ",
+                getString(R.string.dollor),
+                "" + price
+            )
+        })
+
+    }
+
+    private fun slideUp(view: View) {
+        view.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0f
+        )             // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    private fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            0f,                 // fromYDelta
+            view.height.toFloat()
+        ) // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+            }
+        })
+        view.startAnimation(animate)
+    }
 
     private fun processDataFindTabs(it: CategoriesAndBannersData) {
         foodType.clear()

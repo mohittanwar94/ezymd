@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
+import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.SubCategoriesResponse
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
@@ -83,6 +84,38 @@ class CategoryViewModel : ViewModel() {
 
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
+    }
+    fun addToCart(item: ItemModel) {
+        val arrayListData = EzymdApplication.getInstance().cartData.value
+        val arrayList: ArrayList<ItemModel>
+        if (arrayListData == null)
+            arrayList = ArrayList()
+        else
+            arrayList = arrayListData
+
+        var isExist = false
+        var i = 0
+        for (itemModel in arrayList) {
+            if (itemModel.id == item.id) {
+                isExist = true
+                itemModel.quantity = item.quantity
+                arrayList[i] = itemModel
+            }
+            i++
+        }
+        if (!isExist)
+            arrayList.add(item)
+
+        EzymdApplication.getInstance().cartData.postValue(arrayList)
+
+    }
+
+    fun removeItem(item: ItemModel) {
+        val arrayList = EzymdApplication.getInstance().cartData.value
+        if (arrayList != null) {
+            arrayList.remove(item)
+            EzymdApplication.getInstance().cartData.postValue(arrayList)
+        }
     }
 
 
