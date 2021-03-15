@@ -16,6 +16,7 @@ class DashBoardViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: DashBoardRepository? = null
     val mTrendingData: MutableLiveData<TrendingDashboardModel>
+    val bannerData: MutableLiveData<TrendingDashboardModel>
     val mShopData: MutableLiveData<TrendingDashboardModel>
     val isLoading: MutableLiveData<Boolean>
 
@@ -31,6 +32,7 @@ class DashBoardViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mTrendingData = MutableLiveData()
         mShopData = MutableLiveData()
+        bannerData= MutableLiveData()
         errorRequest = MutableLiveData()
         isLoading.postValue(true)
 
@@ -68,6 +70,24 @@ class DashBoardViewModel : ViewModel() {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> mShopData.postValue(result.value)
+            }
+
+        }
+
+    }
+
+    fun nearByBanner(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.nearByBanners(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> bannerData.postValue(result.value)
             }
 
         }

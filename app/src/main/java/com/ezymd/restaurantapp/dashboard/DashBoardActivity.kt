@@ -8,10 +8,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
@@ -20,23 +22,17 @@ import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.ui.search.SearchActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_dashboard.filter
-import kotlinx.android.synthetic.main.activity_dashboard.progress
-import kotlinx.android.synthetic.main.activity_dashboard.resturantCount
-import kotlinx.android.synthetic.main.activity_dashboard.resturantRecyclerView
-import kotlinx.android.synthetic.main.activity_dashboard.search
-import kotlinx.android.synthetic.main.activity_dashboard.trending
-import kotlinx.android.synthetic.main.activity_dashboard.trendingRecyclerView
-import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 class DashBoardActivity : BaseActivity() {
+    private lateinit var registrationTutorialPagerAdapter: DashBoardPagerAdapter
     private var adapterTrending: DashBoardTrendingAdapter? = null
     private var adapterRestaurant: DashBoardNearByAdapter? = null
     private val dataTrending = ArrayList<DataTrending>()
     private val dataResturant = ArrayList<DataTrending>()
+    private val dataBanner = ArrayList<DataTrending>()
     private val viewModel by lazy {
         ViewModelProvider(this).get(DashBoardViewModel::class.java)
     }
@@ -54,6 +50,60 @@ class DashBoardActivity : BaseActivity() {
         setShopAdapter()
         setObserver()
         getData()
+        setBannerPager()
+    }
+
+
+    private fun setBannerPager() {
+        bannerPager.offscreenPageLimit = 1
+        bannerPager.clipToPadding = false;
+        bannerPager.setPadding(20, 0, 40, 0);
+        bannerPager.pageMargin = 20;
+
+        registrationTutorialPagerAdapter =
+            DashBoardPagerAdapter(
+                this@DashBoardActivity,
+                dataBanner, OnRecyclerView { position, view ->
+                    if (typeCategory == StoreType.RESTAURANT) {
+                        val intent = Intent(this@DashBoardActivity, DetailsActivity::class.java)
+                        intent.putExtra(
+                            JSONKeys.OBJECT,
+                            getRestaurantObject(dataResturant[position])
+                        )
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
+                        intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                        startActivity(intent)
+                    }
+                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                    EzymdApplication.getInstance().cartData.postValue(null)
+
+                })
+        bannerPager.adapter = registrationTutorialPagerAdapter
+        dots_indicator.setViewPager(bannerPager)
+
+        setPageChangeListener()
+
+    }
+
+    private fun setPageChangeListener() {
+        bannerPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
     }
 
     private fun setShopAdapter() {
@@ -131,6 +181,7 @@ class DashBoardActivity : BaseActivity() {
         val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap.put("category_id", "" + typeCategory)
         viewModel.getTrendingStores(baseRequest)
+        viewModel.nearByBanner(baseRequest)
         viewModel.nearByShops(baseRequest)
     }
 
@@ -154,7 +205,18 @@ class DashBoardActivity : BaseActivity() {
                 showError(false, it.message, null)
             }
         })
+        viewModel.bannerData.observe(this, Observer {
 
+            if (it.data != null && it.data.size != 0) {
+                bannerPager.visibility = View.VISIBLE
+                dots_indicator.visibility = View.VISIBLE
+                dataBanner.clear()
+                dataBanner.addAll(it.data)
+                registrationTutorialPagerAdapter.notifyDataSetChanged()
+            } else if (it.status != ErrorCodes.SUCCESS) {
+                showError(false, it.message, null)
+            }
+        })
 
         viewModel.mShopData.observe(this, Observer {
 
@@ -187,11 +249,11 @@ class DashBoardActivity : BaseActivity() {
     }
 
     private fun getAroundYouString(typeCategory: Int): String {
-        if (typeCategory==StoreType.RESTAURANT)
+        if (typeCategory == StoreType.RESTAURANT)
             return this.getString(R.string.resurant_around_you)
-        else if (typeCategory==StoreType.Grocery)
+        else if (typeCategory == StoreType.Grocery)
             return this.getString(R.string.grocery_around_you)
-            else
+        else
             return this.getString(R.string.pharmacy_around_you)
 
     }

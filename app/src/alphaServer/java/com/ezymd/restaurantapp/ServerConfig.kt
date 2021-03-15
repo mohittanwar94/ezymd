@@ -49,6 +49,7 @@ interface ServerConfig {
 
         const val TRENDING_STORES="trendingItems"
         const val NEAR_BY_SHOPS="nearByShops"
+        const val NEAR_BY_BANNERS="nearByShopBanner"
 
 
     }

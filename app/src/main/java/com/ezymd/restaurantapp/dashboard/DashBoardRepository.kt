@@ -45,6 +45,22 @@ class DashBoardRepository {
 
     }
 
+    suspend fun nearByBanners(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<TrendingDashboardModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.nearByBanners(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
 
     companion object {
         @Volatile

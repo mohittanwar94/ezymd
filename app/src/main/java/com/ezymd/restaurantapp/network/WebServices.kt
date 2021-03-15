@@ -95,6 +95,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): TrendingDashboardModel
 
+    @FormUrlEncoded
+    @POST(ServerConfig.NEAR_BY_BANNERS)
+    suspend fun nearByBanners(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): TrendingDashboardModel
+
 
     @GET(ServerConfig.RESTURANT_FILTERS)
     suspend fun getFilters(
