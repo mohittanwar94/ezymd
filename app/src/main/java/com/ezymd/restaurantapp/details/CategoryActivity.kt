@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_categories.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
 class CategoryActivity : BaseActivity() {
+    private val bannerList = ArrayList<String>()
     private var adapter: SubCategoryWithProductAdapter? = null
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
@@ -104,6 +105,11 @@ class CategoryActivity : BaseActivity() {
         viewModel.mResturantData.observe(this, {
             if (it.data != null) {
                 mData = it.data!!
+                bannerList.clear()
+                bannerList.add(restaurant.banner)
+                for (item in it.data?.banners!!) {
+                    bannerList.add(item.banner!!)
+                }
                 if (it.data?.categories?.isNullOrEmpty() == false)
                     detailContent.visibility = View.VISIBLE
                 processDataFindTabs(it.data!!)
@@ -118,6 +124,12 @@ class CategoryActivity : BaseActivity() {
 
 
         })
+
+        image.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            if (bannerList.size > 0)
+                ShowImageVideo(this).Display(bannerList, 0)
+        }
 
     }
 

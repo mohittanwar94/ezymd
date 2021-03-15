@@ -23,27 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/close"
-            android:layout_width="@dimen/_34sdp"
-            android:layout_height="@dimen/_34sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/white_circle_active"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingRight="@dimen/_2sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_back" />
 
         <com.ezymd.restaurantapp.customviews.SnapTextView
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/close"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_23sdp"
             app:textFont="bold"
             android:gravity="center_vertical"

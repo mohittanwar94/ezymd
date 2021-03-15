@@ -58,7 +58,7 @@ public class ShowImageVideo {
         dialog.setCanceledOnTouchOutside(false);
 
         final TextView header = dialog.findViewById(R.id.header);
-        ImageView close = dialog.findViewById(R.id.close);
+      //  ImageView close = dialog.findViewById(R.id.close);
         header.setText((pos + 1) + " of " + images.size());
 
         SnapViewPager pager = dialog.findViewById(R.id.pager);
@@ -85,7 +85,7 @@ public class ShowImageVideo {
 
             }
         });
-        close.setOnClickListener(new OnClickListener() {
+      /*  close.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class ShowImageVideo {
                 dialog.dismiss();
             }
         });
-
+*/
         dialog.show();
         return dialog;
     }

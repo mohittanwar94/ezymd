@@ -265,5 +265,7 @@
     <string name="search_grocery_stores">Search Groceries Stores</string>
     <string name="search_pharmacy">Search Pharmacy</string>
     <string name="no_record_found">No record match to your search</string>
+    <string name="grocery_around_you">grocery store around you</string>
+    <string name="pharmacy_around_you">pharmacy around you</string>
 
 </resources>

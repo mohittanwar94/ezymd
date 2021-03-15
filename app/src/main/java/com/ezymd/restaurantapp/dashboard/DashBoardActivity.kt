@@ -169,7 +169,7 @@ class DashBoardActivity : BaseActivity() {
                 else
                     filter.visibility = View.GONE
                 resturantCount.text =
-                    TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
+                    TextUtils.concat("" + dataResturant.size + " " + getAroundYouString(typeCategory))
             } else if (it.status != ErrorCodes.SUCCESS) {
                 showError(false, it.message, null)
             }
@@ -184,6 +184,16 @@ class DashBoardActivity : BaseActivity() {
 
 
         })
+    }
+
+    private fun getAroundYouString(typeCategory: Int): String {
+        if (typeCategory==StoreType.RESTAURANT)
+            return this.getString(R.string.resurant_around_you)
+        else if (typeCategory==StoreType.Grocery)
+            return this.getString(R.string.grocery_around_you)
+            else
+            return this.getString(R.string.pharmacy_around_you)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
