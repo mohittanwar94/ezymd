@@ -20,6 +20,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
 import com.ezymd.restaurantapp.push.SinchService
@@ -152,6 +154,24 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         isFreeDelivery = dataTrending.is_free_delivery.toInt()
         distance = dataTrending.distance
         phoneNo = dataTrending.phone_no
+
+    }
+
+
+    fun getItemModelObject(dataTrending: Product) = ItemModel().apply {
+        rating = dataTrending.rating.toDouble()
+        stock = dataTrending.stock
+        id = dataTrending.id
+        category_id = dataTrending.category_id
+        quantity = dataTrending.qnty
+        image = dataTrending.image
+        category = ""
+        sell_price = dataTrending.sell_price
+        price = dataTrending.price
+        is_veg = 0
+        item = dataTrending.item
+        description = dataTrending.description
+
 
     }
 
