@@ -36,7 +36,7 @@
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/tv_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
@@ -47,9 +47,29 @@
         android:textStyle="normal"
         app:layout_constraintBottom_toTopOf="@id/sizes"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/iv_icon"
+        app:layout_constraintEnd_toStartOf="@id/add"
         app:textFont="medium"
         tools:text="@string/item_name" />
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/add"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_gravity="end"
+        android:background="@drawable/add_button_bg"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:letterSpacing="0.02"
+        android:text="@string/add"
+        android:textAllCaps="true"
+        android:textColor="@color/color_002366"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_name"
+        app:layout_constraintBottom_toBottomOf="@id/tv_name"
+        app:textFont="medium" />
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/sizes"
