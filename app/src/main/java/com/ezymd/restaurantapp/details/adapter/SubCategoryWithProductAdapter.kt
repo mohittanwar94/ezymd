@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.CategoryViewModel
-import com.ezymd.restaurantapp.details.DetailViewModel
 import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
+import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.OnRecyclerViewClickType
 import com.ezymd.restaurantapp.utils.VerticalSpacesItemDecoration
@@ -42,16 +42,16 @@ class SubCategoryWithProductAdapter(
             myViewHolder.itemView.recycler.visibility =
                 if (item.isExpanded) View.VISIBLE else View.GONE
             myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
-
+            val products = item.products!! as ArrayList<Product>
             val adapterProduct = ProductAdapter(context,
-                item.products!! as ArrayList<Product>,viewModelDetails,
+                products, viewModelDetails,
                 OnRecyclerView { position, view ->
                     onRecyclerView.onClick(parentPostion, position, view)
                     val intent = Intent(context, ItemDetailActivity::class.java)
-//            intent.putExtra(
-//                JSONKeys.OBJECT,
-//                item
-//            )
+                    intent.putExtra(
+                        JSONKeys.OBJECT,
+                        products[position]
+                    )
                     context.startActivity(intent)
                 })
             myViewHolder.itemView.recycler.layoutManager =

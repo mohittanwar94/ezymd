@@ -1,6 +1,8 @@
 package com.ezymd.restaurantapp.details.model
 
-class Product {
+import java.io.Serializable
+
+class Product :Serializable{
     var id = 0
     var category_id = 0
     var item: String? = null

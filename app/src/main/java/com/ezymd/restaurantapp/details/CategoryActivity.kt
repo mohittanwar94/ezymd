@@ -49,7 +49,6 @@ class CategoryActivity : BaseActivity() {
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
     }
-    private val binding by lazy { ActivityCategoriesBinding.inflate(layoutInflater) }
 
 
     enum class State {
@@ -59,7 +58,7 @@ class CategoryActivity : BaseActivity() {
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_categories)
         getData()
         setToolBar()
         setHeaderData()
