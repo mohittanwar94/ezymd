@@ -22,6 +22,7 @@ import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
 import com.ezymd.restaurantapp.details.adapter.SubCategoryWithProductAdapter
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
+import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -34,7 +35,6 @@ class CategoryActivity : BaseActivity() {
     private var adapter: SubCategoryWithProductAdapter? = null
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
-    private val dataResturant = ArrayList<ItemModel>()
     private val dataHeader = ArrayList<Header>()
     private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
@@ -44,8 +44,6 @@ class CategoryActivity : BaseActivity() {
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
     }
-    private val binding by lazy { ActivityCategoriesBinding.inflate(layoutInflater) }
-
 
     enum class State {
         EXPANDED, COLLAPSED, IDLE
@@ -54,7 +52,7 @@ class CategoryActivity : BaseActivity() {
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_categories)
         getData()
         setToolBar()
         setHeaderData()
@@ -71,11 +69,11 @@ class CategoryActivity : BaseActivity() {
 
 
         itmesRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SubCategoryWithProductAdapter(this, dataHeader,
-            OnRecyclerViewClickType { position, childposition, view ->
+        adapter = SubCategoryWithProductAdapter(
+            this, dataHeader
+        ) { position, childposition, view ->
 
-
-            })
+        }
         itmesRecyclerView.adapter = adapter
 
     }
@@ -223,7 +221,6 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun onChildChanged() {
-        dataResturant.clear()
         if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
@@ -344,94 +341,4 @@ class CategoryActivity : BaseActivity() {
         sheetDialog.setCanceledOnTouchOutside(true)
         sheetDialog.show()
     }
-
-    /*private class ChildVH(val binding: CountChildrenItemBinding) :
-        ExpandableAdapter.ViewHolder(binding.root)
-
-    private class ParentVH(val binding: CountParentItemBinding) :
-        ExpandableAdapter.ViewHolder(binding.root)
-
-    private class SubCategories : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
-
-        private var header: List<Header>? = null
-
-        fun setNewData(categories: List<Header>) {
-            this.header = categories
-            notifyDataSetChanged()
-        }
-
-
-        override fun onCreateGroupViewHolder(
-            viewGroup: ViewGroup,
-            viewType: Int
-        ): ViewHolder = LayoutInflater.from(viewGroup.context)
-            .let { CountParentItemBinding.inflate(it, viewGroup, false) }
-            .let(::ParentVH)
-
-        override fun onCreateChildViewHolder(
-            viewGroup: ViewGroup,
-            viewType: Int
-        ): ViewHolder = LayoutInflater.from(viewGroup.context)
-            .let { CountChildrenItemBinding.inflate(it, viewGroup, false) }
-            .let(::ChildVH)
-
-
-        override fun onBindChildViewHolder(
-            holder: ViewHolder,
-            groupPosition: Int,
-            childPosition: Int,
-            payloads: List<Any>
-        ) {
-            if (payloads.isEmpty()) {
-                (holder as? ChildVH)?.apply {
-                    binding.dishName.text =
-                        header?.getOrNull(groupPosition)?.childs?.getOrNull(childPosition)?.name
-                }
-            }
-        }
-
-        override fun onBindGroupViewHolder(
-            holder: ViewHolder,
-            groupPosition: Int,
-            expand: Boolean,
-            payloads: List<Any>
-        ) {
-            if (payloads.isEmpty()) {
-                (holder as? ParentVH)?.apply {
-                    binding.titleText.text = header?.getOrNull(groupPosition)?.name
-                    binding.arrowImage.rotation = if (expand) 0f else 90.0f
-                }
-            }
-        }
-
-
-        override fun onGroupViewHolderExpandChange(
-            holder: ViewHolder,
-            groupPosition: Int,
-            animDuration: Long,
-            expand: Boolean
-        ) {
-
-            holder as ParentVH
-            val arrowImage = holder.binding.arrowImage
-
-                    .setDuration(animDuration)
-                    .start()
-                // 不要使用这种动画，Item离屏之后，动画会取消
-//            arrowImage.animate()
-//                .setDuration(animDuration)
-//                .rotation(0f)
-//                .start()
-            } else {
-                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, 90f)
-                    .setDuration(animDuration)
-                    .start()
-            }
-
-        }
-
-        override fun getGroupCount(): Int = header?.size ?: 0
-        override fun getChildCount(groupPosition: Int): Int =
-            header?.get(groupPosition)?.products?.size ?: 0
-    }*/
 }

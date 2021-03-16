@@ -1,6 +1,7 @@
 package com.ezymd.restaurantapp.details.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
+import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.OnRecyclerViewClickType
 import com.ezymd.restaurantapp.utils.VerticalSpacesItemDecoration
@@ -42,7 +44,12 @@ class SubCategoryWithProductAdapter(
                 item.products!! as ArrayList<Product>,
                 OnRecyclerView { position, view ->
                     onRecyclerView.onClick(parentPostion, position, view)
-
+                    val intent = Intent(context, ItemDetailActivity::class.java)
+//            intent.putExtra(
+//                JSONKeys.OBJECT,
+//                item
+//            )
+                    context.startActivity(intent)
                 })
             myViewHolder.itemView.recycler.layoutManager =
                 LinearLayoutManager(

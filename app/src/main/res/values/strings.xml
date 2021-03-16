@@ -202,6 +202,7 @@
     <string name="order_amount">Order Amount</string>
     <string name="orderID">Order id:</string>
     <string name="resurant_name">Resurant Name</string>
+    <string name="item_name">Item Name</string>
     <string name="order_status">Order Status</string>
     <string name="completed">Completed</string>
     <string name="view_order_details">View Order Details</string>
@@ -252,6 +253,7 @@
     <string name="card">Card</string>
     <string name="wallet">Wallet</string>
     <string name="add">+ ADD</string>
+    <string name="dummy_oz">16 oz</string>
     <string name="food">Food</string>
     <string name="pharmacy">Pharmacy</string>
     <string name="grocery">Grocery</string>
@@ -267,5 +269,7 @@
     <string name="no_record_found">No record match to your search</string>
     <string name="grocery_around_you">grocery store around you</string>
     <string name="pharmacy_around_you">pharmacy around you</string>
+    <string name="description">Description</string>
+    <string name="sizes">Sizes</string>
 
 </resources>
