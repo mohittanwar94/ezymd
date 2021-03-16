@@ -8,13 +8,17 @@ import android.text.Html
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
@@ -22,19 +26,20 @@ import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
 import com.ezymd.restaurantapp.details.adapter.SubCategoryWithProductAdapter
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
-import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_categories.*
-import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.cart_view.*
+import kotlinx.android.synthetic.main.content_scrolling_category.*
 
 class CategoryActivity : BaseActivity() {
     private val bannerList = ArrayList<String>()
     private var adapter: SubCategoryWithProductAdapter? = null
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
+    private val dataResturant = ArrayList<ItemModel>()
     private val dataHeader = ArrayList<Header>()
     private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
@@ -44,6 +49,8 @@ class CategoryActivity : BaseActivity() {
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
     }
+    private val binding by lazy { ActivityCategoriesBinding.inflate(layoutInflater) }
+
 
     enum class State {
         EXPANDED, COLLAPSED, IDLE
@@ -52,7 +59,7 @@ class CategoryActivity : BaseActivity() {
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_categories)
+        setContentView(binding.root)
         getData()
         setToolBar()
         setHeaderData()
@@ -69,11 +76,11 @@ class CategoryActivity : BaseActivity() {
 
 
         itmesRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SubCategoryWithProductAdapter(
-            this, dataHeader
-        ) { position, childposition, view ->
+        adapter = SubCategoryWithProductAdapter(this, dataHeader, viewModel,
+            OnRecyclerViewClickType { position, childposition, view ->
 
-        }
+
+            })
         itmesRecyclerView.adapter = adapter
 
     }
@@ -86,6 +93,15 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun setObserver() {
+
+        EzymdApplication.getInstance().cartData.observe(this, Observer {
+            if (it != null) {
+                checkDataChanges(it)
+                processCartData(it)
+            }
+        })
+
+
         viewModel.mCategoryWithProduct.observe(this, {
             if (it.data != null) {
 
@@ -131,6 +147,107 @@ class CategoryActivity : BaseActivity() {
 
     }
 
+
+    private fun checkDataChanges(it: ArrayList<ItemModel>) {
+        var i = 0
+        for (item in dataResturant) {
+            SnapLog.print("data quantity===" + item.quantity)
+            if (it.size == 0)
+                item.quantity = 0
+            dataResturant[i] = item
+            for (itemModel in it) {
+                if (itemModel.id == item.id) {
+                    SnapLog.print("quantity===" + itemModel.quantity)
+                    dataResturant[i] = itemModel
+                    break
+                }
+            }
+            i++
+        }
+
+    }
+
+    private fun processCartData(arrayList: ArrayList<ItemModel>) {
+        var quantity = 0
+        var price = 0
+        for (itemModel in arrayList) {
+            price += (itemModel.price * itemModel.quantity)
+            quantity += itemModel.quantity
+        }
+
+
+        setCartData(quantity, price)
+
+    }
+
+    var isExanded = false
+    private fun setCartData(quantity: Int, price: Int) {
+
+        if (quantity == 0 && price == 0) {
+            //cartView.visibility= View.GONE
+            slideDown(cartView)
+            isExanded = false
+        } else {
+            // cartView.visibility= View.VISIBLE
+            if (!isExanded)
+                slideUp(cartView)
+            isExanded = true
+            setCartDetails(quantity, price)
+        }
+
+
+    }
+
+    private fun setCartDetails(quantityCount: Int, price: Int) {
+        runOnUiThread(Runnable {
+            quantity.text = TextUtils.concat(
+                "" + quantityCount,
+                " ",
+                getString(R.string.items),
+                " | ",
+                getString(R.string.dollor),
+                "" + price
+            )
+        })
+
+    }
+
+    private fun slideUp(view: View) {
+        view.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0f
+        )             // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    private fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+            0f,                 // fromXDelta
+            0f,                 // toXDelta
+            0f,                 // fromYDelta
+            view.height.toFloat()
+        ) // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+            }
+        })
+        view.startAnimation(animate)
+    }
 
     private fun processDataFindTabs(it: CategoriesAndBannersData) {
         foodType.clear()
@@ -221,6 +338,7 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun onChildChanged() {
+        dataResturant.clear()
         if (foodType.size == 0)
             return
         val category = foodType[selectedStudentPosition]
@@ -341,4 +459,94 @@ class CategoryActivity : BaseActivity() {
         sheetDialog.setCanceledOnTouchOutside(true)
         sheetDialog.show()
     }
+
+    /*private class ChildVH(val binding: CountChildrenItemBinding) :
+        ExpandableAdapter.ViewHolder(binding.root)
+
+    private class ParentVH(val binding: CountParentItemBinding) :
+        ExpandableAdapter.ViewHolder(binding.root)
+
+    private class SubCategories : ExpandableAdapter<ExpandableAdapter.ViewHolder>() {
+
+        private var header: List<Header>? = null
+
+        fun setNewData(categories: List<Header>) {
+            this.header = categories
+            notifyDataSetChanged()
+        }
+
+
+        override fun onCreateGroupViewHolder(
+            viewGroup: ViewGroup,
+            viewType: Int
+        ): ViewHolder = LayoutInflater.from(viewGroup.context)
+            .let { CountParentItemBinding.inflate(it, viewGroup, false) }
+            .let(::ParentVH)
+
+        override fun onCreateChildViewHolder(
+            viewGroup: ViewGroup,
+            viewType: Int
+        ): ViewHolder = LayoutInflater.from(viewGroup.context)
+            .let { CountChildrenItemBinding.inflate(it, viewGroup, false) }
+            .let(::ChildVH)
+
+
+        override fun onBindChildViewHolder(
+            holder: ViewHolder,
+            groupPosition: Int,
+            childPosition: Int,
+            payloads: List<Any>
+        ) {
+            if (payloads.isEmpty()) {
+                (holder as? ChildVH)?.apply {
+                    binding.dishName.text =
+                        header?.getOrNull(groupPosition)?.childs?.getOrNull(childPosition)?.name
+                }
+            }
+        }
+
+        override fun onBindGroupViewHolder(
+            holder: ViewHolder,
+            groupPosition: Int,
+            expand: Boolean,
+            payloads: List<Any>
+        ) {
+            if (payloads.isEmpty()) {
+                (holder as? ParentVH)?.apply {
+                    binding.titleText.text = header?.getOrNull(groupPosition)?.name
+                    binding.arrowImage.rotation = if (expand) 0f else 90.0f
+                }
+            }
+        }
+
+
+        override fun onGroupViewHolderExpandChange(
+            holder: ViewHolder,
+            groupPosition: Int,
+            animDuration: Long,
+            expand: Boolean
+        ) {
+
+            holder as ParentVH
+            val arrowImage = holder.binding.arrowImage
+
+                    .setDuration(animDuration)
+                    .start()
+                // 不要使用这种动画，Item离屏之后，动画会取消
+//            arrowImage.animate()
+//                .setDuration(animDuration)
+//                .rotation(0f)
+//                .start()
+            } else {
+                ObjectAnimator.ofFloat(arrowImage, View.ROTATION, 90f)
+                    .setDuration(animDuration)
+                    .start()
+            }
+
+        }
+
+        override fun getGroupCount(): Int = header?.size ?: 0
+        override fun getChildCount(groupPosition: Int): Int =
+            header?.get(groupPosition)?.products?.size ?: 0
+    }*/
 }

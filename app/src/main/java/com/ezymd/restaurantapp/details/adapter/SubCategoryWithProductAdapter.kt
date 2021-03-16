@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.details.CategoryViewModel
+import com.ezymd.restaurantapp.details.DetailViewModel
 import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.count_parent_item.view.*
 class SubCategoryWithProductAdapter(
     private val context: Context,
     private val data: ArrayList<Header>,
+    private val viewModelDetails: CategoryViewModel,
     private val onRecyclerView: OnRecyclerViewClickType
 ) : RecyclerView.Adapter<SubCategoryWithProductAdapter.MyViewHolder>() {
 
@@ -41,7 +44,7 @@ class SubCategoryWithProductAdapter(
             myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
 
             val adapterProduct = ProductAdapter(context,
-                item.products!! as ArrayList<Product>,
+                item.products!! as ArrayList<Product>,viewModelDetails,
                 OnRecyclerView { position, view ->
                     onRecyclerView.onClick(parentPostion, position, view)
                     val intent = Intent(context, ItemDetailActivity::class.java)

@@ -53,5 +53,8 @@
 
     <include layout="@layout/content_scrolling_category" />
 
-
+    <include
+        layout="@layout/cart_view"
+        android:visibility="invisible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
