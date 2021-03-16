@@ -164,7 +164,6 @@ class CategoryActivity : BaseActivity() {
             }
             i++
         }
-        onChildChanged()
 
     }
 

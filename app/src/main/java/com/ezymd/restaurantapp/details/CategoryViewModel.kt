@@ -118,5 +118,9 @@ class CategoryViewModel : ViewModel() {
         }
     }
 
+    fun clearCart() {
+         EzymdApplication.getInstance().cartData.postValue(ArrayList())
+    }
+
 
 }
