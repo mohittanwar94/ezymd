@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
@@ -144,6 +145,14 @@ class CategoryActivity : BaseActivity() {
             if (bannerList.size > 0)
                 ShowImageVideo(this).Display(bannerList, 0)
         }
+
+        viewCart.setOnClickListener {
+            val intent = Intent(this@CategoryActivity, CartActivity::class.java)
+            intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(restaurant))
+            startActivity(intent)
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
+
 
     }
 

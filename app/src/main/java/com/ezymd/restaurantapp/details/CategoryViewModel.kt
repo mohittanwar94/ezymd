@@ -85,6 +85,7 @@ class CategoryViewModel : ViewModel() {
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
     }
+
     fun addToCart(item: ItemModel) {
         val arrayListData = EzymdApplication.getInstance().cartData.value
         val arrayList: ArrayList<ItemModel>
@@ -113,13 +114,29 @@ class CategoryViewModel : ViewModel() {
     fun removeItem(item: ItemModel) {
         val arrayList = EzymdApplication.getInstance().cartData.value
         if (arrayList != null) {
-            arrayList.remove(item)
+            val index = getIndexOfItem(item.id, arrayList)
+            if (index < arrayList.size)
+                arrayList.removeAt(index)
+            // SnapLog.print("is remove from array====" + arrayList.remove(item))
             EzymdApplication.getInstance().cartData.postValue(arrayList)
         }
     }
 
+    private fun getIndexOfItem(id: Int, arrayList: ArrayList<ItemModel>): Int {
+        var index = 0
+        for (item in arrayList) {
+            if (item.id == id) {
+                return index
+            } else {
+                index++
+            }
+
+        }
+        return index
+    }
+
     fun clearCart() {
-         EzymdApplication.getInstance().cartData.postValue(ArrayList())
+        EzymdApplication.getInstance().cartData.postValue(ArrayList())
     }
 
 

@@ -68,12 +68,12 @@ class DashBoardActivity : BaseActivity() {
                         val intent = Intent(this@DashBoardActivity, DetailsActivity::class.java)
                         intent.putExtra(
                             JSONKeys.OBJECT,
-                            getRestaurantObject(dataResturant[position])
+                            getRestaurantObject(dataBanner[position])
                         )
                         startActivity(intent)
                     } else {
                         val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
-                        intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                        intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
                         startActivity(intent)
                     }
                     overridePendingTransition(R.anim.left_in, R.anim.left_out)
