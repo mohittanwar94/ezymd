@@ -11,7 +11,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.CategoryViewModel
 import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
-import com.ezymd.restaurantapp.itemdetail.ItemDetailActivity
+import com.ezymd.restaurantapp.itemdetail.ProductDetailActivity
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.OnRecyclerViewClickType
@@ -47,7 +47,7 @@ class SubCategoryWithProductAdapter(
                 products, viewModelDetails,
                 OnRecyclerView { position, view ->
                     onRecyclerView.onClick(parentPostion, position, view)
-                    val intent = Intent(context, ItemDetailActivity::class.java)
+                    val intent = Intent(context, ProductDetailActivity::class.java)
                     intent.putExtra(
                         JSONKeys.OBJECT,
                         products[position]

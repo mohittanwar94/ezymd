@@ -251,7 +251,7 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name=".itemdetail.ItemDetailActivity"
+            android:name=".itemdetail.ProductDetailActivity"
             android:label="@string/app_name" />
 
         <receiver android:name=".GpsLocationReceiver">

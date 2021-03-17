@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.productdetail
+package com.ezymd.restaurantapp.itemdetail
 
 import android.content.Intent
 import android.os.Bundle
