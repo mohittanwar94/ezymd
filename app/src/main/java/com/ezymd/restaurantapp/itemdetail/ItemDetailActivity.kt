@@ -1,8 +1,10 @@
 package com.ezymd.restaurantapp.itemdetail
 
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
@@ -39,7 +41,11 @@ class ItemDetailActivity : BaseActivity() {
     private fun setGUI() {
 
         tv_name?.text = product.item
-        tv_desc?.text = product.description
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tv_desc?.text = Html.fromHtml(product.description, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        } else {
+            tv_desc?.text = Html.fromHtml(product.description)
+        }
         tv_desc?.price?.text = "${getString(R.string.dollor)}${product.price}"
         if (!TextUtils.isEmpty(product.image)) {
             GlideApp.with(applicationContext)
