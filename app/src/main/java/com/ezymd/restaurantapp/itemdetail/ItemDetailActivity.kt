@@ -12,6 +12,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.JSONKeys
+import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.bottom_sheet_location.*
 import kotlinx.android.synthetic.main.cart_item_row.view.*
@@ -54,6 +55,11 @@ class ItemDetailActivity : BaseActivity() {
                 .into(iv_icon)
         } else {
             iv_icon?.visibility = View.GONE
+        }
+
+        leftIcon.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            onBackPressed()
         }
     }
 
