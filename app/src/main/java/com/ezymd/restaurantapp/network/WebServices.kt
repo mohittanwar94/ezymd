@@ -5,6 +5,7 @@ import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
+import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
@@ -62,24 +63,23 @@ interface WebServices {
         @Header("Authorization") token: String
     ): LogoutModel
 
-   /* @FormUrlEncoded
-    @POST(ServerConfig.SEARCH_RESTURANTS)
-    suspend fun searchRestaurant(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
+    /* @FormUrlEncoded
+     @POST(ServerConfig.SEARCH_RESTURANTS)
+     suspend fun searchRestaurant(
+         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+     ): ResturantModel
 
-    @FormUrlEncoded
-    @POST(ServerConfig.LIST_RESTURANTS)
-    suspend fun getResturants(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
+     @FormUrlEncoded
+     @POST(ServerConfig.LIST_RESTURANTS)
+     suspend fun getResturants(
+         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+     ): ResturantModel
 
-*/
+ */
     @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel
-
 
 
     @FormUrlEncoded
@@ -231,6 +231,12 @@ interface WebServices {
         @Path("restaurant_id") id: String,
         @Header("Authorization") accessToken: String
     ): CoupanBaseModel
+
+    @GET(ServerConfig.PRODUCT_DETAIL)
+    suspend fun productDetail(
+        @Query("product_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): ProductDetailBaseModel
 
 }
 

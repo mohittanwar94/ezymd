@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.itemdetail
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
@@ -10,20 +9,23 @@ import android.view.animation.TranslateAnimation
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.customviews.ValueChangedListener
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
-import com.ezymd.restaurantapp.itemdetail.ItemDetailViewModel
+import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.utils.*
-import kotlinx.android.synthetic.main.activity_categories.*
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_product_details.*
+import kotlinx.android.synthetic.main.activity_product_details.bannerPager
+import kotlinx.android.synthetic.main.activity_product_details.dots_indicator
+import kotlinx.android.synthetic.main.activity_product_details.progress
 import kotlinx.android.synthetic.main.cart_view.*
-import kotlinx.android.synthetic.main.content_scrolling_category.*
 
 
 class ProductDetailActivity : BaseActivity() {
@@ -43,6 +45,8 @@ class ProductDetailActivity : BaseActivity() {
 
 
         setObserver()
+        fetchData()
+
     }
 
     private fun setObserver() {
@@ -53,7 +57,11 @@ class ProductDetailActivity : BaseActivity() {
             }
         })
 
-
+        viewModel.images.observe(this, Observer {
+            if (it != null) {
+              setBannerPager(it)
+            }
+        })
         viewModel.errorRequest.observe(this, {
             showError(false, it, null)
         })
@@ -63,39 +71,39 @@ class ProductDetailActivity : BaseActivity() {
 
         })
 
-       /* image.setOnClickListener {
-            UIUtil.clickAlpha(it)
-            if (bannerList.size > 0)
-                ShowImageVideo(this).Display(bannerList, 0)
-        }
+        /* image.setOnClickListener {
+             UIUtil.clickAlpha(it)
+             if (bannerList.size > 0)
+                 ShowImageVideo(this).Display(bannerList, 0)
+         }
 
-        viewCart.setOnClickListener {
-            val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
-            intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(restaurant))
-            startActivity(intent)
-            overridePendingTransition(R.anim.left_in, R.anim.left_out)
-        }
-*/
+         viewCart.setOnClickListener {
+             val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
+             intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(restaurant))
+             startActivity(intent)
+             overridePendingTransition(R.anim.left_in, R.anim.left_out)
+         }
+ */
 
     }
 
 
     private fun checkDataChanges(it: ArrayList<ItemModel>) {
-     /*   var i = 0
-        for (item in dataResturant) {
-            SnapLog.print("data quantity===" + item.quantity)
-            if (it.size == 0)
-                item.quantity = 0
-            dataResturant[i] = item
-            for (itemModel in it) {
-                if (itemModel.id == item.id) {
-                    SnapLog.print("quantity===" + itemModel.quantity)
-                    dataResturant[i] = itemModel
-                    break
-                }
-            }
-            i++
-        }*/
+        /*   var i = 0
+           for (item in dataResturant) {
+               SnapLog.print("data quantity===" + item.quantity)
+               if (it.size == 0)
+                   item.quantity = 0
+               dataResturant[i] = item
+               for (itemModel in it) {
+                   if (itemModel.id == item.id) {
+                       SnapLog.print("quantity===" + itemModel.quantity)
+                       dataResturant[i] = itemModel
+                       break
+                   }
+               }
+               i++
+           }*/
 
     }
 
@@ -128,6 +136,47 @@ class ProductDetailActivity : BaseActivity() {
         }
 
 
+    }
+
+    private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
+        bannerPager.offscreenPageLimit = 1
+        bannerPager.clipToPadding = false
+        bannerPager.setPadding(20, 0, 40, 0)
+        bannerPager.pageMargin = 20
+/*
+
+        val registrationTutorialPagerAdapter = DashBoardPagerAdapter(
+            this,
+            dataBanner, OnRecyclerView { position, view ->
+                overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                EzymdApplication.getInstance().cartData.postValue(null)
+
+            })
+        bannerPager.adapter = registrationTutorialPagerAdapter
+        dots_indicator.setViewPager(bannerPager)
+*/
+
+        setPageChangeListener()
+
+    }
+
+    private fun setPageChangeListener() {
+        bannerPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
     }
 
     private fun setCartDetails(quantityCount: Int, price: Int) {
@@ -259,6 +308,12 @@ class ProductDetailActivity : BaseActivity() {
                 }
 
             }
+    }
+
+    private fun fetchData() {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["product_id"] = product.id.toString()
+        viewModel.getProductDetails(baseRequest)
     }
 
     override fun onBackPressed() {

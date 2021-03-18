@@ -11,13 +11,45 @@
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="@dimen/_150sdp"
         android:adjustViewBounds="true"
         android:background="@drawable/edit_text_bg"
         android:contentDescription="@string/no_internet_connection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ezymd.restaurantapp.customviews.SnapViewPager
+        android:id="@+id/bannerPager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        android:background="@color/color_f8f8f8"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/_15sdp"
+        android:visibility="gone"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingRight="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dots_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:dotsColor="@color/color_e8e8e9"
+        app:dotsCornerRadius="@dimen/_5sdp"
+        android:visibility="gone"
+        app:dotsSize="@dimen/_10sdp"
+        app:dotsSpacing="@dimen/_4sdp"
+        app:dotsWidthFactor="2.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bannerPager"
+        app:progressMode="true"
+        app:selectedDotColor="@color/color_1e222a" />
 
 
     <ImageView
@@ -57,9 +89,9 @@
 
 
     <FrameLayout
+        android:id="@+id/addLayout"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_26sdp"
-        android:id="@+id/addLayout"
         app:layout_constraintBottom_toBottomOf="@id/tv_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name">
@@ -183,6 +215,16 @@
         app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_desc_title"
         app:textFont="medium" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/progressBarTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/included_cart_view"
