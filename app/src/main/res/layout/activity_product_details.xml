@@ -87,7 +87,7 @@
         android:textColor="@color/color_1e222a"
         android:textSize="@dimen/_15sdp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/sizes"
+        app:layout_constraintBottom_toTopOf="@id/rv_modifiers"
         app:layout_constraintEnd_toStartOf="@id/addLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier"
@@ -99,7 +99,6 @@
         android:id="@+id/addLayout"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_26sdp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name">
 
@@ -135,39 +134,21 @@
 
     </FrameLayout>
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/sizes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="@dimen/_3sdp"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:textColor="@color/color_1e222a"
-        android:textSize="@dimen/_13sdp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/rv_modifiers"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_name"
-        app:textFont="roman"
-        tools:text="@string/sizes" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_modifiers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:overScrollMode="never"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
+        tools:itemCount="2"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/tv_price"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/sizes"
-        tools:listitem="@layout/modifier_item_row" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        tools:listitem="@layout/option_item_row" />
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/tv_price"
