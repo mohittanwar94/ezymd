@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.itemdetail.model.Modifier
@@ -32,8 +33,12 @@ class SubOptionAdapter(
         val item = data[position]
 
         holder.itemView.tv_name.text = item.title
-
-
+        if (position == 0)
+            holder.itemView.tv_name.backgroundTintList =
+                ContextCompat.getColorStateList(context, R.color.color_ffe600);
+        else
+            holder.itemView.tv_name.backgroundTintList =
+                ContextCompat.getColorStateList(context, R.color.color_f8f8f8);
     }
 
 

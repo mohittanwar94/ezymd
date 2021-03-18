@@ -266,11 +266,7 @@ class ProductDetailActivity : BaseActivity() {
             UIUtil.clickAlpha(it)
             onBackPressed()
         }
-        rv_modifiers.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rv_modifiers.addItemDecoration(
-            DividerItemDecoration(this, RecyclerView.VERTICAL)
-        )
+
         if (product.qnty != 0) {
             add.visibility = View.GONE
             quantityPicker.visibility = View.VISIBLE

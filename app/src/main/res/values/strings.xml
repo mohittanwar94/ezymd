@@ -270,6 +270,7 @@
     <string name="grocery_around_you">grocery store around you</string>
     <string name="pharmacy_around_you">pharmacy around you</string>
     <string name="description">Description</string>
+    <string name="item_description">Item Description</string>
     <string name="sizes">Sizes</string>
 
 </resources>
