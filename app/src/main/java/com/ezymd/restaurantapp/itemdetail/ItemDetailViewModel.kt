@@ -7,6 +7,7 @@ import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
+import com.ezymd.restaurantapp.itemdetail.model.Options
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
@@ -25,6 +26,7 @@ class ItemDetailViewModel : ViewModel() {
     val isLoading: MutableLiveData<Boolean>
     var product = MutableLiveData<ArrayList<Product>>()
     var images = MutableLiveData<ArrayList<ImageModel>>()
+    var options = MutableLiveData<ArrayList<Options>>()
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
@@ -91,6 +93,7 @@ class ItemDetailViewModel : ViewModel() {
                     SnapLog.print("mTrendingData" + result.value)
                     product.postValue(result.value.data?.product)
                     images.postValue(result.value.data?.images)
+                    options.postValue(result.value.data?.options)
                 }
             }
 

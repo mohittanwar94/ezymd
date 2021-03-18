@@ -1,32 +1,15 @@
 package com.ezymd.restaurantapp.itemdetail.model
 
 import com.ezymd.restaurantapp.details.model.Product
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class ProductDetailBaseModel {
+data class ProductDetailBaseModel(var message: String?, var status: Int?, var data: RootData?)
+data class RootData(
+    var product: ArrayList<Product>?,
+    var images: ArrayList<ImageModel>?,
+    var options: ArrayList<Options>?
+)
 
-    @SerializedName("message")
-    @Expose
-    var message: String? = null
-
-    @SerializedName("status")
-    @Expose
-    var status: Int? = null
-
-    @SerializedName("data")
-    @Expose
-    var data: RootData? = null
-}
-
-class RootData {
-    @SerializedName("product")
-    @Expose
-    var product = ArrayList<Product>()
-
-    @SerializedName("images")
-    @Expose
-    var images = ArrayList<ImageModel>()
-
-}
+data class Options(var title: String, var data: ArrayList<Modifier>)
+data class Modifier(var id: Int, var title: String)
+data class ImageModel(val id: Int, val image: String, val sort_order: Int)
