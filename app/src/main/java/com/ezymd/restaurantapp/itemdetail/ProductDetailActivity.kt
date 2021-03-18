@@ -9,18 +9,25 @@ import android.view.animation.TranslateAnimation
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.coupon.adapter.CouponAdapter
 import com.ezymd.restaurantapp.customviews.ValueChangedListener
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
+import com.ezymd.restaurantapp.itemdetail.adapter.OptionsAdapter
 import com.ezymd.restaurantapp.itemdetail.adapter.ProductDetailPagerAdapter
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.utils.*
+import kotlinx.android.synthetic.main.activity_coupon.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.resturantRecyclerView
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.activity_product_details.bannerPager
 import kotlinx.android.synthetic.main.activity_product_details.dots_indicator
@@ -60,6 +67,12 @@ class ProductDetailActivity : BaseActivity() {
         viewModel.images.observe(this, Observer {
             if (it != null) {
                 setBannerPager(it)
+            }
+        })
+        viewModel.options.observe(this, Observer {
+            if (it != null) {
+                val restaurantAdapter = OptionsAdapter(this,it)
+                rv_modifiers?.adapter = restaurantAdapter
             }
         })
         viewModel.errorRequest.observe(this, {
@@ -253,7 +266,11 @@ class ProductDetailActivity : BaseActivity() {
             UIUtil.clickAlpha(it)
             onBackPressed()
         }
-
+        rv_modifiers.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rv_modifiers.addItemDecoration(
+            DividerItemDecoration(this, RecyclerView.VERTICAL)
+        )
         if (product.qnty != 0) {
             add.visibility = View.GONE
             quantityPicker.visibility = View.VISIBLE
