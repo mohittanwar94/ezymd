@@ -25,6 +25,9 @@ class SubCategoryWithProductAdapter(
     private val onRecyclerView: OnRecyclerViewClickType
 ) : RecyclerView.Adapter<SubCategoryWithProductAdapter.MyViewHolder>() {
 
+    public fun getData(): ArrayList<Header> {
+        return data
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): MyViewHolder {
         val view =
@@ -42,35 +45,27 @@ class SubCategoryWithProductAdapter(
             myViewHolder.itemView.recycler.visibility =
                 if (item.isExpanded) View.VISIBLE else View.GONE
             myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
-            val products = item.products!! as ArrayList<Product>
-            val adapterProduct = ProductAdapter(context,
-                products, viewModelDetails,
-                OnRecyclerView { position, view ->
-                    onRecyclerView.onClick(parentPostion, position, view)
-                    val intent = Intent(context, ProductDetailActivity::class.java)
-                    intent.putExtra(
-                        JSONKeys.OBJECT,
-                        products[position]
-                    )
-                    context.startActivity(intent)
-                })
-            myViewHolder.itemView.recycler.layoutManager =
-                LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                )
-            myViewHolder.itemView.recycler.addItemDecoration(
-                VerticalSpacesItemDecoration(
-                    (context.resources.getDimensionPixelSize(
-                        R.dimen._13sdp
-                    ))
-                )
-            )
-            myViewHolder.itemView.recycler.adapter = adapterProduct
 
 
         }
+
+        myViewHolder.itemView.recycler.visibility =
+            if (item.isExpanded) View.VISIBLE else View.GONE
+
+        val products = item.products!! as ArrayList<Product>
+        val adapterProduct = ProductAdapter(context,
+            products, viewModelDetails,
+            OnRecyclerView { position, view ->
+                onRecyclerView.onClick(parentPostion, position, view)
+                val intent = Intent(context, ProductDetailActivity::class.java)
+                intent.putExtra(
+                    JSONKeys.OBJECT,
+                    products[position]
+                )
+                context.startActivity(intent)
+            })
+
+        myViewHolder.itemView.recycler.adapter = adapterProduct
 
     }
 
@@ -86,5 +81,22 @@ class SubCategoryWithProductAdapter(
 
     }
 
-    class MyViewHolder(var container: View) : RecyclerView.ViewHolder(container)
+    class MyViewHolder(var container: View) : RecyclerView.ViewHolder(container){
+
+        init {
+            container.recycler.layoutManager =
+                LinearLayoutManager(
+                    container.context,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            container.recycler.addItemDecoration(
+                VerticalSpacesItemDecoration(
+                    (container.context.resources.getDimensionPixelSize(
+                        R.dimen._13sdp
+                    ))
+                )
+            )
+        }
+    }
 }

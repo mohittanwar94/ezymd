@@ -34,6 +34,10 @@ class ProductAdapter(
         return MyViewHolder(view)
     }
 
+    fun getData(): ArrayList<Product> {
+        return data
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = data[position]
         if (!TextUtils.isEmpty(data[position].image)) {

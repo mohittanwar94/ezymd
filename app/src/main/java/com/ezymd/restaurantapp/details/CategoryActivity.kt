@@ -39,10 +39,12 @@ class CategoryActivity : BaseActivity() {
     private var adapter: SubCategoryWithProductAdapter? = null
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
-    private val dataResturant = ArrayList<ItemModel>()
+
+    //  private val dataResturant = ArrayList<ItemModel>()
     private val dataHeader = ArrayList<Header>()
     private var mData = CategoriesAndBannersData()
     private val foodType = ArrayList<FoodTypeModel>()
+    private val hashMap = HashMap<Int, ArrayList<Header>>()
     private val viewModel by lazy {
         ViewModelProvider(this).get(CategoryViewModel::class.java)
     }
@@ -111,6 +113,7 @@ class CategoryActivity : BaseActivity() {
                 it.data?.let { it1 ->
                     dataHeader.clear()
                     dataHeader.addAll(it1)
+                    hashMap[foodType[selectedStudentPosition].categoryID] = dataHeader
                     adapter?.notifyDataSetChanged()
                 }
             }
@@ -156,22 +159,22 @@ class CategoryActivity : BaseActivity() {
 
 
     private fun checkDataChanges(it: ArrayList<ItemModel>) {
-        var i = 0
-        for (item in dataResturant) {
-            SnapLog.print("data quantity===" + item.quantity)
-            if (it.size == 0)
-                item.quantity = 0
-            dataResturant[i] = item
-            for (itemModel in it) {
-                if (itemModel.id == item.id) {
-                    SnapLog.print("quantity===" + itemModel.quantity)
-                    dataResturant[i] = itemModel
-                    break
-                }
-            }
-            i++
-        }
-
+        /* var i = 0
+         for (item in dataResturant) {
+             SnapLog.print("data quantity===" + item.quantity)
+             if (it.size == 0)
+                 item.quantity = 0
+             dataResturant[i] = item
+             for (itemModel in it) {
+                 if (itemModel.id == item.id) {
+                     SnapLog.print("quantity===" + itemModel.quantity)
+                     dataResturant[i] = itemModel
+                     break
+                 }
+             }
+             i++
+         }
+ */
     }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
@@ -336,7 +339,12 @@ class CategoryActivity : BaseActivity() {
                     }
                 }
 
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    val list = ArrayList<Header>()
+                    adapter?.getData()?.let { list.addAll(it) }
+                    hashMap.put(foodType[tab.position].categoryID, list)
+                }
+
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
         }
@@ -345,14 +353,23 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun onChildChanged() {
-        dataResturant.clear()
+        //dataResturant.clear()
         if (foodType.size == 0)
             return
-        val category = foodType[selectedStudentPosition]
-        val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap["shop_id"] = "" + restaurant.id
-        baseRequest.paramsMap["category_id"] = "" + category.categoryID
-        viewModel.loadShopCategoryWithProduct(baseRequest)
+        dataHeader.clear()
+        val list = hashMap[foodType[selectedStudentPosition].categoryID]
+        if (list != null) {
+            dataHeader.addAll(list)
+
+
+        } else {
+            val category = foodType[selectedStudentPosition]
+            val baseRequest = BaseRequest(userInfo)
+            baseRequest.paramsMap["shop_id"] = "" + restaurant.id
+            baseRequest.paramsMap["category_id"] = "" + category.categoryID
+            viewModel.loadShopCategoryWithProduct(baseRequest)
+        }
+        adapter?.notifyDataSetChanged()
     }
 
     private fun setHeaderData() {

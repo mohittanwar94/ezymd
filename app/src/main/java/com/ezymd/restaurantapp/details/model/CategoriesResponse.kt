@@ -9,6 +9,8 @@ class Category {
 
     @get:SerializedName("name")
     var name: String? = null
+
+
 }
 
 class Banner {
