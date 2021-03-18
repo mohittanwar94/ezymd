@@ -89,8 +89,8 @@ class ItemDetailViewModel : ViewModel() {
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> {
                     SnapLog.print("mTrendingData" + result.value)
-                    product.postValue(result.value.product)
-                    images.postValue(result.value.images)
+                    product.postValue(result.value.data?.product)
+                    images.postValue(result.value.data?.images)
                 }
             }
 

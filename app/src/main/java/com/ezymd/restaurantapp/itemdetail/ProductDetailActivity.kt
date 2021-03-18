@@ -15,9 +15,9 @@ import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.ValueChangedListener
-import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
+import com.ezymd.restaurantapp.itemdetail.adapter.ProductDetailPagerAdapter
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -59,7 +59,7 @@ class ProductDetailActivity : BaseActivity() {
 
         viewModel.images.observe(this, Observer {
             if (it != null) {
-              setBannerPager(it)
+                setBannerPager(it)
             }
         })
         viewModel.errorRequest.observe(this, {
@@ -143,19 +143,20 @@ class ProductDetailActivity : BaseActivity() {
         bannerPager.clipToPadding = false
         bannerPager.setPadding(20, 0, 40, 0)
         bannerPager.pageMargin = 20
-/*
+        if (!dataBanner.isNullOrEmpty()) {
+            iv_icon.visibility = View.GONE
+            val registrationTutorialPagerAdapter = ProductDetailPagerAdapter(
+                this,
+                dataBanner, OnRecyclerView { position, view ->
+                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                    EzymdApplication.getInstance().cartData.postValue(null)
 
-        val registrationTutorialPagerAdapter = DashBoardPagerAdapter(
-            this,
-            dataBanner, OnRecyclerView { position, view ->
-                overridePendingTransition(R.anim.left_in, R.anim.left_out)
-                EzymdApplication.getInstance().cartData.postValue(null)
-
-            })
-        bannerPager.adapter = registrationTutorialPagerAdapter
-        dots_indicator.setViewPager(bannerPager)
-*/
-
+                })
+            bannerPager.adapter = registrationTutorialPagerAdapter
+            bannerPager.visibility = View.VISIBLE
+            dots_indicator.setViewPager(bannerPager)
+            dots_indicator.visibility = View.VISIBLE
+        } else iv_icon?.visibility = View.VISIBLE
         setPageChangeListener()
 
     }

@@ -6,13 +6,6 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class ProductDetailBaseModel {
-    @SerializedName("product")
-    @Expose
-    var product = ArrayList<Product>()
-
-    @SerializedName("images")
-    @Expose
-    var images = ArrayList<ImageModel>()
 
     @SerializedName("message")
     @Expose
@@ -21,4 +14,19 @@ class ProductDetailBaseModel {
     @SerializedName("status")
     @Expose
     var status: Int? = null
+
+    @SerializedName("data")
+    @Expose
+    var data: RootData? = null
+}
+
+class RootData {
+    @SerializedName("product")
+    @Expose
+    var product = ArrayList<Product>()
+
+    @SerializedName("images")
+    @Expose
+    var images = ArrayList<ImageModel>()
+
 }

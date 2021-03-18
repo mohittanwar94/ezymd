@@ -23,7 +23,6 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
-import com.ezymd.restaurantapp.databinding.ActivityCategoriesBinding
 import com.ezymd.restaurantapp.details.adapter.SubCategoryWithProductAdapter
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace

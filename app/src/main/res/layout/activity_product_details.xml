@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_200sdp"
         android:adjustViewBounds="true"
         android:background="@drawable/edit_text_bg"
         android:contentDescription="@string/no_internet_connection"
@@ -22,16 +22,16 @@
     <com.ezymd.restaurantapp.customviews.SnapViewPager
         android:id="@+id/bannerPager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_200sdp"
         android:background="@color/color_f8f8f8"
         android:clipToPadding="false"
         android:paddingLeft="@dimen/_15sdp"
-        android:visibility="gone"
         android:paddingTop="@dimen/_5sdp"
         android:paddingRight="@dimen/_15sdp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
         android:id="@+id/dots_indicator"
@@ -39,9 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
         app:dotsColor="@color/color_e8e8e9"
         app:dotsCornerRadius="@dimen/_5sdp"
-        android:visibility="gone"
         app:dotsSize="@dimen/_10sdp"
         app:dotsSpacing="@dimen/_4sdp"
         app:dotsWidthFactor="2.5"
@@ -49,7 +49,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bannerPager"
         app:progressMode="true"
-        app:selectedDotColor="@color/color_1e222a" />
+        app:selectedDotColor="@color/color_1e222a"/>
 
 
     <ImageView
@@ -65,6 +65,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="iv_icon,dots_indicator" />
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
         android:id="@+id/tv_name"
@@ -83,7 +90,7 @@
         app:layout_constraintBottom_toTopOf="@id/sizes"
         app:layout_constraintEnd_toStartOf="@id/addLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
         app:textFont="medium"
         tools:text="@string/item_name" />
 
