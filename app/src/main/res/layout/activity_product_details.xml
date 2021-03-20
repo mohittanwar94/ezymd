@@ -222,7 +222,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
     <include
         layout="@layout/cart_view"
         android:layout_width="0dp"

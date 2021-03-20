@@ -1,19 +1,25 @@
 package com.ezymd.restaurantapp.itemdetail.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.itemdetail.model.Modifier
+import com.ezymd.restaurantapp.itemdetail.ItemDetailViewModel
+import com.ezymd.restaurantapp.itemdetail.model.Options
 import kotlinx.android.synthetic.main.modifier_item_row.view.*
 
 class SubOptionAdapter(
-    val context: Context,
-    val data: ArrayList<Modifier>
+    val mContext: AppCompatActivity,
+    val options: Options
 ) : RecyclerView.Adapter<SubOptionAdapter.NotesHolder>() {
+    val data = options.data
+    private val viewModel by lazy {
+        ViewModelProvider(mContext).get(ItemDetailViewModel::class.java)
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
@@ -33,12 +39,28 @@ class SubOptionAdapter(
         val item = data[position]
 
         holder.itemView.tv_name.text = item.title
-        if (position == 0)
+        if (viewModel.selectedOptionsList.value?.containsKey(options.title) == true && viewModel.selectedOptionsList.value?.get(
+                options.title
+            ) == item.id
+        )
             holder.itemView.tv_name.backgroundTintList =
-                ContextCompat.getColorStateList(context, R.color.color_ffe600);
+                ContextCompat.getColorStateList(mContext, R.color.color_ffe600)
         else
             holder.itemView.tv_name.backgroundTintList =
-                ContextCompat.getColorStateList(context, R.color.color_f8f8f8);
+                ContextCompat.getColorStateList(mContext, R.color.color_f8f8f8)
+        holder.itemView.tv_name.setOnClickListener {
+            if (viewModel.selectedOptionsList.value?.containsKey(options.title) == true && viewModel.selectedOptionsList.value?.get(
+                    options.title
+                ) == item.id
+            ) {
+                viewModel.selectedOptionsList.value?.remove(options.title)
+            } else {
+                if (viewModel.selectedOptionsList.value == null)
+                    viewModel.selectedOptionsList.value = HashMap()
+                viewModel.selectedOptionsList.value?.put(options.title, item.id)
+            }
+            notifyDataSetChanged()
+        }
     }
 
 

@@ -27,6 +27,8 @@ class ItemDetailViewModel : ViewModel() {
     var product = MutableLiveData<ArrayList<Product>>()
     var images = MutableLiveData<ArrayList<ImageModel>>()
     var options = MutableLiveData<ArrayList<Options>>()
+    val selectedOptionsList= MutableLiveData<HashMap<String,Int>>()
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()

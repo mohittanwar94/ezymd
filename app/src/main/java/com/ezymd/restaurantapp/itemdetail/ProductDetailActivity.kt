@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.cart_view.view.*
 
 class ProductDetailActivity : BaseActivity() {
 
-    private val viewModel by lazy {
+    public val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
     }
     private val product by lazy {
