@@ -48,7 +48,7 @@ class CategoryActivity : BaseActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this).get(CategoryViewModel::class.java)
     }
-    private val restaurant by lazy {
+    public val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as DataTrending
     }
 

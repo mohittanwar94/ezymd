@@ -33,10 +33,10 @@ class ProductDetailPagerAdapter(
     var swipeTimer: Timer? = null
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(mContext)
-        val layout = inflater.inflate(R.layout.banner_row, collection, false)
+        val layout = inflater.inflate(R.layout.banner_details_row, collection, false)
         val imageView = layout.findViewById<RoundedImageView>(R.id.imageView)
         GlideApp.with(mContext.applicationContext)
-            .load(data[position].image).centerCrop().override(550, 350).dontAnimate()
+            .load(data[position].image).centerCrop().override(750, 350).dontAnimate()
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
         imageView.transitionName = "thumbnailTransition";
         layout.setOnClickListener { onRecyclerView.onClick(position, layout) }

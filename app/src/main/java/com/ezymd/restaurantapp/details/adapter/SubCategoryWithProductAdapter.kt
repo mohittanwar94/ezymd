@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.details.CategoryViewModel
 import com.ezymd.restaurantapp.details.model.Header
 import com.ezymd.restaurantapp.details.model.Product
@@ -62,6 +63,12 @@ class SubCategoryWithProductAdapter(
                     JSONKeys.OBJECT,
                     products[position]
                 )
+                if (context is CategoryActivity) {
+                    intent.putExtra(
+                        JSONKeys.RESPONSE,
+                        context.getRestaurantObject(context.restaurant)
+                    )
+                }
                 context.startActivity(intent)
             })
 

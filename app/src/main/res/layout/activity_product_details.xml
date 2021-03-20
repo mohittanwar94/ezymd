@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"
         android:adjustViewBounds="true"
-        android:background="@drawable/edit_text_bg"
         android:contentDescription="@string/no_internet_connection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +24,6 @@
         android:layout_height="@dimen/_200sdp"
         android:background="@color/color_f8f8f8"
         android:clipToPadding="false"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +198,6 @@
         android:letterSpacing="0.02"
         android:lineSpacingExtra="@dimen/_1sdp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/included_cart_view"
         app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_desc_title"
         app:textFont="medium" />
@@ -217,7 +213,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="@+id/included_cart_view"
         layout="@layout/cart_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/_50sdp"
@@ -226,5 +221,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>

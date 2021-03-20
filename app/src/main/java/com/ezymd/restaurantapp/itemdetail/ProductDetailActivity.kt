@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.itemdetail
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
@@ -9,25 +10,20 @@ import android.view.animation.TranslateAnimation
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.coupon.adapter.CouponAdapter
+import com.ezymd.restaurantapp.cart.CartActivity
 import com.ezymd.restaurantapp.customviews.ValueChangedListener
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.adapter.OptionsAdapter
 import com.ezymd.restaurantapp.itemdetail.adapter.ProductDetailPagerAdapter
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
+import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
-import kotlinx.android.synthetic.main.activity_coupon.*
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_dashboard.resturantRecyclerView
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.activity_product_details.bannerPager
 import kotlinx.android.synthetic.main.activity_product_details.dots_indicator
@@ -43,14 +39,15 @@ class ProductDetailActivity : BaseActivity() {
     private val product by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as Product
     }
+    public val restaurant by lazy {
+        intent.getSerializableExtra(JSONKeys.RESPONSE) as Resturant
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_details)
 
         setGUI()
-
-
         setObserver()
         fetchData()
 
@@ -71,7 +68,7 @@ class ProductDetailActivity : BaseActivity() {
         })
         viewModel.options.observe(this, Observer {
             if (it != null) {
-                val restaurantAdapter = OptionsAdapter(this,it)
+                val restaurantAdapter = OptionsAdapter(this, it)
                 rv_modifiers?.adapter = restaurantAdapter
             }
         })
@@ -84,19 +81,14 @@ class ProductDetailActivity : BaseActivity() {
 
         })
 
-        /* image.setOnClickListener {
-             UIUtil.clickAlpha(it)
-             if (bannerList.size > 0)
-                 ShowImageVideo(this).Display(bannerList, 0)
-         }
 
-         viewCart.setOnClickListener {
-             val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
-             intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(restaurant))
-             startActivity(intent)
-             overridePendingTransition(R.anim.left_in, R.anim.left_out)
-         }
- */
+        viewCart.setOnClickListener {
+            val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
+            intent.putExtra(JSONKeys.OBJECT, restaurant)
+            startActivity(intent)
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
+
 
     }
 
@@ -137,11 +129,11 @@ class ProductDetailActivity : BaseActivity() {
     private fun setCartData(quantity: Int, price: Int) {
 
         if (quantity == 0 && price == 0) {
-            //cartView.visibility= View.GONE
+            cartView.visibility = View.GONE
             slideDown(cartView)
             isExanded = false
         } else {
-            // cartView.visibility= View.VISIBLE
+            cartView.visibility = View.VISIBLE
             if (!isExanded)
                 slideUp(cartView)
             isExanded = true
@@ -153,16 +145,19 @@ class ProductDetailActivity : BaseActivity() {
 
     private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
         bannerPager.offscreenPageLimit = 1
-        bannerPager.clipToPadding = false
-        bannerPager.setPadding(20, 0, 40, 0)
-        bannerPager.pageMargin = 20
         if (!dataBanner.isNullOrEmpty()) {
             iv_icon.visibility = View.GONE
             val registrationTutorialPagerAdapter = ProductDetailPagerAdapter(
                 this,
                 dataBanner, OnRecyclerView { position, view ->
-                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
-                    EzymdApplication.getInstance().cartData.postValue(null)
+                    if (viewModel.images.value != null && viewModel.images.value!!.size > 0) {
+                        val bannerList = ArrayList<String>()
+                        for (imageModel in viewModel.images.value!!) {
+                            bannerList.add(imageModel.image)
+                        }
+                        ShowImageVideo(this).Display(bannerList, 0)
+                    }
+
 
                 })
             bannerPager.adapter = registrationTutorialPagerAdapter
