@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -57,6 +58,7 @@ class CategoryActivity : BaseActivity() {
         EXPANDED, COLLAPSED, IDLE
     }
 
+    fun getCategoryID(): Int = dataHeader[selectedStudentPosition].id
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,33 @@ class CategoryActivity : BaseActivity() {
         setAdapter()
         setObserver()
 
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            val categoryId = data!!.getIntExtra(JSONKeys.CATEGORY_ID, -1)
+            val product = data.getSerializableExtra(JSONKeys.OBJECT) as Product
+            val arrayList = hashMap[categoryId]
+            getIndexOrPut(product, arrayList)
+        }
+    }
+
+    private fun getIndexOrPut(product: Product, arrayList: ArrayList<Header>?) {
+        for (pro in arrayList!!) {
+            var i = 0
+            for (prod in pro.products!!) {
+                if (prod.id == product.id) {
+                    (pro.products!! as ArrayList)[i] = product
+                    break
+                }
+                i++
+
+            }
+
+        }
+        adapter?.notifyDataSetChanged()
     }
 
     private fun setAdapter() {

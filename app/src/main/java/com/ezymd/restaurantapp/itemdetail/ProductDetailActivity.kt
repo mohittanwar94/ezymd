@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.itemdetail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
@@ -7,6 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.FrameLayout
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,10 +27,8 @@ import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
-import kotlinx.android.synthetic.main.activity_product_details.bannerPager
-import kotlinx.android.synthetic.main.activity_product_details.dots_indicator
-import kotlinx.android.synthetic.main.activity_product_details.progress
 import kotlinx.android.synthetic.main.cart_view.*
+import kotlinx.android.synthetic.main.cart_view.view.*
 
 
 class ProductDetailActivity : BaseActivity() {
@@ -39,8 +39,12 @@ class ProductDetailActivity : BaseActivity() {
     private val product by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as Product
     }
-    public val restaurant by lazy {
+    private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.RESPONSE) as Resturant
+    }
+
+    private val categoryId by lazy {
+        intent.getIntExtra(JSONKeys.CATEGORY_ID,1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,15 +131,15 @@ class ProductDetailActivity : BaseActivity() {
 
     var isExanded = false
     private fun setCartData(quantity: Int, price: Int) {
-
+        val view = findViewById<FrameLayout>(R.id.cartView)
         if (quantity == 0 && price == 0) {
-            cartView.visibility = View.GONE
-            slideDown(cartView)
+            view.visibility = View.GONE
+            slideDown(view)
             isExanded = false
         } else {
-            cartView.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
             if (!isExanded)
-                slideUp(cartView)
+                slideUp(view)
             isExanded = true
             setCartDetails(quantity, price)
         }
@@ -327,6 +331,10 @@ class ProductDetailActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        val intent=Intent()
+        intent.putExtra(JSONKeys.CATEGORY_ID,categoryId)
+        intent.putExtra(JSONKeys.OBJECT,product)
+        setResult(Activity.RESULT_OK,intent)
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 

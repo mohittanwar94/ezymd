@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 
 import com.ezymd.restaurantapp.EzymdApplication;
 
+import org.jetbrains.annotations.Nullable;
+
 public class ConnectivityReceiver
         extends BroadcastReceiver {
 
@@ -45,6 +47,7 @@ public class ConnectivityReceiver
 
     public interface ConnectivityReceiverListener {
         void onNetworkConnectionChanged(boolean isConnected);
+
 
     }
 }

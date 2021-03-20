@@ -68,8 +68,14 @@ class SubCategoryWithProductAdapter(
                         JSONKeys.RESPONSE,
                         context.getRestaurantObject(context.restaurant)
                     )
+
+                    intent.putExtra(
+                        JSONKeys.CATEGORY_ID,
+                        context.getCategoryID()
+                    )
                 }
-                context.startActivity(intent)
+
+                ( context as CategoryActivity).startActivityForResult(intent,100)
             })
 
         myViewHolder.itemView.recycler.adapter = adapterProduct

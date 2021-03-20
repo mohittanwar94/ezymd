@@ -5,212 +5,223 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:fitsSystemWindows="true"
-    tools:context=".details.CategoryActivity">
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/iv_icon"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/no_internet_connection"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".details.CategoryActivity">
 
-    <com.ezymd.restaurantapp.customviews.SnapViewPager
-        android:id="@+id/bannerPager"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:background="@color/color_f8f8f8"
-        android:clipToPadding="false"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-        android:id="@+id/dots_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:visibility="gone"
-        app:dotsColor="@color/color_e8e8e9"
-        app:dotsCornerRadius="@dimen/_5sdp"
-        app:dotsSize="@dimen/_10sdp"
-        app:dotsSpacing="@dimen/_4sdp"
-        app:dotsWidthFactor="2.5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bannerPager"
-        app:progressMode="true"
-        app:selectedDotColor="@color/color_1e222a"/>
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/no_internet_connection"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <com.ezymd.restaurantapp.customviews.SnapViewPager
+                android:id="@+id/bannerPager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:background="@color/color_f8f8f8"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/leftIcon"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:background="@drawable/back_bg"
-        android:contentDescription="@string/back"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_7sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="iv_icon,dots_indicator" />
-
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/tv_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:letterSpacing="0.01"
-        android:lineSpacingExtra="@dimen/_2sdp"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:textColor="@color/color_1e222a"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/rv_modifiers"
-        app:layout_constraintEnd_toStartOf="@id/addLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier"
-        app:textFont="medium"
-        tools:text="@string/item_name" />
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:dotsColor="@color/color_e8e8e9"
+                app:dotsCornerRadius="@dimen/_5sdp"
+                app:dotsSize="@dimen/_10sdp"
+                app:dotsSpacing="@dimen/_4sdp"
+                app:dotsWidthFactor="2.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bannerPager"
+                app:progressMode="true"
+                app:selectedDotColor="@color/color_1e222a" />
 
 
-    <FrameLayout
-        android:id="@+id/addLayout"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_26sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_name">
+            <ImageView
+                android:id="@+id/leftIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/back_bg"
+                android:contentDescription="@string/back"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_7sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
 
-        <com.ezymd.restaurantapp.customviews.QuantityPicker
-            android:id="@+id/quantityPicker"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_26sdp"
-            android:layout_gravity="center"
-            android:gravity="end"
-            android:visibility="gone"
-            app:focusable="false"
-            app:max="10"
-            app:min="0"
-            app:textFont="book"
-            app:unit="1"
-            app:value="0" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="iv_icon,dots_indicator" />
 
-        <com.ezymd.restaurantapp.customviews.SnapTextView
-            android:id="@+id/add"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_26sdp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/add_button_bg"
-            android:gravity="center"
-            android:letterSpacing="0.02"
-            android:text="@string/add"
-            android:textAllCaps="true"
-            android:textColor="@color/color_002366"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="normal"
-            app:textFont="medium" />
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="@dimen/_2sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:textColor="@color/color_1e222a"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toTopOf="@id/rv_modifiers"
+                app:layout_constraintEnd_toStartOf="@id/addLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier"
+                app:textFont="medium"
+                tools:text="@string/item_name" />
 
-    </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_modifiers"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        tools:itemCount="2"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/tv_price"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_name"
-        tools:listitem="@layout/option_item_row" />
+            <FrameLayout
+                android:id="@+id/addLayout"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_26sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_name">
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/tv_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:gravity="center_vertical"
-        android:letterSpacing="0.01"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        app:layout_goneMarginTop="@dimen/_10sdp"
-        android:text="@string/dummmy_price"
-        android:textColor="@color/color_1e222a"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@id/tv_desc_title"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/rv_modifiers"
-        app:textFont="medium" />
+                <com.ezymd.restaurantapp.customviews.QuantityPicker
+                    android:id="@+id/quantityPicker"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_gravity="center"
+                    android:gravity="end"
+                    android:visibility="gone"
+                    app:focusable="false"
+                    app:max="10"
+                    app:min="0"
+                    app:textFont="book"
+                    app:unit="1"
+                    app:value="0" />
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/tv_desc_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:text="@string/item_description"
-        android:textColor="@color/color_1e222a"
-        android:textSize="@dimen/_12sdp"
-        android:textStyle="normal"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="@dimen/_1sdp"
-        app:layout_constraintBottom_toTopOf="@id/tv_desc"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_price"
-        app:textFont="medium" />
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/add"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/add_button_bg"
+                    android:gravity="center"
+                    android:letterSpacing="0.02"
+                    android:text="@string/add"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
 
-    <com.ezymd.restaurantapp.customviews.SnapTextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:text="@string/description"
-        android:textColor="@color/color_787a7f"
-        android:textSize="@dimen/_12sdp"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="@dimen/_1sdp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_desc_title"
-        app:textFont="medium" />
+            </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/progressBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_modifiers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/tv_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                tools:itemCount="2"
+                tools:listitem="@layout/option_item_row" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.01"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:text="@string/dummmy_price"
+                android:textColor="@color/color_1e222a"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toTopOf="@id/tv_desc_title"
+                app:layout_constraintStart_toStartOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/rv_modifiers"
+                app:layout_goneMarginTop="@dimen/_10sdp"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_desc_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="@dimen/_1sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:text="@string/item_description"
+                android:textColor="@color/color_1e222a"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toTopOf="@id/tv_desc"
+                app:layout_constraintStart_toStartOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_price"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="@dimen/_1sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:text="@string/description"
+                android:textColor="@color/color_787a7f"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_desc_title"
+                app:textFont="medium" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/progressBarTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <include
         layout="@layout/cart_view"
@@ -220,6 +231,5 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
