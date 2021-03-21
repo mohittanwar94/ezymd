@@ -14,16 +14,17 @@ public class ItemModel implements Serializable {
     private Double rating = 0.0;
 
 
-    @Expose private String uuid="";
+    @Expose
+    private String uuid = "";
     @Expose
     private int quantity = 0;
 
 
     @Expose
-    private ArrayList<Modifier> listModifiers =new ArrayList<>();
+    private ArrayList<Modifier> listModifiers = new ArrayList<>();
 
     @Expose
-    private int is_option=0;
+    private int is_option = 0;
     @SerializedName("stock")
     @Expose
     private int stock;
@@ -50,7 +51,8 @@ public class ItemModel implements Serializable {
 
     @SerializedName("price")
     @Expose
-    private int price;
+    private double price;
+    private double total;
 
     @SerializedName("category_id")
     @Expose
@@ -67,7 +69,6 @@ public class ItemModel implements Serializable {
     @SerializedName("category")
     @Expose
     private String category;
-
 
     @SerializedName("image")
     @Expose
@@ -113,11 +114,11 @@ public class ItemModel implements Serializable {
         this.sell_price = sell_price;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -183,5 +184,13 @@ public class ItemModel implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

@@ -67,7 +67,7 @@ class CartAdapter(
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
         item.stock = 5
-        holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
+        holder.itemView.price.text = mContext.getString(R.string.dollor) + item.total
         holder.itemView.quantityPicker.max = item.stock
 
         SnapLog.print("stock====" + item.quantity)

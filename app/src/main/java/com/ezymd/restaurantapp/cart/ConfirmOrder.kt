@@ -729,7 +729,7 @@ class ConfirmOrder : BaseActivity() {
         val orderItems = JsonArray()
         val listItemModel = EzymdApplication.getInstance().cartData.value
 
-        var price = 0
+        var price = 0.0
         for (model in listItemModel!!) {
             val jsonObjectModel = JsonObject()
             jsonObjectModel.addProperty("product_id", model.id)

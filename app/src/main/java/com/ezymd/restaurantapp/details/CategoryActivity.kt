@@ -208,7 +208,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
         var quantity = 0
-        var price = 0
+        var price = 0.0
         for (itemModel in arrayList) {
             price += (itemModel.price * itemModel.quantity)
             quantity += itemModel.quantity
@@ -220,9 +220,9 @@ class CategoryActivity : BaseActivity() {
     }
 
     var isExanded = false
-    private fun setCartData(quantity: Int, price: Int) {
+    private fun setCartData(quantity: Int, price: Double) {
 
-        if (quantity == 0 && price == 0) {
+        if (quantity == 0 && price == 0.0) {
             //cartView.visibility= View.GONE
             slideDown(cartView)
             isExanded = false
@@ -237,7 +237,7 @@ class CategoryActivity : BaseActivity() {
 
     }
 
-    private fun setCartDetails(quantityCount: Int, price: Int) {
+    private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
             quantity.text = TextUtils.concat(
                 "" + quantityCount,

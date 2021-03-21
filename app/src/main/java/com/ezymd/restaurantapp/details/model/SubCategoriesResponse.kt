@@ -8,7 +8,7 @@ class Product :Serializable{
     var item: String? = null
     var description: String? = null
     var image: String? = null
-    var price = 0
+    var price = 0.0
     var sell_price = 0
     var qnty = 0
     var veg_nonveg=0

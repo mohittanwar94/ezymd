@@ -31,6 +31,7 @@ import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.cart_view.*
 import kotlinx.android.synthetic.main.cart_view.view.*
+import kotlinx.android.synthetic.main.order_item_row.*
 
 
 class ProductDetailActivity : BaseActivity() {
@@ -91,6 +92,7 @@ class ProductDetailActivity : BaseActivity() {
             if (viewModel.options.value != null) {
                 val list = ArrayList<Modifier>(it.values)
                 checkExistInCart(list)
+                tv_price?.text = "${getString(R.string.dollor)}${product.price+CalculationUtils().getModifierPrice(product.price,list)}"
 
             }
 
@@ -172,22 +174,15 @@ class ProductDetailActivity : BaseActivity() {
 
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
-        var quantity = 0
-        var price = 0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-            quantity += itemModel.quantity
-        }
-
-
-        setCartData(quantity, price)
+        val calc = CalculationUtils().processCartData(arrayList)
+        setCartData(calc.first, calc.second)
 
     }
 
     var isExanded = false
-    private fun setCartData(quantity: Int, price: Int) {
+    private fun setCartData(quantity: Int, price: Double) {
         val view = findViewById<FrameLayout>(R.id.cartView)
-        if (quantity == 0 && price == 0) {
+        if (quantity == 0 && price == 0.0) {
             view.visibility = View.GONE
             slideDown(view)
             isExanded = false
@@ -247,16 +242,9 @@ class ProductDetailActivity : BaseActivity() {
         })
     }
 
-    private fun setCartDetails(quantityCount: Int, price: Int) {
+    private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
-            quantity.text = TextUtils.concat(
-                "" + quantityCount,
-                " ",
-                getString(R.string.items),
-                " | ",
-                getString(R.string.dollor),
-                "" + price
-            )
+            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price)
         })
 
     }

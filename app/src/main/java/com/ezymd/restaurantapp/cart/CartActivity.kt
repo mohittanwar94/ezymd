@@ -292,21 +292,13 @@ class CartActivity : BaseActivity() {
     }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
-        var quantity = 0
-        var price = 0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-            quantity += itemModel.quantity
-        }
-
-
-        setCartData(quantity, price)
-
+        val calc = CalculationUtils().processCartData(arrayList)
+        setCartData(calc.first, calc.second)
     }
 
-    private fun setCartData(quantity: Int, price: Int) {
+    private fun setCartData(quantity: Int, price: Double) {
 
-        if (quantity == 0 && price == 0) {
+        if (quantity == 0 && price == 0.0) {
             //setEmptyCart()
         }
         setCartDetails(quantity, price)
@@ -314,18 +306,11 @@ class CartActivity : BaseActivity() {
 
     }
 
-    private fun setCartDetails(quantityCount: Int, price: Int) {
+    private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
 
             SnapLog.print("discountApplied=========="+(discountApplied))
-            totalAmount.text = TextUtils.concat(
-                getString(R.string.dollor),
-                "" +  String.format("%.2f",((serviceAmount + price)-discountApplied))
-            )
-            subTotal.text = TextUtils.concat(
-                getString(R.string.dollor),
-                "" + price
-            )
+            totalAmount.text = CalculationUtils().getPriceText(this, quantityCount, price)
 
             if (price < restaurant.minOrder.toInt()) {
                 discount.text =

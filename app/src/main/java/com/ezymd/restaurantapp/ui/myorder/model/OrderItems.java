@@ -18,7 +18,7 @@ public class OrderItems implements Serializable {
 
     @SerializedName("price")
     @Expose
-    private Integer price;
+    private double price;
     @SerializedName("qty")
     @Expose
     private Integer qty;
@@ -57,7 +57,7 @@ public class OrderItems implements Serializable {
         this.item = item;
     }
 
-    public Integer getPrice() {
+    public double getPrice() {
         return price;
     }
 
