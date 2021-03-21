@@ -149,6 +149,7 @@ class EditProfileActivity : BaseActivity() {
     private fun updateProfile(it: View) {
         UIUtil.clickHandled(it)
 
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -157,13 +158,26 @@ class EditProfileActivity : BaseActivity() {
             updateProfile(next)
         } else if (requestCode == OTP_REQUEST && resultCode != Activity.RESULT_OK) {
             SnapLog.print("back pressed")
-        } else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == ErrorCodes.SUCCESS && resultCode == Activity.RESULT_OK) {
             val mybitmap = data!!.extras!!.get("data") as Bitmap
             myBitmap = getResizedBitmap(mybitmap, 120)
             if (userImage != null) {
                 userImage.setImageBitmap(myBitmap)
+                val isGranted = checkReadWritePermissions(object : PermissionListener {
+                    override fun result(isGranted: Boolean) {
+                        if (isGranted) {
+                            saveImageOnServer(myBitmap!!)
+                        }
 
-                saveImageOnServer(myBitmap!!)
+                    }
+                })
+
+                if (isGranted) {
+                    saveImageOnServer(myBitmap!!)
+                }
+
+
+
             }
 
 
@@ -173,23 +187,38 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun saveImageOnServer(myBitmap: Bitmap) {
-        val f3: File = File(Environment.getExternalStorageDirectory().toString() + "/Ezymd/")
+        val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        if (!root.exists()) {
+            root.mkdirs()
+        }
+        val file = File(root, "profile.png")
+
+        /*val f3: File = File(Environment.getExternalStorageDirectory().toString() + "/Ezymd/")
         if (!f3.exists())
             f3.mkdirs()
-        var outStream: OutputStream? = null
-        val file = File(
+        */var outStream: OutputStream? = null
+        /*val file = File(
             Environment.getExternalStorageDirectory().toString() + "/Ezymd/" + "profile" + ".png"
-        )
+        )*/
         try {
             outStream = FileOutputStream(file)
             myBitmap.compress(Bitmap.CompressFormat.PNG, 85, outStream)
             outStream.close()
             SnapLog.print("Saved")
             rotateManimation()
-            viewModel.saveImage(file)
+            viewModel.saveImage(file, getProfileRequest())
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+    }
+
+    private fun getProfileRequest(): BaseRequest {
+        val baseRequest=BaseRequest(userInfo)
+        baseRequest.paramsMap.put("name", userInfo!!.userName)
+        baseRequest.paramsMap.put("email", userInfo!!.email)
+        baseRequest.paramsMap.put("phone_no", userInfo!!.phoneNumber)
+        return baseRequest
 
     }
 
@@ -275,6 +304,8 @@ class EditProfileActivity : BaseActivity() {
             }
         })
     }
+
+
 
 
     override fun onResume() {

@@ -85,7 +85,20 @@ class EditProfileViewModel : ViewModel() {
         errorRequest.postValue(error?.message)
     }
 
-    fun saveImage(file: File) {
+    fun saveImage(file: File, profileRequest: BaseRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.updateUprofile(
+                file, profileRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                } //SnapLog.print(result.value)
+            }
+        }
 
     }
 

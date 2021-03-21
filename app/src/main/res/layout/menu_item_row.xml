@@ -58,6 +58,7 @@
 
 
             <FrameLayout
+                android:id="@+id/frameLay"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_26sdp">
 

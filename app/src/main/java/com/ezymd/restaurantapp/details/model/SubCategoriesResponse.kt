@@ -11,7 +11,8 @@ class Product :Serializable{
     var price = 0
     var sell_price = 0
     var qnty = 0
-    var is_variant_availabe = 0
+    var veg_nonveg=0
+    var is_option = 0
     var stock = 0
     var rating = 0
 }

@@ -168,7 +168,8 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         category = ""
         sell_price = dataTrending.sell_price
         price = dataTrending.price
-        is_veg = 0
+        is_veg = dataTrending.veg_nonveg
+        is_option = dataTrending.is_option
         item = dataTrending.item
         description = dataTrending.description
 

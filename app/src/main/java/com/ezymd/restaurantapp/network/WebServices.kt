@@ -5,12 +5,12 @@ import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
-import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.details.model.SubCategoriesResponse
 import com.ezymd.restaurantapp.filters.model.FilterModel
+import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
@@ -21,6 +21,7 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderSuccessModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -113,6 +114,25 @@ interface WebServices {
     suspend fun getTrending(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): TrendingModel
+
+
+    @Multipart
+    @POST(ServerConfig.UPDATE_PROFILE)
+    suspend fun updateProfile(
+        @Part avatar: MultipartBody.Part,
+        @Part("name") name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone_no") mobile: RequestBody,
+        @Header("Authorization") token: String
+    ): LoginModel
+
+    @FormUrlEncoded
+    @POST(ServerConfig.UPDATE_PROFILE)
+    suspend fun updateWithoutImageProfile(
+        @FieldMap commonParameters: Map<String, String>,
+        @Header("Authorization") token: String
+    ): LoginModel
+
 
     @FormUrlEncoded
     @POST(ServerConfig.SOCIAL_LOGIN_USER)

@@ -20,6 +20,7 @@ interface ServerConfig {
         const val GENERATE_OTP = "sendOtp"
         const val LIST_BANNER = "nearByRestaurantBanner"
         const val LOGOUT = "logout"
+
         /*const val LIST_RESTURANTS = "nearByRestaurant"
         const val SEARCH_RESTURANTS = "nearByRestaurant"*/
         const val RESTURANT_DETAILS = "restaurantItems/{id}"
@@ -35,7 +36,7 @@ interface ServerConfig {
         const val SAVE_PAYMENT = "paymentVerify"
         const val SAVE_RATING = "addReview"
         const val SHOP_DETAIL = "shopDetail"
-        const val SHOP_PRODUCT_DETAIL="shopCategoryProducts"
+        const val SHOP_PRODUCT_DETAIL = "shopCategoryProducts"
         const val APPLY_COUPON = "applyCoupon"
         const val LIST_COUPON = "listCoupon/{restaurant_id}"
         const val PRODUCT_DETAIL = "productDetail"
@@ -48,10 +49,10 @@ interface ServerConfig {
         const val ACCEPT_ORDER = "updateOrderStatus"
         const val COD_ORDER = "codOrder"
 
-        const val TRENDING_STORES="trendingItems"
-        const val NEAR_BY_SHOPS="nearByShops"
-        const val NEAR_BY_BANNERS="nearByShopBanner"
-
+        const val TRENDING_STORES = "trendingItems"
+        const val NEAR_BY_SHOPS = "nearByShops"
+        const val NEAR_BY_BANNERS = "nearByShopBanner"
+        const val UPDATE_PROFILE = "updateProfile"
 
     }
 }

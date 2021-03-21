@@ -78,15 +78,15 @@ class ProductAdapter(
             holder.itemView.quantityPicker.value = item.qnty
         }
         holder.itemView.vegLabel.visibility = View.GONE
-        /*   if (item.is_veg == 0) {
-               holder.itemView.vegLabel.setImageResource(R.drawable.ic_veg)
-           } else {
-               holder.itemView.vegLabel.setImageResource(R.drawable.ic_non_veg)
-           }*/
-        if (item.is_variant_availabe == 0) {
+        if (item.veg_nonveg == 0) {
+            holder.itemView.vegLabel.setImageResource(R.drawable.ic_veg)
+        } else {
+            holder.itemView.vegLabel.setImageResource(R.drawable.ic_non_veg)
+        }
+        if (item.is_option == 0) {
             holder.itemView.add.visibility = View.VISIBLE
         } else {
-            holder.itemView.add.visibility = View.GONE
+            holder.itemView.frameLay.visibility = View.GONE
         }
         holder.itemView.add.setOnClickListener {
             if (item.stock == 0) {

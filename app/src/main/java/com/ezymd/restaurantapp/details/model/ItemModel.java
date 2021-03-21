@@ -15,6 +15,8 @@ public class ItemModel implements Serializable {
     @Expose
     private int quantity = 0;
 
+    @Expose
+    private int is_option=0;
     @SerializedName("stock")
     @Expose
     private int stock;
@@ -150,5 +152,13 @@ public class ItemModel implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getIs_option() {
+        return is_option;
+    }
+
+    public void setIs_option(int is_option) {
+        this.is_option = is_option;
     }
 }
