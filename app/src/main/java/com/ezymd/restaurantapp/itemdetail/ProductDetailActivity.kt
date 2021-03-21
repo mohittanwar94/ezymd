@@ -336,7 +336,7 @@ class ProductDetailActivity : BaseActivity() {
                 add.visibility = View.GONE
                 product.qnty = 1
                 quantityPicker.alpha = 1f
-                val list = ArrayList<Modifier>(viewModel.selectedOptionsList.value!!.values)
+                val list = viewModel.selectedOptionsList.value?.values ?: ArrayList()
                 val item = getItemModelObject(product)
                 item.uuid = viewModel.generateUUID()
                 item.listModifiers.addAll(list)
