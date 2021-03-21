@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.cart_view.view.*
 
 
 class ProductDetailActivity : BaseActivity() {
-
     private var currentProduct: ItemModel? = null
     private val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
@@ -117,6 +116,7 @@ class ProductDetailActivity : BaseActivity() {
             showAddButton()
             // add button show
         } else {
+            var isPresent = false
             for (item in lsitOfCurrentProduct) {
                 if (item.listModifiers.size == 0) {
                     showAddButton()
@@ -140,9 +140,13 @@ class ProductDetailActivity : BaseActivity() {
                     if (productVariantids.equals(selectedVariantids)) {
                         currentProduct = item
                         setQuantity(item.quantity)
+                        isPresent = true
                         break
                     }
                 }
+            }
+            if (!isPresent) {
+                showAddButton()
             }
 
         }
@@ -150,13 +154,17 @@ class ProductDetailActivity : BaseActivity() {
     }
 
     private fun showAddButton() {
-        add.visibility = View.VISIBLE
-        quantityPicker.visibility = View.GONE
-        quantityPicker.value = 0
+        add.post {
+            add.alpha = 1.0f
+            add.visibility = View.VISIBLE
+            quantityPicker.visibility = View.GONE
+            quantityPicker.value = 0
+        }
     }
 
     private fun setQuantity(quantity: Int) {
         add.visibility = View.GONE
+        add.alpha = 0.0f
         quantityPicker.visibility = View.VISIBLE
         quantityPicker.value = quantity
 

@@ -16,6 +16,7 @@ import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.broadcast
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -114,7 +115,6 @@ class ItemDetailViewModel : ViewModel() {
     }
 
     fun getProductDetails(baseRequest: BaseRequest) {
-
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = itemDetailRepository!!.getProductDetailsData(
