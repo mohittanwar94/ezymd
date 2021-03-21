@@ -207,15 +207,8 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
-        var quantity = 0
-        var price = 0.0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-            quantity += itemModel.quantity
-        }
-
-
-        setCartData(quantity, price)
+        val calc = CalculationUtils().processCartData(arrayList)
+        setCartData(calc.first, calc.second)
 
     }
 
@@ -239,14 +232,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
-            quantity.text = TextUtils.concat(
-                "" + quantityCount,
-                " ",
-                getString(R.string.items),
-                " | ",
-                getString(R.string.dollor),
-                "" + price
-            )
+            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price)
         })
 
     }
