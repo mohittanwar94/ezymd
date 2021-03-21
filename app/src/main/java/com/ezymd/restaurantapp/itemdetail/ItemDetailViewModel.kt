@@ -14,11 +14,11 @@ import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SnapLog
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ItemDetailViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
@@ -28,7 +28,7 @@ class ItemDetailViewModel : ViewModel() {
     var product = MutableLiveData<ArrayList<Product>>()
     var images = MutableLiveData<ArrayList<ImageModel>>()
     var options = MutableLiveData<ArrayList<Options>>()
-    val selectedOptionsList= MutableLiveData<HashMap<String,Modifier>>()
+    val selectedOptionsList = MutableLiveData<HashMap<String, Modifier>>()
 
     override fun onCleared() {
         super.onCleared()
@@ -55,6 +55,39 @@ class ItemDetailViewModel : ViewModel() {
         errorRequest.postValue(error?.message)
     }
 
+    fun generateUUID(): String {
+        val uuid: UUID = UUID.randomUUID()
+        return uuid.toString()
+
+    }
+
+    fun addToCart(item: ItemModel, list: ArrayList<Modifier>) {
+        val arrayListData = EzymdApplication.getInstance().cartData.value
+        val arrayList: ArrayList<ItemModel>
+        item.uuid = generateUUID()
+        item.listModifiers.addAll(list)
+        if (arrayListData == null)
+            arrayList = ArrayList()
+        else
+            arrayList = arrayListData
+
+        var isExist = false
+        var i = 0
+        for (itemModel in arrayList) {
+            if (itemModel.id == item.id) {
+                isExist = true
+                itemModel.quantity = item.quantity
+                arrayList[i] = itemModel
+            }
+            i++
+        }
+        if (!isExist)
+            arrayList.add(item)
+
+        EzymdApplication.getInstance().cartData.postValue(arrayList)
+
+    }
+
     fun addToCart(item: ItemModel) {
         val arrayListData = EzymdApplication.getInstance().cartData.value
         val arrayList: ArrayList<ItemModel>
@@ -66,7 +99,7 @@ class ItemDetailViewModel : ViewModel() {
         var isExist = false
         var i = 0
         for (itemModel in arrayList) {
-            if (itemModel.id == item.id) {
+            if (itemModel.uuid == item.uuid) {
                 isExist = true
                 itemModel.quantity = item.quantity
                 arrayList[i] = itemModel
@@ -103,13 +136,13 @@ class ItemDetailViewModel : ViewModel() {
         }
     }
 
-    fun removeItem(item: ItemModel) {
+    fun removeItem(id: String) {
         val arrayList = EzymdApplication.getInstance().cartData.value
         if (arrayList != null) {
-            val index = getIndexOfItem(item.id, arrayList)
-            if (index < arrayList.size)
-                arrayList.removeAt(index)
-            // SnapLog.print("is remove from array====" + arrayList.remove(item))
+            val item = arrayList.filter {
+                it.uuid.equals(it)
+            }
+            arrayList.remove(item)
             EzymdApplication.getInstance().cartData.postValue(arrayList)
         }
     }

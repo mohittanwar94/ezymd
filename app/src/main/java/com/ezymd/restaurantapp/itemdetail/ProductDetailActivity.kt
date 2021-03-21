@@ -25,18 +25,17 @@ import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.adapter.OptionsAdapter
 import com.ezymd.restaurantapp.itemdetail.adapter.ProductDetailPagerAdapter
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
+import com.ezymd.restaurantapp.itemdetail.model.Modifier
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
-import kotlinx.android.synthetic.main.activity_product_details.add
-import kotlinx.android.synthetic.main.activity_product_details.quantityPicker
 import kotlinx.android.synthetic.main.cart_view.*
 import kotlinx.android.synthetic.main.cart_view.view.*
 
 
-
 class ProductDetailActivity : BaseActivity() {
 
+    private var currentProduct: ItemModel? = null
     private val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
     }
@@ -89,6 +88,14 @@ class ProductDetailActivity : BaseActivity() {
         })
 
 
+        viewModel.selectedOptionsList.observe(this, {
+            if (viewModel.options.value != null) {
+                val list = ArrayList<Modifier>(it.values)
+                checkExistInCart(list)
+
+            }
+
+        })
         viewCart.setOnClickListener {
             val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
             intent.putExtra(JSONKeys.OBJECT, restaurant)
@@ -99,6 +106,58 @@ class ProductDetailActivity : BaseActivity() {
 
     }
 
+    private fun checkExistInCart(list: ArrayList<Modifier>) {
+        SnapLog.print("checkExistInCart===============")
+        if (EzymdApplication.getInstance().cartData.value == null)
+            return
+        val lsitOfCurrentProduct = EzymdApplication.getInstance().cartData.value!!.filter {
+            (it.id == product.id)
+        }
+        if (lsitOfCurrentProduct == null || lsitOfCurrentProduct.size == 0) {
+            showAddButton()
+            // add button show
+        } else {
+            for (item in lsitOfCurrentProduct) {
+                if (item.listModifiers.size == 0) {
+                    showAddButton()
+                    //add button show
+                } else {
+                    var productVariantids = ""
+                    for (modifier in item.listModifiers) {
+                        productVariantids = productVariantids + "," + modifier.id
+                    }
+                    productVariantids = productVariantids.substring(1, productVariantids.length)
+
+                    var selectedVariantids = ""
+                    for (mModi in list) {
+                        selectedVariantids = selectedVariantids + "," + mModi.id
+                    }
+                    selectedVariantids = selectedVariantids.substring(1, selectedVariantids.length)
+
+                    if (productVariantids.equals(selectedVariantids)) {
+                        currentProduct = item
+                        setQuantity(item.quantity)
+                        break
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private fun showAddButton() {
+        add.visibility = View.VISIBLE
+        quantityPicker.visibility = View.GONE
+        quantityPicker.value = 0
+    }
+
+    private fun setQuantity(quantity: Int) {
+        add.visibility = View.GONE
+        quantityPicker.visibility = View.VISIBLE
+        quantityPicker.value = quantity
+
+    }
 
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
@@ -272,10 +331,17 @@ class ProductDetailActivity : BaseActivity() {
 
             quantityPicker.postDelayed(Runnable {
                 add.visibility = View.GONE
-                quantityPicker.increment(1)
                 product.qnty = 1
                 quantityPicker.alpha = 1f
-                viewModel.addToCart(getItemModelObject(product))
+                val list = ArrayList<Modifier>(viewModel.selectedOptionsList.value!!.values)
+                val item = getItemModelObject(product)
+                item.uuid = viewModel.generateUUID()
+                item.listModifiers.addAll(list)
+                viewModel.addToCart(item)
+                currentProduct = item
+                // checkExistInCart(list)
+                quantityPicker.increment(1)
+
 
             }, 50)
         }
@@ -291,7 +357,7 @@ class ProductDetailActivity : BaseActivity() {
                 SnapLog.print("quantity====" + value)
                 if (value < 1) {
                     quantityPicker.animate().alpha(0f).setDuration(250).start()
-                    product.qnty = 0
+                    currentProduct?.quantity = 0
                     add.alpha = 0.0f
                     add.visibility = View.VISIBLE
                     add.animate().alpha(1f).setDuration(250)
@@ -300,11 +366,11 @@ class ProductDetailActivity : BaseActivity() {
                                 (250 / if (animation!!.currentPlayTime <= 0) 1 else animation.currentPlayTime).toFloat()
                         }.start()
                     quantityPicker.value = 0
-                    viewModel.removeItem(getItemModelObject(product))
+                    viewModel.removeItem(currentProduct!!.uuid)
                 } else {
 
-                    product.qnty = value
-                    viewModel.addToCart(getItemModelObject(product))
+                    currentProduct?.quantity = value
+                    viewModel.addToCart(currentProduct!!)
                 }
 
             }

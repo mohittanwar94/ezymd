@@ -1,9 +1,11 @@
 package com.ezymd.restaurantapp.details.model;
 
+import com.ezymd.restaurantapp.itemdetail.model.Modifier;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ItemModel implements Serializable {
 
@@ -12,8 +14,13 @@ public class ItemModel implements Serializable {
     private Double rating = 0.0;
 
 
+    @Expose private String uuid="";
     @Expose
     private int quantity = 0;
+
+
+    @Expose
+    private ArrayList<Modifier> listModifiers =new ArrayList<>();
 
     @Expose
     private int is_option=0;
@@ -160,5 +167,21 @@ public class ItemModel implements Serializable {
 
     public void setIs_option(int is_option) {
         this.is_option = is_option;
+    }
+
+    public ArrayList<Modifier> getListModifiers() {
+        return listModifiers;
+    }
+
+    public void setListModifiers(ArrayList<Modifier> listModifiers) {
+        this.listModifiers = listModifiers;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
