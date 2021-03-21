@@ -96,13 +96,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/barrier"
                 app:textFont="medium"
-                tools:text="@string/item_name" />
+                 />
 
 
             <FrameLayout
                 android:id="@+id/addLayout"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_26sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_name">
 
@@ -125,7 +126,6 @@
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_26sdp"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/add_button_bg"
                     android:gravity="center"
                     android:letterSpacing="0.02"

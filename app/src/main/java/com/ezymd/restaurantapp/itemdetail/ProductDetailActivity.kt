@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.itemdetail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -27,13 +28,16 @@ import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
+import kotlinx.android.synthetic.main.activity_product_details.add
+import kotlinx.android.synthetic.main.activity_product_details.quantityPicker
 import kotlinx.android.synthetic.main.cart_view.*
 import kotlinx.android.synthetic.main.cart_view.view.*
 
 
+
 class ProductDetailActivity : BaseActivity() {
 
-    public val viewModel by lazy {
+    private val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
     }
     private val product by lazy {
@@ -44,7 +48,7 @@ class ProductDetailActivity : BaseActivity() {
     }
 
     private val categoryId by lazy {
-        intent.getIntExtra(JSONKeys.CATEGORY_ID,1)
+        intent.getIntExtra(JSONKeys.CATEGORY_ID, 1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +64,6 @@ class ProductDetailActivity : BaseActivity() {
     private fun setObserver() {
         EzymdApplication.getInstance().cartData.observe(this, Observer {
             if (it != null) {
-                checkDataChanges(it)
                 processCartData(it)
             }
         })
@@ -97,24 +100,6 @@ class ProductDetailActivity : BaseActivity() {
     }
 
 
-    private fun checkDataChanges(it: ArrayList<ItemModel>) {
-        /*   var i = 0
-           for (item in dataResturant) {
-               SnapLog.print("data quantity===" + item.quantity)
-               if (it.size == 0)
-                   item.quantity = 0
-               dataResturant[i] = item
-               for (itemModel in it) {
-                   if (itemModel.id == item.id) {
-                       SnapLog.print("quantity===" + itemModel.quantity)
-                       dataResturant[i] = itemModel
-                       break
-                   }
-               }
-               i++
-           }*/
-
-    }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
         var quantity = 0
@@ -243,6 +228,7 @@ class ProductDetailActivity : BaseActivity() {
         view.startAnimation(animate)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setGUI() {
 
         tv_name?.text = product.item
@@ -265,6 +251,7 @@ class ProductDetailActivity : BaseActivity() {
             UIUtil.clickAlpha(it)
             onBackPressed()
         }
+
 
         if (product.qnty != 0) {
             add.visibility = View.GONE
@@ -330,11 +317,11 @@ class ProductDetailActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent=Intent()
-        intent.putExtra(JSONKeys.CATEGORY_ID,categoryId)
-        intent.putExtra(JSONKeys.OBJECT,product)
-        setResult(Activity.RESULT_OK,intent)
+        val intent = Intent()
+        intent.putExtra(JSONKeys.CATEGORY_ID, categoryId)
+        intent.putExtra(JSONKeys.OBJECT, product)
+        setResult(Activity.RESULT_OK, intent)
+        this.finish()
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 

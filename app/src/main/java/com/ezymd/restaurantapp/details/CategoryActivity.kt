@@ -58,7 +58,7 @@ class CategoryActivity : BaseActivity() {
         EXPANDED, COLLAPSED, IDLE
     }
 
-    fun getCategoryID(): Int = dataHeader[selectedStudentPosition].id
+    fun getCategoryID(): Int = foodType[selectedStudentPosition].categoryID
     var mCurrentState: State = State.IDLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

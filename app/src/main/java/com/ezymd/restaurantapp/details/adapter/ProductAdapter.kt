@@ -17,6 +17,7 @@ import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
+import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.menu_item_row.view.*
 
 class ProductAdapter(
@@ -53,6 +54,7 @@ class ProductAdapter(
         // item.stock = 5
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
+
         holder.itemView.addOn.setOnClickListener {
             UIUtil.clickAlpha(it)
             if (context is CategoryActivity)
@@ -81,7 +83,11 @@ class ProductAdapter(
            } else {
                holder.itemView.vegLabel.setImageResource(R.drawable.ic_non_veg)
            }*/
-
+        if (item.is_variant_availabe == 0) {
+            holder.itemView.add.visibility = View.VISIBLE
+        } else {
+            holder.itemView.add.visibility = View.GONE
+        }
         holder.itemView.add.setOnClickListener {
             if (item.stock == 0) {
                 viewModelDetails.errorRequest.value =
