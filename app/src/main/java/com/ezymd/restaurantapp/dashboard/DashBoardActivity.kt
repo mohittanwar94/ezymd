@@ -168,6 +168,7 @@ class DashBoardActivity : BaseActivity() {
                 intent.putExtra(JSONKeys.OBJECT, dataTrending[position])
                 startActivity(intent)
                 overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                EzymdApplication.getInstance().cartData.postValue(null)
 
             }
         }, dataTrending)

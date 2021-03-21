@@ -733,7 +733,10 @@ class ConfirmOrder : BaseActivity() {
         for (model in listItemModel!!) {
             val jsonObjectModel = JsonObject()
             jsonObjectModel.addProperty("product_id", model.id)
-            jsonObjectModel.addProperty("price", model.price)
+            if (model.listModifiers.size > 0)
+                jsonObjectModel.addProperty("price", model.total)
+            else
+                jsonObjectModel.addProperty("price", model.price)
             jsonObjectModel.addProperty("qty", model.quantity)
             price += (model.price * model.quantity)
 

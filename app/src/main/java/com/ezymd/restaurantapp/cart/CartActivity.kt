@@ -243,14 +243,8 @@ class CartActivity : BaseActivity() {
     }
 
     private fun getTotalPrice(arrayList: ArrayList<ItemModel>): Double {
-        var price = 0.0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-        }
-
-
-
-        return String.format("%.2f",price).toDouble()
+        val calc = CalculationUtils().processCartData(arrayList)
+        return String.format("%.2f",calc.second).toDouble()
     }
 
     private fun showEmpty() {
