@@ -41,8 +41,10 @@ class SubOptionAdapter(
         holder.itemView.tv_name.text = item.title
         if (viewModel.selectedOptionsList.value == null)
             viewModel.selectedOptionsList.value = HashMap()
-        if (viewModel.selectedOptionsList.value?.containsKey(options.title) == false)
+        if (viewModel.selectedOptionsList.value?.containsKey(options.title) == false) {
             viewModel.selectedOptionsList.value?.put(options.title, item)
+            viewModel.selectedOptionsList.postValue(viewModel.selectedOptionsList.value)
+        }
         if (viewModel.selectedOptionsList.value?.get(options.title) == item)
             holder.itemView.tv_name.backgroundTintList =
                 ContextCompat.getColorStateList(mContext, R.color.color_ffe600)
