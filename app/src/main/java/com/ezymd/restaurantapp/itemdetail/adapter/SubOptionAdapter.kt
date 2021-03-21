@@ -55,6 +55,7 @@ class SubOptionAdapter(
             } else {
                 viewModel.selectedOptionsList.value?.put(options.title, item)
             }
+            viewModel.selectedOptionsList.postValue(viewModel.selectedOptionsList.value)
             notifyDataSetChanged()
         }
     }
