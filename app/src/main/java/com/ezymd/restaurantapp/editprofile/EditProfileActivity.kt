@@ -206,7 +206,7 @@ class EditProfileActivity : BaseActivity() {
             outStream.close()
             SnapLog.print("Saved")
             rotateManimation()
-            viewModel.saveImage(file, getProfileRequest())
+            viewModel.saveImage(file, getAvatarUpdateProfileRequest())
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -218,6 +218,15 @@ class EditProfileActivity : BaseActivity() {
         baseRequest.paramsMap.put("name", userInfo!!.userName)
         baseRequest.paramsMap.put("email", userInfo!!.email)
         baseRequest.paramsMap.put("phone_no", userInfo!!.phoneNumber)
+        return baseRequest
+
+    }
+
+    private fun getAvatarUpdateProfileRequest(): BaseRequest {
+        val baseRequest=BaseRequest(userInfo)
+        baseRequest.paramsMap.put("name", "")
+        baseRequest.paramsMap.put("email", "")
+        baseRequest.paramsMap.put("phone_no", "")
         return baseRequest
 
     }
