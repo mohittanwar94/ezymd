@@ -76,7 +76,18 @@ class CartAdapter(
         holder.itemView.quantityPicker.value = item.quantity
 
 
-
+        var productVariantids = ""
+        for (modifier in item.listModifiers) {
+            productVariantids = productVariantids + ", " + modifier.title
+        }
+        if (productVariantids.length > 1)
+            productVariantids = productVariantids.substring(1, productVariantids.length)
+        if (productVariantids.length > 1) {
+            holder.itemView.modifiers.visibility = View.VISIBLE
+            holder.itemView.modifiers.text = productVariantids
+        }else{
+            holder.itemView.modifiers.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }

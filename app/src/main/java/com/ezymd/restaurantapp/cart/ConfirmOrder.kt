@@ -49,10 +49,10 @@ class ConfirmOrder : BaseActivity() {
 
     private val stripe: Stripe by lazy {
         Stripe(
-                this,
-                PaymentConfiguration.getInstance(this).publishableKey,
-                PaymentConfiguration.getInstance(this).stripeAccountId,
-                ServerConfig.IS_TESTING
+            this,
+            PaymentConfiguration.getInstance(this).publishableKey,
+            PaymentConfiguration.getInstance(this).stripeAccountId,
+            ServerConfig.IS_TESTING
         )
 
     }
@@ -62,16 +62,16 @@ class ConfirmOrder : BaseActivity() {
 
     private val paymentsClient: PaymentsClient by lazy {
         Wallet.getPaymentsClient(
-                this,
-                Wallet.WalletOptions.Builder()
-                        .setEnvironment(
-                                if (ServerConfig.IS_TESTING) {
-                                    WalletConstants.ENVIRONMENT_TEST
-                                } else {
-                                    WalletConstants.ENVIRONMENT_PRODUCTION
-                                }
-                        )
-                        .build()
+            this,
+            Wallet.WalletOptions.Builder()
+                .setEnvironment(
+                    if (ServerConfig.IS_TESTING) {
+                        WalletConstants.ENVIRONMENT_TEST
+                    } else {
+                        WalletConstants.ENVIRONMENT_PRODUCTION
+                    }
+                )
+                .build()
         )
     }
     private val viewModel by lazy {
@@ -149,14 +149,35 @@ class ConfirmOrder : BaseActivity() {
             }
         } else if (data != null) {
             val isPaymentIntentResult = stripe.onPaymentResult(
+                requestCode,
+                data,
+                object : ApiResultCallback<PaymentIntentResult> {
+                    override fun onSuccess(result: PaymentIntentResult) {
+                        viewModel.isLoading.postValue(false)
+                        processStripeIntent(
+                            result.intent,
+                            paymentMethod = null
+                        )
+                    }
+
+                    override fun onError(e: Exception) {
+                        viewModel.isLoading.postValue(false)
+                        displayError(e.message)
+                    }
+                }
+            )
+            if (isPaymentIntentResult) {
+                viewModel.isLoading.postValue(true)
+            } else {
+                val isSetupIntentResult = stripe.onSetupResult(
                     requestCode,
                     data,
-                    object : ApiResultCallback<PaymentIntentResult> {
-                        override fun onSuccess(result: PaymentIntentResult) {
+                    object : ApiResultCallback<SetupIntentResult> {
+                        override fun onSuccess(result: SetupIntentResult) {
                             viewModel.isLoading.postValue(false)
                             processStripeIntent(
-                                    result.intent,
-                                    paymentMethod = null
+                                result.intent,
+                                paymentMethod = null
                             )
                         }
 
@@ -165,27 +186,6 @@ class ConfirmOrder : BaseActivity() {
                             displayError(e.message)
                         }
                     }
-            )
-            if (isPaymentIntentResult) {
-                viewModel.isLoading.postValue(true)
-            } else {
-                val isSetupIntentResult = stripe.onSetupResult(
-                        requestCode,
-                        data,
-                        object : ApiResultCallback<SetupIntentResult> {
-                            override fun onSuccess(result: SetupIntentResult) {
-                                viewModel.isLoading.postValue(false)
-                                processStripeIntent(
-                                        result.intent,
-                                        paymentMethod = null
-                                )
-                            }
-
-                            override fun onError(e: Exception) {
-                                viewModel.isLoading.postValue(false)
-                                displayError(e.message)
-                            }
-                        }
                 )
                 if (!isSetupIntentResult) {
                     paymentSession?.handlePaymentData(requestCode, resultCode, data)
@@ -202,24 +202,24 @@ class ConfirmOrder : BaseActivity() {
         val paymentDataJson = JSONObject(paymentData.toJson())
 
         val paymentMethodCreateParams =
-                PaymentMethodCreateParams.createFromGooglePay(paymentDataJson)
+            PaymentMethodCreateParams.createFromGooglePay(paymentDataJson)
 
         viewModel.isLoading.postValue(true)
         viewModel.createPaymentMethod(paymentMethodCreateParams)
-                .observe(
-                        this,
-                        { result ->
-                            result.fold(
-                                    onSuccess = {
-                                        payWithPaymentMethod(it)
-                                    },
-                                    onFailure = {
-                                        displayError(it)
-                                        resetCheckout()
-                                    }
-                            )
+            .observe(
+                this,
+                { result ->
+                    result.fold(
+                        onSuccess = {
+                            payWithPaymentMethod(it)
+                        },
+                        onFailure = {
+                            displayError(it)
+                            resetCheckout()
                         }
-                )
+                    )
+                }
+            )
     }
 
     private fun resetCheckout() {
@@ -238,13 +238,13 @@ class ConfirmOrder : BaseActivity() {
         contactless.setTextColor(ContextCompat.getColor(this, R.color.black_323232))
         regular.setTextColor(ContextCompat.getColor(this, R.color.black_323232))
         regular.background =
-                ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+            ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
         contactless.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
         contactless.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Contact less"
-            contactless.alpha=1F
-            regular.alpha=0.3F
+            contactless.alpha = 1F
+            regular.alpha = 0.3F
             if (paymentType == PaymentMethodTYPE.COD) {
                 paymentMethod.text = "Select Payment Method"
                 paymentType = 0
@@ -255,27 +255,27 @@ class ConfirmOrder : BaseActivity() {
         regular.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Regular"
-            contactless.alpha=0.5F
-            regular.alpha=1F
+            contactless.alpha = 0.5F
+            regular.alpha = 1F
         }
         regular.callOnClick()
 
         payButton.text =
-                getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
-                        "%.2f", (intent.getDoubleExtra(
-                        JSONKeys.TOTAL_CASH,
-                        0.0
+            getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+                "%.2f", (intent.getDoubleExtra(
+                    JSONKeys.TOTAL_CASH,
+                    0.0
                 ) + intent.getDoubleExtra(
-                        JSONKeys.DELIVERY_CHARGES,
-                        0.0
+                    JSONKeys.DELIVERY_CHARGES,
+                    0.0
                 ) + intent.getDoubleExtra(
-                        JSONKeys.FEE_CHARGES,
-                        0.0
+                    JSONKeys.FEE_CHARGES,
+                    0.0
                 ) - intent.getDoubleExtra(
-                        JSONKeys.DISCOUNT_AMOUNT,
-                        0.0
+                    JSONKeys.DISCOUNT_AMOUNT,
+                    0.0
                 )).toDouble()
-                )
+            )
         if (restaurant.isPick) {
             viewModel.isNowSelectd.postValue(true)
             resturantAddressLay.visibility = View.VISIBLE
@@ -308,11 +308,11 @@ class ConfirmOrder : BaseActivity() {
             locationModel.lat = userInfo!!.lat.toDouble()
 
             startActivityForResult(
-                    Intent(
-                            this@ConfirmOrder,
-                            LocationActivity::class.java
-                    ).putExtra(JSONKeys.LOCATION_OBJECT, locationModel),
-                    JSONKeys.LOCATION_REQUEST
+                Intent(
+                    this@ConfirmOrder,
+                    LocationActivity::class.java
+                ).putExtra(JSONKeys.LOCATION_OBJECT, locationModel),
+                JSONKeys.LOCATION_REQUEST
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
@@ -328,12 +328,12 @@ class ConfirmOrder : BaseActivity() {
         paymentMethod.setOnClickListener {
             UIUtil.clickAlpha(it)
             startActivityForResult(
-                    Intent(
-                            this@ConfirmOrder,
-                            PaymentOptionActivity::class.java
-                    ).putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
-                            .putExtra(JSONKeys.DELIVERY_CHARGES, deliveryIns),
-                    JSONKeys.SELECT_PAYMENT
+                Intent(
+                    this@ConfirmOrder,
+                    PaymentOptionActivity::class.java
+                ).putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                    .putExtra(JSONKeys.DELIVERY_CHARGES, deliveryIns),
+                JSONKeys.SELECT_PAYMENT
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
 
@@ -379,23 +379,23 @@ class ConfirmOrder : BaseActivity() {
         val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
         val minute = mcurrentTime.get(Calendar.MINUTE)
         val mTimePicker =
-                TimePickerDialog(
-                        this@ConfirmOrder,
-                        R.style.MyTimePickerDark,
-                        { view, hourOfDay, minute ->
-                            if (hourOfDay < hour) {
-                                ShowDialog(this@ConfirmOrder).disPlayDialog(
-                                        getString(R.string.pass_time),
-                                        false,
-                                        false
-                                )
-                            } else
-                                viewModel.dateSelected.value = "$hourOfDay:$minute"
-                        },
-                        hour,
-                        minute,
-                        true
-                )
+            TimePickerDialog(
+                this@ConfirmOrder,
+                R.style.MyTimePickerDark,
+                { view, hourOfDay, minute ->
+                    if (hourOfDay < hour) {
+                        ShowDialog(this@ConfirmOrder).disPlayDialog(
+                            getString(R.string.pass_time),
+                            false,
+                            false
+                        )
+                    } else
+                        viewModel.dateSelected.value = "$hourOfDay:$minute"
+                },
+                hour,
+                minute,
+                true
+            )
         mTimePicker.setTitle("Select Delivery Time")
         mTimePicker.show();
 
@@ -424,7 +424,12 @@ class ConfirmOrder : BaseActivity() {
     private fun setHeaderData() {
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.color_002366))
-        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.color_002366))
+        toolbar_layout.setCollapsedTitleTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.color_002366
+            )
+        )
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.title = getString(R.string.title_confirm_order)
 
@@ -443,8 +448,8 @@ class ConfirmOrder : BaseActivity() {
         viewModel.isCustomerIDAvailable.observe(this, Observer {
             if (it) {
                 CustomerSession.initCustomerSession(
-                        this,
-                        ExampleEphemeralKeyProvider(userInfo!!.customerID, userInfo!!.accessToken)
+                    this,
+                    ExampleEphemeralKeyProvider(userInfo!!.customerID, userInfo!!.accessToken)
                 )
 
             }
@@ -544,8 +549,8 @@ class ConfirmOrder : BaseActivity() {
     private fun startPaymentSession() {
         if (paymentSession == null) {
             paymentSession = PaymentSession(
-                    this,
-                    StoreActivity.createPaymentSessionConfig()
+                this,
+                StoreActivity.createPaymentSessionConfig()
             )
             setupPaymentSession()
         }
@@ -553,45 +558,45 @@ class ConfirmOrder : BaseActivity() {
 
     private fun setupPaymentSession() {
         paymentSession?.init(
-                object : PaymentSession.PaymentSessionListener {
-                    override fun onCommunicatingStateChanged(isCommunicating: Boolean) {
-                        SnapLog.print("onCommunicatingStateChanged" + isCommunicating)
+            object : PaymentSession.PaymentSessionListener {
+                override fun onCommunicatingStateChanged(isCommunicating: Boolean) {
+                    SnapLog.print("onCommunicatingStateChanged" + isCommunicating)
 
 
-                        // update UI, such as hiding or showing a progress bar
-                    }
+                    // update UI, such as hiding or showing a progress bar
+                }
 
-                    override fun onError(errorCode: Int, errorMessage: String) {
-                        displayError(errorMessage)
-                        // handle error
-                    }
+                override fun onError(errorCode: Int, errorMessage: String) {
+                    displayError(errorMessage)
+                    // handle error
+                }
 
 
-                    override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
-                        SnapLog.print("onPaymentSessionDataChanged")
-                        paymentSessionData = data
+                override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
+                    SnapLog.print("onPaymentSessionDataChanged")
+                    paymentSessionData = data
 
-                        // payButton.isEnabled = data.isPaymentReadyToCharge
-                        //  shippingAddress.text = getAddress(paymentSessionData!!)
-                        // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
-                        checkPayButtomEnableDisable()
-                        if (!data.isPaymentReadyToCharge)
-                            paymentSession?.presentPaymentMethodSelection()
+                    // payButton.isEnabled = data.isPaymentReadyToCharge
+                    //  shippingAddress.text = getAddress(paymentSessionData!!)
+                    // checkoutModel.shippingAddress = getAddress(paymentSessionData!!)
+                    checkPayButtomEnableDisable()
+                    if (!data.isPaymentReadyToCharge)
+                        paymentSession?.presentPaymentMethodSelection()
 
-                        when {
-                            data.useGooglePay -> {
-                                updateForGooglePay()
-                            }
-                            else -> {
-                                data.paymentMethod?.let { paymentMethod ->
-                                    showSelectedMethod(getPaymentMethodDescription(paymentMethod))
-                                }
+                    when {
+                        data.useGooglePay -> {
+                            updateForGooglePay()
+                        }
+                        else -> {
+                            data.paymentMethod?.let { paymentMethod ->
+                                showSelectedMethod(getPaymentMethodDescription(paymentMethod))
                             }
                         }
-
-
                     }
-                })
+
+
+                }
+            })
     }
 
     private fun checkPayButtomEnableDisable() {
@@ -609,12 +614,12 @@ class ConfirmOrder : BaseActivity() {
 
     private fun getAddress(paymentSessionData: PaymentSessionData): String {
         if (TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.line2) && TextUtils.isEmpty(
-                        paymentSessionData.shippingInformation?.address?.line1
-                ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.city) && TextUtils.isEmpty(
-                        paymentSessionData.shippingInformation?.address?.state
-                ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.postalCode) && TextUtils.isEmpty(
-                        paymentSessionData.shippingInformation?.address?.state
-                )
+                paymentSessionData.shippingInformation?.address?.line1
+            ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.city) && TextUtils.isEmpty(
+                paymentSessionData.shippingInformation?.address?.state
+            ) && TextUtils.isEmpty(paymentSessionData.shippingInformation?.address?.postalCode) && TextUtils.isEmpty(
+                paymentSessionData.shippingInformation?.address?.state
+            )
         ) {
             return getString(R.string.add_shipping_details)
         } else {
@@ -654,7 +659,7 @@ class ConfirmOrder : BaseActivity() {
 
     private fun updateForGooglePay() {
         paymentMethod.text =
-                getString(R.string.google_pay)
+            getString(R.string.google_pay)
     }
 
     private fun showSelectedMethod(value: String) {
@@ -679,8 +684,8 @@ class ConfirmOrder : BaseActivity() {
 
     private fun getDisplayName(name: String?): String {
         return (name.orEmpty())
-                .split("_")
-                .joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
+            .split("_")
+            .joinToString(separator = " ") { it.capitalize(Locale.ROOT) }
     }
 
     private fun getJsonObject(online: Int): JsonObject {
@@ -699,21 +704,21 @@ class ConfirmOrder : BaseActivity() {
         if (intent.hasExtra(JSONKeys.PROMO)) {
             jsonObject.addProperty("coupon_id", intent.getIntExtra(JSONKeys.PROMO, 0))
             jsonObject.addProperty(
-                    "discount",
-                    intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
+                "discount",
+                intent.getDoubleExtra(JSONKeys.DISCOUNT_AMOUNT, 0.0)
             )
 
         }
         jsonObject.addProperty(
-                "order_pickup_status", if (restaurant.isPick) {
-            JSONKeys.FROM_RESTAURANT
-        } else {
-            JSONKeys.DELIVERY
-        }
+            "order_pickup_status", if (restaurant.isPick) {
+                JSONKeys.FROM_RESTAURANT
+            } else {
+                JSONKeys.DELIVERY
+            }
         )
         jsonObject.addProperty(
-                "delivery_instruction",
-                deliveryIns
+            "delivery_instruction",
+            deliveryIns
         )
         jsonObject.addProperty("shop_id", restaurant.id)
         jsonObject.addProperty("schedule_type", checkoutModel.delivery_type)
@@ -731,28 +736,47 @@ class ConfirmOrder : BaseActivity() {
             jsonObjectModel.addProperty("price", model.price)
             jsonObjectModel.addProperty("qty", model.quantity)
             price += (model.price * model.quantity)
+
+            var productVariantids = ""
+            var productVariantNames = ""
+            for (modifier in model.listModifiers) {
+                productVariantids = productVariantids + "," + modifier.id
+                productVariantNames = productVariantNames + "," + modifier.title
+            }
+            if (productVariantids.length > 1)
+                productVariantids = productVariantids.substring(1, productVariantids.length)
+
+            if (productVariantNames.length > 1)
+                productVariantNames = productVariantNames.substring(1, productVariantNames.length)
+
+            if (productVariantids.length > 1)
+                jsonObjectModel.addProperty("product_option_id", productVariantids)
+
+            if (productVariantNames.length > 1)
+                jsonObjectModel.addProperty("product_option_name", productVariantNames)
+
             orderItems.add(jsonObjectModel)
         }
         jsonObject.addProperty(
-                "transaction_charges",
-                intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
+            "transaction_charges",
+            intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
         )
 
         jsonObject.addProperty(
-                "delivery_charges",
-                intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
+            "delivery_charges",
+            intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
         )
         totalPrice = String.format(
-                "%.2f", (intent.getDoubleExtra(
+            "%.2f", (intent.getDoubleExtra(
                 JSONKeys.TOTAL_CASH,
                 0.0
-        ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+            ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
                 JSONKeys.FEE_CHARGES,
                 0.0
-        ) - intent.getDoubleExtra(
+            ) - intent.getDoubleExtra(
                 JSONKeys.DISCOUNT_AMOUNT,
                 0.0
-        ))
+            ))
         ).toDouble()
         jsonObject.addProperty("total", totalPrice)
 
@@ -765,57 +789,57 @@ class ConfirmOrder : BaseActivity() {
     private fun payWithGoogle() {
         viewModel.isLoading.postValue(true)
         AutoResolveHelper.resolveTask(
-                paymentsClient.loadPaymentData(
-                        PaymentDataRequest.fromJson(
-                                googlePayJsonFactory.createPaymentDataRequest(
-                                        transactionInfo = GooglePayJsonFactory.TransactionInfo(
-                                                currencyCode = "USD",
-                                                totalPrice = totalPrice.toInt(),
-                                                totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
-                                        ),
-                                        merchantInfo = GooglePayJsonFactory.MerchantInfo(
-                                                merchantName = getString(R.string.app_name)
-                                        ),
-                                        shippingAddressParameters = GooglePayJsonFactory.ShippingAddressParameters(
-                                                isRequired = true,
-                                                allowedCountryCodes = setOf("US"),
-                                                phoneNumberRequired = true
-                                        ),
-                                        billingAddressParameters = GooglePayJsonFactory.BillingAddressParameters(
-                                                isRequired = true
-                                        )
-                                ).toString()
+            paymentsClient.loadPaymentData(
+                PaymentDataRequest.fromJson(
+                    googlePayJsonFactory.createPaymentDataRequest(
+                        transactionInfo = GooglePayJsonFactory.TransactionInfo(
+                            currencyCode = "USD",
+                            totalPrice = totalPrice.toInt(),
+                            totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
+                        ),
+                        merchantInfo = GooglePayJsonFactory.MerchantInfo(
+                            merchantName = getString(R.string.app_name)
+                        ),
+                        shippingAddressParameters = GooglePayJsonFactory.ShippingAddressParameters(
+                            isRequired = true,
+                            allowedCountryCodes = setOf("US"),
+                            phoneNumberRequired = true
+                        ),
+                        billingAddressParameters = GooglePayJsonFactory.BillingAddressParameters(
+                            isRequired = true
                         )
-                ),
-                this@ConfirmOrder,
-                LOAD_PAYMENT_DATA_REQUEST_CODE
+                    ).toString()
+                )
+            ),
+            this@ConfirmOrder,
+            LOAD_PAYMENT_DATA_REQUEST_CODE
         )
     }
 
     private fun payWithPaymentMethod(paymentMethod: PaymentMethod) {
         viewModel.isLoading.postValue(true)
         viewModel.createPaymentIntent(
-                createCreatePaymentIntentParams(
-                        paymentSessionData?.shippingInformation,
-                        PaymentConfiguration.getInstance(this).stripeAccountId
-                ), userInfo!!.accessToken
+            createCreatePaymentIntentParams(
+                paymentSessionData?.shippingInformation,
+                PaymentConfiguration.getInstance(this).stripeAccountId
+            ), userInfo!!.accessToken
         ).observe(
-                this,
-                { result ->
-                    result.fold(
-                            onSuccess = { response ->
-                                onStripeIntentClientSecretResponse(response, paymentMethod)
-                            },
-                            onFailure = ::displayError
-                    )
-                }
+            this,
+            { result ->
+                result.fold(
+                    onSuccess = { response ->
+                        onStripeIntentClientSecretResponse(response, paymentMethod)
+                    },
+                    onFailure = ::displayError
+                )
+            }
         )
     }
 
 
     private fun onStripeIntentClientSecretResponse(
-            response: JSONObject,
-            paymentMethod: PaymentMethod?
+        response: JSONObject,
+        paymentMethod: PaymentMethod?
     ) {
         if (response.has("success")) {
             val success = response.getBoolean("success")
@@ -838,38 +862,38 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun retrievePaymentIntent(
-            clientSecret: String,
-            paymentMethod: PaymentMethod?
+        clientSecret: String,
+        paymentMethod: PaymentMethod?
     ) {
         viewModel.isLoading.postValue(true)
         viewModel.retrievePaymentIntent(clientSecret)
-                .observe(
-                        this,
-                        { result ->
-                            viewModel.isLoading.postValue(false)
-                            result.fold(
-                                    onSuccess = {
-                                        processStripeIntent(
-                                                it,
-                                                paymentMethod = paymentMethod
-                                        )
-                                    },
-                                    onFailure = ::displayError
+            .observe(
+                this,
+                { result ->
+                    viewModel.isLoading.postValue(false)
+                    result.fold(
+                        onSuccess = {
+                            processStripeIntent(
+                                it,
+                                paymentMethod = paymentMethod
                             )
-                        }
-                )
+                        },
+                        onFailure = ::displayError
+                    )
+                }
+            )
     }
 
     private fun processStripeIntent(
-            stripeIntent: StripeIntent,
-            paymentMethod: PaymentMethod?
+        stripeIntent: StripeIntent,
+        paymentMethod: PaymentMethod?
     ) {
         if (stripeIntent.requiresAction()) {
             stripe.handleNextActionForPayment(this, stripeIntent.clientSecret!!)
         } else if (stripeIntent.requiresConfirmation()) {
             confirmStripeIntent(
-                    stripeIntent.id!!,
-                    paymentMethod
+                stripeIntent.id!!,
+                paymentMethod
             )
         } else if (stripeIntent.status == StripeIntent.Status.Succeeded) {
             if (stripeIntent is PaymentIntent) {
@@ -882,18 +906,18 @@ class ConfirmOrder : BaseActivity() {
         } else if (stripeIntent.status == StripeIntent.Status.RequiresPaymentMethod) {
             if (stripeIntent is PaymentIntent) {
                 stripe.confirmPayment(
-                        this,
-                        ConfirmPaymentIntentParams.createWithPaymentMethodId(
-                                paymentMethodId = paymentMethod?.id.orEmpty(),
-                                clientSecret = requireNotNull(stripeIntent.clientSecret)
-                        ),
-                        PaymentConfiguration.getInstance(this).stripeAccountId
+                    this,
+                    ConfirmPaymentIntentParams.createWithPaymentMethodId(
+                        paymentMethodId = paymentMethod?.id.orEmpty(),
+                        clientSecret = requireNotNull(stripeIntent.clientSecret)
+                    ),
+                    PaymentConfiguration.getInstance(this).stripeAccountId
                 )
             }
 
         } else {
             displayError(
-                    "Unhandled Payment Intent Status: " + stripeIntent.status.toString()
+                "Unhandled Payment Intent Status: " + stripeIntent.status.toString()
             )
         }
     }
@@ -919,8 +943,8 @@ class ConfirmOrder : BaseActivity() {
         baseRequest.paramsMap.put("status", "" + PaymentStatus.SUCCESS)
         baseRequest.paramsMap.put("intent_id", stripeIntent.id)
         baseRequest.paramsMap.put(
-                "payment_method",
-                getPaymentMethodDescription(stripeIntent.paymentMethod!!)
+            "payment_method",
+            getPaymentMethodDescription(stripeIntent.paymentMethod!!)
         )
         viewModel.savePaymentInfo(baseRequest)
         viewModel.savePaymentResponse.observe(this, Observer {
@@ -939,8 +963,8 @@ class ConfirmOrder : BaseActivity() {
         baseRequest.paramsMap.put("status", "" + PaymentStatus.FAILURE)
         baseRequest.paramsMap.put("intent_id", stripeIntent.id)
         baseRequest.paramsMap.put(
-                "payment_method",
-                getPaymentMethodDescription(stripeIntent.paymentMethod!!)
+            "payment_method",
+            getPaymentMethodDescription(stripeIntent.paymentMethod!!)
         )
         viewModel.savePaymentInfo(baseRequest)
         viewModel.savePaymentResponse.observe(this, Observer {
@@ -955,53 +979,53 @@ class ConfirmOrder : BaseActivity() {
     }
 
     private fun confirmStripeIntent(
-            stripeIntentId: String,
-            paymentMethod: PaymentMethod?
+        stripeIntentId: String,
+        paymentMethod: PaymentMethod?
     ) {
         val params = mapOf(
-                "payment_intent_id" to stripeIntentId
+            "payment_intent_id" to stripeIntentId
         ).plus(
-                PaymentConfiguration.getInstance(this).stripeAccountId.let {
-                    mapOf("stripe_account" to it)
-                }.orEmpty()
+            PaymentConfiguration.getInstance(this).stripeAccountId.let {
+                mapOf("stripe_account" to it)
+            }.orEmpty()
         )
 
         viewModel.isLoading.postValue(true)
         viewModel.confirmStripeIntent(
-                params
+            params
         ).observe(
-                this,
-                { result ->
-                    viewModel.isLoading.postValue(false)
-                    result.fold(
-                            onSuccess = {
-                                onStripeIntentClientSecretResponse(
-                                        it,
-                                        paymentMethod
-                                )
-                            },
-                            onFailure = ::displayError
-                    )
-                }
+            this,
+            { result ->
+                viewModel.isLoading.postValue(false)
+                result.fold(
+                    onSuccess = {
+                        onStripeIntentClientSecretResponse(
+                            it,
+                            paymentMethod
+                        )
+                    },
+                    onFailure = ::displayError
+                )
+            }
         )
     }
 
     private fun createCreatePaymentIntentParams(
-            shippingInformation: ShippingInformation?,
-            stripeAccountId: String?
+        shippingInformation: ShippingInformation?,
+        stripeAccountId: String?
     ): Map<String, Any> {
         return mapOf(
-                "country" to "US",
-                "customer_id" to userInfo!!.customerID,
-                "data" to getJsonObject(PaymentMethodTYPE.ONLINE)
+            "country" to "US",
+            "customer_id" to userInfo!!.customerID,
+            "data" to getJsonObject(PaymentMethodTYPE.ONLINE)
         )/*.plus(
             shippingInformation?.let {
                 mapOf("shipping" to it.toParamMap())
             }.orEmpty()
         )*/.plus(
-                stripeAccountId?.let {
-                    mapOf("stripe_account" to it)
-                }.orEmpty()
+            stripeAccountId?.let {
+                mapOf("stripe_account" to it)
+            }.orEmpty()
         )
     }
 
@@ -1009,13 +1033,13 @@ class ConfirmOrder : BaseActivity() {
 
     private fun displayError(errorMessage: String?) {
         MaterialAlertDialogBuilder(this)
-                .setTitle("Error")
-                .setMessage(errorMessage)
-                .setNeutralButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
+            .setTitle("Error")
+            .setMessage(errorMessage)
+            .setNeutralButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     private fun finishPayment(orderModel: OrderModel) {
@@ -1026,7 +1050,7 @@ class ConfirmOrder : BaseActivity() {
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.left_out)
         finishWithResult(
-                100
+            100
         )
 
     }
