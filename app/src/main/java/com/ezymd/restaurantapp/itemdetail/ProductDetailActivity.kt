@@ -126,13 +126,16 @@ class ProductDetailActivity : BaseActivity() {
                     for (modifier in item.listModifiers) {
                         productVariantids = productVariantids + "," + modifier.id
                     }
-                    productVariantids = productVariantids.substring(1, productVariantids.length)
+                    if (productVariantids.length > 1)
+                        productVariantids = productVariantids.substring(1, productVariantids.length)
 
                     var selectedVariantids = ""
                     for (mModi in list) {
                         selectedVariantids = selectedVariantids + "," + mModi.id
                     }
-                    selectedVariantids = selectedVariantids.substring(1, selectedVariantids.length)
+                    if (selectedVariantids.length > 1)
+                        selectedVariantids =
+                            selectedVariantids.substring(1, selectedVariantids.length)
 
                     if (productVariantids.equals(selectedVariantids)) {
                         currentProduct = item
