@@ -15,7 +15,7 @@ class CalculationUtils {
             tempPrice = ((itemModel.price+tempPrice) * itemModel.quantity)
             quantity += itemModel.quantity
             total += tempPrice
-            itemModel.total = total
+            itemModel.total = tempPrice
         }
 
 
