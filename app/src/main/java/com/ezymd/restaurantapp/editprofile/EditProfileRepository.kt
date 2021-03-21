@@ -11,9 +11,7 @@ import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.util.*
 
@@ -70,10 +68,6 @@ class EditProfileRepository {
                         .asRequestBody("image/*".toMediaTypeOrNull())
                 ),
 
-                loginRequest.paramsMap["name"]!!
-                    .toRequestBody("text/plain".toMediaTypeOrNull()),
-                loginRequest.paramsMap["email"]!!.toRequestBody("text/plain".toMediaTypeOrNull()),
-                loginRequest.paramsMap["phone_no"]!!.toRequestBody("text/plain".toMediaTypeOrNull()),
                 loginRequest.accessToken
             )
         }

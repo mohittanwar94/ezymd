@@ -38,6 +38,8 @@ class EditProfileActivity : BaseActivity() {
         setToolBar()
         setGUI()
         setProfileData()
+        setObserver()
+
 
     }
 
@@ -177,7 +179,6 @@ class EditProfileActivity : BaseActivity() {
                 }
 
 
-
             }
 
 
@@ -196,7 +197,8 @@ class EditProfileActivity : BaseActivity() {
         /*val f3: File = File(Environment.getExternalStorageDirectory().toString() + "/Ezymd/")
         if (!f3.exists())
             f3.mkdirs()
-        */var outStream: OutputStream? = null
+        */
+        var outStream: OutputStream? = null
         /*val file = File(
             Environment.getExternalStorageDirectory().toString() + "/Ezymd/" + "profile" + ".png"
         )*/
@@ -214,7 +216,7 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun getProfileRequest(): BaseRequest {
-        val baseRequest=BaseRequest(userInfo)
+        val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap.put("name", userInfo!!.userName)
         baseRequest.paramsMap.put("email", userInfo!!.email)
         baseRequest.paramsMap.put("phone_no", userInfo!!.phoneNumber)
@@ -223,7 +225,7 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun getAvatarUpdateProfileRequest(): BaseRequest {
-        val baseRequest=BaseRequest(userInfo)
+        val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap.put("name", "")
         baseRequest.paramsMap.put("email", "")
         baseRequest.paramsMap.put("phone_no", "")
@@ -233,25 +235,22 @@ class EditProfileActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.otpResponse.removeObservers(this)
-        viewModel.isLoading.removeObservers(this)
-        viewModel.errorRequest.removeObservers(this)
-        userInfo!!.mUserUpdate.removeObservers(this)
-        rotateAnim?.cancel()
+
     }
 
     var rotateAnim: RotateAnimation? = null
     private fun rotateManimation() {
-        val rotateAnim = RotateAnimation(
+        rotateAnim = RotateAnimation(
             0.0f, 360f,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f,
             RotateAnimation.RELATIVE_TO_SELF, 0.5f
         )
 
-        rotateAnim.repeatMode = Animation.INFINITE
-        rotateAnim.duration = 500
-        rotateAnim.repeatCount = -1
+        rotateAnim!!.repeatMode = Animation.INFINITE
+        rotateAnim?.duration = 500
+        rotateAnim?.repeatCount = -1
         rotatingImage.startAnimation(rotateAnim)
+
 
     }
 
@@ -315,11 +314,8 @@ class EditProfileActivity : BaseActivity() {
     }
 
 
-
-
     override fun onResume() {
         super.onResume()
-        setObserver()
     }
 
 
@@ -329,7 +325,14 @@ class EditProfileActivity : BaseActivity() {
         })
 
         viewModel.mResturantData.observe(this, Observer {
-
+            if (it.status == ErrorCodes.SUCCESS) {
+                showError(true, it.message, null)
+                userInfo?.userName = it.data.user.name
+                userInfo?.email = it.data.user.email
+                userInfo?.phoneNumber = it.data.user.phone_no
+                userInfo?.profilePic = it.data.user.profile_pic
+                setProfileData()
+            }
 
         })
 

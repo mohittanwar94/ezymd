@@ -199,18 +199,18 @@ class ProductDetailActivity : BaseActivity() {
 
     private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
         bannerPager.offscreenPageLimit = 1
+        val model = ImageModel(-1, product.image!!, 0)
+        dataBanner.add(0,model)
         if (!dataBanner.isNullOrEmpty()) {
             iv_icon.visibility = View.GONE
             val registrationTutorialPagerAdapter = ProductDetailPagerAdapter(
                 this,
                 dataBanner, OnRecyclerView { position, view ->
-                    if (viewModel.images.value != null && viewModel.images.value!!.size > 0) {
                         val bannerList = ArrayList<String>()
-                        for (imageModel in viewModel.images.value!!) {
+                        for (imageModel in dataBanner) {
                             bannerList.add(imageModel.image)
                         }
-                        ShowImageVideo(this).Display(bannerList, 0)
-                    }
+                        ShowImageVideo(this).Display(bannerList, position)
 
 
                 })

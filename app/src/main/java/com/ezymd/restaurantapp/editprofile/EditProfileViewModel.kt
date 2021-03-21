@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
-import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
@@ -17,7 +17,7 @@ import java.io.File
 class EditProfileViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: EditProfileRepository? = null
-    val mResturantData: MutableLiveData<MenuItemModel>
+    val mResturantData: MutableLiveData<LoginModel>
     val isLoading: MutableLiveData<Boolean>
     val otpResponse: MutableLiveData<OtpModel>
 
@@ -50,7 +50,7 @@ class EditProfileViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                // is ResultWrapper.Success -> mResturantData.postValue(result.value)
+                is ResultWrapper.Success -> mResturantData.postValue(result.value)
             }
 
         }
@@ -95,8 +95,8 @@ class EditProfileViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> {
-                } //SnapLog.print(result.value)
+                is ResultWrapper.Success -> mResturantData.postValue(result.value)
+
             }
         }
 

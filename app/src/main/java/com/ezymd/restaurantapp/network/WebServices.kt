@@ -120,9 +120,6 @@ interface WebServices {
     @POST(ServerConfig.UPDATE_PROFILE)
     suspend fun updateProfile(
         @Part avatar: MultipartBody.Part,
-        @Part("name") name: RequestBody,
-        @Part("email") email: RequestBody,
-        @Part("phone_no") mobile: RequestBody,
         @Header("Authorization") token: String
     ): LoginModel
 
