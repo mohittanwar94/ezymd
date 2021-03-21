@@ -7,6 +7,7 @@ import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
+import com.ezymd.restaurantapp.itemdetail.model.Modifier
 import com.ezymd.restaurantapp.itemdetail.model.Options
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -27,7 +28,7 @@ class ItemDetailViewModel : ViewModel() {
     var product = MutableLiveData<ArrayList<Product>>()
     var images = MutableLiveData<ArrayList<ImageModel>>()
     var options = MutableLiveData<ArrayList<Options>>()
-    val selectedOptionsList= MutableLiveData<HashMap<String,Int>>()
+    val selectedOptionsList= MutableLiveData<HashMap<String,Modifier>>()
 
     override fun onCleared() {
         super.onCleared()

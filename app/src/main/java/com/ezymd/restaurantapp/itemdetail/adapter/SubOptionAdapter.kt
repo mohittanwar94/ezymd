@@ -39,25 +39,21 @@ class SubOptionAdapter(
         val item = data[position]
 
         holder.itemView.tv_name.text = item.title
-        if (viewModel.selectedOptionsList.value?.containsKey(options.title) == true && viewModel.selectedOptionsList.value?.get(
-                options.title
-            ) == item.id
-        )
+        if (viewModel.selectedOptionsList.value == null)
+            viewModel.selectedOptionsList.value = HashMap()
+        if (viewModel.selectedOptionsList.value?.containsKey(options.title) == false)
+            viewModel.selectedOptionsList.value?.put(options.title, item)
+        if (viewModel.selectedOptionsList.value?.get(options.title) == item)
             holder.itemView.tv_name.backgroundTintList =
                 ContextCompat.getColorStateList(mContext, R.color.color_ffe600)
         else
             holder.itemView.tv_name.backgroundTintList =
                 ContextCompat.getColorStateList(mContext, R.color.color_f8f8f8)
         holder.itemView.tv_name.setOnClickListener {
-            if (viewModel.selectedOptionsList.value?.containsKey(options.title) == true && viewModel.selectedOptionsList.value?.get(
-                    options.title
-                ) == item.id
-            ) {
+            if (viewModel.selectedOptionsList.value?.get(options.title) == item) {
                 viewModel.selectedOptionsList.value?.remove(options.title)
             } else {
-                if (viewModel.selectedOptionsList.value == null)
-                    viewModel.selectedOptionsList.value = HashMap()
-                viewModel.selectedOptionsList.value?.put(options.title, item.id)
+                viewModel.selectedOptionsList.value?.put(options.title, item)
             }
             notifyDataSetChanged()
         }
