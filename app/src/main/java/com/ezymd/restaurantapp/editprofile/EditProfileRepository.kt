@@ -26,7 +26,8 @@ class EditProfileRepository {
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
-        map.put("phone_no", otp)
+        map["phone_no"] = otp
+        map["is_otp"] = "1"
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(

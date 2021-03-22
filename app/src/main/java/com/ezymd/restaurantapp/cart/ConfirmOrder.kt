@@ -744,7 +744,7 @@ class ConfirmOrder : BaseActivity() {
             var productVariantNames = ""
             for (modifier in model.listModifiers) {
                 productVariantids = productVariantids + "," + modifier.id
-                productVariantNames = productVariantNames + "," + modifier.title
+                productVariantNames = productVariantNames + ", " + modifier.title
             }
             if (productVariantids.length > 1)
                 productVariantids = productVariantids.substring(1, productVariantids.length)

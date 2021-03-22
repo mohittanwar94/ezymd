@@ -9,7 +9,7 @@ public class User {
 
     private String name;
 
-    private String profile_pic;
+    private String photo;
 
     private String created_at;
 
@@ -54,11 +54,11 @@ public class User {
     }
 
     public String getProfile_pic() {
-        return profile_pic;
+        return photo;
     }
 
     public void setProfile_pic(String profile_pic) {
-        this.profile_pic = profile_pic;
+        this.photo = profile_pic;
     }
 
     public String getCreated_at() {

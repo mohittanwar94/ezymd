@@ -312,14 +312,18 @@ class EditProfileActivity : BaseActivity() {
             if (it.isStatus != ErrorCodes.SUCCESS) {
                 showError(false, it.message, null)
             } else {
-                startActivityForResult(
-                    Intent(
-                        this,
-                        OTPScreen::class.java
-                    ).putExtra(JSONKeys.MOBILE_NO, text).putExtra(JSONKeys.IS_MOBILE, true),
-                    OTP_REQUEST
-                )
-                overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                if (it.data != null) {
+                    val otp = it.data.otp
+                    startActivityForResult(
+                        Intent(
+                            this,
+                            OTPScreen::class.java
+                        ).putExtra(JSONKeys.MOBILE_NO, text).putExtra(JSONKeys.OTP, otp)
+                            .putExtra(JSONKeys.IS_MOBILE, true),
+                        OTP_REQUEST
+                    )
+                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                }
             }
         })
     }

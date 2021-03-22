@@ -27,13 +27,15 @@ class OtpRepository private constructor() {
 
     suspend fun resendSms(
         mobile: String,
-        dispatcher: CoroutineDispatcher
+        dispatcher: CoroutineDispatcher,
+        hasExtra: Boolean
     ): ResultWrapper<OtpModel> {
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
-        map.put("phone_no", mobile)
-
+        map["phone_no"] = mobile
+        if (hasExtra)
+            map["is_otp"] = "1"
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(map)
         }
@@ -41,7 +43,7 @@ class OtpRepository private constructor() {
 
 
     suspend fun registerLoginUser(
-        loginRequest:LoginRequest,
+        loginRequest: LoginRequest,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<LoginModel> {
         SnapLog.print("Login repositry=====")
