@@ -21,10 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ezymd.restaurantapp.BaseActivity
-import com.ezymd.restaurantapp.GpsLocationReceiver
-import com.ezymd.restaurantapp.MainActivity
-import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.customviews.RoundedImageView
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
@@ -163,11 +160,12 @@ class SearchFragment : Fragment() {
             DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
                 val intent = Intent(activity, DetailsActivity::class.java)
-                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+                intent.putExtra(JSONKeys.OBJECT, (requireActivity() as MainActivity).getRestaurantObject(dataResturant[position]))
                 val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                 )
                 (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
+                EzymdApplication.getInstance().cartData.postValue(null)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 

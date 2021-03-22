@@ -131,6 +131,7 @@
                             android:background="@null"
                             android:lineSpacingExtra="@dimen/_4sdp"
                             android:text=""
+                            android:textCursorDrawable="@color/color_002366"
                             android:textColor="@color/color_002366"
                             android:textSize="@dimen/_17sdp"
                             android:textStyle="normal"
@@ -162,6 +163,7 @@
                             android:inputType="textEmailAddress"
                             android:lineSpacingExtra="@dimen/_4sdp"
                             android:text=""
+                            android:textCursorDrawable="@color/color_002366"
                             android:textColor="@color/color_002366"
                             android:textSize="@dimen/_17sdp"
                             android:textStyle="normal"
@@ -194,6 +196,7 @@
                             android:inputType="phone"
                             android:lineSpacingExtra="@dimen/_4sdp"
                             android:text=""
+                            android:textCursorDrawable="@color/color_002366"
                             android:textColor="@color/color_002366"
                             android:textSize="@dimen/_17sdp"
                             android:textStyle="normal"
@@ -231,6 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
+                    android:theme="@style/progressBarThemeBlack"
                     android:elevation="@dimen/_10sdp"
                     android:visibility="gone" />
 

@@ -39,7 +39,7 @@ class EditProfileViewModel : ViewModel() {
     }
 
 
-    fun getDetails(baseRequest: BaseRequest) {
+    fun updateProfileInfo(baseRequest: BaseRequest) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.updateUprofile(

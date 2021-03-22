@@ -19,6 +19,7 @@ import com.ezymd.restaurantapp.login.otp.OTPScreen
 import com.ezymd.restaurantapp.utils.*
 import com.ezymd.restaurantapp.utils.JSONKeys.OTP_REQUEST
 import kotlinx.android.synthetic.main.activity_edit_profile.*
+import kotlinx.android.synthetic.main.count_parent_item.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -91,11 +92,11 @@ class EditProfileActivity : BaseActivity() {
         return outputFileUri
     }
 
+    private var isEmailChange = false
+    private var isMobileChange = false
 
     private fun checkConditions(it: View) {
         UIUtil.clickHandled(it)
-        var isEmailChange = false
-        var isMobileChange = false
 
         if (name.text.toString().isEmpty()) {
             ShowDialog(this@EditProfileActivity).disPlayDialog(
@@ -150,7 +151,7 @@ class EditProfileActivity : BaseActivity() {
 
     private fun updateProfile(it: View) {
         UIUtil.clickHandled(it)
-
+        viewModel.updateProfileInfo(getProfileRequest())
 
     }
 
@@ -193,15 +194,7 @@ class EditProfileActivity : BaseActivity() {
             root.mkdirs()
         }
         val file = File(root, "profile.png")
-
-        /*val f3: File = File(Environment.getExternalStorageDirectory().toString() + "/Ezymd/")
-        if (!f3.exists())
-            f3.mkdirs()
-        */
         var outStream: OutputStream? = null
-        /*val file = File(
-            Environment.getExternalStorageDirectory().toString() + "/Ezymd/" + "profile" + ".png"
-        )*/
         try {
             outStream = FileOutputStream(file)
             myBitmap.compress(Bitmap.CompressFormat.PNG, 85, outStream)
@@ -217,18 +210,36 @@ class EditProfileActivity : BaseActivity() {
 
     private fun getProfileRequest(): BaseRequest {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("name", userInfo!!.userName)
-        baseRequest.paramsMap.put("email", userInfo!!.email)
-        baseRequest.paramsMap.put("phone_no", userInfo!!.phoneNumber)
+        baseRequest.paramsMap["name"] = userInfo!!.userName
+
+        if (!isEmailChange && !isMobileChange) {
+            baseRequest.paramsMap["phone_no"] = userInfo!!.phoneNumber
+            baseRequest.paramsMap["email"] = userInfo!!.email
+            return baseRequest
+
+        }
+        if (isEmailChange && isMobileChange) {
+            baseRequest.paramsMap["phone_no"] = mobile.text.toString().trim()
+            baseRequest.paramsMap["email"] = userInfo!!.email
+            return baseRequest
+
+        }
+        if (isEmailChange) {
+            baseRequest.paramsMap["phone_no"] = userInfo!!.phoneNumber
+            baseRequest.paramsMap["email"] = email.text.toString().trim()
+            return baseRequest
+        }
+        if (isMobileChange) {
+            baseRequest.paramsMap["phone_no"] = mobile.text.toString().trim()
+            baseRequest.paramsMap["email"] = userInfo!!.email
+            return baseRequest
+        }
         return baseRequest
 
     }
 
     private fun getAvatarUpdateProfileRequest(): BaseRequest {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap.put("name", "")
-        baseRequest.paramsMap.put("email", "")
-        baseRequest.paramsMap.put("phone_no", "")
         return baseRequest
 
     }
