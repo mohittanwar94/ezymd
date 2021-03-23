@@ -221,6 +221,10 @@ class DashBoardActivity : BaseActivity() {
 
         viewModel.mShopData.observe(this, Observer {
 
+            if (it.data.size == 0) {
+                resturantCount.text =
+                    TextUtils.concat("No " + getAroundYouString(typeCategory))
+            }
             if (it.data != null && it.data.size != 0) {
                 adapterRestaurant?.setData(it.data)
                 adapterRestaurant?.getData()?.let { it1 ->

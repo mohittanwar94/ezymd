@@ -210,7 +210,7 @@ class EditProfileActivity : BaseActivity() {
 
     private fun getProfileRequest(): BaseRequest {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap["name"] = userInfo!!.userName
+        baseRequest.paramsMap["name"] = name.text.toString().trim()
 
         if (!isEmailChange && !isMobileChange) {
             baseRequest.paramsMap["phone_no"] = userInfo!!.phoneNumber
