@@ -139,23 +139,20 @@ class DashBoardActivity : BaseActivity() {
         trendingRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         trendingRecyclerView.addItemDecoration(
-            VerticalSpacesItemDecoration(
+            HorizontialSpacesItemDecoration(
                 (resources.getDimensionPixelSize(
-                    R.dimen._13sdp
+                    R.dimen._10sdp
                 ))
             )
         )
-        adapterTrending = DashBoardTrendingAdapter(this@DashBoardActivity, object : OnRecyclerView {
-
-            override fun onClick(position: Int, view: View?) {
+        adapterTrending = DashBoardTrendingAdapter(this@DashBoardActivity,
+            { position, view ->
                 val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataTrending[position])
                 startActivity(intent)
                 overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 EzymdApplication.getInstance().cartData.postValue(null)
-
-            }
-        }, dataTrending)
+            }, dataTrending)
 
         trendingRecyclerView.adapter = adapterTrending
 

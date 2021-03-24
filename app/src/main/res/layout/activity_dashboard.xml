@@ -83,9 +83,9 @@
                 android:background="@color/color_f8f8f8"
                 android:clipToPadding="false"
                 android:paddingLeft="@dimen/_15sdp"
-                android:visibility="gone"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingRight="@dimen/_15sdp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,12 +96,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:visibility="gone"
                 app:dotsColor="@color/color_e8e8e9"
                 app:dotsCornerRadius="@dimen/_5sdp"
-                android:visibility="gone"
                 app:dotsSize="@dimen/_10sdp"
                 app:dotsSpacing="@dimen/_4sdp"
-                android:paddingBottom="@dimen/_10sdp"
                 app:dotsWidthFactor="2.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +146,14 @@
                 android:paddingRight="@dimen/_15sdp"
                 app:layout_constraintTop_toBottomOf="@+id/trending" />
 
+            <View
+                android:id="@+id/view_helper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_15sdp"
+                app:layout_constraintStart_toEndOf="@+id/trendingRecyclerView"
+                app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView"
+                android:background="@color/color_f8f8f8" />
+
             <RelativeLayout
                 android:id="@+id/filterRv"
                 android:layout_width="match_parent"
@@ -153,7 +161,7 @@
                 android:layout_marginTop="@dimen/_23sdp"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/trendingRecyclerView">
+                app:layout_constraintTop_toBottomOf="@+id/view_helper">
 
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
