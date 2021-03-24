@@ -17,7 +17,6 @@ import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
-import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.ui.search.SearchActivity
 import com.ezymd.restaurantapp.utils.*
@@ -65,10 +64,10 @@ class DashBoardActivity : BaseActivity() {
                 this@DashBoardActivity,
                 dataBanner, OnRecyclerView { position, view ->
                     if (typeCategory == StoreType.RESTAURANT) {
-                        val intent = Intent(this@DashBoardActivity, DetailsActivity::class.java)
+                        val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
                         intent.putExtra(
                             JSONKeys.OBJECT,
-                            getRestaurantObject(dataBanner[position])
+                            dataBanner[position]
                         )
                         startActivity(intent)
                     } else {
@@ -119,14 +118,6 @@ class DashBoardActivity : BaseActivity() {
         adapterRestaurant = DashBoardNearByAdapter(this@DashBoardActivity, object : OnRecyclerView {
 
             override fun onClick(position: Int, view: View?) {
-                if (typeCategory == StoreType.RESTAURANT) {
-                    val intent = Intent(this@DashBoardActivity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(dataResturant[position]))
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
-                    EzymdApplication.getInstance().cartData.postValue(null)
-                    return
-                }
                 val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
                 startActivity(intent)
@@ -157,14 +148,6 @@ class DashBoardActivity : BaseActivity() {
         adapterTrending = DashBoardTrendingAdapter(this@DashBoardActivity, object : OnRecyclerView {
 
             override fun onClick(position: Int, view: View?) {
-                if (typeCategory == StoreType.RESTAURANT) {
-                    val intent = Intent(this@DashBoardActivity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(dataTrending[position]))
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.left_in, R.anim.left_out)
-                    EzymdApplication.getInstance().cartData.postValue(null)
-                    return
-                }
                 val intent = Intent(this@DashBoardActivity, CategoryActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataTrending[position])
                 startActivity(intent)

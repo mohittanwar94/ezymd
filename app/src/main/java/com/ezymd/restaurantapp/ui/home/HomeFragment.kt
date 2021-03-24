@@ -29,7 +29,7 @@ import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.dashboard.DashBoardActivity
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
-import com.ezymd.restaurantapp.details.DetailsActivity
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
@@ -322,10 +322,10 @@ open class HomeFragment : Fragment() {
         )
         restaurantAdapter =
             DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-                val intent = Intent(requireActivity(), DetailsActivity::class.java)
+                val intent = Intent(requireActivity(), CategoryActivity::class.java)
                 intent.putExtra(
                     JSONKeys.OBJECT,
-                    (activity as MainActivity).getRestaurantObject(dataResturant[position])
+                    dataResturant[position]
                 )
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
@@ -348,8 +348,8 @@ open class HomeFragment : Fragment() {
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
                     // val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
-                    val intent = Intent(activity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
+                    val intent = Intent(activity, CategoryActivity::class.java)
+                    intent.putExtra(JSONKeys.OBJECT, getDataTrendingObject(dataBanner[position]))
                     /*  val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                           (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                       )
@@ -361,6 +361,25 @@ open class HomeFragment : Fragment() {
 
         setPageChangeListener()
 
+    }
+
+    private fun getDataTrendingObject(resturant: Resturant): DataTrending {
+        return DataTrending().apply {
+            address = resturant.address
+            lat = resturant.lat.toString()
+            lang = resturant.longitude.toString()
+            id = resturant.id
+            name = resturant.name
+            banner = resturant.banner
+            category_id = -1
+            cuisines = resturant.cuisines
+            rating = resturant.rating
+            min_order = resturant.minOrder
+            discount = resturant.discount.toString()
+            is_free_delivery = resturant.isFreeDelivery.toString()
+            distance = resturant.distance
+            phone_no = resturant.phoneNo
+        }
     }
 
     override fun onResume() {
@@ -524,10 +543,10 @@ open class HomeFragment : Fragment() {
         trendingRecyclerView.layoutManager = LinearLayoutManager(activity, HORIZONTAL, false)
         treandingAdapter =
             TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-                val intent = Intent(requireActivity(), DetailsActivity::class.java)
+                val intent = Intent(requireActivity(), CategoryActivity::class.java)
                 intent.putExtra(
                     JSONKeys.OBJECT,
-                    dataTrending[position].restaurant
+                    getDataTrendingObject(dataTrending[position].restaurant)
                 )
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)

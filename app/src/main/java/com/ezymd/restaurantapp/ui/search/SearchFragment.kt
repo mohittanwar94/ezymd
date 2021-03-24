@@ -25,7 +25,7 @@ import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.customviews.RoundedImageView
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
-import com.ezymd.restaurantapp.details.DetailsActivity
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -68,7 +68,7 @@ class SearchFragment : Fragment() {
         if (isNullViewRoot) {
             setAdapterRestaurant()
             askPermission()
-            val baseRequest=BaseRequest(userInfo)
+            val baseRequest = BaseRequest(userInfo)
             baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
             searchViewModel.getResturants(baseRequest)
             setSearchListerner()
@@ -159,8 +159,8 @@ class SearchFragment : Fragment() {
         restaurantAdapter =
             DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
-                val intent = Intent(activity, DetailsActivity::class.java)
-                intent.putExtra(JSONKeys.OBJECT, (requireActivity() as MainActivity).getRestaurantObject(dataResturant[position]))
+                val intent = Intent(activity, CategoryActivity::class.java)
+                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
                 val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                 )

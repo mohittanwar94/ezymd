@@ -14,7 +14,6 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
-import com.ezymd.restaurantapp.details.DetailsActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -95,19 +94,12 @@ class SearchActivity : BaseActivity() {
             )
         )
         restaurantAdapter = DashBoardNearByAdapter(this, OnRecyclerView { position, view ->
-            if (typeCategory == StoreType.RESTAURANT) {
-                val intent = Intent(this@SearchActivity, DetailsActivity::class.java)
-                intent.putExtra(JSONKeys.OBJECT, getRestaurantObject(dataResturant[position]))
-                startActivity(intent)
-                overridePendingTransition(R.anim.left_in, R.anim.left_out)
-                EzymdApplication.getInstance().cartData.postValue(null)
 
-            } else {
-                val intent = Intent(this@SearchActivity, CategoryActivity::class.java)
-                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
-                startActivity(intent)
-                overridePendingTransition(R.anim.left_in, R.anim.left_out)
-            }
+            val intent = Intent(this@SearchActivity, CategoryActivity::class.java)
+            intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
+            startActivity(intent)
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+            EzymdApplication.getInstance().cartData.postValue(null)
 
 
         }, dataResturant)
