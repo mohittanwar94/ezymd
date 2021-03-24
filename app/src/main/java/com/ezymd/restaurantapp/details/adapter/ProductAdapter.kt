@@ -69,13 +69,14 @@ class ProductAdapter(
         holder.itemView.add.alpha = 1f
         holder.itemView.add.visibility = View.VISIBLE
         holder.itemView.quantityPicker.value = item.qnty
+        SnapLog.print("item.qnty==========" + item.qnty)
         if (item.qnty == 0) {
             holder.itemView.add.visibility = View.VISIBLE
             holder.itemView.quantityPicker.visibility = View.GONE
         } else {
             holder.itemView.add.visibility = View.GONE
             holder.itemView.quantityPicker.visibility = View.VISIBLE
-            holder.itemView.quantityPicker.value = item.qnty
+          //  holder.itemView.quantityPicker.increment(item.qnty)
         }
         holder.itemView.vegLabel.visibility = View.GONE
         if (item.veg_nonveg == 0) {
@@ -84,7 +85,7 @@ class ProductAdapter(
             holder.itemView.vegLabel.setImageResource(R.drawable.ic_non_veg)
         }
         if (item.is_option == 0) {
-            holder.itemView.add.visibility = View.VISIBLE
+            holder.itemView.frameLay.visibility = View.VISIBLE
         } else {
             holder.itemView.frameLay.visibility = View.GONE
         }
@@ -112,7 +113,8 @@ class ProductAdapter(
             // onRecyclerView.onClick(position, it)
         }
         holder.itemView.setOnClickListener {
-            onRecyclerView.onClick(position, it)
+            if (item.is_option != 0)
+                onRecyclerView.onClick(position, it)
         }
 
         addListener(holder, position)

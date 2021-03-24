@@ -39,15 +39,23 @@ class SubCategoryWithProductAdapter(
 
     override fun onBindViewHolder(myViewHolder: MyViewHolder, parentPostion: Int) {
         val item = data[parentPostion]
-        myViewHolder.itemView.title_text.text = item.name
-        myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
-        myViewHolder.itemView.setOnClickListener {
-            item.isExpanded = !item.isExpanded
-            myViewHolder.itemView.recycler.visibility =
-                if (item.isExpanded) View.VISIBLE else View.GONE
+        if (item.id==-1){
+            myViewHolder.itemView.title_text.visibility=View.GONE
+            myViewHolder.itemView.arrow_image.visibility=View.GONE
+            item.isExpanded=true
+        }else {
+            myViewHolder.itemView.title_text.visibility=View.VISIBLE
+            myViewHolder.itemView.arrow_image.visibility=View.VISIBLE
+            myViewHolder.itemView.title_text.text = item.name
             myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
+            myViewHolder.itemView.setOnClickListener {
+                item.isExpanded = !item.isExpanded
+                myViewHolder.itemView.recycler.visibility =
+                    if (item.isExpanded) View.VISIBLE else View.GONE
+                myViewHolder.itemView.arrow_image.rotation = if (item.isExpanded) 90f else 0.0f
 
 
+            }
         }
 
         myViewHolder.itemView.recycler.visibility =
