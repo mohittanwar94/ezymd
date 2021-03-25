@@ -272,5 +272,6 @@
     <string name="description">Description</string>
     <string name="item_description">Item Description</string>
     <string name="sizes">Sizes</string>
+    <string name="sold_out">sold out</string>
 
 </resources>

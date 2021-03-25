@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
@@ -41,6 +42,12 @@ class ProductAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = data[position]
+
+        holder.itemView.add.background =
+            ContextCompat.getDrawable(context, R.drawable.add_button_bg)
+        holder.itemView.add.text = context.getString(R.string.add)
+        holder.itemView.add.setTextColor(ContextCompat.getColor(context, R.color.color_002366))
+
         if (!TextUtils.isEmpty(data[position].image)) {
             GlideApp.with(context.applicationContext)
                 .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
@@ -76,7 +83,7 @@ class ProductAdapter(
         } else {
             holder.itemView.add.visibility = View.GONE
             holder.itemView.quantityPicker.visibility = View.VISIBLE
-          //  holder.itemView.quantityPicker.increment(item.qnty)
+            //  holder.itemView.quantityPicker.increment(item.qnty)
         }
         holder.itemView.vegLabel.visibility = View.GONE
         if (item.veg_nonveg == 0) {
@@ -115,6 +122,12 @@ class ProductAdapter(
         holder.itemView.setOnClickListener {
             if (item.is_option != 0)
                 onRecyclerView.onClick(position, it)
+        }
+
+        if (item.stock == 0) {
+            holder.itemView.add.background = null
+            holder.itemView.add.text = context.getString(R.string.sold_out)
+            holder.itemView.add.setTextColor(ContextCompat.getColor(context, R.color.red))
         }
 
         addListener(holder, position)

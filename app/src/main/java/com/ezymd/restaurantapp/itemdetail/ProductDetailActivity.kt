@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -36,7 +37,7 @@ import kotlinx.android.synthetic.main.order_item_row.*
 
 class ProductDetailActivity : BaseActivity() {
     private var currentProduct: ItemModel? = null
-    private var stock=0
+    private var stock = 0
     private val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
     }
@@ -94,8 +95,13 @@ class ProductDetailActivity : BaseActivity() {
                 val list = ArrayList<Modifier>(it.values)
                 checkExistInCart(list)
                 if (list.size > 0) {
-                    stock=list.get(0).stock
+                    stock = list.get(0).stock
                     quantityPicker.max = stock
+                    if (stock == 0) {
+                        add.background = null
+                        add.text = getString(R.string.sold_out)
+                        add.setTextColor(ContextCompat.getColor(this, R.color.red))
+                    }
                 }
                 tv_price?.text = "${getString(R.string.dollor)}${
                     product.price + CalculationUtils().getModifierPrice(
