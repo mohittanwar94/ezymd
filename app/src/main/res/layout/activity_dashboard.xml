@@ -44,7 +44,7 @@
             android:textColor="@color/color_002366"
             android:textSize="@dimen/_15sdp"
             android:visibility="visible"
-            app:textFont="medium" />
+            app:textFont="bold" />
 
 
         <ImageView

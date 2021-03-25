@@ -11,5 +11,12 @@ data class RootData(
 )
 
 data class Options(var title: String, var data: ArrayList<Modifier>)
-data class Modifier(var id: Int, var title: String, var price: Double, var operator: String)
+data class Modifier(
+    var id: Int,
+    var title: String,
+    var price: Double,
+    var operator: String,
+    val stock: Int
+)
+
 data class ImageModel(val id: Int, val image: String, val sort_order: Int)

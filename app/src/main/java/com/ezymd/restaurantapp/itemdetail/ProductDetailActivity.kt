@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.order_item_row.*
 
 class ProductDetailActivity : BaseActivity() {
     private var currentProduct: ItemModel? = null
+    private var stock=0
     private val viewModel by lazy {
         ViewModelProvider(this).get(ItemDetailViewModel::class.java)
     }
@@ -92,7 +93,16 @@ class ProductDetailActivity : BaseActivity() {
             if (viewModel.options.value != null) {
                 val list = ArrayList<Modifier>(it.values)
                 checkExistInCart(list)
-                tv_price?.text = "${getString(R.string.dollor)}${product.price+CalculationUtils().getModifierPrice(product.price,list)}"
+                if (list.size > 0) {
+                    stock=list.get(0).stock
+                    quantityPicker.max = stock
+                }
+                tv_price?.text = "${getString(R.string.dollor)}${
+                    product.price + CalculationUtils().getModifierPrice(
+                        product.price,
+                        list
+                    )
+                }"
 
             }
 
@@ -114,7 +124,7 @@ class ProductDetailActivity : BaseActivity() {
         val lsitOfCurrentProduct = EzymdApplication.getInstance().cartData.value!!.filter {
             (it.id == product.id)
         }
-        if (lsitOfCurrentProduct == null || lsitOfCurrentProduct.size == 0) {
+        if (lsitOfCurrentProduct == null || lsitOfCurrentProduct.isEmpty()) {
             showAddButton()
             // add button show
         } else {
@@ -200,17 +210,17 @@ class ProductDetailActivity : BaseActivity() {
     private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
         bannerPager.offscreenPageLimit = 1
         val model = ImageModel(-1, product.image!!, 0)
-        dataBanner.add(0,model)
+        dataBanner.add(0, model)
         if (!dataBanner.isNullOrEmpty()) {
             iv_icon.visibility = View.GONE
             val registrationTutorialPagerAdapter = ProductDetailPagerAdapter(
                 this,
                 dataBanner, OnRecyclerView { position, view ->
-                        val bannerList = ArrayList<String>()
-                        for (imageModel in dataBanner) {
-                            bannerList.add(imageModel.image)
-                        }
-                        ShowImageVideo(this).Display(bannerList, position)
+                    val bannerList = ArrayList<String>()
+                    for (imageModel in dataBanner) {
+                        bannerList.add(imageModel.image)
+                    }
+                    ShowImageVideo(this).Display(bannerList, position)
 
 
                 })
@@ -318,7 +328,7 @@ class ProductDetailActivity : BaseActivity() {
         }
 
         add.setOnClickListener {
-            if (product.stock == 0) {
+            if (stock == 0) {
                 viewModel.errorRequest.value =
                     getString(R.string.this_item_is_not_available)
                 return@setOnClickListener
