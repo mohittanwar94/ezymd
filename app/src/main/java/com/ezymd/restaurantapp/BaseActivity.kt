@@ -79,7 +79,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         return mSinchServiceInterface
     }
 
-    private val messenger = Messenger(object : Handler() {
+    private val messenger = Messenger(object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
