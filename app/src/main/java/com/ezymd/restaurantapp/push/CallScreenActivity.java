@@ -112,7 +112,7 @@ public class CallScreenActivity extends BaseActivity {
         if (!isEnableSpeaker)
             speaker.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
         else
-            speaker.setColorFilter(ContextCompat.getColor(this, R.color.color_ffe600), android.graphics.PorterDuff.Mode.SRC_IN);
+            speaker.setImageResource(R.drawable.ic_speaker_yellow);
 
     }
 
@@ -120,7 +120,7 @@ public class CallScreenActivity extends BaseActivity {
         if (!isEnableSpeaker)
             mute.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
         else
-            mute.setColorFilter(ContextCompat.getColor(this, R.color.color_ffe600), android.graphics.PorterDuff.Mode.SRC_IN);
+            speaker.setImageResource(R.drawable.ic_microphone_yellow);
 
     }
 
