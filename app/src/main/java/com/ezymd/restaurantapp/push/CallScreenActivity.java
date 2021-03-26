@@ -110,7 +110,7 @@ public class CallScreenActivity extends BaseActivity {
 
     private void setSpeakerState(boolean isEnableSpeaker) {
         if (!isEnableSpeaker)
-            speaker.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
+            speaker.setImageResource(R.drawable.ic_speaker);
         else
             speaker.setImageResource(R.drawable.ic_speaker_yellow);
 
@@ -118,9 +118,9 @@ public class CallScreenActivity extends BaseActivity {
 
     private void setMuteState(boolean isEnableSpeaker) {
         if (!isEnableSpeaker)
-            mute.setColorFilter(ContextCompat.getColor(this, R.color.color_667ba3), android.graphics.PorterDuff.Mode.SRC_IN);
+            mute.setImageResource(R.drawable.ic_microphone);
         else
-            speaker.setImageResource(R.drawable.ic_microphone_yellow);
+            mute.setImageResource(R.drawable.ic_microphone_yellow);
 
     }
 
