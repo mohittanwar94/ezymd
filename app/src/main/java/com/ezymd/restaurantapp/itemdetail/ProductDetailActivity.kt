@@ -76,7 +76,7 @@ class ProductDetailActivity : BaseActivity() {
         })
         viewModel.options.observe(this, Observer {
             if (it != null) {
-                val restaurantAdapter = OptionsAdapter(this, it)
+                val restaurantAdapter = OptionsAdapter(this, it,product.price)
                 rv_modifiers?.adapter = restaurantAdapter
             }
         })

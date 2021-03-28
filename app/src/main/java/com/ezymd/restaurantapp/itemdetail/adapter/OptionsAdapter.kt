@@ -1,24 +1,18 @@
 package com.ezymd.restaurantapp.itemdetail.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.itemdetail.ItemDetailViewModel
-import com.ezymd.restaurantapp.itemdetail.ProductDetailActivity
 import com.ezymd.restaurantapp.itemdetail.model.Options
-import com.ezymd.restaurantapp.utils.OnRecyclerView
-import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.option_item_row.view.*
 
 class OptionsAdapter(
     val mContext: AppCompatActivity,
-    dataRestaurant: ArrayList<Options>
+    dataRestaurant: ArrayList<Options>,
+    val price: Double
 ) : RecyclerView.Adapter<OptionsAdapter.NotesHolder>() {
 
     private val data = ArrayList<Options>()
@@ -52,7 +46,7 @@ class OptionsAdapter(
         holder.itemView.tv_title.text = item.title
         val registrationTutorialPagerAdapter = SubOptionAdapter(
             mContext,
-            item)
+            item,price)
         holder.itemView.rv_modifiers.adapter = registrationTutorialPagerAdapter
 
     }

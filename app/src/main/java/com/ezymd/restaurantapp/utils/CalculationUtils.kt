@@ -36,6 +36,17 @@ class CalculationUtils {
 
     }
 
+    fun getModifierPrice(price: Double, mod: Modifier): Double {
+        var tempPrice = price
+            when (mod.operator) {
+                "+" -> tempPrice += mod.price
+                "-" -> tempPrice -= mod.price
+                "*" -> tempPrice *= mod.price
+            }
+        return tempPrice
+
+    }
+
     fun getPriceText(context: Context, quantityCount: Int, price: Double): CharSequence? {
         return TextUtils.concat(
             "" + quantityCount,

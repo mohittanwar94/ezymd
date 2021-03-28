@@ -3,9 +3,13 @@ package com.ezymd.restaurantapp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import com.android.installreferrer.api.ReferrerDetails
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
 import com.ezymd.restaurantapp.utils.JSONKeys
@@ -15,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode.LABEL_VISIBILITY_LABELED
 
 class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
+    private lateinit var referrerClient: InstallReferrerClient
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +55,49 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
                 overridePendingTransition(R.anim.left_in, R.anim.left_out)
             }
         }
+
+        initTracking()
+    }
+
+
+    private fun initTracking() {
+        referrerClient = InstallReferrerClient.newBuilder(this).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
+
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        obtainReferrerDetails()
+                        referrerClient.endConnection()
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
+                        // API not available on the current Play Store app.
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
+                        // Connection couldn't be established.
+                    }
+                }
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
+    }
+
+    private fun obtainReferrerDetails() {
+        val response: ReferrerDetails = referrerClient.installReferrer
+        SnapLog.print("response - $response")
+        val referrerUrl: String = response.installReferrer
+        Log.d("referrerUrl - ", referrerUrl)
+        val referrerClickTime: Long = response.referrerClickTimestampSeconds
+        Log.d("referrerClickTime - ", referrerClickTime.toString())
+        val appInstallTime: Long = response.installBeginTimestampSeconds
+        Log.d("appInstallTime - ", appInstallTime.toString())
+        //val instantExperienceLaunched: Boolean = response.googlePlayInstantParam
+        // Log.d("instantExperienceLaunch", instantExperienceLaunched.toString())
 
     }
 

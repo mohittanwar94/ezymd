@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
+    android:background="@drawable/add_button_bg"
+    android:backgroundTint="@color/color_ffe600"
+    android:minWidth="@dimen/_70sdp"
     android:layout_height="wrap_content">
 
     <com.ezymd.restaurantapp.customviews.SnapTextView
@@ -9,16 +12,36 @@
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_26sdp"
         android:layout_gravity="end"
-        android:background="@drawable/add_button_bg"
         android:gravity="center"
-        android:backgroundTint="@color/color_ffe600"
         android:letterSpacing="0.02"
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="@string/dummy_oz"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:textAllCaps="true"
         android:textColor="@color/color_1e222a"
         android:textSize="@dimen/_13sdp"
         android:textStyle="normal"
         app:textFont="medium" />
 
-</FrameLayout>
+
+    <com.ezymd.restaurantapp.customviews.SnapTextView
+        android:id="@+id/tv_price"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_gravity="end"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        android:letterSpacing="0.02"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/dummy_oz"
+        android:textAllCaps="true"
+        android:textColor="@color/color_1e222a"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="normal"
+        app:textFont="bold" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

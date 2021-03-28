@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.itemdetail.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.itemdetail.ItemDetailViewModel
 import com.ezymd.restaurantapp.itemdetail.model.Options
+import com.ezymd.restaurantapp.utils.CalculationUtils
 import kotlinx.android.synthetic.main.modifier_item_row.view.*
 
 class SubOptionAdapter(
     val mContext: AppCompatActivity,
-    val options: Options
+    val options: Options,
+    val price: Double
 ) : RecyclerView.Adapter<SubOptionAdapter.NotesHolder>() {
     val data = options.data
     private val viewModel by lazy {
@@ -34,6 +37,7 @@ class SubOptionAdapter(
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: NotesHolder, position: Int) {
 
         val item = data[position]
@@ -51,7 +55,13 @@ class SubOptionAdapter(
         else
             holder.itemView.tv_name.backgroundTintList =
                 ContextCompat.getColorStateList(mContext, R.color.color_f8f8f8)
-        holder.itemView.tv_name.setOnClickListener {
+
+        holder.itemView.tv_price.text =
+            holder.itemView.context.getString(R.string.dollor) + "" + CalculationUtils().getModifierPrice(
+                price,
+                item
+            )
+        holder.itemView.setOnClickListener {
             if (viewModel.selectedOptionsList.value?.get(options.title) == item) {
                 viewModel.selectedOptionsList.value?.remove(options.title)
             } else {
