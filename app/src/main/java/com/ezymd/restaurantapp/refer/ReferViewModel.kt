@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.details.model.ItemModel
-import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
@@ -16,7 +15,7 @@ import kotlinx.coroutines.launch
 class ReferViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: ReferRepository? = null
-    val mResturantData: MutableLiveData<MenuItemModel>
+    val mResturantData: MutableLiveData<ReferModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -40,7 +39,7 @@ class ReferViewModel : ViewModel() {
     fun getDetails(baseRequest: BaseRequest) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.resturantDetails(
+            val result = loginRepository!!.referrDetails(
                 baseRequest,
                 Dispatchers.IO
             )
