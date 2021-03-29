@@ -20,9 +20,6 @@ class ReferActivity : BaseActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this).get(ReferViewModel::class.java)
     }
-    private val restaurant by lazy {
-        intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +88,6 @@ class ReferActivity : BaseActivity() {
 
     private fun setHeaderData() {
 
-        GlideApp.with(applicationContext)
-            .load(restaurant.banner).centerCrop().override(550, 350).dontAnimate()
-            .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(image)
-
 
         code.setOnClickListener {
             //   https://play.google.com/store/apps/details?id=com.poppinsdigital.arms&referrer=123
@@ -105,7 +98,7 @@ class ReferActivity : BaseActivity() {
             try {
                 val share = Intent(Intent.ACTION_SEND)
                 share.type = "text/plain"
-                share.putExtra(Intent.EXTRA_SUBJECT, restaurant.name)
+                share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
                 share.putExtra(
                     Intent.EXTRA_TEXT,
                     contentToShare

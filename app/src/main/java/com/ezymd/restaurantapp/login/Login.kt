@@ -98,7 +98,8 @@ class Login : BaseActivity() {
         SnapLog.print("response - $response")
         val referrerUrl: String = response.installReferrer
         Log.d("referrerUrl - ", referrerUrl)
-        userInfo?.saveReferalUrl(referrerUrl)
+        val arr=referrerUrl.split("=")
+        userInfo?.saveReferalUrl(arr[1])
     }
 
 
