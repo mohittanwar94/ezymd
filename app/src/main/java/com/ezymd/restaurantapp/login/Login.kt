@@ -3,9 +3,13 @@ package com.ezymd.restaurantapp.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import com.android.installreferrer.api.ReferrerDetails
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
@@ -25,7 +29,9 @@ import java.util.*
 
 
 class Login : BaseActivity() {
-    private var counCode: String="US"
+    private var counCode: String = "US"
+    private lateinit var referrerClient: InstallReferrerClient
+
     private val RC_SIGN_IN = 100
     val gso by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,8 +49,58 @@ class Login : BaseActivity() {
 
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         setEventListener()
+        try {
+            initTracking()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
+
+
+    private fun initTracking() {
+        referrerClient = InstallReferrerClient.newBuilder(this).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
+
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        obtainReferrerDetails()
+                        referrerClient.endConnection()
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
+                        // API not available on the current Play Store app.
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.DEVELOPER_ERROR -> {
+                        // API not available on the current Play Store app.
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_DISCONNECTED -> {
+                        // API not available on the current Play Store app.
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
+                        // Connection couldn't be established.
+                    }
+                }
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
+    }
+
+    private fun obtainReferrerDetails() {
+        val response: ReferrerDetails = referrerClient.installReferrer
+        SnapLog.print("response - $response")
+        val referrerUrl: String = response.installReferrer
+        Log.d("referrerUrl - ", referrerUrl)
+        userInfo?.saveReferalUrl(referrerUrl)
+    }
+
 
     private fun signIn() {
         val signInIntent: Intent = mGoogleApiClient.getSignInIntent()
@@ -67,7 +123,7 @@ class Login : BaseActivity() {
         next.setOnClickListener {
             SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-            loginViewModel.generateOtp(phoneNo.text.toString(),counCode)
+            loginViewModel.generateOtp(phoneNo.text.toString(), counCode)
         }
         loginViewModel.isLoading.observe(this, Observer {
 
@@ -116,8 +172,8 @@ class Login : BaseActivity() {
         val picker = CountryPicker.newInstance("Choose Your Country") // dialog title
 
         picker.setListener { name, code, dialCode, flagDrawableResID ->
-            countryCode.text=dialCode
-            counCode=code
+            countryCode.text = dialCode
+            counCode = code
             picker.dismissAllowingStateLoss()
         }
         picker.show(supportFragmentManager, "COUNTRY_PICKER")

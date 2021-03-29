@@ -60,7 +60,7 @@ open class HomeFragment : Fragment() {
     private val dataTrending = ArrayList<Trending>()
 
     private val userInfo by lazy {
-        (activity as MainActivity).userInfo
+        (activity as MainActivity).userInfo!!
     }
 
     override fun onCreateView(
@@ -97,6 +97,9 @@ open class HomeFragment : Fragment() {
             )
 
 
+            if (!userInfo.referalUrl.equals("")) {
+                homeViewModel.saveReferral(userInfo.referalUrl, userInfo.accessToken)
+            }
         }
 
     }
@@ -420,6 +423,11 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
+        homeViewModel.mReferralResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                userInfo.saveReferalUrl("")
+            }
+        })
         homeViewModel.isGPSEnable.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 setLocationEmpty()

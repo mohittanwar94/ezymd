@@ -115,6 +115,12 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): TrendingModel
 
+    @FormUrlEncoded
+    @POST(ServerConfig.SAVE_REFERRAL)
+    suspend fun saveReferral(
+        @Field("referral") url: String, @Header("Authorization") token: String
+    ): LocationValidatorModel
+
 
     @Multipart
     @POST(ServerConfig.UPDATE_PROFILE)

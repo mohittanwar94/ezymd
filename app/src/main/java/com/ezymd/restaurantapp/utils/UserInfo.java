@@ -159,4 +159,11 @@ public class UserInfo {
         preferences.edit().putString("lang", lat).apply();
     }
 
+    public String getReferalUrl() {
+        return preferences.getString("getRefferalUrl", "");
+    }
+
+    public void saveReferalUrl(String referrerUrl) {
+        preferences.edit().putString("getRefferalUrl", referrerUrl).apply();
+    }
 }

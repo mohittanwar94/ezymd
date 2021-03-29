@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -26,6 +27,7 @@ class HomeViewModel : ViewModel() {
     val mPagerData: MutableLiveData<ResturantModel>
     val mTrendingData: MutableLiveData<TrendingModel>
     val mResturantData: MutableLiveData<TrendingDashboardModel>
+    val mReferralResponse: MutableLiveData<LocationValidatorModel>
     val isLoading: MutableLiveData<Boolean>
 
     override fun onCleared() {
@@ -45,6 +47,7 @@ class HomeViewModel : ViewModel() {
         mTrendingData = MutableLiveData()
         errorRequest = SingleLiveEvent()
         isLoading.postValue(true)
+        mReferralResponse= MutableLiveData()
 
 
     }
@@ -140,6 +143,25 @@ class HomeViewModel : ViewModel() {
                 is ResultWrapper.Success -> {
                     SnapLog.print("mTrendingData" + result.value)
                     mTrendingData.postValue(result.value)
+                }
+            }
+
+        }
+
+    }
+
+    fun saveReferral(referralUrl: String, accessToken: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.saveReferralOnServer(
+                referralUrl,accessToken,
+                Dispatchers.IO
+            )
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("mTrendingData" + result.value)
+                    mReferralResponse.postValue(result.value)
                 }
             }
 

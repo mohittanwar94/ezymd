@@ -3,6 +3,7 @@ package com.ezymd.restaurantapp.ui.home
 import android.location.Address
 import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
@@ -43,17 +44,18 @@ class HomeRepository {
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-           // isLoading.postValue(false)
+            // isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-          //  isLoading.postValue(false)
+            //  isLoading.postValue(false)
         }
 
 
     }
+
     suspend fun getFilters(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
@@ -111,6 +113,21 @@ class HomeRepository {
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.getTrending(
                 baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+    suspend fun saveReferralOnServer(
+        referralUrl: String, accessToken: String, dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LocationValidatorModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.saveReferral(
+                referralUrl, accessToken
             )
         }
 

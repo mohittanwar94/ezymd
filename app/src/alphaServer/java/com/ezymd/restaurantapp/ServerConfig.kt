@@ -54,5 +54,7 @@ interface ServerConfig {
         const val NEAR_BY_BANNERS = "nearByShopBanner"
         const val UPDATE_PROFILE = "updateProfile"
 
+        const val SAVE_REFERRAL=""
+
     }
 }
