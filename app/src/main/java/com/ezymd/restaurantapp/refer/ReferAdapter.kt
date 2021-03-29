@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.details
+package com.ezymd.restaurantapp.refer
 
 import android.content.Context
 import android.text.TextUtils
@@ -16,17 +16,17 @@ import com.ezymd.restaurantapp.utils.SnapLog
 import com.ezymd.restaurantapp.utils.UIUtil
 import kotlinx.android.synthetic.main.menu_item_row.view.*
 
-class MenuAdapter(
-    viewModel: DetailViewModel,
+class ReferAdapter(
+    viewModel: ReferViewModel,
     context: Context,
     onRecyclerViewClick: OnRecyclerView,
     dataResturant: ArrayList<ItemModel>
 ) :
-    RecyclerView.Adapter<MenuAdapter.NotesHolder>() {
+    RecyclerView.Adapter<ReferAdapter.NotesHolder>() {
 
 
     private val onRecyclerView: OnRecyclerView
-    private val viewModelDetails: DetailViewModel
+    private val viewModelDetails: ReferViewModel
     private val mContext: Context
     private val data = ArrayList<ItemModel>()
 
@@ -74,7 +74,7 @@ class MenuAdapter(
         holder.itemView.addOn.text = item.description
         holder.itemView.addOn.setOnClickListener {
             UIUtil.clickAlpha(it)
-            if (mContext is DetailsActivity)
+            if (mContext is ReferActivity)
                 mContext.showBottomSheet(it, data[holder.adapterPosition])
 
         }

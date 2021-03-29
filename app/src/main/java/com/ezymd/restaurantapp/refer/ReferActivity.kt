@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.details
+package com.ezymd.restaurantapp.refer
 
 import android.content.Intent
 import android.graphics.Color
@@ -36,15 +36,15 @@ import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.cart_view.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
-class DetailsActivity : BaseActivity() {
+class ReferActivity : BaseActivity() {
     private var isDisplayCount = false
     private var selectedStudentPosition = 0
     private val dataResturant = ArrayList<ItemModel>()
     private var mData = MenuItemModel()
     private val foodType = ArrayList<FoodTypeModel>()
-    private var restaurantAdapter: MenuAdapter? = null
+    private var restaurantAdapter: ReferAdapter? = null
     private val viewModel by lazy {
-        ViewModelProvider(this).get(DetailViewModel::class.java)
+        ViewModelProvider(this).get(ReferViewModel::class.java)
     }
     private val restaurant by lazy {
         intent.getSerializableExtra(JSONKeys.OBJECT) as Resturant
@@ -79,14 +79,14 @@ class DetailsActivity : BaseActivity() {
                 ))
             )
         )
-        restaurantAdapter = MenuAdapter(viewModel, this, OnRecyclerView { position, view ->
+        restaurantAdapter = ReferAdapter(viewModel, this, OnRecyclerView { position, view ->
 
         }, dataResturant)
         itmesRecyclerView.adapter = restaurantAdapter
 
 
         viewCart.setOnClickListener {
-            val intent = Intent(this@DetailsActivity, CartActivity::class.java)
+            val intent = Intent(this@ReferActivity, CartActivity::class.java)
             intent.putExtra(JSONKeys.OBJECT, restaurant)
             startActivity(intent)
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
@@ -309,7 +309,7 @@ class DetailsActivity : BaseActivity() {
                         val selView = tab.customView as SnapTextView?
                         selView!!.setTextColor(
                             ContextCompat.getColor(
-                                this@DetailsActivity,
+                                this@ReferActivity,
                                 R.color.color_002366
                             )
                         )
@@ -318,7 +318,7 @@ class DetailsActivity : BaseActivity() {
                                 val unSelView = tabs.getTabAt(j)!!.customView as SnapTextView?
                                 unSelView!!.setTextColor(
                                     ContextCompat.getColor(
-                                        this@DetailsActivity,
+                                        this@ReferActivity,
                                         R.color.color_787a7f
                                     )
                                 )

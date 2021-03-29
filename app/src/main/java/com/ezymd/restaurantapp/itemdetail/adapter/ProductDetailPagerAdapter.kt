@@ -6,12 +6,12 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.customviews.RoundedImageView
-import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.itemdetail.model.ImageModel
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
@@ -34,9 +34,9 @@ class ProductDetailPagerAdapter(
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(mContext)
         val layout = inflater.inflate(R.layout.banner_details_row, collection, false)
-        val imageView = layout.findViewById<RoundedImageView>(R.id.imageView)
+        val imageView = layout.findViewById<AppCompatImageView>(R.id.imageView)
         GlideApp.with(mContext.applicationContext)
-            .load(data[position].image).centerCrop().override(750, 350).dontAnimate()
+            .load(data[position].image).fitCenter().dontAnimate()
             .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView)
         imageView.transitionName = "thumbnailTransition";
         layout.setOnClickListener { onRecyclerView.onClick(position, layout) }

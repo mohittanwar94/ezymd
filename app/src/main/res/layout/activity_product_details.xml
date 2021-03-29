@@ -10,6 +10,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_50sdp"
+        android:clipToPadding="false"
         tools:context=".details.CategoryActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +21,7 @@
             <ImageView
                 android:id="@+id/iv_icon"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_height="@dimen/_300sdp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/no_internet_connection"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +31,7 @@
             <com.ezymd.restaurantapp.customviews.SnapViewPager
                 android:id="@+id/bannerPager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_height="@dimen/_300sdp"
                 android:background="@color/color_f8f8f8"
                 android:clipToPadding="false"
                 android:visibility="gone"

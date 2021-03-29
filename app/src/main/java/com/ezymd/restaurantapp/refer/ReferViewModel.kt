@@ -1,4 +1,4 @@
-package com.ezymd.restaurantapp.details
+package com.ezymd.restaurantapp.refer
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,9 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class DetailViewModel : ViewModel() {
+class ReferViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
-    private var loginRepository: DetailRepository? = null
+    private var loginRepository: ReferRepository? = null
     val mResturantData: MutableLiveData<MenuItemModel>
     val isLoading: MutableLiveData<Boolean>
 
@@ -27,7 +27,7 @@ class DetailViewModel : ViewModel() {
 
     init {
 
-        loginRepository = DetailRepository.instance
+        loginRepository = ReferRepository.instance
         isLoading = MutableLiveData()
         mResturantData = MutableLiveData()
         errorRequest = MutableLiveData()

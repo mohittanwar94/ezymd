@@ -1,15 +1,14 @@
-package com.ezymd.restaurantapp.details
+package com.ezymd.restaurantapp.refer
 
 import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import kotlinx.coroutines.CoroutineDispatcher
 
-class DetailRepository {
+class ReferRepository {
 
 
     suspend fun resturantDetails(
@@ -31,14 +30,14 @@ class DetailRepository {
 
     companion object {
         @Volatile
-        private var sportsFeeRepository: DetailRepository? = null
+        private var sportsFeeRepository: ReferRepository? = null
 
         @JvmStatic
-        val instance: DetailRepository?
+        val instance: ReferRepository?
             get() {
                 if (sportsFeeRepository == null) {
-                    synchronized(DetailRepository::class.java) {
-                        sportsFeeRepository = DetailRepository()
+                    synchronized(ReferRepository::class.java) {
+                        sportsFeeRepository = ReferRepository()
                     }
                 }
                 return sportsFeeRepository

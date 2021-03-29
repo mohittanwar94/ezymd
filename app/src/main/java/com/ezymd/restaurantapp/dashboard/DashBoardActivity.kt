@@ -192,6 +192,7 @@ class DashBoardActivity : BaseActivity() {
             if (it.data != null && it.data.size != 0) {
                 bannerPager.visibility = View.VISIBLE
                 dots_indicator.visibility = View.VISIBLE
+                view.visibility = View.VISIBLE
                 dataBanner.clear()
                 dataBanner.addAll(it.data)
                 registrationTutorialPagerAdapter.notifyDataSetChanged()
