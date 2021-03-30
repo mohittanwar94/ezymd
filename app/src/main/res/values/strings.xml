@@ -8,6 +8,8 @@
     <string name="call_permisssion">Call permission denied</string>
     <string name="no_internet_connection">No internet connection available</string>
     <string name="facebook">facebook</string>
+    <string name="all_reviews">All reviews</string>
+    <string name="_5_star">5 star</string>
     <string name="apply">Apply</string>
     <string name="back">Back</string>
     <string name="clear_filters">Clear filters</string>
@@ -273,6 +275,7 @@
     <string name="item_description">Item Description</string>
     <string name="sizes">Sizes</string>
     <string name="sold_out">sold out</string>
+    <string name="excellent">Excellent</string>
     <string name="invite_your_friends_and_earned_reward">Invite your friends and earned reward!</string>
     <string name="your_code">Your code</string>
     <string name="current_balance">Current balance</string>
