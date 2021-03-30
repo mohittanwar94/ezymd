@@ -67,7 +67,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/invite"
                 app:textFont="roman"
-                tools:text="Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap." />
+              />
 
             <com.ezymd.restaurantapp.customviews.SnapTextView
                 android:id="@+id/yourcode"
