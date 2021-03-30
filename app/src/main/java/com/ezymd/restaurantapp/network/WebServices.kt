@@ -271,7 +271,14 @@ interface WebServices {
 
     @GET(ServerConfig.GET_SHOP_REVIEW)
     suspend fun getShopReview(
-        @Query("shop_id") id: String,
+        @Query("shop_id") shop_id: String,
+        @Header("Authorization") accessToken: String
+    ): ShopReviewsBaseModel
+
+    @GET(ServerConfig.GET_SHOP_REVIEW)
+    suspend fun getShopReviewByRating(
+        @Query("shop_id") shop_id: String,
+        @Query("rating") rating: String,
         @Header("Authorization") accessToken: String
     ): ShopReviewsBaseModel
 

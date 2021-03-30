@@ -28,6 +28,22 @@ class ReviewsListRepository private constructor() {
 
     }
 
+    suspend fun getShopReviewByRating(
+        baseRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<ShopReviewsBaseModel> {
+
+        val apiServices = ApiClient.client?.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices!!.getShopReviewByRating(
+                baseRequest.paramsMap["shop_id"]!!,baseRequest.paramsMap["rating"]!!, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
 
     companion object {
         @Volatile

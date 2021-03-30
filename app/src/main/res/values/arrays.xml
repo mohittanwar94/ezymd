@@ -18,6 +18,14 @@
         <item>4.0</item>
         <item>4.5</item>
     </string-array>
+    <string-array name="rating_list">
+        <item>Filter</item>
+        <item>1 Star</item>
+        <item>2 Star</item>
+        <item>3 Star</item>
+        <item>4 Star</item>
+        <item>5 Star</item>
+    </string-array>
 
     <string-array name="tick_colors">
         <item>#ff9d27</item>

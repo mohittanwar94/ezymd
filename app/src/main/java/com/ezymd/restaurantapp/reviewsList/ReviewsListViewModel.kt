@@ -86,6 +86,32 @@ class ReviewsListViewModel : ViewModel() {
             }
         }
     }
+    fun getShopReviewByRating(baseRequest: BaseRequest) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository?.getShopReviewByRating(
+                baseRequest,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("mData" + result.value)
+                    result.value.data?.let {
+                        total.postValue(it.total)
+                        excellentRating.postValue(it.excellentRating)
+                        goodRating.postValue(it.goodRating)
+                        averageRating.postValue(it.averageRating)
+                        belowAverage.postValue(it.belowAverage)
+                        poor.postValue(it.poor)
+                        listing.postValue(it.listing)
+                    }
+                }
+            }
+        }
+    }
 
 
 }

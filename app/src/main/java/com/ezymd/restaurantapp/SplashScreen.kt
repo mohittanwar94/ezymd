@@ -56,8 +56,8 @@ class SplashScreen : BaseActivity() {
         super.onResume()
         // printKeyHash(this)
         if (userInfo!!.userID != 0)
-        startActivity(Intent(this, MainActivity::class.java))
-        //    startActivity(Intent(this, ReviewsListActivity::class.java))
+        //startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, ReviewsListActivity::class.java))
         else
             startActivity(Intent(this, Login::class.java))
 

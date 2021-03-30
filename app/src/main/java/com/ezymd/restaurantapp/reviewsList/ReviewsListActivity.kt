@@ -3,6 +3,9 @@ package com.ezymd.restaurantapp.reviewsList
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
@@ -13,6 +16,7 @@ import com.ezymd.restaurantapp.utils.ErrorCodes
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_reviews_list.*
 import java.util.*
+
 
 class ReviewsListActivity : BaseActivity() {
 
@@ -26,7 +30,6 @@ class ReviewsListActivity : BaseActivity() {
         setContentView(R.layout.activity_reviews_list)
         setGUI()
         setObserver()
-        fetchData()
     }
 
     private fun setObserver() {
@@ -87,14 +90,35 @@ class ReviewsListActivity : BaseActivity() {
         leftIcon.setOnClickListener {
             onBackPressed()
         }
+        review_filter.adapter = ArrayAdapter(
+            this, R.layout.dropdown_item, resources.getStringArray(
+                R.array.rating_list
+            )
+        )
 
+        review_filter.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                if (i == 0)
+                    fetchData()
+                else
+                    fetchData(i.toString())
+            }
 
+            override fun onNothingSelected(arg0: AdapterView<*>?) {}
+        }
     }
 
     private fun fetchData() {
         val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap["shop_id"] = "11"
         viewModel.getShopReview(baseRequest)
+    }
+
+    private fun fetchData(rating: String) {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["shop_id"] = "11"
+        baseRequest.paramsMap["rating"] = rating
+        viewModel.getShopReviewByRating(baseRequest)
     }
 
 
