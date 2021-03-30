@@ -118,6 +118,7 @@ class ReferActivity : BaseActivity() {
     }
 
     private fun setToolBar() {
+        headertext.visibility=View.VISIBLE
         headertext.text = getString(R.string.refer_and_earn)
         leftIcon.setOnClickListener {
             onBackPressed()

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:letterSpacing="0.01"
-                android:lineSpacingExtra="5sp"
+                android:lineSpacingExtra="@dimen/_2sdp"
                 android:paddingLeft="@dimen/_15sdp"
                 android:paddingRight="@dimen/_15sdp"
                 android:text="@string/invite_your_friends_and_earned_reward"
