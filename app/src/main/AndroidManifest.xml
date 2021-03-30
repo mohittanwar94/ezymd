@@ -91,13 +91,7 @@
             android:name=".reviewsList.ReviewsListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
-            <!--  <intent-filter>
-                  <action android:name="android.intent.action.MAIN" />
-
-                  <category android:name="android.intent.category.LAUNCHER" />
-              </intent-filter>-->
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
         <activity
             android:name=".tracker.TrackerActivity"
             android:label="@string/app_name"

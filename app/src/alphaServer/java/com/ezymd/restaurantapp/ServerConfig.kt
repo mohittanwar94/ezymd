@@ -40,6 +40,7 @@ interface ServerConfig {
         const val APPLY_COUPON = "applyCoupon"
         const val LIST_COUPON = "listCoupon/{restaurant_id}"
         const val PRODUCT_DETAIL = "productDetail"
+        const val GET_SHOP_REVIEW = "getShopReview"
         const val TRANSACTION_CHARGES = "transactionAmount"
         const val UPDATED_COORDINATES = "orderTracking/{name}"
 

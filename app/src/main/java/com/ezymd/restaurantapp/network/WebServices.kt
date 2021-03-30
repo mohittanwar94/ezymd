@@ -14,6 +14,7 @@ import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.refer.ReferModel
+import com.ezymd.restaurantapp.reviewsList.model.ShopReviewsBaseModel
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
@@ -86,7 +87,7 @@ interface WebServices {
 
     @GET(ServerConfig.REFERRAL_DETAILS)
     suspend fun getReferrList(
-         @Header("Authorization") token: String
+        @Header("Authorization") token: String
     ): ReferModel
 
 
@@ -267,6 +268,12 @@ interface WebServices {
         @Query("product_id") id: String,
         @Header("Authorization") accessToken: String
     ): ProductDetailBaseModel
+
+    @GET(ServerConfig.GET_SHOP_REVIEW)
+    suspend fun getShopReview(
+        @Query("shop_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): ShopReviewsBaseModel
 
 }
 

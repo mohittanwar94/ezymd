@@ -18,6 +18,7 @@ import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
+import com.ezymd.restaurantapp.reviewsList.ReviewsListActivity
 import com.ezymd.restaurantapp.ui.search.SearchActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*

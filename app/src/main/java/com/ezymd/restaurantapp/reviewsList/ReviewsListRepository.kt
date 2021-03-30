@@ -1,35 +1,32 @@
 package com.ezymd.restaurantapp.reviewsList
 
-import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
+import com.ezymd.restaurantapp.reviewsList.model.ShopReviewsBaseModel
 import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.CoroutineDispatcher
 
 
 class ReviewsListRepository private constructor() {
 
 
-
-    suspend fun saveRating(
-        loginRequest: BaseRequest,
+    suspend fun getShopReview(
+        baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<LocationValidatorModel> {
+    ): ResultWrapper<ShopReviewsBaseModel> {
 
-        SnapLog.print("Login repositry=====")
-        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+        val apiServices = ApiClient.client?.create(WebServices::class.java)
+
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.saveRating(
-                loginRequest.paramsMap,loginRequest.accessToken
+            apiServices!!.getShopReview(
+                baseRequest.paramsMap["shop_id"]!!, baseRequest.accessToken
             )
         }
 
 
     }
-
 
 
     companion object {

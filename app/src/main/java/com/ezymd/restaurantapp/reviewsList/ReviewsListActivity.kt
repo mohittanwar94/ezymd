@@ -7,9 +7,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.reviewsList.adapter.RatingsAdapter
+import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorCodes
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_reviews_list.*
+import java.util.*
 
 class ReviewsListActivity : BaseActivity() {
 
@@ -23,10 +26,11 @@ class ReviewsListActivity : BaseActivity() {
         setContentView(R.layout.activity_reviews_list)
         setGUI()
         setObserver()
+        fetchData()
     }
 
     private fun setObserver() {
-        viewModel.showError().observe(this, Observer {
+        viewModel.showError().observe(this, {
             showError(false, it, null)
         })
 
@@ -51,8 +55,31 @@ class ReviewsListActivity : BaseActivity() {
         })
         viewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
-
-
+        })
+        viewModel.excellentRating.observe(this, {
+            rate_excellent.progress = it
+        })
+        viewModel.goodRating.observe(this, {
+            rate_good.progress = it
+        })
+        viewModel.averageRating.observe(this, {
+            rate_average.progress = it
+        })
+        viewModel.belowAverage.observe(this, {
+            rate_average.progress = it
+        })
+        viewModel.poor.observe(this, {
+            rate_poor.progress = it
+        })
+        viewModel.total.observe(this, {
+            tv_rating.text = String.format(Locale.getDefault(), "%.01f", it.toDouble())
+        })
+        viewModel.total.observe(this, {
+            total_reviews.text = "based on $it reviews"
+        })
+        viewModel.listing.observe(this, {
+            val restaurantAdapter = RatingsAdapter(this, it)
+            rv_reviews?.adapter = restaurantAdapter
         })
     }
 
@@ -63,6 +90,13 @@ class ReviewsListActivity : BaseActivity() {
 
 
     }
+
+    private fun fetchData() {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["shop_id"] = "11"
+        viewModel.getShopReview(baseRequest)
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

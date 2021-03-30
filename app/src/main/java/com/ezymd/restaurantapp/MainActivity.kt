@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.plusAssign
 import androidx.navigation.ui.setupWithNavController
+import com.ezymd.restaurantapp.reviewsList.ReviewsListActivity
 import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.utils.ConnectivityReceiver
 import com.ezymd.restaurantapp.utils.JSONKeys
