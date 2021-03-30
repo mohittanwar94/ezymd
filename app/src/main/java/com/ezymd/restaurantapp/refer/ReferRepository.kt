@@ -1,6 +1,5 @@
 package com.ezymd.restaurantapp.refer
 
-import com.ezymd.restaurantapp.details.model.MenuItemModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
@@ -11,16 +10,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 class ReferRepository {
 
 
-    suspend fun resturantDetails(
+    suspend fun referrDetails(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<MenuItemModel> {
+    ): ResultWrapper<ReferModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getResturantDetails(
-                baseRequest.paramsMap.get("id")!!.toInt(), baseRequest.accessToken
+            apiServices.getReferrList(
+                baseRequest.accessToken
             )
         }
 

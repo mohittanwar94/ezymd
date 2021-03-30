@@ -13,6 +13,7 @@ import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
+import com.ezymd.restaurantapp.refer.ReferModel
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
@@ -81,6 +82,12 @@ interface WebServices {
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel
+
+
+    @GET(ServerConfig.REFERRAL_DETAILS)
+    suspend fun getReferrList(
+         @Header("Authorization") token: String
+    ): ReferModel
 
 
     @FormUrlEncoded

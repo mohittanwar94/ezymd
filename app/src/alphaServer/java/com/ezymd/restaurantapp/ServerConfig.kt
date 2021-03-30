@@ -53,7 +53,8 @@ interface ServerConfig {
         const val NEAR_BY_SHOPS = "nearByShops"
         const val NEAR_BY_BANNERS = "nearByShopBanner"
         const val UPDATE_PROFILE = "updateProfile"
-
+        const val FAQ_URL="http://34.121.92.176/ezymd/public/faq"
+        const val REFERRAL_DETAILS = ""
         const val SAVE_REFERRAL=""
 
     }
