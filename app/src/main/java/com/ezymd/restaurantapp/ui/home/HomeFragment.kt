@@ -98,7 +98,10 @@ open class HomeFragment : Fragment() {
 
 
             if (!userInfo.referalUrl.equals("")) {
-                homeViewModel.saveReferral(userInfo.referalUrl, userInfo.accessToken)
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap["referral_code"] = userInfo.referalUrl
+                baseRequest.paramsMap["user_id"] = "" + userInfo.userID
+                homeViewModel.saveReferral(baseRequest)
             }
         }
 

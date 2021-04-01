@@ -126,7 +126,7 @@ interface WebServices {
     @FormUrlEncoded
     @POST(ServerConfig.SAVE_REFERRAL)
     suspend fun saveReferral(
-        @Field("referral") url: String, @Header("Authorization") token: String
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): LocationValidatorModel
 
 

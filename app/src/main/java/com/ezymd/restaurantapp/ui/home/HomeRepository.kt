@@ -120,14 +120,14 @@ class HomeRepository {
     }
 
     suspend fun saveReferralOnServer(
-        referralUrl: String, accessToken: String, dispatcher: CoroutineDispatcher
+         baseRequest: BaseRequest, dispatcher: CoroutineDispatcher
     ): ResultWrapper<LocationValidatorModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.saveReferral(
-                referralUrl, accessToken
+                baseRequest.paramsMap, baseRequest.accessToken
             )
         }
 

@@ -13,6 +13,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.reviewsList.adapter.RatingsAdapter
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorCodes
+import com.ezymd.restaurantapp.utils.JSONKeys
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_reviews_list.*
 import java.util.*
@@ -22,6 +23,11 @@ class ReviewsListActivity : BaseActivity() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(ReviewsListViewModel::class.java)
+    }
+
+
+    private val shopId by lazy {
+        intent.getIntExtra(JSONKeys.SHOP_ID,11)
     }
 
 

@@ -27,6 +27,7 @@ import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.adapter.SubCategoryWithProductAdapter
 import com.ezymd.restaurantapp.details.model.*
 import com.ezymd.restaurantapp.font.CustomTypeFace
+import com.ezymd.restaurantapp.reviewsList.ReviewsListActivity
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -429,6 +430,14 @@ class CategoryActivity : BaseActivity() {
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
 
+        }
+
+        ratingLay.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(this@CategoryActivity, ReviewsListActivity::class.java)
+            intent.putExtra(JSONKeys.SHOP_ID, restaurant.id)
+            startActivity(intent)
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
     }
 

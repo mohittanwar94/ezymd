@@ -150,10 +150,10 @@ class HomeViewModel : ViewModel() {
 
     }
 
-    fun saveReferral(referralUrl: String, accessToken: String) {
+    fun saveReferral(baseRequest: BaseRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.saveReferralOnServer(
-                referralUrl,accessToken,
+               baseRequest,
                 Dispatchers.IO
             )
             when (result) {
