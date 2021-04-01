@@ -10,6 +10,7 @@ data class RootData(
     var goodRating: Int?,
     var averageRating: Int?,
     var belowAverage: Int?,
+    var totalReviews: Int?,
     var poor: Int?
 )
 

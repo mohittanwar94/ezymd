@@ -27,6 +27,7 @@ class ReviewsListViewModel : ViewModel() {
     var excellentRating = MutableLiveData<Int>()
     var goodRating = MutableLiveData<Int>()
     var averageRating = MutableLiveData<Int>()
+    var totalReviews = MutableLiveData<Int>()
     var belowAverage = MutableLiveData<Int>()
     var poor = MutableLiveData<Int>()
     override fun onCleared() {
@@ -79,6 +80,7 @@ class ReviewsListViewModel : ViewModel() {
                         goodRating.postValue(it.goodRating)
                         averageRating.postValue(it.averageRating)
                         belowAverage.postValue(it.belowAverage)
+                        totalReviews.postValue(it.totalReviews)
                         poor.postValue(it.poor)
                         listing.postValue(it.listing)
                     }

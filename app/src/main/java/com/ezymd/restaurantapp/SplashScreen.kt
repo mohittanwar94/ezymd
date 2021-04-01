@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import com.ezymd.restaurantapp.login.Login
+import com.ezymd.restaurantapp.reviewsList.ReviewsListActivity
 import com.ezymd.restaurantapp.utils.SnapLog
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -56,7 +57,7 @@ class SplashScreen : BaseActivity() {
         // printKeyHash(this)
         if (userInfo!!.userID != 0)
             startActivity(Intent(this, MainActivity::class.java))
-        //startActivity(Intent(this, ReviewsListActivity::class.java))
+//        startActivity(Intent(this, ReviewsListActivity::class.java))
         else
             startActivity(Intent(this, Login::class.java))
 

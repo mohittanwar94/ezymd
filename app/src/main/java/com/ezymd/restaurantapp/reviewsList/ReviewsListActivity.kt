@@ -83,7 +83,7 @@ class ReviewsListActivity : BaseActivity() {
         viewModel.total.observe(this, {
             tv_rating.text = String.format(Locale.getDefault(), "%.01f", it.toDouble())
         })
-        viewModel.total.observe(this, {
+        viewModel.totalReviews.observe(this, {
             total_reviews.text = "based on $it reviews"
         })
         viewModel.listing.observe(this, {
