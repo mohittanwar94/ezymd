@@ -72,6 +72,7 @@ public interface JSONKeys {
     String CHEQUE_NO = "cheque_no";
     String SCHOOL_ID = "school_id";
     String AMOUNT = "amount";
+    String WALLET_AMOUNT = "w_amount";
     String UNPAID = "UnPaid";
     String PAID = "Paid";
     String IS_PAID = "is_paid";

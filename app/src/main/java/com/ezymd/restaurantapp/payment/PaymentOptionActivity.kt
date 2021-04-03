@@ -16,29 +16,37 @@ import kotlinx.android.synthetic.main.activity_checkout.*
 
 
 class PaymentOptionActivity : BaseActivity() {
-
+    private var isLoaded = false
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(PaymentCheckoutViewModel::class.java)
     }
 
 
+    private var wAmount = 0.0
+    private var tAmount = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkout)
+        wAmount = intent.getDoubleExtra(JSONKeys.WALLET_AMOUNT, 0.0)
+        tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
         setToolBar()
         setHeaderData()
         setGUI()
         setObserver()
         viewModel.balanceWallet(BaseRequest(userInfo))
+
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setGUI() {
         if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.ONLINE) {
             onlineCheckBox.setChecked(true, true)
         } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.COD) {
             codCheckBox.setChecked(true, true)
-        } else {
+        } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.WALLET) {
+            walletCheckBox.setChecked(true, true)
             // wallet
         }
 
@@ -46,35 +54,77 @@ class PaymentOptionActivity : BaseActivity() {
             cod.visibility = View.GONE
         }
         onlineCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (isChecked)
+            if (isChecked) {
+                wAmount = 0.0
+                tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
+                instructions.text = ""
                 codCheckBox.setChecked(false, false)
+                walletCheckBox.setChecked(false, false)
+            }
+        }
+
+        walletCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
+            if (isChecked) {
+                codCheckBox.setChecked(false, false)
+                onlineCheckBox.setChecked(false, false)
+
+                if (isLoaded) {
+                    if (tAmount > viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
+                        instructions.text =
+                            getString(R.string.dollor) + "" + viewModel.baseResponse.value!!.data?.total + " will be debit from your wallet & remaining will be done through online payment mode"
+                        wAmount = 20.0//viewModel.baseResponse.value!!.data?.total!!.toDouble()
+                        tAmount -= wAmount
+                    }
+                } else {
+                    codCheckBox.setChecked(false, false)
+                    onlineCheckBox.setChecked(false, false)
+                    walletCheckBox.setChecked(false, false)
+                }
+
+            }
         }
         codCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (isChecked)
+            if (isChecked) {
+                wAmount = 0.0
+                tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
+                instructions.text = ""
+                walletCheckBox.setChecked(false, false)
                 onlineCheckBox.setChecked(false, false)
+            }
         }
 
         online.setOnClickListener {
-            onlineCheckBox.setChecked(true, true)
-            codCheckBox.setChecked(false, false)
+            onlineCheckBox.setChecked(true, false)
         }
 
         cod.setOnClickListener {
-            onlineCheckBox.setChecked(false, false)
-            codCheckBox.setChecked(true, true)
+            codCheckBox.setChecked(true, false)
+        }
+
+        wallet.setOnClickListener {
+            walletCheckBox.setChecked(true, false)
+
+
         }
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (!codCheckBox.isChecked && !onlineCheckBox.isChecked) {
+            if (!codCheckBox.isChecked && !onlineCheckBox.isChecked && !walletCheckBox.isChecked) {
                 showError(false, "please select payment mode", null)
             } else {
                 val intent = Intent()
+                intent.putExtra(JSONKeys.AMOUNT, tAmount)
+                intent.putExtra(JSONKeys.WALLET_AMOUNT, wAmount)
                 if (codCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.COD)
                 }
 
                 if (onlineCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
+                }
+
+                if (walletCheckBox.isChecked) {
+                    intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.WALLET)
                 }
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -99,7 +149,8 @@ class PaymentOptionActivity : BaseActivity() {
     private fun setObserver() {
         viewModel.baseResponse.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
-                walletbalance.text = getString(R.string.dollor) + "" +  it.data?.total
+                isLoaded = true
+                walletbalance.text = getString(R.string.dollor) + "" + it.data?.total
             }
 
         })

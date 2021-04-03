@@ -40,6 +40,7 @@ import java.util.*
 class ConfirmOrder : BaseActivity() {
     private var paymentType: Int = 0
     private var totalPrice = 0.0
+    private var walletAmount = 0.0
     private var paymentSessionData: PaymentSessionData? = null
     private var paymentSession: PaymentSession? = null
     val checkoutModel = OrderCheckoutUtilsModel()
@@ -109,13 +110,42 @@ class ConfirmOrder : BaseActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.SELECT_PAYMENT && resultCode == Activity.RESULT_OK) {
             val mode = data?.getIntExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
+            walletAmount = data!!.getDoubleExtra(JSONKeys.WALLET_AMOUNT, 0.0)
+            val total=(intent.getDoubleExtra(
+                JSONKeys.TOTAL_CASH,
+                0.0
+            ) + intent.getDoubleExtra(
+                JSONKeys.DELIVERY_CHARGES,
+                0.0
+            ) + intent.getDoubleExtra(
+                JSONKeys.FEE_CHARGES,
+                0.0
+            ) - intent.getDoubleExtra(
+                JSONKeys.DISCOUNT_AMOUNT,
+                0.0
+            )) - walletAmount
+            payButton.text =
+                getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+                    "%.2f", total
+                )
+
             if (mode == PaymentMethodTYPE.ONLINE) {
                 paymentType = PaymentMethodTYPE.ONLINE
                 paymentMethod.text = getString(R.string.card)
+                if (paymentSession == null)
+                    startPaymentSession()
+                else {
+                    paymentSession?.clearPaymentMethod()
+                }
+
+            } else if (mode == PaymentMethodTYPE.WALLET) {
+                paymentType = PaymentMethodTYPE.WALLET
+                paymentMethod.text = getString(R.string.card) + " Wallet"
                 if (paymentSession == null)
                     startPaymentSession()
                 else {
@@ -331,7 +361,25 @@ class ConfirmOrder : BaseActivity() {
                 Intent(
                     this@ConfirmOrder,
                     PaymentOptionActivity::class.java
-                ).putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                ).putExtra(JSONKeys.WALLET_AMOUNT, walletAmount)
+                    .putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                    .putExtra(
+                        JSONKeys.AMOUNT, String.format(
+                            "%.2f", (intent.getDoubleExtra(
+                                JSONKeys.TOTAL_CASH,
+                                0.0
+                            ) + intent.getDoubleExtra(
+                                JSONKeys.DELIVERY_CHARGES,
+                                0.0
+                            ) + intent.getDoubleExtra(
+                                JSONKeys.FEE_CHARGES,
+                                0.0
+                            ) - intent.getDoubleExtra(
+                                JSONKeys.DISCOUNT_AMOUNT,
+                                0.0
+                            ))
+                        ).toDouble()
+                    )
                     .putExtra(JSONKeys.DELIVERY_CHARGES, deliveryIns),
                 JSONKeys.SELECT_PAYMENT
             )
@@ -765,9 +813,14 @@ class ConfirmOrder : BaseActivity() {
             intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
         )
 
+
         jsonObject.addProperty(
             "delivery_charges",
             intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
+        )
+        jsonObject.addProperty(
+            "wallet_amount",
+            walletAmount
         )
         totalPrice = String.format(
             "%.2f", (intent.getDoubleExtra(
@@ -780,9 +833,10 @@ class ConfirmOrder : BaseActivity() {
                 JSONKeys.DISCOUNT_AMOUNT,
                 0.0
             ))
-        ).toDouble()
+        ).toDouble()-walletAmount
         jsonObject.addProperty("total", totalPrice)
-
+        price -= walletAmount
+        SnapLog.print("price=======$price")
         paymentSession?.setCartTotal(price.toLong())
 
         jsonObject.add("orderItems", orderItems)
@@ -797,7 +851,7 @@ class ConfirmOrder : BaseActivity() {
                     googlePayJsonFactory.createPaymentDataRequest(
                         transactionInfo = GooglePayJsonFactory.TransactionInfo(
                             currencyCode = "USD",
-                            totalPrice = totalPrice.toInt(),
+                            totalPrice = (totalPrice-walletAmount).toInt(),
                             totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
                         ),
                         merchantInfo = GooglePayJsonFactory.MerchantInfo(
