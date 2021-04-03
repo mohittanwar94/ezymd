@@ -1,23 +1,26 @@
 package com.ezymd.restaurantapp.payment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
-import com.ezymd.restaurantapp.utils.JSONKeys
-import com.ezymd.restaurantapp.utils.PaymentMethodTYPE
-import com.ezymd.restaurantapp.utils.UIUtil
+import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_checkout.*
-import kotlinx.android.synthetic.main.activity_checkout.payButton
-import kotlinx.android.synthetic.main.activity_checkout.toolbar_layout
-import kotlinx.android.synthetic.main.activity_confirm_order.*
 
 
 class PaymentOptionActivity : BaseActivity() {
+
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(PaymentCheckoutViewModel::class.java)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +29,8 @@ class PaymentOptionActivity : BaseActivity() {
         setToolBar()
         setHeaderData()
         setGUI()
+        setObserver()
+        viewModel.balanceWallet(BaseRequest(userInfo))
     }
 
     private fun setGUI() {
@@ -82,7 +87,6 @@ class PaymentOptionActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        setObserver()
 
     }
 
@@ -91,15 +95,37 @@ class PaymentOptionActivity : BaseActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setObserver() {
+        viewModel.baseResponse.observe(this, Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                walletbalance.text = getString(R.string.dollor) + "" +  it.data?.total
+            }
+
+        })
+
+        viewModel.errorRequest.observe(this, Observer {
+            if (it != null)
+                showError(false, it, null)
+        })
+        viewModel.isLoading.observe(this, Observer {
+            progress.visibility = if (it) View.VISIBLE else View.GONE
+
+
+        })
     }
 
 
     private fun setHeaderData() {
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
-        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this,R.color.color_002366))
-        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this,R.color.color_002366))
+        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.color_002366))
+        toolbar_layout.setCollapsedTitleTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.color_002366
+            )
+        )
 
         toolbar_layout.title = getString(R.string.payment_options)
 

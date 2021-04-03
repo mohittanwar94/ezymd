@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.refer.ReferModel
 import com.ezymd.restaurantapp.utils.BaseRequest
-import com.ezymd.restaurantapp.utils.BaseResponse
 import com.ezymd.restaurantapp.utils.ErrorResponse
-import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -19,7 +18,7 @@ class PaymentCheckoutViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
     private var loginRepository: PaymentCheckoutRepository? = null
     val isLoading: MutableLiveData<Boolean>
-    val baseResponse: MutableLiveData<BaseResponse>
+    val baseResponse: MutableLiveData<ReferModel>
 
     override fun onCleared() {
         super.onCleared()
@@ -36,11 +35,11 @@ class PaymentCheckoutViewModel : ViewModel() {
 
     }
 
-    fun checkout(jsonObject: JsonObject, baseRequest: BaseRequest) {
+    fun balanceWallet(baseRequest: BaseRequest) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.startCheckoutPayment(
-                jsonObject,baseRequest,
+                baseRequest,
                 Dispatchers.IO
             )
             isLoading.postValue(false)

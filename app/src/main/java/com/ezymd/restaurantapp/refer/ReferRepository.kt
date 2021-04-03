@@ -18,8 +18,8 @@ class ReferRepository {
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getReferrList(
-                baseRequest.accessToken
+            apiServices.balanceWallet(
+                baseRequest.paramsMap,baseRequest.accessToken
             )
         }
 

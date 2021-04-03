@@ -285,5 +285,6 @@
     <string name="current_balance">Current balance</string>
     <string name="all_transactions">All transactions</string>
     <string name="refer_and_earn"><![CDATA[Refer & Earn]]></string>
+    <string name="pay_from_wallet">Pay from Wallet</string>
 
 </resources>

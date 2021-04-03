@@ -85,10 +85,6 @@ interface WebServices {
     ): MenuItemModel
 
 
-    @GET(ServerConfig.REFERRAL_DETAILS)
-    suspend fun getReferrList(
-        @Header("Authorization") token: String
-    ): ReferModel
 
 
     @FormUrlEncoded
@@ -155,6 +151,13 @@ interface WebServices {
     suspend fun startCheckout(
         @Body jsonObject: JsonObject, @Header("Authorization") token: String
     ): BaseResponse
+
+    @FormUrlEncoded
+    @POST(ServerConfig.WALLET_BALANCE)
+    suspend fun balanceWallet(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): ReferModel
 
 
     @GET(ServerConfig.DIRECTION_API)
