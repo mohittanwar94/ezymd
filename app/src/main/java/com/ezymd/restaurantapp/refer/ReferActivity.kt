@@ -69,6 +69,7 @@ class ReferActivity : BaseActivity() {
             if (it.status == ErrorCodes.SUCCESS) {
                 code.text = it.data?.code
                 balance.text =getString(R.string.dollor)+""+ it.data?.total
+                invitedes.text=it.message
             } else {
                 showError(false, it.message, null)
             }
