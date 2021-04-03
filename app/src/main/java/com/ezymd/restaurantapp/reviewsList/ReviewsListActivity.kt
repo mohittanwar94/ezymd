@@ -83,7 +83,7 @@ class ReviewsListActivity : BaseActivity() {
         viewModel.total.observe(this, {
             tv_rating.text = String.format(Locale.getDefault(), "%.01f", it.toDouble())
         })
-        viewModel.total.observe(this, {
+        viewModel.totalReviews.observe(this, {
             total_reviews.text = "based on $it reviews"
         })
         viewModel.listing.observe(this, {
@@ -116,13 +116,13 @@ class ReviewsListActivity : BaseActivity() {
 
     private fun fetchData() {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap["shop_id"] = "11"
+        baseRequest.paramsMap["shop_id"] = shopId.toString()
         viewModel.getShopReview(baseRequest)
     }
 
     private fun fetchData(rating: String) {
         val baseRequest = BaseRequest(userInfo)
-        baseRequest.paramsMap["shop_id"] = "11"
+        baseRequest.paramsMap["shop_id"] = shopId.toString()
         baseRequest.paramsMap["rating"] = rating
         viewModel.getShopReviewByRating(baseRequest)
     }
