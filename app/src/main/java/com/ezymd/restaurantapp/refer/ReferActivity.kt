@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.header_new.*
 
 class ReferActivity : BaseActivity() {
     private var restaurantAdapter: ReferAdapter? = null
-    private val transactionList = ArrayList<ReferModel>()
+    private val transactionList = ArrayList<Transaction>()
     private val viewModel by lazy {
         ViewModelProvider(this).get(ReferViewModel::class.java)
     }
@@ -39,13 +39,11 @@ class ReferActivity : BaseActivity() {
         itmesRecyclerView.addItemDecoration(
             VerticalSpacesItemDecoration(
                 (resources.getDimensionPixelSize(
-                    R.dimen._13sdp
+                    R.dimen._10sdp
                 ))
             )
         )
-        restaurantAdapter = ReferAdapter(this, OnRecyclerView { position, view ->
-
-        }, transactionList)
+        restaurantAdapter = ReferAdapter(this,transactionList)
         itmesRecyclerView.adapter = restaurantAdapter
 
 
@@ -70,6 +68,8 @@ class ReferActivity : BaseActivity() {
                 code.text = it.data?.code
                 balance.text =getString(R.string.dollor)+""+ it.data?.total
                 invitedes.text=it.message
+                transactionList.addAll(it.data!!.history)
+                restaurantAdapter?.setData(transactionList)
             } else {
                 showError(false, it.message, null)
             }
