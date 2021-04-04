@@ -21,5 +21,6 @@ data class ShopRating(
     val restaurant_rating: Int,
     val feedback: String,
     val name: String,
+    val image: String,
     val user_id: Int
 )

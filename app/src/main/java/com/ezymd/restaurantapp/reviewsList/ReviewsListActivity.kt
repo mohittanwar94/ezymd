@@ -27,7 +27,7 @@ class ReviewsListActivity : BaseActivity() {
 
 
     private val shopId by lazy {
-        intent.getIntExtra(JSONKeys.SHOP_ID,11)
+        intent.getIntExtra(JSONKeys.SHOP_ID, 11)
     }
 
 
@@ -96,14 +96,20 @@ class ReviewsListActivity : BaseActivity() {
         leftIcon.setOnClickListener {
             onBackPressed()
         }
+
+        review_filter_tv.setOnClickListener {
+            review_filter.performClick()
+        }
+        val array = resources.getStringArray(
+            R.array.rating_list
+        )
         review_filter.adapter = ArrayAdapter(
-            this, R.layout.dropdown_item, resources.getStringArray(
-                R.array.rating_list
-            )
+            this, R.layout.dropdown_item, array
         )
 
         review_filter.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                review_filter_tv.text = array[i]
                 if (i == 0)
                     fetchData()
                 else
