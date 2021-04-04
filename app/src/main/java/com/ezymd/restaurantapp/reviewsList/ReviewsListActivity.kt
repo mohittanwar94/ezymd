@@ -66,19 +66,19 @@ class ReviewsListActivity : BaseActivity() {
             progress.visibility = if (it) View.VISIBLE else View.GONE
         })
         viewModel.excellentRating.observe(this, {
-            rate_excellent.progress = it
+            rate_excellent.progress = it.toInt()
         })
         viewModel.goodRating.observe(this, {
-            rate_good.progress = it
+            rate_good.progress = it.toInt()
         })
         viewModel.averageRating.observe(this, {
-            rate_average.progress = it
+            rate_average.progress = it.toInt()
         })
         viewModel.belowAverage.observe(this, {
-            rate_average.progress = it
+            rate_average.progress = it.toInt()
         })
         viewModel.poor.observe(this, {
-            rate_poor.progress = it
+            rate_poor.progress = it.toInt()
         })
         viewModel.total.observe(this, {
             tv_rating.text = String.format(Locale.getDefault(), "%.01f", it.toDouble())

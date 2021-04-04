@@ -23,13 +23,13 @@ class ReviewsListViewModel : ViewModel() {
     val loginResponse: MutableLiveData<LocationValidatorModel>
     val isLoading: MutableLiveData<Boolean>
     var listing = MutableLiveData<ArrayList<ShopRating>>()
-    var total = MutableLiveData<Int>()
-    var excellentRating = MutableLiveData<Int>()
-    var goodRating = MutableLiveData<Int>()
-    var averageRating = MutableLiveData<Int>()
+    var total = MutableLiveData<Double>()
+    var excellentRating = MutableLiveData<Double>()
+    var goodRating = MutableLiveData<Double>()
+    var averageRating = MutableLiveData<Double>()
     var totalReviews = MutableLiveData<Int>()
-    var belowAverage = MutableLiveData<Int>()
-    var poor = MutableLiveData<Int>()
+    var belowAverage = MutableLiveData<Double>()
+    var poor = MutableLiveData<Double>()
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
