@@ -62,7 +62,7 @@ android {
             minSdkVersion 21
             targetSdkVersion 29
             applicationId "com.ezymd.restaurantapp.test"
-            buildConfigField "String", "CONNECTY_APP_ID", "\"" + keys.DEV_CONNECTY_APP_ID + "\""
+            buildConfigField "String", "WALLET_ENVIRONMENT", "\"" + keys.DEV_WALLET_ENVIRONMENT + "\""
             buildConfigField "String", "CONNECTY_AUTH_KEY", "\"" + keys.DEV_CONNECTY_AUTH_KEY + "\""
         }
         betaServer {
@@ -70,7 +70,7 @@ android {
             targetSdkVersion 29
 
             applicationId "com.ezymd.restaurantapp.beta"
-            buildConfigField "String", "CONNECTY_APP_ID", "\"" + keys.DEV_CONNECTY_APP_ID + "\""
+            buildConfigField "String", "WALLET_ENVIRONMENT", "\"" + keys.DEV_WALLET_ENVIRONMENT + "\""
             buildConfigField "String", "CONNECTY_AUTH_KEY", "\"" + keys.DEV_CONNECTY_AUTH_KEY + "\""
         }
         liveServer {
@@ -78,7 +78,7 @@ android {
             applicationId 'com.ezymd.restaurantapp'
             signingConfig signingConfigs.releaseConfig
             targetSdkVersion 29
-            buildConfigField "String", "CONNECTY_APP_ID", "\"" + keys.PROD_CONNECTY_APP_ID + "\""
+            buildConfigField "String", "WALLET_ENVIRONMENT", "\"" + keys.PROD_WALLET_ENVIRONMENT + "\""
             buildConfigField "String", "CONNECTY_AUTH_KEY", "\"" + keys.PROD_CONNECTY_AUTH_KEY + "\""
 
         }
@@ -182,6 +182,8 @@ dependencies {
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
     implementation 'com.github.yesterselga:country-picker-android:1.0'
     implementation 'androidx.browser:browser:1.3.0'
+    implementation "com.google.android.gms:play-services-wallet:18.1.1"
+
     //implementationProject(name:'sinch-android-rtc', version:'+', ext:'aar')
 
 

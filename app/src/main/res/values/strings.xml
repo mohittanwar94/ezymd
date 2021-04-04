@@ -287,5 +287,8 @@
     <string name="refer_and_earn"><![CDATA[Refer & Earn]]></string>
     <string name="pay_from_wallet">Pay from Wallet</string>
     <string name="insufficient_balance">Insuffcient balance in wallet</string>
+    <string name="googlepay">Google Pay</string>
+    <string name="pay_using_gpay">Pay using google pay</string>
+    <string name="payments_show_name">payment</string>
 
 </resources>

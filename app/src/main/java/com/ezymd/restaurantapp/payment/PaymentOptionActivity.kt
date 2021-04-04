@@ -9,9 +9,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
+import com.ezymd.restaurantapp.BuildConfig
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.font.CustomTypeFace
+import com.ezymd.restaurantapp.payment.gpay.PaymentsUtil
 import com.ezymd.restaurantapp.utils.*
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.PaymentsClient
+import com.google.android.gms.wallet.Wallet
 import kotlinx.android.synthetic.main.activity_checkout.*
 
 
@@ -22,6 +28,16 @@ class PaymentOptionActivity : BaseActivity() {
         ViewModelProvider(this).get(PaymentCheckoutViewModel::class.java)
     }
 
+    private val paymentsClient: PaymentsClient by lazy {
+        Wallet.getPaymentsClient(
+            this,
+            Wallet.WalletOptions.Builder()
+                .setEnvironment(
+                    BuildConfig.WALLET_ENVIRONMENT.toInt()
+                )
+                .build()
+        )
+    }
 
     private var wAmount = 0.0
     private var tAmount = 0.0
@@ -48,6 +64,9 @@ class PaymentOptionActivity : BaseActivity() {
         } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.WALLET) {
             walletCheckBox.setChecked(true, true)
             // wallet
+        } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.GPAY) {
+            gpayCheckBox.setChecked(true, true)
+            // wallet
         }
 
         if (intent.getStringExtra(JSONKeys.DELIVERY_CHARGES).equals("Contact less", true)) {
@@ -60,6 +79,18 @@ class PaymentOptionActivity : BaseActivity() {
                 instructions.text = ""
                 codCheckBox.setChecked(false, false)
                 walletCheckBox.setChecked(false, false)
+                gpayCheckBox.setChecked(false, false)
+            }
+        }
+
+        gpayCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (isChecked) {
+                wAmount = 0.0
+                tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
+                instructions.text = ""
+                codCheckBox.setChecked(false, false)
+                walletCheckBox.setChecked(false, false)
+                onlineCheckBox.setChecked(false, false)
             }
         }
 
@@ -68,7 +99,7 @@ class PaymentOptionActivity : BaseActivity() {
             if (isChecked) {
                 codCheckBox.setChecked(false, false)
                 onlineCheckBox.setChecked(false, false)
-
+                gpayCheckBox.setChecked(false, false)
                 if (isLoaded) {
                     if (tAmount > viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
                         instructions.text =
@@ -84,6 +115,7 @@ class PaymentOptionActivity : BaseActivity() {
                     codCheckBox.setChecked(false, false)
                     onlineCheckBox.setChecked(false, false)
                     walletCheckBox.setChecked(false, false)
+                    gpayCheckBox.setChecked(false, false)
                 }
 
             }
@@ -95,6 +127,7 @@ class PaymentOptionActivity : BaseActivity() {
                 instructions.text = ""
                 walletCheckBox.setChecked(false, false)
                 onlineCheckBox.setChecked(false, false)
+                gpayCheckBox.setChecked(false, false)
             }
         }
 
@@ -111,9 +144,15 @@ class PaymentOptionActivity : BaseActivity() {
 
 
         }
+
+        gpay.setOnClickListener {
+            gpayCheckBox.setChecked(true, false)
+
+
+        }
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (!codCheckBox.isChecked && !onlineCheckBox.isChecked && !walletCheckBox.isChecked) {
+            if (!codCheckBox.isChecked && !onlineCheckBox.isChecked && !walletCheckBox.isChecked && !gpayCheckBox.isChecked) {
                 showError(false, "please select payment mode", null)
             } else {
                 val intent = Intent()
@@ -127,6 +166,10 @@ class PaymentOptionActivity : BaseActivity() {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
                 }
 
+                if (gpayCheckBox.isChecked) {
+                    intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.GPAY)
+                }
+
                 if (walletCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.WALLET)
                 }
@@ -136,6 +179,10 @@ class PaymentOptionActivity : BaseActivity() {
 
             }
         }
+
+
+        possiblyShowGooglePayButton()
+
     }
 
 
@@ -198,6 +245,29 @@ class PaymentOptionActivity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
+    }
+
+
+    private fun possiblyShowGooglePayButton() {
+        val isReadyToPayJson = PaymentsUtil.isReadyToPayRequest() ?: return
+        val request = IsReadyToPayRequest.fromJson(isReadyToPayJson.toString()) ?: return
+        val task = paymentsClient.isReadyToPay(request)
+        task.addOnCompleteListener { completedTask ->
+            try {
+                completedTask.getResult(ApiException::class.java)?.let(::setGooglePayAvailable)
+            } catch (exception: ApiException) {
+                // Process error
+                SnapLog.print("isReadyToPay failed" + exception)
+            }
+        }
+    }
+
+    private fun setGooglePayAvailable(available: Boolean) {
+        if (available) {
+            gpay.visibility = View.VISIBLE
+        } else {
+            gpay.visibility = View.GONE
+        }
     }
 
 }
