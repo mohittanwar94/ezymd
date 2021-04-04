@@ -73,8 +73,12 @@ class PaymentOptionActivity : BaseActivity() {
                     if (tAmount > viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
                         instructions.text =
                             getString(R.string.dollor) + "" + viewModel.baseResponse.value!!.data?.total + " will be debit from your wallet & remaining will be done through online payment mode"
-                        wAmount = 20.0//viewModel.baseResponse.value!!.data?.total!!.toDouble()
+                        wAmount = viewModel.baseResponse.value!!.data?.total!!.toDouble()
                         tAmount -= wAmount
+                    } else if (tAmount == viewModel.baseResponse.value!!.data?.total!!.toDouble() || tAmount < viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
+                        instructions.text = ""
+                        wAmount = tAmount
+                        tAmount = 0.0
                     }
                 } else {
                     codCheckBox.setChecked(false, false)
