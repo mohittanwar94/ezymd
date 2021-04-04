@@ -42,7 +42,7 @@
             android:gravity="start"
             android:letterSpacing="0.02"
             android:text="@string/add"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:paddingRight="@dimen/_15sdp"
             android:textColor="@color/color_bbbcbf"
             android:textSize="@dimen/_13sdp"

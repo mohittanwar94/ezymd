@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.utils.TimeUtils
 import kotlinx.android.synthetic.main.refer_transaction_row.view.*
 
 class ReferAdapter(
@@ -65,7 +66,7 @@ class ReferAdapter(
             )
         }
         holder.itemView.tv_name.text = item.description
-        holder.itemView.date_time.text=item.dateTime
+        holder.itemView.date_time.text=TimeUtils.getReadableDate(item.created_at)
 
     }
 
