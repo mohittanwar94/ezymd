@@ -78,6 +78,13 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
+
+        wallet.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(activity, ReferActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
         faq.setOnClickListener {
             UIUtil.clickAlpha(it)
             loadFaqs()
