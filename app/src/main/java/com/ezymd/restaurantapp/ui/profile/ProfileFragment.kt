@@ -23,6 +23,7 @@ import com.ezymd.restaurantapp.editprofile.EditProfileActivity
 import com.ezymd.restaurantapp.refer.ReferActivity
 import com.ezymd.restaurantapp.ui.cart.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
+import com.ezymd.restaurantapp.wallet.WalletActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.stripe.android.CustomerSession
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -81,7 +82,7 @@ class ProfileFragment : Fragment() {
 
         wallet.setOnClickListener {
             UIUtil.clickAlpha(it)
-            val intent = Intent(activity, ReferActivity::class.java)
+            val intent = Intent(activity, WalletActivity::class.java)
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
