@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
@@ -18,11 +20,16 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.*
+import kotlinx.android.synthetic.main.activity_checkout.*
 import kotlinx.android.synthetic.main.activity_order_details.*
 
 class OrderDetailsActivity : BaseActivity() {
+    private var updateEmailDialogFragment: RequestInvoiceDialogFragment? = null
     private var restaurantAdapter: OrderDetailsAdapter? = null
     private val dataResturant = ArrayList<OrderItems>()
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(OrderDetailsViewModel::class.java)
+    }
 
 
     private val item by lazy {
@@ -94,6 +101,47 @@ class OrderDetailsActivity : BaseActivity() {
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
+
+        invoice.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            showInvoiceDialog(it)
+        }
+    }
+
+    private fun showInvoiceDialog(it: View?) {
+        if (supportFragmentManager.findFragmentByTag("fragment_email_update") == null) {
+            val fm = supportFragmentManager
+            updateEmailDialogFragment = RequestInvoiceDialogFragment.newInstance("", false)
+            updateEmailDialogFragment!!.show(fm, "fragment_email_update")
+        } else {
+            if (!updateEmailDialogFragment!!.isVisible) {
+                val fm = supportFragmentManager
+                updateEmailDialogFragment?.show(fm, "fragment_email_update")
+            }
+        }
+        updateEmailDialogFragment!!.setOnClickListener(OnEmailUpdate {
+            requestInvoiceServer(it)
+        })
+    }
+
+    private fun requestInvoiceServer(it: String) {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["email"] = it
+        viewModel.emailInvoice(baseRequest)
+        viewModel.baseResponse.observe(this, Observer {
+            showError(it.status == ErrorCodes.SUCCESS, it.message, null)
+
+        })
+
+        viewModel.errorRequest.observe(this, Observer {
+            if (it != null)
+                showError(false, it, null)
+        })
+        viewModel.isLoading.observe(this, Observer {
+
+
+        })
+
     }
 
     private fun getPaymentMode(paymentType: Int): String {
@@ -101,6 +149,8 @@ class OrderDetailsActivity : BaseActivity() {
             return getString(R.string.cash_on_delivery)
         else if (paymentType == PaymentMethodTYPE.ONLINE)
             return getString(R.string.card)
+        else if (paymentType == PaymentMethodTYPE.GPAY)
+            return getString(R.string.googlepay)
         else
             return getString(R.string.wallet)
     }

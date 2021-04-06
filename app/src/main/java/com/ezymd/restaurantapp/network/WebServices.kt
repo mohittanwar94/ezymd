@@ -160,6 +160,14 @@ interface WebServices {
     ): ReferModel
 
 
+    @FormUrlEncoded
+    @POST(ServerConfig.EMAIL_INVOICE)
+    suspend fun emailInvoice(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): ReferModel
+
+
     @GET(ServerConfig.DIRECTION_API)
     suspend fun downloadRoute(
         @Query("origin") url: String,
