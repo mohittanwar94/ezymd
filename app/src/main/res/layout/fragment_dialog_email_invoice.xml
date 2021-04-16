@@ -93,7 +93,7 @@
             android:textColor="@color/red_bg_build"
             android:textSize="@dimen/_10sdp"
             android:visibility="gone"
-            app:textFont="SourceSansPro_Bold" />
+            app:textFont="bold" />
 
 
         <com.ezymd.restaurantapp.customviews.SnapTextView
