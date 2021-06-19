@@ -193,5 +193,10 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    fun contentVisiblity(configData: String) {
+
+
+    }
+
 
 }

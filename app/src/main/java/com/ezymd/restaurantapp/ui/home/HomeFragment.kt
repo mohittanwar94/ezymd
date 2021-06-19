@@ -90,6 +90,8 @@ open class HomeFragment : Fragment() {
             askPermission()
             setListenerView()
             setAdapterRestaurant()
+
+            homeViewModel.contentVisiblity(userInfo.configJson)
             homeViewModel.getFilters(BaseRequest(userInfo))
             requireActivity().registerReceiver(
                 mGpsSwitchStateReceiver,
@@ -197,7 +199,7 @@ open class HomeFragment : Fragment() {
             address.substring(0, 22) + "...".trim()
         } else {*/
             address.trim()
-        userInfo!!.address = address.trim()
+        userInfo.address = address.trim()
         if (dataBanner.size == 0 || locationChange) {
             locationChange = false
             homeViewModel.getBanners(BaseRequest(userInfo))
