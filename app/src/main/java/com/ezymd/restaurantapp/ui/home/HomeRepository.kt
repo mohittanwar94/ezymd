@@ -86,6 +86,20 @@ class HomeRepository {
 
     }
 
+
+    suspend fun getConfigurations(
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<com.google.gson.JsonObject> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.config()
+        }
+
+
+    }
+
     suspend fun getResturants(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher

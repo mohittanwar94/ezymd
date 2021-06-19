@@ -15,6 +15,7 @@ import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SingleLiveEvent
 import com.ezymd.restaurantapp.utils.SnapLog
+import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -25,6 +26,7 @@ class HomeViewModel : ViewModel() {
     private var loginRepository: HomeRepository? = null
     val address: MutableLiveData<LocationModel>
     val mPagerData: MutableLiveData<ResturantModel>
+    val mConfigData: MutableLiveData<JsonObject>
     val mTrendingData: MutableLiveData<TrendingModel>
     val mResturantData: MutableLiveData<TrendingDashboardModel>
     val mReferralResponse: MutableLiveData<LocationValidatorModel>
@@ -44,6 +46,7 @@ class HomeViewModel : ViewModel() {
         isLoading = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()
+        mConfigData = MutableLiveData()
         mTrendingData = MutableLiveData()
         errorRequest = SingleLiveEvent()
         isLoading.postValue(true)
@@ -72,6 +75,27 @@ class HomeViewModel : ViewModel() {
         isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             loginRepository!!.getAddress(gcd, locationModel, address, isLoading)
+        }
+
+    }
+
+
+    fun getConfigurations() {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.getConfigurations(
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> {
+                    SnapLog.print("viewpagerdata" + result.value)
+                    mConfigData.postValue(result.value)
+                }
+            }
+
         }
 
     }

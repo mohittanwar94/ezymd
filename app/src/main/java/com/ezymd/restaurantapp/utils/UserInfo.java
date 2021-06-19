@@ -166,4 +166,13 @@ public class UserInfo {
     public void saveReferalUrl(String referrerUrl) {
         preferences.edit().putString("getRefferalUrl", referrerUrl).apply();
     }
+
+    public String getConfigJson() {
+        return preferences.getString("configJson", null);
+    }
+
+    public void setConfigJson(String configJson) {
+        preferences.edit().putString("configJson", configJson).apply();
+    }
+
 }

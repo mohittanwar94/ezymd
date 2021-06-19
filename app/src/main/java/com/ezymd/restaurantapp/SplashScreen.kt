@@ -12,8 +12,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.login.Login
-import com.ezymd.restaurantapp.reviewsList.ReviewsListActivity
+import com.ezymd.restaurantapp.ui.home.HomeViewModel
 import com.ezymd.restaurantapp.utils.SnapLog
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -22,6 +24,20 @@ class SplashScreen : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.layout_splash)
+        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel.getConfigurations()
+
+        homeViewModel.mConfigData.observe(this, Observer {
+            userInfo?.setConfigJson(it.toString())
+            if (userInfo!!.userID != 0)
+                startActivity(Intent(this, MainActivity::class.java))
+            else
+                startActivity(Intent(this, Login::class.java))
+
+            overridePendingTransition(R.anim.left_in, R.anim.left_out)
+            this.finish()
+        })
         try {
             val mNotifyManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager.getNotificationChannel(
@@ -55,15 +71,7 @@ class SplashScreen : BaseActivity() {
     override fun onResume() {
         super.onResume()
         // printKeyHash(this)
-        if (userInfo!!.userID != 0)
-            startActivity(Intent(this, MainActivity::class.java))
-//        startActivity(Intent(this, ReviewsListActivity::class.java))
-        else
-            startActivity(Intent(this, Login::class.java))
 
-        overridePendingTransition(R.anim.left_in, R.anim.left_out)
-
-        this.finish()
     }
 
     fun printKeyHash(context: Activity): String? {
