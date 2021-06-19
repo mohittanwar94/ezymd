@@ -59,6 +59,7 @@ interface ServerConfig {
         const val SAVE_REFERRAL="useReferralCode"
         const val WALLET_BALANCE="walletTransactions"
         const val EMAIL_INVOICE=""
+        const val CONFIG="config"
 
     }
 }

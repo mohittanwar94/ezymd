@@ -66,6 +66,10 @@ interface WebServices {
         @Header("Authorization") token: String
     ): LogoutModel
 
+    @GET(ServerConfig.CONFIG)
+    suspend fun config(
+    ): JsonObject
+
     /* @FormUrlEncoded
      @POST(ServerConfig.SEARCH_RESTURANTS)
      suspend fun searchRestaurant(
