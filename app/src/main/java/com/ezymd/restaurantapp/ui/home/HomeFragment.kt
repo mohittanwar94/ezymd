@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -91,7 +92,9 @@ open class HomeFragment : Fragment() {
             setListenerView()
             setAdapterRestaurant()
 
-            homeViewModel.contentVisiblity(userInfo.configJson)
+            this.lifecycleScope.launchWhenCreated {
+                homeViewModel.contentVisiblity(userInfo.configJson)
+            }
             homeViewModel.getFilters(BaseRequest(userInfo))
             requireActivity().registerReceiver(
                 mGpsSwitchStateReceiver,
@@ -427,7 +430,60 @@ open class HomeFragment : Fragment() {
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
     }
 
+    fun View.visible() {
+        visibility = View.VISIBLE
+    }
+
+    fun View.gone() {
+        visibility = View.GONE
+    }
+
     private fun setObservers() {
+
+        homeViewModel.isGroceryVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                iv_grocery.visible()
+                iv_grocery_text.visible()
+            } else {
+                iv_grocery.gone()
+                iv_grocery_text.gone()
+            }
+        })
+
+        homeViewModel.isAllHide.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                cardAvailOptions.gone()
+            }
+        })
+
+        homeViewModel.isPharmacyVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                iv_pharmacy.visible()
+                iv_pharmacy_text.visible()
+                iv_pharmacy_view.visible()
+
+            } else {
+                iv_pharmacy.gone()
+                iv_pharmacy_text.gone()
+                iv_pharmacy_view.gone()
+            }
+        })
+
+        homeViewModel.isRestuantVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                iv_food.visible()
+                iv_food_text.visible()
+                iv_food_view.visible()
+            } else {
+                iv_food.gone()
+                iv_food_text.gone()
+                iv_food_view.gone()
+            }
+        })
         homeViewModel.mReferralResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 userInfo.saveReferalUrl("")

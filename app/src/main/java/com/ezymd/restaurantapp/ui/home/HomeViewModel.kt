@@ -31,6 +31,11 @@ class HomeViewModel : ViewModel() {
     val mResturantData: MutableLiveData<TrendingDashboardModel>
     val mReferralResponse: MutableLiveData<LocationValidatorModel>
     val isLoading: MutableLiveData<Boolean>
+    val isPharmacyVisible: MutableLiveData<Boolean>
+    val isRestuantVisible: MutableLiveData<Boolean>
+    val isGroceryVisible: MutableLiveData<Boolean>
+    val isAllHide = MutableLiveData<Boolean>(false)
+
 
     override fun onCleared() {
         super.onCleared()
@@ -44,13 +49,16 @@ class HomeViewModel : ViewModel() {
         address = MutableLiveData()
         isGPSEnable = MutableLiveData()
         isLoading = MutableLiveData()
+        isPharmacyVisible = MutableLiveData()
+        isGroceryVisible = MutableLiveData()
+        isRestuantVisible = MutableLiveData()
         mPagerData = MutableLiveData()
         mResturantData = MutableLiveData()
         mConfigData = MutableLiveData()
         mTrendingData = MutableLiveData()
         errorRequest = SingleLiveEvent()
         isLoading.postValue(true)
-        mReferralResponse= MutableLiveData()
+        mReferralResponse = MutableLiveData()
 
 
     }
@@ -177,7 +185,7 @@ class HomeViewModel : ViewModel() {
     fun saveReferral(baseRequest: BaseRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.saveReferralOnServer(
-               baseRequest,
+                baseRequest,
                 Dispatchers.IO
             )
             when (result) {
@@ -193,9 +201,10 @@ class HomeViewModel : ViewModel() {
 
     }
 
-    fun contentVisiblity(configData: String) {
+    suspend fun contentVisiblity(configData: String) {
 
 
+        isAllHide.postValue(true)
     }
 
 

@@ -328,7 +328,6 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@drawable/launcher_screen_with_logo</item>
     </style>
 
     <style name="progressBarTheme">
