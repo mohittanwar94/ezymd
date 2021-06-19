@@ -18,7 +18,6 @@ interface ServerConfig {
 
 
         const val GENERATE_OTP = "sendOtp"
-        const val LIST_BANNER = "nearByRestaurantBanner"
         const val LOGOUT = "logout"
 
         /*const val LIST_RESTURANTS = "nearByRestaurant"
@@ -28,7 +27,6 @@ interface ServerConfig {
         const val SOCIAL_LOGIN_USER = "socialLoginRegister"
         const val DIRECTION_API = "https://maps.googleapis.com/maps/api/directions/json"
         const val LOGIN_USER = "loginRegister"
-        const val LIST_TRENDING = "trendingFoods"
         const val CREATE_ORDER = "order"
         const val CREATE_CUSTOMER = "stripe/createCustomer"
         const val EPHEMERAL_KEYS = "stripe/ephemeralKey"
@@ -60,6 +58,12 @@ interface ServerConfig {
         const val WALLET_BALANCE="walletTransactions"
         const val EMAIL_INVOICE=""
         const val CONFIG="config"
+
+
+        /* TO Do change to this to near by restauant */
+        const val LIST_BANNER = "nearByRestaurantBanner"
+        const val LIST_TRENDING = "trendingFoods"
+
 
     }
 }
