@@ -10,14 +10,21 @@ import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.splash.ConfigData
-import com.ezymd.restaurantapp.utils.*
+import com.ezymd.restaurantapp.utils.BaseRequest
+import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.ezymd.restaurantapp.utils.SingleLiveEvent
+import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
+    private lateinit var trendingJob: Job
+    private lateinit var restaurantJob: Job
+    private lateinit var bannerJob: Job
     val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: HomeRepository? = null
@@ -31,7 +38,7 @@ class HomeViewModel : ViewModel() {
     val isPharmacyVisible: MutableLiveData<Boolean>
     val isRestuantVisible: MutableLiveData<Boolean>
     val isGroceryVisible: MutableLiveData<Boolean>
-    val primaryCategory= MutableLiveData<Int>(1)
+    val primaryCategory = MutableLiveData<Int>(1)
     val isAllHide = MutableLiveData<Boolean>(false)
 
 
@@ -109,7 +116,9 @@ class HomeViewModel : ViewModel() {
     fun getBanners(baseRequest: BaseRequest) {
         baseRequest.paramsMap["category_id"] = "" + primaryCategory.value
         //isLoading.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        if (this::bannerJob.isInitialized)
+            bannerJob.cancel()
+        bannerJob = viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.listBanners(
                 baseRequest,
                 Dispatchers.IO
@@ -131,7 +140,9 @@ class HomeViewModel : ViewModel() {
     fun getResturants(baseRequest: BaseRequest) {
         //  isLoading.postValue(true)
         baseRequest.paramsMap["category_id"] = "" + primaryCategory.value
-        viewModelScope.launch(Dispatchers.IO) {
+        if (this::restaurantJob.isInitialized)
+            restaurantJob.cancel()
+        restaurantJob = viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getResturants(
                 baseRequest,
                 Dispatchers.IO
@@ -163,7 +174,9 @@ class HomeViewModel : ViewModel() {
     fun getTrending(baseRequest: BaseRequest) {
         baseRequest.paramsMap["category_id"] = "" + primaryCategory.value
         isLoading.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        if (this::trendingJob.isInitialized)
+            trendingJob.cancel()
+        trendingJob = viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getTrending(
                 baseRequest,
                 Dispatchers.IO

@@ -4,18 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.EzymdApplication
-import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.network.ResultWrapper
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
+import com.ezymd.restaurantapp.splash.ConfigData
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SingleLiveEvent
+import com.ezymd.restaurantapp.utils.StoreType
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
+     val primaryCategory = MutableLiveData<Int>(StoreType.RESTAURANT)
     val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
     private var loginRepository: SearchRepository? = null
@@ -88,5 +90,11 @@ class SearchViewModel : ViewModel() {
     private fun showGenericError(error: ErrorResponse?) {
         errorRequest.postValue(error?.message)
     }
+
+    suspend fun contentVisiblity(configData: String) {
+        var configModel = Gson().fromJson(configData, ConfigData::class.java)
+        primaryCategory.postValue(configModel.data.primary)
+    }
+
 
 }
