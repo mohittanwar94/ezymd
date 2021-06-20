@@ -126,7 +126,6 @@ class SearchFragment : Fragment() {
                 }
                 if (search.text.toString().trim().length > 4) {
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
                     baseRequest.paramsMap.put("search", search.text.toString())
                     searchViewModel.searchRestaurants(baseRequest)
                 }
@@ -135,7 +134,6 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (search.text.toString().trim().isEmpty()) {
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
                     searchViewModel.searchRestaurants(baseRequest)
                 }
             }
@@ -268,8 +266,13 @@ class SearchFragment : Fragment() {
 
         searchViewModel.primaryCategory.observe(viewLifecycleOwner, Observer {
             val baseRequest = BaseRequest(userInfo)
-            baseRequest.paramsMap.put("category_id", "" + it)
+            baseRequest.paramsMap["category_id"] = "" + it
             searchViewModel.getResturants(baseRequest)
+            when (it) {
+                StoreType.RESTAURANT -> search.setHint(getString(R.string.search_resturant))
+                StoreType.Pharmacy -> search.setHint(getString(R.string.search_pharmacy))
+                StoreType.Grocery -> search.setHint(getString(R.string.search_grocery_stores))
+            }
 
         })
 

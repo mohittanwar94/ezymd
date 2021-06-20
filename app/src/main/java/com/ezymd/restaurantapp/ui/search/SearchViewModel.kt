@@ -13,10 +13,12 @@ import com.ezymd.restaurantapp.utils.SingleLiveEvent
 import com.ezymd.restaurantapp.utils.StoreType
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel() : ViewModel() {
+    private lateinit var  searchJob: Job
      val primaryCategory = MutableLiveData<Int>(StoreType.RESTAURANT)
     val isGPSEnable: MutableLiveData<Boolean>
     var errorRequest: SingleLiveEvent<String>
@@ -46,7 +48,10 @@ class SearchViewModel : ViewModel() {
 
     fun getResturants(baseRequest: BaseRequest) {
         isLoading.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        baseRequest.paramsMap.put("category_id", "" + primaryCategory.value)
+        if (this::searchJob.isInitialized)
+            searchJob.cancel()
+        searchJob=viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getRestaurants(
                 baseRequest,
                 Dispatchers.IO

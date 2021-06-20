@@ -36,13 +36,17 @@ import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
-import com.ezymd.restaurantapp.ui.home.adapter.BannerPagerAdapter
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.ui.home.model.Trending
-import com.ezymd.restaurantapp.ui.home.trending.TrendingAdapter
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.emptyLay
+import kotlinx.android.synthetic.main.fragment_home.emptymsg
+import kotlinx.android.synthetic.main.fragment_home.enableLocation
+import kotlinx.android.synthetic.main.fragment_home.image
+import kotlinx.android.synthetic.main.fragment_home.progress
+import kotlinx.android.synthetic.main.fragment_home.resturantRecyclerView
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import mumayank.com.airlocationlibrary.AirLocation
 import java.util.*
 import kotlin.collections.ArrayList
@@ -564,7 +568,13 @@ open class HomeFragment : Fragment() {
                     else
                         filter.visibility = View.GONE
                     resturantCount.text =
-                        TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
+                        TextUtils.concat(
+                            "" + dataResturant.size + " " + when (homeViewModel.primaryCategory.value) {
+                                StoreType.RESTAURANT -> getString(R.string.resurant_around_you)
+                                StoreType.Pharmacy -> getString(R.string.pharmacy_around_you)
+                                else -> getString(R.string.grocery_around_you)
+                            }
+                        )
                 }
 
             } else {
@@ -617,7 +627,8 @@ open class HomeFragment : Fragment() {
                 val intent = Intent(requireActivity(), CategoryActivity::class.java)
                 intent.putExtra(
                     JSONKeys.OBJECT,
-                    dataTrending[position])
+                    dataTrending[position]
+                )
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 EzymdApplication.getInstance().cartData.postValue(null)
