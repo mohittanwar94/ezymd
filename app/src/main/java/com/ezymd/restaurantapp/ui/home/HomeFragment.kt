@@ -29,6 +29,8 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.dashboard.DashBoardActivity
 import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
@@ -48,7 +50,7 @@ import kotlin.collections.ArrayList
 
 open class HomeFragment : Fragment() {
     private var locationChange = false
-    private var treandingAdapter: TrendingAdapter? = null
+    private var treandingAdapter: DashBoardTrendingAdapter? = null
     private var restaurantAdapter: DashBoardNearByAdapter? = null
     private var isNullViewRoot = false
     private lateinit var homeViewModel: HomeViewModel
@@ -56,9 +58,9 @@ open class HomeFragment : Fragment() {
     private var locationModel = LocationModel()
     private var viewRoot: View? = null
 
-    private val dataBanner = ArrayList<Resturant>()
+    private val dataBanner = ArrayList<DataTrending>()
     private val dataResturant = ArrayList<DataTrending>()
-    private val dataTrending = ArrayList<Trending>()
+    private val dataTrending = ArrayList<DataTrending>()
 
     private val userInfo by lazy {
         (activity as MainActivity).userInfo!!
@@ -355,12 +357,12 @@ open class HomeFragment : Fragment() {
 
         // bannerPager.setPageTransformer(true, AlphaPageTransformation())
         val registrationTutorialPagerAdapter =
-            BannerPagerAdapter(
+            DashBoardPagerAdapter(
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
                     // val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
                     val intent = Intent(activity, CategoryActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, getDataTrendingObject(dataBanner[position]))
+                    intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
                     /*  val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                           (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                       )
@@ -418,7 +420,7 @@ open class HomeFragment : Fragment() {
             askPermission()
         }
         emptyLay.visibility = View.GONE
-        if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+        if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
             homeViewModel.getBanners(BaseRequest(userInfo))
             val baseRequest = BaseRequest(userInfo)
             baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
@@ -498,7 +500,7 @@ open class HomeFragment : Fragment() {
                     askPermission()
                 }
                 emptyLay.visibility = View.GONE
-                if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+                if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
                     homeViewModel.getBanners(BaseRequest(userInfo))
                     val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
@@ -516,14 +518,15 @@ open class HomeFragment : Fragment() {
         })
         homeViewModel.address.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             locationModel = it
-            userInfo!!.lang = it.lang.toString()
-            userInfo!!.lat = it.lat.toString()
+            userInfo.lang = it.lang.toString()
+            userInfo.lat = it.lat.toString()
             setLocationAddress(it.location, it.city)
         })
 
 
         homeViewModel.mPagerData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
+                SnapLog.print("1=====")
                 dataBanner.clear()
                 bannerPager.adapter?.notifyDataSetChanged()
                 dataBanner.addAll(it.data)
@@ -586,7 +589,6 @@ open class HomeFragment : Fragment() {
         homeViewModel.mTrendingData.removeObservers(viewLifecycleOwner)
         homeViewModel.errorRequest.removeObservers(viewLifecycleOwner)
         homeViewModel.address.removeObservers(viewLifecycleOwner)
-        (bannerPager.adapter as BannerPagerAdapter).stopTimer()
     }
 
     private fun setPageChangeListener() {
@@ -611,12 +613,11 @@ open class HomeFragment : Fragment() {
     private fun setAdapterTrending() {
         trendingRecyclerView.layoutManager = LinearLayoutManager(activity, HORIZONTAL, false)
         treandingAdapter =
-            TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+            DashBoardTrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val intent = Intent(requireActivity(), CategoryActivity::class.java)
                 intent.putExtra(
                     JSONKeys.OBJECT,
-                    getDataTrendingObject(dataTrending[position].restaurant)
-                )
+                    dataTrending[position])
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 EzymdApplication.getInstance().cartData.postValue(null)

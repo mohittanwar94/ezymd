@@ -55,11 +55,6 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>
     ): LoginModel
 
-    @FormUrlEncoded
-    @POST(ServerConfig.LIST_BANNER)
-    suspend fun listBanners(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
 
     @GET(ServerConfig.LOGOUT)
     suspend fun logout(
@@ -117,12 +112,12 @@ interface WebServices {
     ): FilterModel
 
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @POST(ServerConfig.LIST_TRENDING)
     suspend fun getTrending(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): TrendingModel
-
+*/
     @FormUrlEncoded
     @POST(ServerConfig.SAVE_REFERRAL)
     suspend fun saveReferral(

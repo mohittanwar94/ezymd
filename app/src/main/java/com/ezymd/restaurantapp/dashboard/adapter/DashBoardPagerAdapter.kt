@@ -56,6 +56,10 @@ class DashBoardPagerAdapter(
         return view === `object`
     }
 
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
+
     fun startTimer(myPager: ViewPager, time: Int) {
         val size: Int = data.size
         val Update: Runnable = object : Runnable {
