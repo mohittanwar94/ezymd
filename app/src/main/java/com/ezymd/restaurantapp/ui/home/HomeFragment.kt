@@ -47,6 +47,8 @@ import kotlinx.android.synthetic.main.fragment_home.progress
 import kotlinx.android.synthetic.main.fragment_home.resturantRecyclerView
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mumayank.com.airlocationlibrary.AirLocation
 import java.util.*
 import kotlin.collections.ArrayList
@@ -98,7 +100,7 @@ open class HomeFragment : Fragment() {
             setListenerView()
             setAdapterRestaurant()
 
-            this.lifecycleScope.launchWhenCreated {
+            lifecycleScope.launch (Dispatchers.IO){
                 homeViewModel.contentVisiblity(userInfo.configJson)
             }
             homeViewModel.getFilters(BaseRequest(userInfo))
@@ -547,7 +549,7 @@ open class HomeFragment : Fragment() {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
                 if (it.data.size > 0)
-                    trending.text = getString(R.string.trending_food)
+                    trending.text = getString(R.string.trending_items)
                 treandingAdapter!!.getData().let { it1 ->
                     dataTrending.addAll(it1)
                 }

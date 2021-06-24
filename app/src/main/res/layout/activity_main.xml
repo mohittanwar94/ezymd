@@ -30,4 +30,48 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <LinearLayout
+        android:id="@+id/upgradeLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_ffe600"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_15sdp"
+            android:gravity="center"
+            android:letterSpacing="1.5"
+            android:text="@string/upgrade_app"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            app:textFont="bold" />
+
+        <com.ezymd.restaurantapp.customviews.SnapButton
+            android:id="@+id/upgrade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:background="@drawable/login_button"
+            android:gravity="center"
+            android:letterSpacing="1.5"
+            android:text="@string/upgrade"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            app:buttonFont="bold" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

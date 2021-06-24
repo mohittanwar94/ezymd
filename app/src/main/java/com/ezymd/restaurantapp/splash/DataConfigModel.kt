@@ -6,7 +6,7 @@ data class DataConfigModel(
 
     @SerializedName("id") var id: Int,
     @SerializedName("force_upgrade") var forceUpgrade: Int,
-    @SerializedName("version_code") var versionCode: Double,
+    @SerializedName("version_code") var versionCode: Int,
     @SerializedName("restaurant") var restaurant: Int,
     @SerializedName("grocery") var grocery: Int,
     @SerializedName("pharmacy") var pharmacy: Int,
