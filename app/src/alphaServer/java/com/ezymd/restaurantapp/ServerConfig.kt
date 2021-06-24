@@ -62,7 +62,7 @@ interface ServerConfig {
 
         /* TO Do change to this to near by restauant */
         //const val LIST_BANNER = "nearByRestaurantBanner"
-        //const val LIST_TRENDING = "trendingFoods"
+       // const val LIST_TRENDING = "trendingFoods"
 
 
     }

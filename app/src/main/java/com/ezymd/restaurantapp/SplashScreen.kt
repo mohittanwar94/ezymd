@@ -24,7 +24,7 @@ class SplashScreen : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_splash)
+       // setContentView(R.layout.layout_splash)
         val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         homeViewModel.getConfigurations()
 
