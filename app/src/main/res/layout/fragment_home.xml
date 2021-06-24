@@ -248,8 +248,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
-                    android:paddingRight="@dimen/_15sdp"
                     android:clipToPadding="false"
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_15sdp"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
                     android:paddingEnd="@dimen/_15sdp" />
