@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -18,7 +19,6 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -27,8 +27,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.push.CallScreenActivity
-import com.ezymd.restaurantapp.push.SinchService
 import com.ezymd.restaurantapp.tracker.model.UpdateLocationModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
@@ -41,12 +39,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
 import com.google.maps.android.PolyUtil
-import com.sinch.android.rtc.SinchError
 import kotlinx.android.synthetic.main.tracker_activity.*
 import kotlinx.android.synthetic.main.user_live_tracking.*
 
 
-class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFailedListener {
+class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.StartFailedListener*/ {
     private var start_rotation: Float = 0f
     private var isMarkerRotating: Boolean = false
     private var countTimer: CountDownTimer? = null
@@ -264,28 +261,28 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     override fun onServiceConnected() {
-        getSinchServiceInterface()?.setStartListener(this)
+        //    getSinchServiceInterface()?.setStartListener(this)
     }
 
 
-    override fun onStartFailed(error: SinchError) {
-        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
-    }
+    /* override fun onStartFailed(error: SinchError) {
+         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+     }
 
-    override fun onStarted() {
-        openPlaceCallActivity()
-    }
+     override fun onStarted() {
+         openPlaceCallActivity()
+     }*/
 
     private fun loginClicked() {
-        val userName = "" + userInfo?.userID
+        /*val userName = "" + userInfo?.userID
         if (userName != getSinchServiceInterface()?.userName) {
             getSinchServiceInterface()?.stopClient()
         }
         if (!getSinchServiceInterface()?.isStarted!!) {
             getSinchServiceInterface()?.startClient(userName)
         } else {
-            openPlaceCallActivity()
-        }
+        */    openPlaceCallActivity()
+        //  }
     }
 
     private fun openPlaceCallActivity() {
@@ -295,14 +292,22 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     private fun callConnect() {
-        //item.delivery.phoneNo
+        val intent = Intent(Intent.ACTION_DIAL)
+        // Send phone number to intent as data
+        // Send phone number to intent as data
+        intent.data = Uri.parse("tel:" + item.delivery.phoneNo)
+        // Start the dialer app activity with number
+        // Start the dialer app activity with number
+        startActivity(intent)
+
+        /*   //item.delivery.phoneNo
         val call = getSinchServiceInterface()!!.callPhoneNumber("+46000000000")
         val callId = call.callId
         val callScreen = Intent(this, CallScreenActivity::class.java)
         callScreen.putExtra(SinchService.CALL_ID, callId)
         callScreen.putExtra(JSONKeys.NAME, item.delivery.name)
         callScreen.putExtra(JSONKeys.AVATAR, item.delivery.photo)
-        startActivity(callScreen)
+        startActivity(callScreen)*/
     }
 
 
@@ -736,7 +741,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             movingCabMarker?.position = currentLatLng
             movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
-            movingCabMarker?.rotation=bearing
+            movingCabMarker?.rotation = bearing
         } else {
             previousLatLng = currentLatLng
             currentLatLng = latLng

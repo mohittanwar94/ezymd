@@ -2,10 +2,8 @@ package com.ezymd.restaurantapp
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -16,7 +14,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.customviews.SnapTextView
 import com.ezymd.restaurantapp.dashboard.model.DataTrending
@@ -24,8 +21,6 @@ import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
-import com.ezymd.restaurantapp.push.SinchService
-import com.ezymd.restaurantapp.push.SinchService.SinchServiceInterface
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -33,10 +28,10 @@ import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import java.util.*
 
 
-open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener,
-    ServiceConnection {
+open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener
+/*  ServiceConnection*/ {
 
-    var mSinchServiceInterface: SinchServiceInterface? = null
+    //var mSinchServiceInterface: SinchServiceInterface? = null
     private var size: Sizes? = null
     val PERMISSIONS_REQUEST_CAMERA = 3333
     val PERMISSIONS_REQUEST_CAMERA_AUDIO = 3331
@@ -58,48 +53,48 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     private var handler: Handler? = null
 
 
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder?) {
-        if ((SinchService::class.java.name == componentName.className)) {
-            mSinchServiceInterface = iBinder as SinchServiceInterface?
-            onServiceConnected()
-        }
-    }
+    /*  override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder?) {
+          if ((SinchService::class.java.name == componentName.className)) {
+              mSinchServiceInterface = iBinder as SinchServiceInterface?
+              onServiceConnected()
+          }
+      }
 
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        if ((SinchService::class.java.name == componentName.className)) {
-            mSinchServiceInterface = null
-            onServiceDisconnected()
-        }
-    }
+      override fun onServiceDisconnected(componentName: ComponentName) {
+          if ((SinchService::class.java.name == componentName.className)) {
+              mSinchServiceInterface = null
+              onServiceDisconnected()
+          }
+      }
 
-
+  */
     open fun onServiceConnected() {}
     open fun onServiceDisconnected() {}
-    fun getSinchServiceInterface(): SinchServiceInterface? {
+    /*fun getSinchServiceInterface(): SinchServiceInterface? {
         return mSinchServiceInterface
-    }
+    }*/
 
     private val messenger = Messenger(object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
-                    val bundle = msg.data
-                    val requiredPermission = bundle.getString(SinchService.REQUIRED_PERMISSION)
-                    ActivityCompat.requestPermissions(
-                        this@BaseActivity,
-                        arrayOf(requiredPermission),
-                        0
-                    )
-                }
+                /*            SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
+                                val bundle = msg.data
+                                val requiredPermission = bundle.getString(SinchService.REQUIRED_PERMISSION)
+                                ActivityCompat.requestPermissions(
+                                    this@BaseActivity,
+                                    arrayOf(requiredPermission),
+                                    0
+                                )
+                            }*/
             }
         }
     })
 
 
     private fun bindService() {
-        val serviceIntent = Intent(this, SinchService::class.java)
+        /*val serviceIntent = Intent(this, SinchService::class.java)
         serviceIntent.putExtra(SinchService.MESSENGER, messenger)
-        getApplicationContext().bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)
+        getApplicationContext().bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)*/
     }
 
 
@@ -480,9 +475,9 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             }
             0 -> if (grantResults.size > 0) {
                 if (isGrant(grantResults))
-                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                //   mSinchServiceInterface?.retryStartAfterPermissionGranted()
                 else {
-                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                    //   mSinchServiceInterface?.retryStartAfterPermissionGranted()
                     showPermissionAlert("Camera & Audio access denied.Please enable permissions to access.")
                 }
             } else {
