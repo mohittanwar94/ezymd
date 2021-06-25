@@ -63,9 +63,9 @@ class OtpViewModel : ViewModel() {
         errorRequest.postValue(error?.message)
     }
 
-    fun resendOtp(mobile: String, hasExtra: Boolean) {
+    fun resendOtp(mobile: String,countryCode: String, hasExtra: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.resendSms(mobile,
+            val result = loginRepository!!.resendSms(mobile,countryCode,
                 Dispatchers.IO,hasExtra
             )
             isLoading.postValue(false)

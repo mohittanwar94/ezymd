@@ -49,7 +49,7 @@ class LoginViewModel : ViewModel() {
         loginResponse = MutableLiveData()
     }
 
-    fun generateOtp(otp: String, counCode: String) {
+    fun generateOtp(otp: String, counCode: String,dialCode:String) {
         val phoneUtil = PhoneNumberUtil.getInstance()
         try {
             val swissNumberProto = phoneUtil.parse(otp, counCode)
@@ -60,7 +60,7 @@ class LoginViewModel : ViewModel() {
                 isLoading.postValue(true)
                 viewModelScope.launch(Dispatchers.IO) {
                     val result = loginRepository!!.generateOtp(
-                        otp,
+                        otp,dialCode,
                         Dispatchers.IO
                     )
                     isLoading.postValue(false)

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -39,6 +41,14 @@ public class UserInfo {
 
     public void setDeviceToken(String token) {
         preferences.edit().putString("DeviceToken", token).apply();
+    }
+
+    public String getCountryCode() {
+        return preferences.getString("setCountryCode", "+1");
+    }
+
+    public void setCountryCode(String countryCode) {
+        preferences.edit().putString("setCountryCode", countryCode).apply();
     }
 
     public String getCustomerID() {

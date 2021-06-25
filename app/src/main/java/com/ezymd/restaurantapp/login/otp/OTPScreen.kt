@@ -300,7 +300,7 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
         UIUtil.clickAlpha(v)
         otpViewModel!!.startLoading(true)
         otpViewModel!!.resendOtp(
-            intent.getStringExtra(JSONKeys.MOBILE_NO)!!,
+            intent.getStringExtra(JSONKeys.MOBILE_NO)!!,intent.getStringExtra(JSONKeys.COUNTRY_CODE)!!,
             intent.hasExtra(IS_MOBILE)
         )
 

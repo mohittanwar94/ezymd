@@ -305,7 +305,7 @@ class EditProfileActivity : BaseActivity() {
 
     private fun generateOtp(text: String) {
         SuspendKeyPad.suspendKeyPad(this)
-        viewModel.generateOtp(text)
+        viewModel.generateOtp(text,userInfo?.countryCode.toString())
         viewModel.otpResponse.removeObservers(this)
 
         viewModel.otpResponse.observe(this, Observer {

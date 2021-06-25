@@ -27,6 +27,7 @@ class OtpRepository private constructor() {
 
     suspend fun resendSms(
         mobile: String,
+        countryCode: String,
         dispatcher: CoroutineDispatcher,
         hasExtra: Boolean
     ): ResultWrapper<OtpModel> {
@@ -34,6 +35,7 @@ class OtpRepository private constructor() {
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
         map["phone_no"] = mobile
+        map["country_code"] = countryCode
         if (hasExtra)
             map["is_otp"] = "1"
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {

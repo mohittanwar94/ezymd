@@ -19,7 +19,7 @@ class EditProfileRepository {
 
 
     suspend fun generateOtp(
-        otp: String,
+        otp: String, countryCode: String,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<OtpModel> {
 
@@ -27,6 +27,7 @@ class EditProfileRepository {
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
         map["phone_no"] = otp
+        map["country_code"] = countryCode
         map["is_otp"] = "1"
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {

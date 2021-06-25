@@ -58,11 +58,11 @@ class EditProfileViewModel : ViewModel() {
     }
 
 
-    fun generateOtp(otp: String) {
+    fun generateOtp(otp: String, countryCode: String) {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.generateOtp(
-                otp,
+                otp,countryCode,
                 Dispatchers.IO
             )
             isLoading.postValue(false)

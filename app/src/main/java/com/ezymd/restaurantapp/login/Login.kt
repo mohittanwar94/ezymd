@@ -124,7 +124,7 @@ class Login : BaseActivity() {
         next.setOnClickListener {
             SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-            loginViewModel.generateOtp(phoneNo.text.toString(), counCode)
+            loginViewModel.generateOtp(phoneNo.text.toString(), counCode,countryCode.text.toString())
         }
         loginViewModel.isLoading.observe(this, Observer {
 
@@ -138,7 +138,7 @@ class Login : BaseActivity() {
                     Intent(
                         this,
                         OTPScreen::class.java
-                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim()),
+                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim()).putExtra(JSONKeys.COUNTRY_CODE, countryCode.text.toString().trim()),
                     JSONKeys.OTP_REQUEST
                 )
             }
@@ -182,6 +182,7 @@ class Login : BaseActivity() {
 
     private fun setLoginUser(it: LoginModel) {
         userInfo?.accessToken = it.data.access_token
+        userInfo?.countryCode=countryCode.text.toString()
         userInfo?.userName = it.data.user.name
         userInfo?.email = it.data.user.email
         userInfo?.userID = it.data.user.id
