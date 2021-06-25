@@ -119,7 +119,10 @@ class OrdersAdapter(
             model.price = item.price
             model.item = item.item
             model.description = item.description
-            model.image = item.image
+            val listImage = ArrayList<String>()
+            listImage.add(item.image)
+            model.image = listImage
+
 
             list.add(model)
         }
