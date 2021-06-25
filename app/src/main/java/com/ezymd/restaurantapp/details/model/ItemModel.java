@@ -72,7 +72,7 @@ public class ItemModel implements Serializable {
 
     @SerializedName("image")
     @Expose
-    private String image;
+    private ArrayList<String> image;
 
     public int getIs_veg() {
         return is_veg;
@@ -154,11 +154,11 @@ public class ItemModel implements Serializable {
         this.category = category;
     }
 
-    public String getImage() {
+    public ArrayList<String> getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(ArrayList<String> image) {
         this.image = image;
     }
 

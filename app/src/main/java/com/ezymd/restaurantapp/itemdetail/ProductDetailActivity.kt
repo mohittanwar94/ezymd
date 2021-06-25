@@ -76,7 +76,7 @@ class ProductDetailActivity : BaseActivity() {
         })
         viewModel.options.observe(this, Observer {
             if (it != null) {
-                val restaurantAdapter = OptionsAdapter(this, it,product.price)
+                val restaurantAdapter = OptionsAdapter(this, it, product.price)
                 rv_modifiers?.adapter = restaurantAdapter
             }
         })
@@ -215,9 +215,9 @@ class ProductDetailActivity : BaseActivity() {
 
     private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
         bannerPager.offscreenPageLimit = 1
-        val model = ImageModel(-1, product.image!!, 0)
-        dataBanner.add(0, model)
-        if (!dataBanner.isNullOrEmpty()) {
+        /* val model = ImageModel(-1, product.image!!, 0)
+         dataBanner.add(0, model)
+        */ if (!dataBanner.isNullOrEmpty()) {
             iv_icon.visibility = View.GONE
             val registrationTutorialPagerAdapter = ProductDetailPagerAdapter(
                 this,
@@ -312,7 +312,7 @@ class ProductDetailActivity : BaseActivity() {
             tv_desc?.text = Html.fromHtml(product.description)
         }
         tv_price?.text = "${getString(R.string.dollor)}${product.price}"
-        if (!TextUtils.isEmpty(product.image)) {
+        if (!TextUtils.isEmpty(product.image?.firstOrNull())) {
             GlideApp.with(applicationContext)
                 .load(product.image).centerCrop().override(200, 200).dontAnimate()
                 .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)

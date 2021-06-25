@@ -7,7 +7,7 @@ class Product :Serializable{
     var category_id = 0
     var item: String? = null
     var description: String? = null
-    var image: String? = null
+    var image: ArrayList<String>? = null
     var price = 0.0
     var sell_price = 0
     var qnty = 0

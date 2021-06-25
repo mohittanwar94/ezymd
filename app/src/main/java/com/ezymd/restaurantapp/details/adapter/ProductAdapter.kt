@@ -48,7 +48,7 @@ class ProductAdapter(
         holder.itemView.add.text = context.getString(R.string.add)
         holder.itemView.add.setTextColor(ContextCompat.getColor(context, R.color.color_002366))
 
-        if (!TextUtils.isEmpty(data[position].image)) {
+        if (!TextUtils.isEmpty(data[position].image?.firstOrNull())) {
             GlideApp.with(context.applicationContext)
                 .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
                 .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
