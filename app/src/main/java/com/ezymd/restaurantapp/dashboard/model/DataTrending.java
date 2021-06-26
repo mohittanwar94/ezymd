@@ -85,7 +85,7 @@ public class DataTrending implements Serializable {
 
 
     public Double getRating() {
-        return rating.isNaN() ? 0.0 : rating;
+        return (rating==null||rating.isNaN()) ? 0.0 : rating;
     }
 
     public void setRating(Double rating) {
