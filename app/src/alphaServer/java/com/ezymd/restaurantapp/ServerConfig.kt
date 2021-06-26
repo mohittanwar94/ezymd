@@ -12,7 +12,7 @@ interface ServerConfig {
             "pk_test_51HhzYpJDOhLt3uxIvDleCx6AuZhRyxcbqjlcDDpT0T5eJpcsn75VDkvIwFBPGrZbcqMgOpYcW8orGH8e38SmimGC00isW5kwyM"
         const val IS_TESTING = true
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
-        const val BASE_URL = "http://34.121.92.176/ezymd/public/api/"
+        const val BASE_URL = "http://app.ezymd.com/api/"
 
         const val OTP_HASH = "FCWFd3gBNu0"
 
