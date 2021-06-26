@@ -127,6 +127,8 @@ class OrderDetailsActivity : BaseActivity() {
     private fun requestInvoiceServer(it: String) {
         val baseRequest = BaseRequest(userInfo)
         baseRequest.paramsMap["email"] = it
+        baseRequest.paramsMap["user_id"] = "" + userInfo?.userID
+        baseRequest.paramsMap["order_id"] = "" + item.orderId
         viewModel.emailInvoice(baseRequest)
         viewModel.baseResponse.observe(this, Observer {
             showError(it.status == ErrorCodes.SUCCESS, it.message, null)

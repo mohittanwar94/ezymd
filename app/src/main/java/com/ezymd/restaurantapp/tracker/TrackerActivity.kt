@@ -293,11 +293,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.Start
 
     private fun callConnect() {
         val intent = Intent(Intent.ACTION_DIAL)
-        // Send phone number to intent as data
-        // Send phone number to intent as data
         intent.data = Uri.parse("tel:" + item.delivery.phoneNo)
-        // Start the dialer app activity with number
-        // Start the dialer app activity with number
         startActivity(intent)
 
         /*   //item.delivery.phoneNo

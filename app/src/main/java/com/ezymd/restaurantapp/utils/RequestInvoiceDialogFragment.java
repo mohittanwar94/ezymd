@@ -130,7 +130,7 @@ public class RequestInvoiceDialogFragment extends DialogFragment implements View
         if (onEmailUpdate != null) {
             onEmailUpdate.onClick(email);
         }
-
+        dismissAllowingStateLoss();
     }
 
 

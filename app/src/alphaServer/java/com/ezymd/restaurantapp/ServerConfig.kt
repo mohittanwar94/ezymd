@@ -52,11 +52,11 @@ interface ServerConfig {
         const val NEAR_BY_SHOPS = "nearByShops"
         const val NEAR_BY_BANNERS = "nearByShopBanner"
         const val UPDATE_PROFILE = "updateProfile"
-        const val FAQ_URL="http://34.121.92.176/ezymd/public/faq"
+        const val FAQ_URL="http://app.ezymd.com/faq"
         const val REFERRAL_DETAILS = "referralCode"
         const val SAVE_REFERRAL="useReferralCode"
         const val WALLET_BALANCE="walletTransactions"
-        const val EMAIL_INVOICE=""
+        const val EMAIL_INVOICE="sendInvoice"
         const val CONFIG="config"
 
 
