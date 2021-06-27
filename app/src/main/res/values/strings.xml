@@ -296,7 +296,7 @@
     <string name="invoice">Invoice</string>
     <string name="validemail">Enter valid email address</string>
     <string name="email_err">Email can  not be empty</string>
-    <string name="upgrade_app">We have upgraded our app to new version. click on download to new version &amp; lots of excited thing are waiting for you.\n thank you.</string>
+    <string name="upgrade_app">We have upgraded our app to new version. click on upgrade to get new version &amp; lots of excited thing are waiting for you.\n thank you.</string>
     <string name="upgrade">Upgrade</string>
     <string name="trending_items">Trending Items</string>
 

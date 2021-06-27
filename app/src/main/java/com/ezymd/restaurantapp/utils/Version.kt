@@ -6,16 +6,16 @@ import android.content.pm.PackageManager
 
 
 object Version {
-     fun getCurrentVersion(context: Context): String {
+     fun getCurrentVersion(context: Context): Int {
         val pm: PackageManager = context.packageManager
         val pInfo: PackageInfo?
         try {
             pInfo = pm.getPackageInfo(context.packageName, 0)
         } catch (e1: PackageManager.NameNotFoundException) {
             e1.printStackTrace()
-            return ""
+            return -1
         }
-        return pInfo!!.versionName
+        return pInfo!!.versionCode
     }
 
 }

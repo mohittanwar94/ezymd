@@ -63,12 +63,7 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
         }
 
         homeViewModel.isForceUpgrade.observe(this, Observer {
-            if (it && Version.getCurrentVersion(this)
-                    .isNotEmpty() && Version.getCurrentVersion(this)
-                    .isNotBlank() && Version.getCurrentVersion(
-                    this
-                ).toInt() < homeViewModel.appUpgradeVersion.value!!
-            ) {
+            if (it && Version.getCurrentVersion(this) < homeViewModel.appUpgradeVersion.value!!) {
                 navView.visibility = View.GONE
                 upgradeLay.visibility = View.VISIBLE
             }

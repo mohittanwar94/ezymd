@@ -38,8 +38,9 @@ class MainActivityViewModel : ViewModel() {
 
     suspend fun contentVisiblity(configData: String) {
         var configModel = Gson().fromJson(configData, ConfigData::class.java)
+        appUpgradeVersion.postValue(configModel.data.versionCode)
         isForceUpgrade.postValue(configModel.data.forceUpgrade == 1)
-        appUpgradeVersion.postValue(configModel.data.versionCode.toInt())
+
     }
 
 
