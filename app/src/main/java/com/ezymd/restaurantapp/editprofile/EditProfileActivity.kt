@@ -18,8 +18,8 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.login.otp.OTPScreen
 import com.ezymd.restaurantapp.utils.*
 import com.ezymd.restaurantapp.utils.JSONKeys.OTP_REQUEST
+import com.ybs.countrypicker.CountryPicker
 import kotlinx.android.synthetic.main.activity_edit_profile.*
-import kotlinx.android.synthetic.main.count_parent_item.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -302,10 +302,24 @@ class EditProfileActivity : BaseActivity() {
 
     }
 
+    private fun selectCountry(text: String) {
+        val picker = CountryPicker.newInstance("Choose Your Country") // dialog title
+
+        picker.setListener { name, code, dialCode, flagDrawableResID ->
+            userInfo?.countryCode = dialCode
+            picker.dismissAllowingStateLoss()
+            generateOtp(text)
+        }
+        picker.show(supportFragmentManager, "COUNTRY_PICKER")
+    }
 
     private fun generateOtp(text: String) {
+        if (userInfo?.countryCode.equals("")) {
+            selectCountry(text)
+            return
+        }
         SuspendKeyPad.suspendKeyPad(this)
-        viewModel.generateOtp(text,userInfo?.countryCode.toString())
+        viewModel.generateOtp(text, userInfo?.countryCode.toString())
         viewModel.otpResponse.removeObservers(this)
 
         viewModel.otpResponse.observe(this, Observer {
@@ -315,10 +329,9 @@ class EditProfileActivity : BaseActivity() {
                 if (it.data != null) {
                     val otp = it.data.otp
                     startActivityForResult(
-                        Intent(
-                            this,
-                            OTPScreen::class.java
-                        ).putExtra(JSONKeys.MOBILE_NO, text).putExtra(JSONKeys.OTP, otp)
+                        Intent(this, OTPScreen::class.java)
+                            .putExtra(JSONKeys.MOBILE_NO, text).putExtra(JSONKeys.OTP, otp)
+                            .putExtra(JSONKeys.COUNTRY_CODE, userInfo?.countryCode)
                             .putExtra(JSONKeys.IS_MOBILE, true),
                         OTP_REQUEST
                     )

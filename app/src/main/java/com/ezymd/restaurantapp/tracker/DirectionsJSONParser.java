@@ -29,23 +29,23 @@ public class DirectionsJSONParser {
 
             jRoutes = jObject.getJSONArray("routes");
 
-            /** Traversing all routes */
+            /* Traversing all routes */
             for (int i = 0; i < jRoutes.length(); i++) {
                 jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
-                List path = new ArrayList<HashMap<String, String>>();
+                ArrayList<HashMap<String, String>> path = new ArrayList<HashMap<String, String>>();
 
-                /** Traversing all legs */
+                /* Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
                     String duration = ((JSONObject) jLegs.get(j)).getJSONObject("duration").getString("value");
 
-                    /** Traversing all steps */
+                    /* Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
                         String polyline = "";
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List list = decodePoly(polyline);
 
-                        /** Traversing all points */
+                        /* Traversing all points */
                         for (int l = 0; l < list.size(); l++) {
                             HashMap<String, String> hm = new HashMap<String, String>();
                             hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));

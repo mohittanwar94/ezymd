@@ -44,7 +44,7 @@ public class UserInfo {
     }
 
     public String getCountryCode() {
-        return preferences.getString("setCountryCode", "+1");
+        return preferences.getString("setCountryCode", "");
     }
 
     public void setCountryCode(String countryCode) {
