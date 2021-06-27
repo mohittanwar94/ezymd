@@ -131,7 +131,7 @@ open class HomeFragment : Fragment() {
         if (StoreType.Grocery == typeCategory) {
             trending.text = getString(R.string.trending_grocery)
         } else if (StoreType.Pharmacy == typeCategory) {
-            nearBy.text = getString(R.string.near_by_pharmacy)
+            trending.text = getString(R.string.trending_pharmacy)
         } else {
             trending.text = getString(R.string.trending_restaurnts)
         }
@@ -228,11 +228,10 @@ open class HomeFragment : Fragment() {
         } else {*/
             address.trim()
         userInfo.address = address.trim()
-        if (dataBanner.size == 0 || locationChange) {
+        if (locationChange) {
             locationChange = false
             homeViewModel.getBanners(BaseRequest(userInfo))
             val baseRequest = BaseRequest(userInfo)
-            baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
             homeViewModel.getResturants(baseRequest)
             homeViewModel.getTrending(baseRequest)
         }
@@ -308,7 +307,6 @@ open class HomeFragment : Fragment() {
             dataResturant.clear()
             restaurantAdapter?.clearData()
             val baseRequest = BaseRequest(userInfo)
-            baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
             homeViewModel.getResturants(baseRequest)
             //clearAllFilter()
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_OK) {
@@ -318,7 +316,6 @@ open class HomeFragment : Fragment() {
             restaurantAdapter?.notifyDataSetChanged()
             val baseRequest = BaseRequest(userInfo)
             baseRequest.paramsMap.putAll(data?.getSerializableExtra(JSONKeys.FILTER_MAP) as HashMap<String, String>)
-            baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
             homeViewModel.getResturants(baseRequest)
 
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_CANCELED) {
@@ -444,9 +441,8 @@ open class HomeFragment : Fragment() {
         }
         emptyLay.visibility = View.GONE
         if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
-            homeViewModel.getBanners(BaseRequest(userInfo))
             val baseRequest = BaseRequest(userInfo)
-            baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
+            homeViewModel.getBanners(baseRequest)
             homeViewModel.getResturants(baseRequest)
             homeViewModel.getTrending(baseRequest)
         }
@@ -527,7 +523,6 @@ open class HomeFragment : Fragment() {
                 if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
                     homeViewModel.getBanners(BaseRequest(userInfo))
                     val baseRequest = BaseRequest(userInfo)
-                    baseRequest.paramsMap.put("category_id", "" + StoreType.RESTAURANT)
                     homeViewModel.getResturants(baseRequest)
                     homeViewModel.getTrending(baseRequest)
                 }
@@ -542,6 +537,7 @@ open class HomeFragment : Fragment() {
         })
         homeViewModel.address.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             locationModel = it
+            locationChange=true
             userInfo.lang = it.lang.toString()
             userInfo.lat = it.lat.toString()
             setLocationAddress(it.location, it.city)
@@ -558,6 +554,8 @@ open class HomeFragment : Fragment() {
                 bannerPager.adapter?.notifyDataSetChanged()
 
             } else {
+                dataBanner.clear()
+                bannerPager.adapter?.notifyDataSetChanged()
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })
@@ -575,6 +573,9 @@ open class HomeFragment : Fragment() {
                 }
 
             } else {
+                treandingAdapter?.notifyDataSetChanged()
+                trending.visibility = View.GONE
+                dataTrending.clear()
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })
@@ -600,6 +601,8 @@ open class HomeFragment : Fragment() {
                 }
 
             } else {
+                dataResturant.clear()
+                restaurantAdapter?.setData(it.data)
                 (activity as BaseActivity).showError(false, it.message, null)
             }
 

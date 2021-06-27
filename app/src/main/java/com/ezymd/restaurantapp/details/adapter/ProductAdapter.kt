@@ -47,10 +47,11 @@ class ProductAdapter(
             ContextCompat.getDrawable(context, R.drawable.add_button_bg)
         holder.itemView.add.text = context.getString(R.string.add)
         holder.itemView.add.setTextColor(ContextCompat.getColor(context, R.color.color_002366))
-
-        if (!TextUtils.isEmpty(data[position].image?.firstOrNull())) {
+        val productImage = data[position].image?.firstOrNull()
+        SnapLog.print("product image===" + data[position].image?.firstOrNull())
+        if (!TextUtils.isEmpty(productImage)) {
             GlideApp.with(context.applicationContext)
-                .load(data[position].image).centerCrop().override(200, 200).dontAnimate()
+                .load(productImage).centerCrop().override(200, 200).dontAnimate()
                 .dontTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.itemView.ivNotesThumb)
         } else {

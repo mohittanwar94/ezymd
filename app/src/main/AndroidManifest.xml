@@ -226,13 +226,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-
-        <service android:name=".push.SinchService" />
-        <activity
-            android:name=".push.CallScreenActivity"
-            android:screenOrientation="portrait" />
-
-
         <service
             android:name=".notification.MyFirebaseMessagingService"
             android:exported="false"

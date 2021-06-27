@@ -42,12 +42,8 @@ public class EzymdAppGlide extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(20, TimeUnit.SECONDS)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .build();
 
-        OkHttpUrlLoader.Factory factory = new OkHttpUrlLoader.Factory(client);
+        OkHttpUrlLoader.Factory factory = new OkHttpUrlLoader.Factory(UnsafeOkHttpClient.getUnsafeOkHttpClient());
         glide.getRegistry().replace(GlideUrl.class, InputStream.class, factory);
     }
 
