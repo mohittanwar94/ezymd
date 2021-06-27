@@ -7,6 +7,8 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import com.ezymd.restaurantapp.utils.SnapLog;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,7 +65,7 @@ public class AppSignatureHelper extends ContextWrapper {
             String base64Hash = Base64.encodeToString(hashSignature, Base64.NO_PADDING | Base64.NO_WRAP);
             base64Hash = base64Hash.substring(0, NUM_BASE64_CHAR);
 
-            Log.d(TAG, String.format("pkg: %s -- hash: %s", packageName, base64Hash));
+            SnapLog.print(String.format("pkg: %s -- hash: %s", packageName, base64Hash));
             return base64Hash;
         } catch (NoSuchAlgorithmException e) {
             Log.e(TAG, "hash:NoSuchAlgorithm", e);

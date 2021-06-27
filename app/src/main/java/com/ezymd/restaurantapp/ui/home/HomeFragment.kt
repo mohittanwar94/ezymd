@@ -38,13 +38,20 @@ import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.bannerPager
+import kotlinx.android.synthetic.main.fragment_home.dots_indicator
 import kotlinx.android.synthetic.main.fragment_home.emptyLay
 import kotlinx.android.synthetic.main.fragment_home.emptymsg
 import kotlinx.android.synthetic.main.fragment_home.enableLocation
+import kotlinx.android.synthetic.main.fragment_home.filter
 import kotlinx.android.synthetic.main.fragment_home.image
 import kotlinx.android.synthetic.main.fragment_home.progress
+import kotlinx.android.synthetic.main.fragment_home.resturantCount
 import kotlinx.android.synthetic.main.fragment_home.resturantRecyclerView
+import kotlinx.android.synthetic.main.fragment_home.trending
+import kotlinx.android.synthetic.main.fragment_home.trendingRecyclerView
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +107,7 @@ open class HomeFragment : Fragment() {
             setListenerView()
             setAdapterRestaurant()
 
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch(Dispatchers.IO) {
                 homeViewModel.contentVisiblity(userInfo.configJson)
             }
             homeViewModel.getFilters(BaseRequest(userInfo))
@@ -118,6 +125,16 @@ open class HomeFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun setHeader(typeCategory: Int) {
+        if (StoreType.Grocery == typeCategory) {
+            trending.text = getString(R.string.trending_grocery)
+        } else if (StoreType.Pharmacy == typeCategory) {
+            nearBy.text = getString(R.string.near_by_pharmacy)
+        } else {
+            trending.text = getString(R.string.trending_restaurnts)
+        }
     }
 
     private fun setLocationEmpty() {
@@ -447,9 +464,7 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
-
         homeViewModel.isGroceryVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-
             if (it) {
                 iv_grocery.visible()
                 iv_grocery_text.visible()
@@ -480,6 +495,9 @@ open class HomeFragment : Fragment() {
             }
         })
 
+        homeViewModel.primaryCategory.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            setHeader(it)
+        })
         homeViewModel.isRestuantVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             if (it) {
@@ -549,7 +567,9 @@ open class HomeFragment : Fragment() {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
                 if (it.data.size > 0)
-                    trending.text = getString(R.string.trending_items)
+                    trending.visibility = View.VISIBLE
+                else
+                    trending.visibility = View.GONE
                 treandingAdapter!!.getData().let { it1 ->
                     dataTrending.addAll(it1)
                 }

@@ -14,7 +14,7 @@ interface ServerConfig {
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
         const val BASE_URL = "http://app.ezymd.com/api/"
 
-        const val OTP_HASH = "FCWFd3gBNu0"
+        const val OTP_HASH = "ZVQaoRH4SsY"
 
 
         const val GENERATE_OTP = "sendOtp"

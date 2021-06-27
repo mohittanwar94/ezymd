@@ -7,6 +7,7 @@ import com.ezymd.restaurantapp.utils.SnapLog
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.Status
+import java.util.regex.Pattern
 
 class OtpBroadcastReceiver : BroadcastReceiver() {
 
@@ -27,7 +28,8 @@ class OtpBroadcastReceiver : BroadcastReceiver() {
                     var otp: String = extras.get(SmsRetriever.EXTRA_SMS_MESSAGE) as String
                     SnapLog.print("OTP_Message" + otp)
                     if (this.otpReceiver != null) {
-                        otp = otp.replace("<#>Your verification code is ", "").substring(0, 6)
+                        otp = parseCode(otp)
+                        SnapLog.print("OTP_Message" + otp)
                         SnapLog.print(otp)
                         this.otpReceiver!!.onOTPReceived(otp)
                     }
@@ -42,6 +44,15 @@ class OtpBroadcastReceiver : BroadcastReceiver() {
         }
     }
 
+    fun parseCode( message:String):String {
+        val p = Pattern.compile("\\b\\d{4}\\b");
+        val m = p.matcher(message);
+        var code = "";
+        while (m.find()) {
+            code = m.group(0);
+        }
+        return code;
+    }
 
     interface OTPReceiveListener {
 
