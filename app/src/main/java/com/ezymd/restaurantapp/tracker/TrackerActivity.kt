@@ -83,7 +83,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.Start
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-
+        chatLay.visibility=View.GONE
         chatLay.setOnClickListener {
             UIUtil.clickAlpha(it)
             startChatSupport(this, userInfo!!)
