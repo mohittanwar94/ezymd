@@ -685,12 +685,13 @@ class ConfirmOrder : BaseActivity() {
                 }
             }
         })
-        EzymdApplication.getInstance().cartData.observe(this, Observer {
+        /*EzymdApplication.getInstance().cartData.observe(this, Observer {
+
+        })*/
+        /*viewModel.baseResponse.observe(this, Observer {
 
         })
-        viewModel.baseResponse.observe(this, Observer {
-
-        })
+        */
         viewModel.dateSelected.observe(this, Observer {
             if (it != null)
                 time.text = getString(R.string.delivery_at) + " " + it
