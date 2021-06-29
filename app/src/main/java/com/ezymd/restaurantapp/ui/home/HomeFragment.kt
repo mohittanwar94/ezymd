@@ -65,6 +65,7 @@ open class HomeFragment : Fragment() {
     private var locationChange = false
     private var treandingAdapter: DashBoardTrendingAdapter? = null
     private var restaurantAdapter: DashBoardNearByAdapter? = null
+    private var registrationTutorialPagerAdapter: DashBoardPagerAdapter? = null
     private var isNullViewRoot = false
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var airLocation: AirLocation
@@ -141,6 +142,7 @@ open class HomeFragment : Fragment() {
         emptyLay.visibility = View.VISIBLE
         emptymsg.text = getString(R.string.no_location_detected)
         image.setImageResource(R.drawable.ic_no_location)
+        enableLocation.text = getString(R.string.enable_location)
         enableLocation.setOnClickListener {
             UIUtil.clickHandled(it)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -376,7 +378,7 @@ open class HomeFragment : Fragment() {
         bannerPager.pageMargin = 20;
 
         // bannerPager.setPageTransformer(true, AlphaPageTransformation())
-        val registrationTutorialPagerAdapter =
+        registrationTutorialPagerAdapter =
             DashBoardPagerAdapter(
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
@@ -537,7 +539,7 @@ open class HomeFragment : Fragment() {
         })
         homeViewModel.address.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             locationModel = it
-            locationChange=true
+            locationChange = true
             userInfo.lang = it.lang.toString()
             userInfo.lat = it.lat.toString()
             setLocationAddress(it.location, it.city)
@@ -545,35 +547,55 @@ open class HomeFragment : Fragment() {
 
 
         homeViewModel.mPagerData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
                 SnapLog.print("1=====")
                 dataBanner.clear()
-                bannerPager.adapter?.notifyDataSetChanged()
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
                 dataBanner.addAll(it.data)
                 SnapLog.print("size=========" + dataBanner.size)
-                bannerPager.adapter?.notifyDataSetChanged()
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
 
+                if (dataBanner.size > 0) {
+                    homeViewModel.noBanner = false
+                    bannerPager.visibility = View.VISIBLE
+                } else {
+                    homeViewModel.noBanner = true
+                    bannerPager.visibility = View.GONE
+                    checkEmpty()
+                }
             } else {
+                checkEmpty()
                 dataBanner.clear()
-                bannerPager.adapter?.notifyDataSetChanged()
+                homeViewModel.noBanner = true
+                bannerPager.visibility = View.GONE
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })
 
         homeViewModel.mTrendingData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
-                if (it.data.size > 0)
+                if (it.data.size > 0) {
                     trending.visibility = View.VISIBLE
-                else
+                    homeViewModel.noTrending = false
+                } else {
+                    homeViewModel.noTrending = true
                     trending.visibility = View.GONE
+                    checkEmpty()
+                }
                 treandingAdapter!!.getData().let { it1 ->
                     dataTrending.addAll(it1)
                 }
 
             } else {
-                treandingAdapter?.notifyDataSetChanged()
+                checkEmpty()
+                homeViewModel.noTrending = true
+                dataTrending.clear()
+                treandingAdapter!!.setData(dataTrending)
                 trending.visibility = View.GONE
                 dataTrending.clear()
                 (activity as BaseActivity).showError(false, it.message, null)
@@ -581,15 +603,20 @@ open class HomeFragment : Fragment() {
         })
 
         homeViewModel.mResturantData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
                 dataResturant.clear()
                 restaurantAdapter?.setData(it.data)
                 restaurantAdapter?.getData()?.let { it1 ->
                     dataResturant.addAll(it1)
-                    if (it.data.size > 0)
+                    if (it.data.size > 0) {
                         filter.visibility = View.VISIBLE
-                    else
+                        homeViewModel.noStores = false
+                    } else {
+                        homeViewModel.noStores = true
                         filter.visibility = View.GONE
+                        checkEmpty()
+                    }
                     resturantCount.text =
                         TextUtils.concat(
                             "" + dataResturant.size + " " + when (homeViewModel.primaryCategory.value) {
@@ -601,8 +628,10 @@ open class HomeFragment : Fragment() {
                 }
 
             } else {
+                homeViewModel.noStores = true
+                checkEmpty()
                 dataResturant.clear()
-                restaurantAdapter?.setData(it.data)
+                restaurantAdapter?.setData(dataResturant)
                 (activity as BaseActivity).showError(false, it.message, null)
             }
 
@@ -613,6 +642,18 @@ open class HomeFragment : Fragment() {
         })
 
 
+    }
+
+    private fun checkEmpty() {
+        if (homeViewModel.noBanner && homeViewModel.noStores && homeViewModel.noTrending) {
+            emptyLay.visibility = View.VISIBLE
+            emptymsg.text = getString(R.string.no_data_found)
+            image.setImageResource(R.drawable.ic_no_location)
+            enableLocation.text = getString(R.string.change)
+            enableLocation.setOnClickListener {
+                location.performClick()
+            }
+        }
     }
 
 

@@ -70,7 +70,7 @@ class SplashScreen : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // printKeyHash(this)
+        //printKeyHash(this)
 
     }
 

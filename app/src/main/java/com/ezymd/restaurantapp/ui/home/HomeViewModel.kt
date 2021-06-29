@@ -22,6 +22,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
+    var noBanner = false
+    var noTrending = false
+    var noStores = false
     private lateinit var trendingJob: Job
     private lateinit var restaurantJob: Job
     private lateinit var bannerJob: Job

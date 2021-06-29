@@ -12,7 +12,7 @@ class CalculationUtils {
         var total = 0.0
         for (itemModel in arrayList) {
             var tempPrice = getModifierPrice(itemModel.price, itemModel.listModifiers)
-            tempPrice = ((itemModel.price+tempPrice) * itemModel.quantity)
+            tempPrice = ((itemModel.price + tempPrice) * itemModel.quantity)
             quantity += itemModel.quantity
             total += tempPrice
             itemModel.total = tempPrice
@@ -38,23 +38,28 @@ class CalculationUtils {
 
     fun getModifierPrice(price: Double, mod: Modifier): Double {
         var tempPrice = price
-            when (mod.operator) {
-                "+" -> tempPrice += mod.price
-                "-" -> tempPrice -= mod.price
-                "*" -> tempPrice *= mod.price
-            }
+        when (mod.operator) {
+            "+" -> tempPrice += mod.price
+            "-" -> tempPrice -= mod.price
+            "*" -> tempPrice *= mod.price
+        }
         return tempPrice
 
     }
 
-    fun getPriceText(context: Context, quantityCount: Int, price: Double): CharSequence? {
+    fun getPriceText(
+        context: Context,
+        quantityCount: Int,
+        price: Double,
+        disCount: Double
+    ): CharSequence? {
         return TextUtils.concat(
             "" + quantityCount,
             " ",
             context.getString(R.string.items),
             " | ",
             context.getString(R.string.dollor),
-            String.format("%.2f", price)
+            String.format("%.2f", (price-disCount))
         )
     }
 }

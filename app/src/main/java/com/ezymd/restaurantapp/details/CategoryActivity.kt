@@ -233,7 +233,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
-            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price)
+            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price,0.0)
         })
 
     }

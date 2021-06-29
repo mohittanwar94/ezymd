@@ -304,7 +304,7 @@ class CartActivity : BaseActivity() {
         runOnUiThread(Runnable {
 
             SnapLog.print("discountApplied=========="+(discountApplied))
-            totalAmount.text = CalculationUtils().getPriceText(this, quantityCount, price)
+            totalAmount.text = CalculationUtils().getPriceText(this, quantityCount, price,discountApplied)
 
             if (price < restaurant.minOrder.toInt()) {
                 discount.text =

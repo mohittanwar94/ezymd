@@ -82,8 +82,8 @@ public class EzymdApplication extends Application implements Application.Activit
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mInstance = this;
         FacebookSdk.setAutoLogAppEventsEnabled(false);
-        AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
-        appSignatureHelper.getAppSignatures();
+        //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
+       // appSignatureHelper.getAppSignatures();
         if (getResources() == null) {
             Process.killProcess(Process.myPid());
         }

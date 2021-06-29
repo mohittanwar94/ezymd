@@ -14,7 +14,7 @@ interface ServerConfig {
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
         const val BASE_URL = "http://app.ezymd.com/api/"
 
-        const val OTP_HASH = "ZVQaoRH4SsY"
+        const val OTP_HASH = "wGcYmfGND6w"
 
 
         const val GENERATE_OTP = "sendOtp"
@@ -42,8 +42,8 @@ interface ServerConfig {
         const val TRANSACTION_CHARGES = "transactionAmount"
         const val UPDATED_COORDINATES = "orderTracking/{name}"
 
-        val ZENDESK_CHAT_KEY = "X40lrThEJB7Lgs6XSUGf9kVbzDjbWNQa";
-        val APPID = "220869949208236033"
+        val ZENDESK_CHAT_KEY = "";
+        val APPID = ""
 
         const val ACCEPT_ORDER = "updateOrderStatus"
         const val COD_ORDER = "codOrder"
