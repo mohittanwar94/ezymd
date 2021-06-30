@@ -246,15 +246,15 @@
                     android:id="@+id/trendingRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
+                    android:background="@color/color_f8f8f8"
                     android:clipToPadding="false"
-                    android:paddingLeft="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_15sdp"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
-                    android:paddingEnd="@dimen/_15sdp" />
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

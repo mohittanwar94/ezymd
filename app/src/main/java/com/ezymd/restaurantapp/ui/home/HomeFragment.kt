@@ -688,6 +688,13 @@ open class HomeFragment : Fragment() {
 
     private fun setAdapterTrending() {
         trendingRecyclerView.layoutManager = LinearLayoutManager(activity, HORIZONTAL, false)
+        trendingRecyclerView.addItemDecoration(
+            HorizontialSpacesItemDecoration(
+                (resources.getDimensionPixelSize(
+                    R.dimen._10sdp
+                ))
+            )
+        )
         treandingAdapter =
             DashBoardTrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val intent = Intent(requireActivity(), CategoryActivity::class.java)
