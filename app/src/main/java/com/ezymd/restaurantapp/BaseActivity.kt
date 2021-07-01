@@ -313,10 +313,10 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             .show()
     }
 
-    fun checkCameraPermissions(listener: PermissionListener): Boolean {
+    open fun checkCameraPermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
             permissionListener = listener
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.ACCESS_MEDIA_LOCATION
@@ -324,7 +324,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             ) {
                 val notGranted = ArrayList<String>()
                 val permissions = arrayOf(
-                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 for (permission in permissions) {
@@ -333,13 +333,17 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                     )
                 }
                 if (!notGranted.isEmpty()) {
-                    requestPermissions(notGranted.toTypedArray(), PERMISSIONS_REQUEST_CAMERA)
+                    requestPermissions(
+                        notGranted.toTypedArray(),
+                        PERMISSIONS_REQUEST_CAMERA
+                    )
                     return false
                 }
             }
         }
         return true
     }
+
 
     fun checkCameraAudioPermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
