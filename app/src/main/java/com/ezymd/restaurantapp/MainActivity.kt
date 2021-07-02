@@ -1,13 +1,17 @@
 package com.ezymd.restaurantapp
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +29,39 @@ import kotlinx.coroutines.launch
 class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var homeViewModel: MainActivityViewModel
 
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        checkLocationPermission()
+    }
+
+
+    private fun checkLocationPermission() {
+        val permission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        );
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            startActivityForResult(Intent(this, PermissionActivity::class.java), 1000)
+        } else {
+            setGUI()
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                checkLocationPermission()
+            } else {
+                setGUI()
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun setGUI() {
         homeViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         lifecycleScope.launch(Dispatchers.IO) {
             homeViewModel.contentVisiblity(userInfo!!.configJson)

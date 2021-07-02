@@ -86,7 +86,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.Start
         chatLay.visibility=View.GONE
         chatLay.setOnClickListener {
             UIUtil.clickAlpha(it)
-            startChatSupport(this, userInfo!!)
+            showError(false,"This feature is coming soon",null)
+           // startChatSupport(this, userInfo!!)
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         order_info.text =

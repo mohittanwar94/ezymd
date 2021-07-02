@@ -300,5 +300,6 @@
     <string name="upgrade">Upgrade</string>
     <string name="trending_items">Trending Items</string>
     <string name="no_data_found">No data found.\n Please try changing from above</string>
+    <string name="allow_permission">Allow</string>
 
 </resources>
