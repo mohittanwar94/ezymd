@@ -9,6 +9,7 @@ import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.ErrorResponse
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -57,22 +58,31 @@ class EditProfileViewModel : ViewModel() {
 
     }
 
-
-    fun generateOtp(otp: String, countryCode: String) {
-        isLoading.postValue(true)
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.generateOtp(
-                otp,countryCode,
-                Dispatchers.IO
-            )
-            isLoading.postValue(false)
-            when (result) {
-                is ResultWrapper.NetworkError -> showNetworkError()
-                is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> otpResponse.postValue(result.value)
+    fun generateOtp(otp: String, counCode: String, countryCode: String) {
+        val phoneUtil = PhoneNumberUtil.getInstance()
+        try {
+            val swissNumberProto = phoneUtil.parse(otp, counCode)
+            val isValid = phoneUtil.isValidNumber(swissNumberProto) // returns true
+            if (!isValid)
+                errorRequest.postValue("Phone No. not valid")
+            else {
+                isLoading.postValue(true)
+                viewModelScope.launch(Dispatchers.IO) {
+                    val result = loginRepository!!.generateOtp(
+                        otp, countryCode,
+                        Dispatchers.IO
+                    )
+                    isLoading.postValue(false)
+                    when (result) {
+                        is ResultWrapper.NetworkError -> showNetworkError()
+                        is ResultWrapper.GenericError -> showGenericError(result.error)
+                        is ResultWrapper.Success -> otpResponse.postValue(result.value)
+                    }
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
 
     }
 

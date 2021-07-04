@@ -142,8 +142,8 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
 
         val spannMsg = SpannableString(getString(R.string.enter_four_digit_code))
         val mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
-        var mask = mobileNo.replace("\\w(?=\\w{4})".toRegex(), "x")
-        mask = mask.chunked(3).joinToString(separator = "-")
+        var mask = mobileNo?.replace("\\w(?=\\w{4})".toRegex(), "x")
+        mask = mask?.chunked(3)?.joinToString(separator = "-")
         val spannMobile = SpannableString(mask)
         spannMobile.setSpan(
             ForegroundColorSpan(

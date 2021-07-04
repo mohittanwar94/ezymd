@@ -303,7 +303,7 @@ open class HomeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             locationChange = true
-            locationModel = data!!.getParcelableExtra(JSONKeys.LOCATION_OBJECT) as LocationModel
+            locationModel = data!!.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)!!
             homeViewModel.address.postValue(locationModel)
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_FIRST_USER) {
             dataResturant.clear()

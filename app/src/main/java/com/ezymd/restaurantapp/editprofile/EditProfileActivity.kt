@@ -26,6 +26,7 @@ import java.io.OutputStream
 
 
 class EditProfileActivity : BaseActivity() {
+    private var counCode="US"
     private var picUri: Uri? = null
     var myBitmap: Bitmap? = null
 
@@ -307,6 +308,7 @@ class EditProfileActivity : BaseActivity() {
 
         picker.setListener { name, code, dialCode, flagDrawableResID ->
             userInfo?.countryCode = dialCode
+            counCode = code
             picker.dismissAllowingStateLoss()
             generateOtp(text)
         }
@@ -319,7 +321,7 @@ class EditProfileActivity : BaseActivity() {
             return
         }
         SuspendKeyPad.suspendKeyPad(this)
-        viewModel.generateOtp(text, userInfo?.countryCode.toString())
+        viewModel.generateOtp(text, counCode = counCode, userInfo?.countryCode.toString())
         viewModel.otpResponse.removeObservers(this)
 
         viewModel.otpResponse.observe(this, Observer {

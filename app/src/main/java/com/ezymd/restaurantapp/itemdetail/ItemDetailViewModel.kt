@@ -127,9 +127,9 @@ class ItemDetailViewModel : ViewModel() {
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> {
                     SnapLog.print("mTrendingData" + result.value)
-                    product.postValue(result.value.data?.product)
-                    images.postValue(result.value.data?.images)
-                    options.postValue(result.value.data?.options)
+                    product.postValue(result.value.data?.product!!)
+                    images.postValue(result.value.data?.images!!)
+                    options.postValue(result.value.data?.options!!)
                 }
             }
 
@@ -142,7 +142,7 @@ class ItemDetailViewModel : ViewModel() {
             val item = arrayList.filter {
                 it.uuid.equals(it)
             }
-            arrayList.remove(item)
+            arrayList.remove(item as ItemModel)
             EzymdApplication.getInstance().cartData.postValue(arrayList)
         }
     }
