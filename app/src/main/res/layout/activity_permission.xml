@@ -30,7 +30,7 @@
         android:gravity="center"
         android:letterSpacing="0.01"
         android:lineSpacingExtra="5sp"
-        android:text="Ezymd collects location data to enable live tracking on google map, provide you better experience like list restaurant base on your location even when the app is closed or not in use."
+        android:text="Ezymd collects location data to enable live tracking on google map, provide you better experience like list restaurant base on your current location."
         android:textColor="@color/color_002366"
         android:textSize="@dimen/_15sdp"
         android:textStyle="normal"
