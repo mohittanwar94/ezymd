@@ -26,6 +26,7 @@ class LoginViewModel : ViewModel() {
     val loginResponse: MutableLiveData<LoginModel>
     val otpResponse: MutableLiveData<OtpModel>
     val isLoading: MutableLiveData<Boolean>
+    val isShowDialog: MutableLiveData<Boolean>
 
     override fun onCleared() {
         super.onCleared()
@@ -47,9 +48,10 @@ class LoginViewModel : ViewModel() {
         isLoading = MutableLiveData()
         otpResponse = MutableLiveData()
         loginResponse = MutableLiveData()
+        isShowDialog = MutableLiveData()
     }
 
-    fun generateOtp(otp: String, counCode: String,dialCode:String) {
+    fun generateOtp(otp: String, counCode: String, dialCode: String) {
         val phoneUtil = PhoneNumberUtil.getInstance()
         try {
             val swissNumberProto = phoneUtil.parse(otp, counCode)
@@ -57,26 +59,29 @@ class LoginViewModel : ViewModel() {
             if (!isValid)
                 errorRequest.postValue("Phone No. not valid")
             else {
-                isLoading.postValue(true)
-                viewModelScope.launch(Dispatchers.IO) {
-                    val result = loginRepository!!.generateOtp(
-                        otp,dialCode,
-                        Dispatchers.IO
-                    )
-                    isLoading.postValue(false)
-                    when (result) {
-                        is ResultWrapper.NetworkError -> showNetworkError()
-                        is ResultWrapper.GenericError -> showGenericError(result.error)
-                        is ResultWrapper.Success -> otpResponse.postValue(result.value)
-                    }
-                }
-
+                isShowDialog.postValue(true)
             }
         } catch (e: NumberParseException) {
             System.err.println("NumberParseException was thrown: $e")
         }
 
 
+    }
+
+    fun generateOtpServer(otp: String, dialCode: String) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.generateOtp(
+                otp, dialCode,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> otpResponse.postValue(result.value)
+            }
+        }
     }
 
     fun loginFb(acessToken: AccessToken) {

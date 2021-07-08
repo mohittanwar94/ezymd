@@ -1,6 +1,8 @@
 package com.ezymd.restaurantapp.login
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.ybs.countrypicker.CountryPicker
 import kotlinx.android.synthetic.main.login.*
+import kotlinx.android.synthetic.main.login.progress
+import kotlinx.android.synthetic.main.user_live_tracking.*
 import java.util.*
 
 
@@ -98,7 +102,7 @@ class Login : BaseActivity() {
         SnapLog.print("response - $response")
         val referrerUrl: String = response.installReferrer
         Log.d("referrerUrl - ", referrerUrl)
-        val arr=referrerUrl.split("=")
+        val arr = referrerUrl.split("=")
         userInfo?.saveReferalUrl(arr[1])
     }
 
@@ -106,6 +110,31 @@ class Login : BaseActivity() {
     private fun signIn() {
         val signInIntent: Intent = mGoogleApiClient.getSignInIntent()
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme)
+        builder.setMessage("A 4-digit OTP code will be sent via SMS to your mobile device. Message and Data rates may apply")
+            .setCancelable(false)
+            .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, id: Int) {
+                    dialog?.dismiss()
+                    loginViewModel.generateOtpServer(
+                        phoneNo.text.toString(),
+                        countryCode.text.toString()
+                    )
+                }
+            })
+            .setNegativeButton("No", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, id: Int) {
+                    dialog.dismiss()
+
+                }
+            })
+        val alert: AlertDialog = builder.create()
+        alert.setTitle("OTP")
+        alert.show()
+
     }
 
     private fun setEventListener() {
@@ -124,10 +153,17 @@ class Login : BaseActivity() {
         next.setOnClickListener {
             SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-            loginViewModel.generateOtp(phoneNo.text.toString(), counCode,countryCode.text.toString())
+            loginViewModel.generateOtp(
+                phoneNo.text.toString(),
+                counCode,
+                countryCode.text.toString()
+            )
         }
-        loginViewModel.isLoading.observe(this, Observer {
-
+        loginViewModel.isShowDialog.observe(this, Observer {
+            if (it) {
+                showConfirmationDialog()
+                loginViewModel.isShowDialog.postValue(false)
+            }
         })
 
         loginViewModel.otpResponse.observe(this, Observer {
@@ -138,7 +174,8 @@ class Login : BaseActivity() {
                     Intent(
                         this,
                         OTPScreen::class.java
-                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim()).putExtra(JSONKeys.COUNTRY_CODE, countryCode.text.toString().trim()),
+                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim())
+                        .putExtra(JSONKeys.COUNTRY_CODE, countryCode.text.toString().trim()),
                     JSONKeys.OTP_REQUEST
                 )
             }
@@ -182,7 +219,7 @@ class Login : BaseActivity() {
 
     private fun setLoginUser(it: LoginModel) {
         userInfo?.accessToken = it.data.access_token
-        userInfo?.countryCode=countryCode.text.toString()
+        userInfo?.countryCode = countryCode.text.toString()
         userInfo?.userName = it.data.user.name
         userInfo?.email = it.data.user.email
         userInfo?.userID = it.data.user.id
