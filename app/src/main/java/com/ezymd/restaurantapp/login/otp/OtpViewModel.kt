@@ -54,7 +54,7 @@ class OtpViewModel : ViewModel() {
     }
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest

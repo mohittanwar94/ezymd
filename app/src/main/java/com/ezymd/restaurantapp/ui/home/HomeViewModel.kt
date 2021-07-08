@@ -166,7 +166,7 @@ class HomeViewModel : ViewModel() {
 
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
 

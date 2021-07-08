@@ -44,7 +44,7 @@ class CouponViewModel : ViewModel() {
 
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest
@@ -83,7 +83,7 @@ class CouponViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> applyCoupon.postValue(result.value)
+                is ResultWrapper.Success -> applyCoupon.postValue(result.value!!)
             }
         }
 

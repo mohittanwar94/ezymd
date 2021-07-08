@@ -48,7 +48,7 @@ class ItemDetailViewModel : ViewModel() {
     }
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
 

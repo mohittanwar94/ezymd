@@ -43,7 +43,7 @@ class OrderSuccessViewModel : ViewModel() {
 
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest
@@ -78,7 +78,7 @@ class OrderSuccessViewModel : ViewModel() {
             when (result) {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
-                is ResultWrapper.Success -> response.postValue(result.value)
+                is ResultWrapper.Success -> response.postValue(result.value!!)
             }
         }
 

@@ -10,7 +10,7 @@ interface ServerConfig {
         const val PAYMENT_ACCOUNT_ID = "acct_1J7MbhIryxPxNGEu"
         const val PAYMENT_PUBLISHABLE_KEY =
             "pk_live_51J7MbhIryxPxNGEuH1C8xjySJO5RijLVPpXDVWzPO1mKSwRuztkN5m6FppQxid43jMlsvfWNgmjDIUFMfZO2E1ou0031hrwtP0"
-        const val IS_TESTING = true
+        const val IS_TESTING = false
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
         const val BASE_URL = "http://app.ezymd.com/api/"
 
