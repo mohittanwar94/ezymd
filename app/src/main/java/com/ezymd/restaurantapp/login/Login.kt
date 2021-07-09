@@ -4,17 +4,25 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.otp.OTPScreen
 import com.ezymd.restaurantapp.utils.*
@@ -29,6 +37,8 @@ import com.ybs.countrypicker.CountryPicker
 import kotlinx.android.synthetic.main.login.*
 import kotlinx.android.synthetic.main.login.progress
 import kotlinx.android.synthetic.main.user_live_tracking.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -113,8 +123,11 @@ class Login : BaseActivity() {
     }
 
     private fun showConfirmationDialog() {
-        val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme)
-        builder.setMessage("A 4-digit OTP code will be sent via SMS to your mobile device. Message and Data rates may apply")
+        var msg =
+            "A 4-digit OTP code will be sent via SMS to your mobile device. Message and Data rates may apply"
+        msg = loginViewModel.contentVisiblity(userInfo!!.configJson)
+        val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme_black)
+        builder.setMessage(msg)
             .setCancelable(false)
             .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, id: Int) {
@@ -132,15 +145,33 @@ class Login : BaseActivity() {
                 }
             })
         val alert: AlertDialog = builder.create()
-        alert.setTitle("OTP")
+        alert.setTitle("OTP-CODE")
         alert.show()
 
     }
 
     private fun setEventListener() {
+        val content = SpannableString(getString(R.string.help))
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        help.setText(content)
+
+        val privacy_policy = SpannableString(getString(R.string.privacy_policy))
+        privacy_policy.setSpan(UnderlineSpan(), 0, privacy_policy.length, 0)
+        privacy.setText(privacy_policy)
+
         countryCode.setOnClickListener {
             UIUtil.clickAlpha(it)
             selectCountry()
+
+        }
+        help.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            openWebView("https://www.ezymd.com/support")
+
+        }
+        privacy.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            openWebView("https://www.ezymd.com/tickets")
 
         }
         facebook.setOnClickListener {
@@ -204,6 +235,36 @@ class Login : BaseActivity() {
         loginViewModel.isLoading.observe(this, Observer {
             progress.visibility = if (it) View.VISIBLE else View.GONE
         })
+    }
+
+    private fun openWebView(url: String) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setShowTitle(true)
+        builder.setCloseButtonIcon(
+            BitmapFactory.decodeResource(resources, R.drawable.ic_back)
+        )
+        builder.setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+        builder.setStartAnimations(this, R.anim.left_in, R.anim.left_out)
+        builder.setExitAnimations(this, R.anim.right_in, R.anim.right_out)
+
+        val customTabsIntent = builder.build()
+
+        val list = ArrayList<String>()
+        list.add(url)
+        val packageName = CustomTabsClient.getPackageName(this, list)
+        if (packageName == null) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(url)
+                )
+            )
+
+        } else {
+            customTabsIntent.intent.setPackage(packageName)
+            customTabsIntent.launchUrl(this, Uri.parse(url))
+        }
+
     }
 
     private fun selectCountry() {

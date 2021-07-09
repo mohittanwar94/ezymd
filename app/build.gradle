@@ -75,7 +75,7 @@ android {
         }
         liveServer {
             minSdkVersion 21
-            applicationId 'com.ezymd.restaurantapp'
+            applicationId 'com.ezymd.pharmacy.delivery.app'
             signingConfig signingConfigs.releaseConfig
             targetSdkVersion 30
             buildConfigField "String", "WALLET_ENVIRONMENT", "\"" + keys.PROD_WALLET_ENVIRONMENT + "\""

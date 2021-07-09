@@ -5,6 +5,51 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bg">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_gravity="bottom|center">
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/_8sdp"
+            android:text="@string/help"
+            android:textColor="@color/color_1e222a"
+            android:textSize="@dimen/_15sdp"
+            app:drawableEndCompat="@drawable/ic_arrow"
+            app:textFont="roman" />
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/and"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/_8sdp"
+            android:text="@string/and"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_13sdp"
+            app:drawableEndCompat="@drawable/ic_arrow"
+            app:textFont="roman" />
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/_8sdp"
+            android:text="@string/privacy_policy"
+            android:textColor="@color/color_1e222a"
+            android:textSize="@dimen/_15sdp"
+            app:drawableEndCompat="@drawable/ic_arrow"
+            app:textFont="roman" />
+
+
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,19 +76,18 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            >
+            android:paddingRight="@dimen/_10sdp">
 
             <com.ezymd.restaurantapp.customviews.SnapTextView
                 android:id="@+id/countryCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/countryCode"
-                android:gravity="start|center"
                 android:drawablePadding="@dimen/_8sdp"
-                app:drawableEndCompat="@drawable/ic_arrow"
+                android:gravity="start|center"
+                android:text="@string/countryCode"
                 android:textColor="@color/color_1e222a"
                 android:textSize="@dimen/_17sdp"
+                app:drawableEndCompat="@drawable/ic_arrow"
                 app:textFont="roman" />
 
 
@@ -66,9 +110,9 @@
                 android:inputType="phone"
                 android:letterSpacing="0.02"
                 android:text=""
-                android:textCursorDrawable="@color/blue_002366"
                 android:textColor="@color/blue_002366"
                 android:textColorHint="@color/color_787a7f"
+                android:textCursorDrawable="@color/blue_002366"
                 android:textSize="@dimen/_17sdp"
                 app:textFontEdit="medium" />
 
@@ -97,10 +141,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/phoneLay"
             android:layout_alignParentEnd="true"
-            android:theme="@style/progressBarThemeWhite"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:elevation="@dimen/_10sdp"
+            android:theme="@style/progressBarThemeWhite"
             android:visibility="gone" />
 
         <LinearLayout

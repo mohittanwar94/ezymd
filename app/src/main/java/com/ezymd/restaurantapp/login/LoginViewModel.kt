@@ -8,10 +8,12 @@ import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.splash.ConfigData
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +124,11 @@ class LoginViewModel : ViewModel() {
             }
         }
 
+    }
+
+    fun contentVisiblity(configData: String): String {
+        var configModel = Gson().fromJson(configData, ConfigData::class.java)
+        return configModel.data?.otp_consent_message
     }
 
 }

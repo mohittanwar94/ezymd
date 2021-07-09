@@ -13,6 +13,8 @@ data class DataConfigModel(
     @SerializedName("primary") var primary: Int,
     @SerializedName("status") var status: Int,
     @SerializedName("created_at") var createdAt: String,
-    @SerializedName("updated_at") var updatedAt: String
+    @SerializedName("updated_at") var updatedAt: String,
+    @SerializedName("otp_consent_message") var otp_consent_message: String
+
 
 )

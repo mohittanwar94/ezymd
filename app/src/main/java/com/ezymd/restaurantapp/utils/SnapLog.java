@@ -8,6 +8,6 @@ import com.ezymd.restaurantapp.ServerConfig;
 
 public class SnapLog {
     public static void print(String message) {
-            Log.e("com.ezymd", "" + message);
+           // Log.e("com.ezymd", "" + message);
     }
 }

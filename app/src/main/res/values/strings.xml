@@ -301,5 +301,8 @@
     <string name="trending_items">Trending Items</string>
     <string name="no_data_found">No data found.\n Please try changing from above</string>
     <string name="allow_permission">Allow</string>
+    <string name="and"><![CDATA[&]]></string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="help">Help</string>
 
 </resources>

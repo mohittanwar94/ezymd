@@ -359,7 +359,6 @@
         <item name="colorControlHighlight">@color/color_002366</item>
         <item name="colorPrimary">@color/color_ffe600</item>
         <item name="colorPrimaryDark">@color/color_ffe600</item>
-            
     </style>
 
     <style name="alert_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
@@ -372,5 +371,15 @@
 
     </style>
 
-     
+
+    <style name="alert_dialog_theme_black" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorControlActivated">@color/black</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:selectableItemBackgroundBorderless">@android:color/transparent</item>
+        <item name="colorControlHighlight">@color/color_002366</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+
+    </style>
+
 </resources>
