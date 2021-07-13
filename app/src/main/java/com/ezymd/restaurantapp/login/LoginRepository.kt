@@ -121,7 +121,9 @@ class LoginRepository private constructor() {
                 loginModel.first_name = account.displayName
                 loginModel.email = account.email
                 loginModel.id = account.id
-                loginModel.image_url = account.photoUrl.toString()
+                account.photoUrl?.let {
+                    loginModel.image_url = account.photoUrl?.toString()
+                }
                 loginModel.socialLogin = 2
             } else {
                 loginModel.errorMessage = "Account Info Not Found"
