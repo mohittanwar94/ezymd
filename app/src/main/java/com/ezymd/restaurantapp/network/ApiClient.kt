@@ -1,5 +1,9 @@
 package com.ezymd.restaurantapp.network
 
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
+import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.ServerConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -43,10 +47,23 @@ class ApiClient private constructor() {
                 .retryOnConnectionFailure(true)
                 .followRedirects(true)
                 .followSslRedirects(true)
+
             if (ServerConfig.IS_TESTING) {
-                val interceptor = HttpLoggingInterceptor()
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-                httpClient.addInterceptor(interceptor)
+                val collector = ChuckerCollector(
+                    context = EzymdApplication.getInstance().applicationContext,
+                    showNotification = true,
+                    retentionPeriod = RetentionManager.Period.ONE_HOUR
+                )
+
+                @Suppress("MagicNumber")
+                val chuckerInterceptor = ChuckerInterceptor.Builder(EzymdApplication.getInstance().applicationContext)
+                    .collector(collector)
+                    .maxContentLength(250_000L)
+                    .redactHeaders(emptySet())
+                    .alwaysReadResponseBody(false)
+                    .build()
+
+                httpClient.addInterceptor(chuckerInterceptor)
             }
             httpClient.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val original = chain.request()
