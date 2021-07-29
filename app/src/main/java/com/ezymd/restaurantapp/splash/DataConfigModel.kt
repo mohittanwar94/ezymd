@@ -14,7 +14,14 @@ data class DataConfigModel(
     @SerializedName("status") var status: Int,
     @SerializedName("created_at") var createdAt: String,
     @SerializedName("updated_at") var updatedAt: String,
-    @SerializedName("otp_consent_message") var otp_consent_message: String
+    @SerializedName("otp_consent_message") var otp_consent_message: String,
+    @SerializedName("current_zone") var currentZone: CurrentZone
 
 
+)
+
+
+data class CurrentZone(
+    @SerializedName("country_code") var country_code: String,
+    @SerializedName("currency_symbol") var currency_symbol: String,
 )

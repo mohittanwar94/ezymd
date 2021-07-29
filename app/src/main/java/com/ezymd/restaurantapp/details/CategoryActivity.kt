@@ -401,7 +401,7 @@ class CategoryActivity : BaseActivity() {
         distance.text = TextUtils.concat("" + UIUtil.round(restaurant.distance, 1), " km")
         rating.text = if (restaurant.rating > 0) "" + restaurant.rating else "N/A"
         minimumOrder.text =
-            if (restaurant.min_order.equals("0")) "N/A" else "min " + getString(R.string.dollor) + restaurant.min_order
+            if (restaurant.min_order.equals("0")) "N/A" else "min " + userInfo?.currency + restaurant.min_order
 
         counts.setOnClickListener {
             isDisplayCount = !isDisplayCount

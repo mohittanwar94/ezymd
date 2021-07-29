@@ -91,9 +91,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.Start
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         order_info.text =
-            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
-                R.string.dollor
-            ) + item.total
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " +userInfo?.currency + item.total
 
         setOrderStatus()
         leftIcon.setOnClickListener {

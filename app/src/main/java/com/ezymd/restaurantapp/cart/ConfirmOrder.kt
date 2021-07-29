@@ -140,14 +140,14 @@ class ConfirmOrder : BaseActivity() {
 
                 isAllFromWallet = true
                 payButton.text =
-                    getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+                    getString(R.string.pay) + " " + userInfo?.currency + String.format(
                         "%.2f", walletAmount
                     )
                 checkPayButtomEnableDisable()
                 return
             } else {
                 payButton.text =
-                    getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+                    getString(R.string.pay) + " " + userInfo?.currency + String.format(
                         "%.2f", total
                     )
             }
@@ -433,7 +433,7 @@ class ConfirmOrder : BaseActivity() {
         regular.callOnClick()
 
         payButton.text =
-            getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+            getString(R.string.pay) + " " + userInfo?.currency + String.format(
                 "%.2f", (intent.getDoubleExtra(
                     JSONKeys.TOTAL_CASH,
                     0.0

@@ -73,8 +73,8 @@ class FilterActivity : BaseActivity() {
                 data.max_price = rightValue.toString()
 
                 textView.text =
-                    "Price: " + getString(R.string.dollor) + leftValue.toInt().toString() +
-                            " - " + getString(R.string.dollor) + rightValue.toInt().toString()
+                    "Price: " + userInfo?.currency + leftValue.toInt().toString() +
+                            " - " + userInfo?.currency + rightValue.toInt().toString()
 
             }
 

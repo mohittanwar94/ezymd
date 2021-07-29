@@ -185,4 +185,12 @@ public class UserInfo {
         preferences.edit().putString("configJson", configJson).apply();
     }
 
+    public void setCurrency(String configJson) {
+        preferences.edit().putString("setCurrency", configJson).apply();
+    }
+    public String getCurrency(){
+        return preferences.getString("setCurrency", "$");
+    }
+
+
 }

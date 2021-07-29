@@ -104,7 +104,7 @@ class PaymentOptionActivity : BaseActivity() {
                 if (isLoaded) {
                     if (tAmount > viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
                         instructions.text =
-                            getString(R.string.dollor) + "" + viewModel.baseResponse.value!!.data?.total + " will be debit from your wallet & remaining will be done through online payment mode"
+                            userInfo?.currency + "" + viewModel.baseResponse.value!!.data?.total + " will be debit from your wallet & remaining will be done through online payment mode"
                         wAmount = viewModel.baseResponse.value!!.data?.total!!.toDouble()
                         tAmount -= wAmount
                     } else if (tAmount == viewModel.baseResponse.value!!.data?.total!!.toDouble() || tAmount < viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
@@ -202,7 +202,7 @@ class PaymentOptionActivity : BaseActivity() {
         viewModel.baseResponse.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 isLoaded = true
-                walletbalance.text = getString(R.string.dollor) + "" + it.data?.total
+                walletbalance.text = userInfo?.currency + "" + it.data?.total
             }
 
         })

@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
     private fun setGUI() {
         homeViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         lifecycleScope.launch(Dispatchers.IO) {
-            homeViewModel.contentVisiblity(userInfo!!.configJson)
+            homeViewModel.contentVisiblity(userInfo!!)
         }
 
         val navController = findNavController(R.id.nav_host_fragment)

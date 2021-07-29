@@ -128,7 +128,7 @@ class CartActivity : BaseActivity() {
         if (price < restaurant.minOrder.toInt()) {
             val msg = TextUtils.concat(
                 "Add ",
-                "$" + (restaurant.minOrder.toInt() - price),
+                userInfo?.currency + (restaurant.minOrder.toInt() - price),
                 " to reach minimum order amount"
             ).toString()
             showError(false, msg, null)
@@ -203,7 +203,7 @@ class CartActivity : BaseActivity() {
                     discountApplied = it.discountValue.toDouble()
                     discountApplied= String.format("%.2f",discountApplied).toDouble()
                 }
-                promoCharge.text = "$" + discountApplied
+                promoCharge.text = userInfo?.currency + discountApplied
                 notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
                /* val baseRequest = BaseRequest(userInfo)
                 baseRequest.paramsMap.put("amount", "" +( getTotalPrice(EzymdApplication.getInstance().cartData.value!!)-discountApplied))
@@ -309,8 +309,8 @@ class CartActivity : BaseActivity() {
             if (price < restaurant.minOrder.toInt()) {
                 discount.text =
                     TextUtils.concat(
-                        "Add $ ",
-                        "" + (restaurant.minOrder.toInt() - price),
+                        "Add  ",
+                        userInfo?.currency + (restaurant.minOrder.toInt() - price),
                         " to reach minimum order"
                     )
             } else

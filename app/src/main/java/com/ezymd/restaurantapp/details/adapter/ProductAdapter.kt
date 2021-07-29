@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.details.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -14,10 +15,7 @@ import com.ezymd.restaurantapp.customviews.ValueChangedListener
 import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.details.CategoryViewModel
 import com.ezymd.restaurantapp.details.model.Product
-import com.ezymd.restaurantapp.utils.GlideApp
-import com.ezymd.restaurantapp.utils.OnRecyclerView
-import com.ezymd.restaurantapp.utils.SnapLog
-import com.ezymd.restaurantapp.utils.UIUtil
+import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.menu_item_row.view.*
 
@@ -40,6 +38,7 @@ class ProductAdapter(
         return data
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = data[position]
 
@@ -68,7 +67,7 @@ class ProductAdapter(
             if (context is CategoryActivity)
                 context.showBottomSheet(it, data[holder.adapterPosition])
         }
-        holder.itemView.price.text = context.getString(R.string.dollor) + item.price
+        holder.itemView.price.text = UserInfo.getInstance(context).currency + item.price
         holder.itemView.quantityPicker.max = item.stock
         holder.itemView.quantityPicker.min = 0
 

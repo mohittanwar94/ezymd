@@ -58,7 +58,7 @@ class CalculationUtils {
             " ",
             context.getString(R.string.items),
             " | ",
-            context.getString(R.string.dollor),
+            UserInfo.getInstance(context).currency,
             String.format("%.2f", (price-disCount))
         )
     }

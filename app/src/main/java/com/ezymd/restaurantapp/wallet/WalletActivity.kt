@@ -68,7 +68,7 @@ class WalletActivity : BaseActivity() {
     private fun setObserver() {
         viewModel.mResturantData.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
-                balance.text = getString(R.string.dollor) + "" + it.data?.total
+                balance.text = userInfo?.currency + "" + it.data?.total
                 transactionList.addAll(it.data!!.history)
                 restaurantAdapter?.setData(transactionList)
             } else {

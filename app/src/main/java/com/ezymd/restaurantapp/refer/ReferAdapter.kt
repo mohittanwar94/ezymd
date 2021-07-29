@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.utils.TimeUtils
+import com.ezymd.restaurantapp.utils.UserInfo
 import kotlinx.android.synthetic.main.refer_transaction_row.view.*
 
 class ReferAdapter(
@@ -48,7 +49,7 @@ class ReferAdapter(
         holder.itemView.tv_name.text = item.description
         if (item.transaction_type == 2) {
             //credit
-            holder.itemView.price.text = "+ " +holder.itemView.context.getString(R.string.dollor)+ item.amount
+            holder.itemView.price.text = "+ " +UserInfo.getInstance(holder.itemView.context).currency+ item.amount
             holder.itemView.price.setTextColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
@@ -57,7 +58,7 @@ class ReferAdapter(
             )
         } else {
             //debit
-            holder.itemView.price.text = "- "  +holder.itemView.context.getString(R.string.dollor)+ item.amount
+            holder.itemView.price.text = "- "  +UserInfo.getInstance(holder.itemView.context).currency+ item.amount
             holder.itemView.price.setTextColor(
                 ContextCompat.getColor(
                     holder.itemView.context,

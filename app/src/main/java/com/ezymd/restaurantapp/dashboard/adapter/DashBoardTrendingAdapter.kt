@@ -14,6 +14,7 @@ import com.ezymd.restaurantapp.dashboard.model.DataTrending
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
+import com.ezymd.restaurantapp.utils.UserInfo
 import kotlinx.android.synthetic.main.dash_trending_item_row.view.*
 
 class DashBoardTrendingAdapter(
@@ -99,7 +100,8 @@ class DashBoardTrendingAdapter(
         if (!item.min_order.equals("0")) {
             discount.append(" | ")
             discount.append(mContext.getString(R.string.minimum))
-            discount.append(" $")
+            discount.append(" ")
+            discount.append(UserInfo.getInstance(rating.context).currency)
             discount.append(item.min_order)
         }
 

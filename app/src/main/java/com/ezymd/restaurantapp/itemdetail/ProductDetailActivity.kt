@@ -103,7 +103,7 @@ class ProductDetailActivity : BaseActivity() {
                         add.setTextColor(ContextCompat.getColor(this, R.color.red))
                     }
                 }
-                tv_price?.text = "${getString(R.string.dollor)}${
+                tv_price?.text = "${userInfo?.currency}${
                     product.price + CalculationUtils().getModifierPrice(
                         product.price,
                         list
@@ -311,7 +311,7 @@ class ProductDetailActivity : BaseActivity() {
         } else {
             tv_desc?.text = Html.fromHtml(product.description)
         }
-        tv_price?.text = "${getString(R.string.dollor)}${product.price}"
+        tv_price?.text = "${userInfo?.currency}${product.price}"
         if (!TextUtils.isEmpty(product.image?.firstOrNull())) {
             GlideApp.with(applicationContext)
                 .load(product.image).centerCrop().override(200, 200).dontAnimate()

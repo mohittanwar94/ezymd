@@ -12,6 +12,7 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.itemdetail.ItemDetailViewModel
 import com.ezymd.restaurantapp.itemdetail.model.Options
 import com.ezymd.restaurantapp.utils.CalculationUtils
+import com.ezymd.restaurantapp.utils.UserInfo
 import kotlinx.android.synthetic.main.modifier_item_row.view.*
 
 class SubOptionAdapter(
@@ -57,7 +58,7 @@ class SubOptionAdapter(
                 ContextCompat.getColorStateList(mContext, R.color.color_f8f8f8)
 
         holder.itemView.tv_price.text =
-            holder.itemView.context.getString(R.string.dollor) + "" + CalculationUtils().getModifierPrice(
+           UserInfo.getInstance(holder.itemView.context).currency + "" + CalculationUtils().getModifierPrice(
                 price,
                 item
             )

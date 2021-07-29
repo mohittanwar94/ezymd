@@ -61,21 +61,19 @@ class OrderDetailsActivity : BaseActivity() {
 
         paymentMode.text = getPaymentMode(item.paymentType)
         subTotal.text =
-            getString(R.string.dollor) + String.format("%.2f", getTotalPrice(item.orderItems))
+            userInfo?.currency + String.format("%.2f", getTotalPrice(item.orderItems))
         if (!item.discount.equals("0")) {
             discountLay.visibility = View.VISIBLE
             discount.text =
-                getString(R.string.dollor) + String.format("%.2f", item.discount.toDouble())
+                userInfo?.currency + String.format("%.2f", item.discount.toDouble())
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         restaurantname.text = item.restaurant?.name
         username.text = userInfo?.userName
         address.text = item.restaurant?.address
         order_info.text =
-            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
-                R.string.dollor
-            ) + item.total
-        totalAmount.text = getString(R.string.dollor) + item.total
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + userInfo?.currency + item.total
+        totalAmount.text = userInfo?.currency+ item.total
         deliveryInstruction.text = item.deliveryInstruction
         userAddress.text = item.address
         if (item.scheduleType == 2) {
@@ -90,7 +88,7 @@ class OrderDetailsActivity : BaseActivity() {
         }
         if (!item.deliveryCharges.equals("0"))
             shippingCharge.text =
-                getString(R.string.dollor) + String.format("%.2f", item.deliveryCharges.toDouble())
+                userInfo?.currency + String.format("%.2f", item.deliveryCharges.toDouble())
         review.setOnClickListener {
             UIUtil.clickAlpha(it)
             startActivityForResult(

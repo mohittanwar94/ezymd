@@ -66,7 +66,7 @@ class ReferActivity : BaseActivity() {
         viewModel.mResturantData.observe(this, Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 code.text = it.data?.code
-                balance.text =getString(R.string.dollor)+""+ it.data?.total
+                balance.text =userInfo?.currency+""+ it.data?.total
                 invitedes.text=it.message
                 transactionList.addAll(it.data!!.history)
                 restaurantAdapter?.setData(transactionList)
