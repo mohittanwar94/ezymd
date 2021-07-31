@@ -327,7 +327,7 @@ class ConfirmOrder : BaseActivity() {
                 "transactionInfo", JSONObject()
                     .put("totalPrice", totalPrice.toLong().centsToString())
                     .put("totalPriceStatus", "FINAL")
-                    .put("currencyCode", "USD")
+                    .put("currencyCode", userInfo?.currencyCode)
             )
             .put(
                 "merchantInfo", JSONObject()
@@ -908,7 +908,7 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("restaurant_address", restaurant.address)
         jsonObject.addProperty("delivery_lat", viewModel.locationSelected.value?.lat)
         jsonObject.addProperty("delivery_lang", viewModel.locationSelected.value?.lang)
-
+        jsonObject.addProperty("currency", userInfo?.currencyCode)
         if (intent.hasExtra(JSONKeys.PROMO)) {
             jsonObject.addProperty("coupon_id", intent.getIntExtra(JSONKeys.PROMO, 0))
             jsonObject.addProperty(

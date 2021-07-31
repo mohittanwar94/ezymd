@@ -27,11 +27,11 @@ class MainActivityViewModel : ViewModel() {
 
 
     suspend fun contentVisiblity(userInfo: UserInfo) {
-        var configModel = Gson().fromJson(userInfo.configJson, ConfigData::class.java)
+        val configModel = Gson().fromJson(userInfo.configJson, ConfigData::class.java)
         appUpgradeVersion.postValue(configModel.data.versionCode)
         isForceUpgrade.postValue(configModel.data.forceUpgrade == 1)
         userInfo.currency = configModel?.data?.currentZone?.currency_symbol
-
+        userInfo.currencyCode = configModel?.data?.currentZone?.currency_code
     }
 
 

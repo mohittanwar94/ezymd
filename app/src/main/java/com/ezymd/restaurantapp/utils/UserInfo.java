@@ -193,4 +193,12 @@ public class UserInfo {
     }
 
 
+    public void setCurrencyCode(String configJson) {
+        preferences.edit().putString("setCurrencyCode", configJson).apply();
+    }
+    public String getCurrencyCode(){
+        return preferences.getString("setCurrencyCode", "USD");
+    }
+
+
 }

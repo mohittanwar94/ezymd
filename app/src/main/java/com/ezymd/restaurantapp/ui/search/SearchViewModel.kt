@@ -17,7 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class SearchViewModel() : ViewModel() {
+class SearchViewModel : ViewModel() {
     private lateinit var  searchJob: Job
      val primaryCategory = MutableLiveData<Int>(StoreType.RESTAURANT)
     val isGPSEnable: MutableLiveData<Boolean>
@@ -70,6 +70,7 @@ class SearchViewModel() : ViewModel() {
 
     fun searchRestaurants(baseRequest: BaseRequest) {
         isLoading.postValue(true)
+        baseRequest.paramsMap.put("category_id", "" + primaryCategory.value)
         viewModelScope.launch(Dispatchers.IO) {
             val result = loginRepository!!.getRestaurantSearch(
                 baseRequest,

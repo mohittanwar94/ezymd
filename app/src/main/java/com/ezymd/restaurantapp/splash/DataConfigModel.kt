@@ -24,4 +24,5 @@ data class DataConfigModel(
 data class CurrentZone(
     @SerializedName("country_code") var country_code: String,
     @SerializedName("currency_symbol") var currency_symbol: String,
+    @SerializedName("currency_code") val currency_code: String,
 )
