@@ -200,7 +200,7 @@
     <string name="success_msg">your order has been placed successfully.</string>
     <string name="track_order">Track order</string>
     <string name="wait_assigning_order">Wait! assigning your order</string>
-    <string name="waiting_for_confrirmation">Waiting for confirmation from restaurant.\nPlease Wait...</string>
+    <string name="waiting_for_confrirmation">Waiting for confirmation from store.\nPlease Wait...</string>
     <string name="order_amount">Order Amount</string>
     <string name="orderID">Order id:</string>
     <string name="resurant_name">Resurant Name</string>
@@ -218,12 +218,12 @@
     <string name="live_status">Live Status</string>
     <string name="have_an_issue_chat_with_us">Have an issue chat with us?</string>
     <string name="your_order_processing">Your order is processing</string>
-    <string name="your_order_is_cooking">Your order is cooking </string>
-    <string name="delivery_boy_reached_at_your_location">has reached at you at restaurant</string>
+    <string name="your_order_is_cooking">Your order is being prepared </string>
+    <string name="delivery_boy_reached_at_your_location">has reached at store</string>
     <string name="order_accepted_by_delivery_boy">Order Accepted by</string>
-    <string name="order_pick_up">Order pick up from restaurant</string>
-    <string name="go_and_pick_your_order">Go and pick your order from restaurant</string>
-    <string name="rate_your_restaurant">Tell us how was the food</string>
+    <string name="order_pick_up">Order pick up from store</string>
+    <string name="go_and_pick_your_order">Go and pick your order from store</string>
+    <string name="rate_your_restaurant">Tell us how was the experience</string>
     <string name="rate_your_delivery_rating">Rate delivery experience</string>
     <string name="submit">Submit</string>
     <string name="very_bad">Very Bad</string>
