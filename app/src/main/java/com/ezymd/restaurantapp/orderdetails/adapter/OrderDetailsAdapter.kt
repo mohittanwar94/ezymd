@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
 import com.ezymd.restaurantapp.utils.OnRecyclerView
-import com.ezymd.restaurantapp.utils.UserInfo
 import kotlinx.android.synthetic.main.cart_item_row.view.dishName
 import kotlinx.android.synthetic.main.cart_item_row.view.price
 import kotlinx.android.synthetic.main.order_details_item_row.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class OrderDetailsAdapter(
     context: Context,
+    val currency: String,
     onRecyclerViewClick: OnRecyclerView,
     dataResturant: ArrayList<OrderItems>
 ) :
@@ -57,7 +59,7 @@ class OrderDetailsAdapter(
 
         val item = data[position]
         holder.itemView.dishName.text = item.item
-        holder.itemView.price.text = UserInfo.getInstance(mContext).currency + (item.price * item.qty)
+        holder.itemView.price.text = currency + (item.price * item.qty)
 
         holder.itemView.qty.text = "" + item.qty + "x" + item.price
 

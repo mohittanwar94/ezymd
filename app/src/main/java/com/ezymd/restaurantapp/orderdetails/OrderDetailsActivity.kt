@@ -262,7 +262,7 @@ class OrderDetailsActivity : BaseActivity() {
                 ))
             )
         )
-        restaurantAdapter = OrderDetailsAdapter(this, OnRecyclerView { position, view ->
+        restaurantAdapter = OrderDetailsAdapter(this,item.currency, OnRecyclerView { position, view ->
 
         }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
