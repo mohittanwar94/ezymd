@@ -60,7 +60,7 @@ class SearchActivity : BaseActivity() {
     private fun setSearchListerner() {
         search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (search.text.toString().trim().length > 4) {
+                if (search.text.toString().trim().length > 3) {
                     val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap["category_id"] = "" + typeCategory
                     baseRequest.paramsMap["search"] = search.text.toString()

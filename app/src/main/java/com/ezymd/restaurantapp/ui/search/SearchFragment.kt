@@ -124,7 +124,7 @@ class SearchFragment : Fragment() {
                     )
                     return
                 }
-                if (search.text.toString().trim().length > 4) {
+                if (search.text.toString().trim().length > 3) {
                     val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap.put("search", search.text.toString())
                     searchViewModel.searchRestaurants(baseRequest)
