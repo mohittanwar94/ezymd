@@ -2,10 +2,8 @@ package com.ezymd.restaurantapp
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -16,23 +14,24 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ezymd.restaurantapp.customviews.SnapTextView
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.details.model.ItemModel
+import com.ezymd.restaurantapp.details.model.Product
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.font.Sizes
-import com.ezymd.restaurantapp.push.SinchService
-import com.ezymd.restaurantapp.push.SinchService.SinchServiceInterface
+import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import java.util.*
 
 
-open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener,
-    ServiceConnection {
+open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener
+/*  ServiceConnection*/ {
 
-    var mSinchServiceInterface: SinchServiceInterface? = null
+    //var mSinchServiceInterface: SinchServiceInterface? = null
     private var size: Sizes? = null
     val PERMISSIONS_REQUEST_CAMERA = 3333
     val PERMISSIONS_REQUEST_CAMERA_AUDIO = 3331
@@ -54,48 +53,48 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
     private var handler: Handler? = null
 
 
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder?) {
-        if ((SinchService::class.java.name == componentName.className)) {
-            mSinchServiceInterface = iBinder as SinchServiceInterface?
-            onServiceConnected()
-        }
-    }
+    /*  override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder?) {
+          if ((SinchService::class.java.name == componentName.className)) {
+              mSinchServiceInterface = iBinder as SinchServiceInterface?
+              onServiceConnected()
+          }
+      }
 
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        if ((SinchService::class.java.name == componentName.className)) {
-            mSinchServiceInterface = null
-            onServiceDisconnected()
-        }
-    }
+      override fun onServiceDisconnected(componentName: ComponentName) {
+          if ((SinchService::class.java.name == componentName.className)) {
+              mSinchServiceInterface = null
+              onServiceDisconnected()
+          }
+      }
 
-
+  */
     open fun onServiceConnected() {}
     open fun onServiceDisconnected() {}
-    fun getSinchServiceInterface(): SinchServiceInterface? {
+    /*fun getSinchServiceInterface(): SinchServiceInterface? {
         return mSinchServiceInterface
-    }
+    }*/
 
-    private val messenger = Messenger(object : Handler() {
+    private val messenger = Messenger(object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
-                    val bundle = msg.data
-                    val requiredPermission = bundle.getString(SinchService.REQUIRED_PERMISSION)
-                    ActivityCompat.requestPermissions(
-                        this@BaseActivity,
-                        arrayOf(requiredPermission),
-                        0
-                    )
-                }
+                /*            SinchService.MESSAGE_PERMISSIONS_NEEDED -> {
+                                val bundle = msg.data
+                                val requiredPermission = bundle.getString(SinchService.REQUIRED_PERMISSION)
+                                ActivityCompat.requestPermissions(
+                                    this@BaseActivity,
+                                    arrayOf(requiredPermission),
+                                    0
+                                )
+                            }*/
             }
         }
     })
 
 
     private fun bindService() {
-        val serviceIntent = Intent(this, SinchService::class.java)
+        /*val serviceIntent = Intent(this, SinchService::class.java)
         serviceIntent.putExtra(SinchService.MESSENGER, messenger)
-        getApplicationContext().bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)
+        getApplicationContext().bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)*/
     }
 
 
@@ -135,6 +134,42 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         baseContext.resources.updateConfiguration(configuration, metrics)
     }
 
+    fun getRestaurantObject(dataTrending: DataTrending) = Resturant().apply {
+        address = dataTrending.address
+        lat = dataTrending.lat.toDouble()
+        longitude = dataTrending.lang.toDouble()
+        id = dataTrending.id
+        name = dataTrending.name
+        banner = dataTrending.banner
+        category = dataTrending.cuisines
+        cuisines = dataTrending.cuisines
+        rating = dataTrending.rating
+        minOrder = dataTrending.min_order
+        discount = dataTrending.discount.toInt()
+        isFreeDelivery = dataTrending.is_free_delivery.toInt()
+        distance = dataTrending.distance
+        phoneNo = dataTrending.phone_no
+
+    }
+
+
+    fun getItemModelObject(dataTrending: Product) = ItemModel().apply {
+        rating = dataTrending.rating.toDouble()
+        stock = dataTrending.stock
+        id = dataTrending.id
+        category_id = dataTrending.category_id
+        quantity = dataTrending.qnty
+        image = dataTrending.image
+        category = ""
+        sell_price = dataTrending.sell_price
+        price = dataTrending.price
+        is_veg = dataTrending.veg_nonveg
+        is_option = dataTrending.is_option
+        item = dataTrending.item
+        description = dataTrending.description
+
+
+    }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         onNetWorkChange(isConnected)
@@ -278,10 +313,10 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             .show()
     }
 
-    fun checkCameraPermissions(listener: PermissionListener): Boolean {
+    open fun checkCameraPermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
             permissionListener = listener
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.ACCESS_MEDIA_LOCATION
@@ -289,7 +324,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             ) {
                 val notGranted = ArrayList<String>()
                 val permissions = arrayOf(
-                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 for (permission in permissions) {
@@ -298,13 +333,17 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                     )
                 }
                 if (!notGranted.isEmpty()) {
-                    requestPermissions(notGranted.toTypedArray(), PERMISSIONS_REQUEST_CAMERA)
+                    requestPermissions(
+                        notGranted.toTypedArray(),
+                        PERMISSIONS_REQUEST_CAMERA
+                    )
                     return false
                 }
             }
         }
         return true
     }
+
 
     fun checkCameraAudioPermissions(listener: PermissionListener): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -337,7 +376,8 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             permissionListener = listener
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(
                     Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED) {
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 val notGranted = ArrayList<String>()
                 val permissions =
                     arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO)
@@ -439,9 +479,9 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             }
             0 -> if (grantResults.size > 0) {
                 if (isGrant(grantResults))
-                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                //   mSinchServiceInterface?.retryStartAfterPermissionGranted()
                 else {
-                    mSinchServiceInterface?.retryStartAfterPermissionGranted()
+                    //   mSinchServiceInterface?.retryStartAfterPermissionGranted()
                     showPermissionAlert("Camera & Audio access denied.Please enable permissions to access.")
                 }
             } else {
@@ -501,7 +541,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                     layoutInflater.inflate(R.layout.custom_snackbar_view, null)
                 netWorkChange!!.view.setBackgroundColor(Color.TRANSPARENT)
                 val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-                textMsg.text=getString(R.string.no_internet_connection)
+                textMsg.text = getString(R.string.no_internet_connection)
                 val snackbarLayout = netWorkChange!!.view as SnackbarLayout
                 snackbarLayout.setPadding(0, 0, 0, 0)
                 snackbarLayout.addView(customSnackView, 0)
@@ -569,7 +609,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=getString(message)
+            textMsg.text = getString(message)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -589,7 +629,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=getString(message)
+            textMsg.text = getString(message)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -607,7 +647,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=message
+            textMsg.text = message
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)
             snackbarLayout.addView(customSnackView, 0)
@@ -630,7 +670,7 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
             val customSnackView: View =
                 layoutInflater.inflate(R.layout.custom_snackbar_view, null)
             val textMsg: SnapTextView = customSnackView.findViewById(R.id.textView)
-            textMsg.text=message
+            textMsg.text = message
             snackbar!!.view.setBackgroundColor(Color.TRANSPARENT)
             val snackbarLayout = snackbar!!.view as SnackbarLayout
             snackbarLayout.setPadding(0, 0, 0, 0)

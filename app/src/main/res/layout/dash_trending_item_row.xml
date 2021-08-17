@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_240sdp"
+    android:layout_height="wrap_content"
+    android:layout_margin="0.25dp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="@dimen/_1sdp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivNotesThumb"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_140sdp"
+            android:background="@color/color_f8f8f8"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/shopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:gravity="left|center"
+            android:lineSpacingExtra="5sp"
+            android:text="jasojoijsdo"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivNotesThumb"
+            app:textFont="medium" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/shopCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:lineSpacingExtra="@dimen/_5sdp"
+            android:text="jasojdoijasodjoijsdo"
+            android:textColor="@color/color_676c77"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shopName"
+            app:textFont="roman" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/shopRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="jasojdoijasodjoijsdo"
+            android:textColor="@color/color_010a1d"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shopCategory"
+            app:textFont="roman" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+

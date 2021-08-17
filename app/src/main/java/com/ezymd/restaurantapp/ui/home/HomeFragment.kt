@@ -18,26 +18,44 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.ezymd.restaurantapp.*
-import com.ezymd.restaurantapp.customviews.RoundedImageView
-import com.ezymd.restaurantapp.details.DetailsActivity
+import com.ezymd.restaurantapp.dashboard.DashBoardActivity
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardPagerAdapter
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardTrendingAdapter
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.filters.FilterActivity
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
-import com.ezymd.restaurantapp.ui.home.adapter.BannerPagerAdapter
 import com.ezymd.restaurantapp.ui.home.model.Resturant
-import com.ezymd.restaurantapp.ui.home.model.Trending
-import com.ezymd.restaurantapp.ui.home.trending.TrendingAdapter
 import com.ezymd.restaurantapp.utils.*
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.bannerPager
+import kotlinx.android.synthetic.main.fragment_home.dots_indicator
+import kotlinx.android.synthetic.main.fragment_home.emptyLay
+import kotlinx.android.synthetic.main.fragment_home.emptymsg
+import kotlinx.android.synthetic.main.fragment_home.enableLocation
+import kotlinx.android.synthetic.main.fragment_home.filter
+import kotlinx.android.synthetic.main.fragment_home.image
+import kotlinx.android.synthetic.main.fragment_home.progress
+import kotlinx.android.synthetic.main.fragment_home.resturantCount
+import kotlinx.android.synthetic.main.fragment_home.resturantRecyclerView
+import kotlinx.android.synthetic.main.fragment_home.trending
+import kotlinx.android.synthetic.main.fragment_home.trendingRecyclerView
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mumayank.com.airlocationlibrary.AirLocation
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,20 +63,21 @@ import kotlin.collections.ArrayList
 
 open class HomeFragment : Fragment() {
     private var locationChange = false
-    private var treandingAdapter: TrendingAdapter? = null
-    private var restaurantAdapter: RestaurantAdapter? = null
+    private var treandingAdapter: DashBoardTrendingAdapter? = null
+    private var restaurantAdapter: DashBoardNearByAdapter? = null
+    private var registrationTutorialPagerAdapter: DashBoardPagerAdapter? = null
     private var isNullViewRoot = false
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var airLocation: AirLocation
     private var locationModel = LocationModel()
     private var viewRoot: View? = null
 
-    private val dataBanner = ArrayList<Resturant>()
-    private val dataResturant = ArrayList<Resturant>()
-    private val dataTrending = ArrayList<Trending>()
+    private val dataBanner = ArrayList<DataTrending>()
+    private val dataResturant = ArrayList<DataTrending>()
+    private val dataTrending = ArrayList<DataTrending>()
 
     private val userInfo by lazy {
-        (activity as MainActivity).userInfo
+        (activity as MainActivity).userInfo!!
     }
 
     override fun onCreateView(
@@ -88,6 +107,10 @@ open class HomeFragment : Fragment() {
             askPermission()
             setListenerView()
             setAdapterRestaurant()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                homeViewModel.contentVisiblity(userInfo.configJson)
+            }
             homeViewModel.getFilters(BaseRequest(userInfo))
             requireActivity().registerReceiver(
                 mGpsSwitchStateReceiver,
@@ -95,14 +118,31 @@ open class HomeFragment : Fragment() {
             )
 
 
+            if (!userInfo.referalUrl.equals("")) {
+                val baseRequest = BaseRequest(userInfo)
+                baseRequest.paramsMap["referral_code"] = userInfo.referalUrl
+                baseRequest.paramsMap["user_id"] = "" + userInfo.userID
+                homeViewModel.saveReferral(baseRequest)
+            }
         }
 
+    }
+
+    private fun setHeader(typeCategory: Int) {
+        if (StoreType.Grocery == typeCategory) {
+            trending.text = getString(R.string.trending_grocery)
+        } else if (StoreType.Pharmacy == typeCategory) {
+            trending.text = getString(R.string.trending_pharmacy)
+        } else {
+            trending.text = getString(R.string.trending_restaurnts)
+        }
     }
 
     private fun setLocationEmpty() {
         emptyLay.visibility = View.VISIBLE
         emptymsg.text = getString(R.string.no_location_detected)
         image.setImageResource(R.drawable.ic_no_location)
+        enableLocation.text = getString(R.string.enable_location)
         enableLocation.setOnClickListener {
             UIUtil.clickHandled(it)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -189,17 +229,31 @@ open class HomeFragment : Fragment() {
             address.substring(0, 22) + "...".trim()
         } else {*/
             address.trim()
-        userInfo!!.address = address.trim()
-        if (dataBanner.size == 0 || locationChange) {
+        userInfo.address = address.trim()
+        if (locationChange) {
             locationChange = false
             homeViewModel.getBanners(BaseRequest(userInfo))
-            homeViewModel.getResturants(BaseRequest(userInfo))
-            homeViewModel.getTrending(BaseRequest(userInfo))
+            val baseRequest = BaseRequest(userInfo)
+            homeViewModel.getResturants(baseRequest)
+            homeViewModel.getTrending(baseRequest)
         }
         //  }
     }
 
     private fun setListenerView() {
+        iv_food.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.RESTAURANT)
+        }
+
+        iv_grocery.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.Grocery)
+        }
+        iv_pharmacy.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            startActivityDashBoard(StoreType.Pharmacy)
+        }
         locationValue.setOnClickListener {
             location.performClick()
         }
@@ -216,6 +270,13 @@ open class HomeFragment : Fragment() {
             )
 
         }
+    }
+
+    private fun startActivityDashBoard(grocery: Int) {
+        val valueIntent = Intent(requireActivity(), DashBoardActivity::class.java)
+        valueIntent.putExtra(JSONKeys.TYPE, grocery)
+        requireActivity().startActivity(valueIntent)
+        activity?.overridePendingTransition(R.anim.left_in, R.anim.left_out)
     }
 
     private fun setLocationListener() {
@@ -242,12 +303,13 @@ open class HomeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.LOCATION_REQUEST && resultCode == Activity.RESULT_OK) {
             locationChange = true
-            locationModel = data!!.getParcelableExtra(JSONKeys.LOCATION_OBJECT) as LocationModel
+            locationModel = data!!.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)!!
             homeViewModel.address.postValue(locationModel)
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_FIRST_USER) {
             dataResturant.clear()
             restaurantAdapter?.clearData()
-            homeViewModel.getResturants(BaseRequest(userInfo))
+            val baseRequest = BaseRequest(userInfo)
+            homeViewModel.getResturants(baseRequest)
             //clearAllFilter()
         } else if (requestCode == JSONKeys.FILTER && resultCode == Activity.RESULT_OK) {
             //applyAllFilter()
@@ -294,14 +356,14 @@ open class HomeFragment : Fragment() {
             )
         )
         restaurantAdapter =
-            RestaurantAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-                val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
-                val intent = Intent(activity, DetailsActivity::class.java)
-                intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
-                val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
+            DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+                val intent = Intent(requireActivity(), CategoryActivity::class.java)
+                intent.putExtra(
+                    JSONKeys.OBJECT,
+                    dataResturant[position]
                 )
-                (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
                 EzymdApplication.getInstance().cartData.postValue(null)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
@@ -316,17 +378,17 @@ open class HomeFragment : Fragment() {
         bannerPager.pageMargin = 20;
 
         // bannerPager.setPageTransformer(true, AlphaPageTransformation())
-        val registrationTutorialPagerAdapter =
-            BannerPagerAdapter(
+        registrationTutorialPagerAdapter =
+            DashBoardPagerAdapter(
                 activity as MainActivity,
                 dataBanner, OnRecyclerView { position, view ->
-                    val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
-                    val intent = Intent(activity, DetailsActivity::class.java)
+                    // val smallThumbnail = view.findViewById<RoundedImageView>(R.id.imageView)
+                    val intent = Intent(activity, CategoryActivity::class.java)
                     intent.putExtra(JSONKeys.OBJECT, dataBanner[position])
-                    val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
-                    )
-                    (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
+                    /*  val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                          (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
+                      )
+                    */  (activity as MainActivity).startActivity(intent)//optionsCompat.toBundle())
                     EzymdApplication.getInstance().cartData.postValue(null)
                 })
         bannerPager.adapter = registrationTutorialPagerAdapter
@@ -334,6 +396,25 @@ open class HomeFragment : Fragment() {
 
         setPageChangeListener()
 
+    }
+
+    private fun getDataTrendingObject(resturant: Resturant): DataTrending {
+        return DataTrending().apply {
+            address = resturant.address
+            lat = resturant.lat.toString()
+            lang = resturant.longitude.toString()
+            id = resturant.id
+            name = resturant.name
+            banner = resturant.banner
+            category_id = -1
+            cuisines = resturant.cuisines
+            rating = resturant.rating
+            min_order = resturant.minOrder
+            discount = resturant.discount.toString()
+            is_free_delivery = resturant.isFreeDelivery.toString()
+            distance = resturant.distance
+            phone_no = resturant.phoneNo
+        }
     }
 
     override fun onResume() {
@@ -361,18 +442,78 @@ open class HomeFragment : Fragment() {
             askPermission()
         }
         emptyLay.visibility = View.GONE
-        if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
-            homeViewModel.getBanners(BaseRequest(userInfo))
-            homeViewModel.getResturants(BaseRequest(userInfo))
-            homeViewModel.getTrending(BaseRequest(userInfo))
+        if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
+            val baseRequest = BaseRequest(userInfo)
+            homeViewModel.getBanners(baseRequest)
+            homeViewModel.getResturants(baseRequest)
+            homeViewModel.getTrending(baseRequest)
         }
         setObservers()
 
         // (bannerPager.adapter as BannerPagerAdapter).startTimer(bannerPager, 5)
     }
 
+    fun View.visible() {
+        visibility = View.VISIBLE
+    }
+
+    fun View.gone() {
+        visibility = View.GONE
+    }
+
     private fun setObservers() {
-        homeViewModel.isGPSEnable.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.isGroceryVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it) {
+                iv_grocery.visible()
+                iv_grocery_text.visible()
+            } else {
+                iv_grocery.gone()
+                iv_grocery_text.gone()
+            }
+        })
+
+        homeViewModel.isAllHide.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                cardAvailOptions.gone()
+            }
+        })
+
+        homeViewModel.isPharmacyVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                iv_pharmacy.visible()
+                iv_pharmacy_text.visible()
+                iv_pharmacy_view.visible()
+
+            } else {
+                iv_pharmacy.gone()
+                iv_pharmacy_text.gone()
+                iv_pharmacy_view.gone()
+            }
+        })
+
+        homeViewModel.primaryCategory.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            setHeader(it)
+        })
+        homeViewModel.isRestuantVisible.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+            if (it) {
+                iv_food.visible()
+                iv_food_text.visible()
+                iv_food_view.visible()
+            } else {
+                iv_food.gone()
+                iv_food_text.gone()
+                iv_food_view.gone()
+            }
+        })
+        homeViewModel.mReferralResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if (it.status == ErrorCodes.SUCCESS) {
+                userInfo.saveReferalUrl("")
+            }
+        })
+        homeViewModel.isGPSEnable.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 setLocationEmpty()
             } else {
@@ -381,76 +522,121 @@ open class HomeFragment : Fragment() {
                     askPermission()
                 }
                 emptyLay.visibility = View.GONE
-                if (dataBanner.size == 0 && !userInfo!!.lat.equals("0.0")) {
+                if (dataBanner.size == 0 && !userInfo.lat.equals("0.0")) {
                     homeViewModel.getBanners(BaseRequest(userInfo))
-                    homeViewModel.getResturants(BaseRequest(userInfo))
-                    homeViewModel.getTrending(BaseRequest(userInfo))
+                    val baseRequest = BaseRequest(userInfo)
+                    homeViewModel.getResturants(baseRequest)
+                    homeViewModel.getTrending(baseRequest)
                 }
 
             }
         })
-        homeViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 content.visibility = View.VISIBLE
                 progress.visibility = View.GONE
             }
         })
-        homeViewModel.address.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.address.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             locationModel = it
-            userInfo!!.lang = it.lang.toString()
-            userInfo!!.lat = it.lat.toString()
+            locationChange = true
+            userInfo.lang = it.lang.toString()
+            userInfo.lat = it.lat.toString()
             setLocationAddress(it.location, it.city)
         })
 
 
-        homeViewModel.mPagerData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mPagerData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
+                SnapLog.print("1=====")
                 dataBanner.clear()
-                bannerPager.adapter?.notifyDataSetChanged()
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
                 dataBanner.addAll(it.data)
                 SnapLog.print("size=========" + dataBanner.size)
-                bannerPager.adapter?.notifyDataSetChanged()
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
 
+                if (dataBanner.size > 0) {
+                    homeViewModel.noBanner = false
+                    bannerPager.visibility = View.VISIBLE
+                } else {
+                    homeViewModel.noBanner = true
+                    bannerPager.visibility = View.GONE
+                    checkEmpty()
+                }
             } else {
+                checkEmpty()
+                dataBanner.clear()
+                homeViewModel.noBanner = true
+                bannerPager.visibility = View.GONE
+                registrationTutorialPagerAdapter?.notifyDataSetChanged()
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })
 
-        homeViewModel.mTrendingData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mTrendingData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
                 dataTrending.clear()
                 treandingAdapter!!.setData(it.data)
-                if (it.data.size > 0)
-                    trending.text = getString(R.string.trending_food)
+                if (it.data.size > 0) {
+                    trending.visibility = View.VISIBLE
+                    homeViewModel.noTrending = false
+                } else {
+                    homeViewModel.noTrending = true
+                    trending.visibility = View.GONE
+                    checkEmpty()
+                }
                 treandingAdapter!!.getData().let { it1 ->
                     dataTrending.addAll(it1)
                 }
 
             } else {
+                checkEmpty()
+                homeViewModel.noTrending = true
+                dataTrending.clear()
+                treandingAdapter!!.setData(dataTrending)
+                trending.visibility = View.GONE
+                dataTrending.clear()
                 (activity as BaseActivity).showError(false, it.message, null)
             }
         })
 
-        homeViewModel.mResturantData.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.mResturantData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            emptyLay.visibility = View.GONE
             if (it.status == ErrorCodes.SUCCESS) {
                 dataResturant.clear()
                 restaurantAdapter?.setData(it.data)
                 restaurantAdapter?.getData()?.let { it1 ->
                     dataResturant.addAll(it1)
-                    if (it.data.size > 0)
+                    if (it.data.size > 0) {
                         filter.visibility = View.VISIBLE
-                    else
+                        homeViewModel.noStores = false
+                    } else {
+                        homeViewModel.noStores = true
                         filter.visibility = View.GONE
+                        checkEmpty()
+                    }
                     resturantCount.text =
-                        TextUtils.concat("" + dataResturant.size + " " + this.getString(R.string.resurant_around_you))
+                        TextUtils.concat(
+                            "" + dataResturant.size + " " + when (homeViewModel.primaryCategory.value) {
+                                StoreType.RESTAURANT -> getString(R.string.resurant_around_you)
+                                StoreType.Pharmacy -> getString(R.string.pharmacy_around_you)
+                                else -> getString(R.string.grocery_around_you)
+                            }
+                        )
                 }
 
             } else {
+                homeViewModel.noStores = true
+                checkEmpty()
+                dataResturant.clear()
+                restaurantAdapter?.setData(dataResturant)
                 (activity as BaseActivity).showError(false, it.message, null)
             }
 
         })
-        homeViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
+        homeViewModel.errorRequest.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it != null)
                 (activity as BaseActivity).showError(false, it, null)
         })
@@ -458,16 +644,27 @@ open class HomeFragment : Fragment() {
 
     }
 
+    private fun checkEmpty() {
+        if (homeViewModel.noBanner && homeViewModel.noStores && homeViewModel.noTrending) {
+            emptyLay.visibility = View.VISIBLE
+            emptymsg.text = getString(R.string.no_data_found)
+            image.setImageResource(R.drawable.ic_no_location)
+            enableLocation.text = getString(R.string.change)
+            enableLocation.setOnClickListener {
+                location.performClick()
+            }
+        }
+    }
+
 
     override fun onStop() {
         super.onStop()
-        homeViewModel.isLoading.removeObservers(this)
-        homeViewModel.mPagerData.removeObservers(this)
-        homeViewModel.mResturantData.removeObservers(this)
-        homeViewModel.mTrendingData.removeObservers(this)
-        homeViewModel.errorRequest.removeObservers(this)
-        homeViewModel.address.removeObservers(this)
-        (bannerPager.adapter as BannerPagerAdapter).stopTimer()
+        homeViewModel.isLoading.removeObservers(viewLifecycleOwner)
+        homeViewModel.mPagerData.removeObservers(viewLifecycleOwner)
+        homeViewModel.mResturantData.removeObservers(viewLifecycleOwner)
+        homeViewModel.mTrendingData.removeObservers(viewLifecycleOwner)
+        homeViewModel.errorRequest.removeObservers(viewLifecycleOwner)
+        homeViewModel.address.removeObservers(viewLifecycleOwner)
     }
 
     private fun setPageChangeListener() {
@@ -490,16 +687,24 @@ open class HomeFragment : Fragment() {
     }
 
     private fun setAdapterTrending() {
-        trendingRecyclerView.setLayoutManager(LinearLayoutManager(activity, HORIZONTAL, false))
+        trendingRecyclerView.layoutManager = LinearLayoutManager(activity, HORIZONTAL, false)
+        trendingRecyclerView.addItemDecoration(
+            HorizontialSpacesItemDecoration(
+                (resources.getDimensionPixelSize(
+                    R.dimen._10sdp
+                ))
+            )
+        )
         treandingAdapter =
-            TrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
-                val obj = dataTrending[position]
-                if (obj.restaurant != null) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
-                    intent.putExtra(JSONKeys.OBJECT, obj.restaurant)
-                    (activity as MainActivity).startActivity(intent)
-                    EzymdApplication.getInstance().cartData.postValue(null)
-                }
+            DashBoardTrendingAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+                val intent = Intent(requireActivity(), CategoryActivity::class.java)
+                intent.putExtra(
+                    JSONKeys.OBJECT,
+                    dataTrending[position]
+                )
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+                EzymdApplication.getInstance().cartData.postValue(null)
             }, dataTrending)
         trendingRecyclerView.adapter = treandingAdapter
 

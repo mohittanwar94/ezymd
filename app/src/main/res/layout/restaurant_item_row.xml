@@ -35,7 +35,6 @@
             android:lineSpacingExtra="@dimen/_4sdp"
             android:maxLines="1"
             android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
             android:text="@string/pizza"
             android:textColor="@color/color_010a1d"
             android:textSize="@dimen/_15sdp"

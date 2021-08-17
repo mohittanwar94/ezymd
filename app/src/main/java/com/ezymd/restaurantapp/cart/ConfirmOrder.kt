@@ -6,20 +6,21 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.ezymd.restaurantapp.BaseActivity
-import com.ezymd.restaurantapp.EzymdApplication
+import com.ezymd.restaurantapp.*
+import com.ezymd.restaurantapp.BuildConfig
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.font.CustomTypeFace
 import com.ezymd.restaurantapp.location.LocationActivity
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.payment.ExampleEphemeralKeyProvider
 import com.ezymd.restaurantapp.payment.PaymentOptionActivity
 import com.ezymd.restaurantapp.payment.StoreActivity
+import com.ezymd.restaurantapp.payment.gpay.PaymentsUtil
 import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.utils.*
@@ -33,13 +34,19 @@ import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_confirm_order.*
 import kotlinx.android.synthetic.main.activity_confirm_order.payButton
 import kotlinx.android.synthetic.main.activity_confirm_order.toolbar_layout
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 
 
 class ConfirmOrder : BaseActivity() {
+    private var isAllFromWallet: Boolean = false
     private var paymentType: Int = 0
     private var totalPrice = 0.0
+    private var walletAmount = 0.0
     private var paymentSessionData: PaymentSessionData? = null
     private var paymentSession: PaymentSession? = null
     val checkoutModel = OrderCheckoutUtilsModel()
@@ -65,11 +72,7 @@ class ConfirmOrder : BaseActivity() {
             this,
             Wallet.WalletOptions.Builder()
                 .setEnvironment(
-                    if (ServerConfig.IS_TESTING) {
-                        WalletConstants.ENVIRONMENT_TEST
-                    } else {
-                        WalletConstants.ENVIRONMENT_PRODUCTION
-                    }
+                    BuildConfig.WALLET_ENVIRONMENT.toInt()
                 )
                 .build()
         )
@@ -88,9 +91,11 @@ class ConfirmOrder : BaseActivity() {
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm_order)
+        setGUI()
         if (userInfo!!.customerID == null)
             viewModel.createCustomerStripe(userInfo!!)
         else
@@ -105,14 +110,47 @@ class ConfirmOrder : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        setGUI()
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == JSONKeys.SELECT_PAYMENT && resultCode == Activity.RESULT_OK) {
             val mode = data?.getIntExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
+            walletAmount = data!!.getDoubleExtra(JSONKeys.WALLET_AMOUNT, 0.0)
+            val total = (intent.getDoubleExtra(
+                JSONKeys.TOTAL_CASH,
+                0.0
+            ) + intent.getDoubleExtra(
+                JSONKeys.DELIVERY_CHARGES,
+                0.0
+            ) + intent.getDoubleExtra(
+                JSONKeys.FEE_CHARGES,
+                0.0
+            ) - intent.getDoubleExtra(
+                JSONKeys.DISCOUNT_AMOUNT,
+                0.0
+            )) - walletAmount
+
+            if (total == 0.0) {
+                //handle all payment from wallet
+                paymentType = PaymentMethodTYPE.WALLET
+                paymentMethod.text = getString(R.string.wallet)
+
+                isAllFromWallet = true
+                payButton.text =
+                    getString(R.string.pay) + " " + userInfo?.currency + String.format(
+                        "%.2f", walletAmount
+                    )
+                checkPayButtomEnableDisable()
+                return
+            } else {
+                payButton.text =
+                    getString(R.string.pay) + " " + userInfo?.currency + String.format(
+                        "%.2f", total
+                    )
+            }
             if (mode == PaymentMethodTYPE.ONLINE) {
                 paymentType = PaymentMethodTYPE.ONLINE
                 paymentMethod.text = getString(R.string.card)
@@ -121,6 +159,20 @@ class ConfirmOrder : BaseActivity() {
                 else {
                     paymentSession?.clearPaymentMethod()
                 }
+
+            } else if (mode == PaymentMethodTYPE.WALLET) {
+                paymentType = PaymentMethodTYPE.WALLET
+                paymentMethod.text = getString(R.string.card) + " Wallet"
+                if (paymentSession == null)
+                    startPaymentSession()
+                else {
+                    paymentSession?.clearPaymentMethod()
+                }
+
+            } else if (mode == PaymentMethodTYPE.GPAY) {
+                paymentType = PaymentMethodTYPE.GPAY
+                paymentMethod.text = getString(R.string.googlepay)
+                checkPayButtomEnableDisable()
 
             } else {
                 paymentMethod.text = getString(R.string.cash_on_delivery)
@@ -140,9 +192,20 @@ class ConfirmOrder : BaseActivity() {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     if (data != null) {
-                        handleGooglePayResult(data)
+                        onGooglePayResult(data);
+                    }
+
+                }
+                Activity.RESULT_CANCELED -> {
+
+                }
+
+                AutoResolveHelper.RESULT_ERROR -> {
+                    AutoResolveHelper.getStatusFromIntent(data)?.let {
+                        handleError(it.statusCode)
                     }
                 }
+
                 else -> {
                     resetCheckout()
                 }
@@ -197,29 +260,138 @@ class ConfirmOrder : BaseActivity() {
         }
     }
 
-    private fun handleGooglePayResult(data: Intent) {
-        val paymentData = PaymentData.getFromIntent(data) ?: return
-        val paymentDataJson = JSONObject(paymentData.toJson())
+    private fun handleError(statusCode: Int) {
+        SnapLog.print("loadPaymentData failed" + String.format("Error code: %d", statusCode))
+    }
 
-        val paymentMethodCreateParams =
-            PaymentMethodCreateParams.createFromGooglePay(paymentDataJson)
 
-        viewModel.isLoading.postValue(true)
-        viewModel.createPaymentMethod(paymentMethodCreateParams)
-            .observe(
-                this,
-                { result ->
-                    result.fold(
-                        onSuccess = {
-                            payWithPaymentMethod(it)
-                        },
-                        onFailure = {
-                            displayError(it)
-                            resetCheckout()
-                        }
+    private fun createPaymentDataRequest(): PaymentDataRequest {
+        totalPrice = String.format(
+            "%.2f", (intent.getDoubleExtra(
+                JSONKeys.TOTAL_CASH,
+                0.0
+            ) + intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0) + intent.getDoubleExtra(
+                JSONKeys.FEE_CHARGES,
+                0.0
+            ) - intent.getDoubleExtra(
+                JSONKeys.DISCOUNT_AMOUNT,
+                0.0
+            ))
+        ).toDouble()
+
+        val cardPaymentMethod = JSONObject()
+            .put("type", "CARD")
+            .put(
+                "parameters",
+                JSONObject()
+                    .put(
+                        "allowedAuthMethods", JSONArray()
+                            .put("PAN_ONLY")
+                            .put("CRYPTOGRAM_3DS")
                     )
-                }
+                    .put(
+                        "allowedCardNetworks",
+                        JSONArray()
+                            .put("AMEX")
+                            .put("DISCOVER")
+                            .put("MASTERCARD")
+                            .put("VISA")
+                    )
+
+                    // require billing address
+                    .put("billingAddressRequired", true)
+                    .put(
+                        "billingAddressParameters",
+                        JSONObject()
+                            // require full billing address
+                            .put("format", "MIN")
+
+                            // require phone number
+                            .put("phoneNumberRequired", true)
+                    )
             )
+            .put(
+                "tokenizationSpecification",
+                GooglePayConfig(this).tokenizationSpecification
+            )
+
+        // create PaymentDataRequest
+        val paymentDataRequest = JSONObject()
+            .put("apiVersion", 2)
+            .put("apiVersionMinor", 0)
+            .put(
+                "allowedPaymentMethods",
+                JSONArray().put(cardPaymentMethod)
+            )
+            .put(
+                "transactionInfo", JSONObject()
+                    .put("totalPrice", totalPrice.toLong().centsToString())
+                    .put("totalPriceStatus", "FINAL")
+                    .put("currencyCode", userInfo?.currencyCode)
+            )
+            .put(
+                "merchantInfo", JSONObject()
+                    .put("merchantName", "Example Merchant")
+            )
+
+            // require email address
+            .put("emailRequired", true)
+            .toString()
+
+        return PaymentDataRequest.fromJson(paymentDataRequest)
+    }
+
+    fun Long.centsToString() = BigDecimal(this)
+        .divide(PaymentsUtil.CENTS)
+        .setScale(2, RoundingMode.HALF_EVEN)
+        .toString()
+
+    private fun handlePaymentSuccess(paymentData: PaymentData) {
+        val paymentInformation = paymentData.toJson() ?: return
+
+        try {
+            // Token will be null if PaymentDataRequest was not constructed using fromJson(String).
+            SnapLog.print("paymentInformation=========$paymentInformation")
+            val paymentMethodData =
+                JSONObject(paymentInformation).getJSONObject("paymentMethodData")
+            val billingName = paymentMethodData.getJSONObject("info")
+                .getJSONObject("billingAddress").getString("name")
+            Log.d("BillingName", billingName)
+
+            // Toast.makeText(this, this.getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show()
+
+            // Logging token string.
+            Log.d(
+                "GooglePaymentToken", paymentMethodData
+                    .getJSONObject("tokenizationData")
+                    .getString("token")
+            )
+
+        } catch (e: JSONException) {
+            Log.e("handlePaymentSuccess", "Error: " + e.toString())
+        }
+
+    }
+
+    private fun onGooglePayResult(data: Intent) {
+        val paymentData = PaymentData.getFromIntent(data) ?: return
+        val paymentMethodCreateParams =
+            PaymentMethodCreateParams.createFromGooglePay(
+                JSONObject(paymentData.toJson())
+            )
+
+        // now use the `paymentMethodCreateParams` object to create a PaymentMethod
+        stripe.createPaymentMethod(
+            paymentMethodCreateParams,
+            callback = object : ApiResultCallback<PaymentMethod> {
+                override fun onSuccess(result: PaymentMethod) {
+                    payWithPaymentMethod(result)
+                }
+
+                override fun onError(e: Exception) {
+                }
+            }
+        )
     }
 
     private fun resetCheckout() {
@@ -235,14 +407,16 @@ class ConfirmOrder : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
+        contactless.setTextColor(ContextCompat.getColor(this, R.color.black_323232))
+        regular.setTextColor(ContextCompat.getColor(this, R.color.black_323232))
+        regular.background =
+            ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+        contactless.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
         contactless.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Contact less"
-            regular.setTextColor(ContextCompat.getColor(this, R.color.white))
-            contactless.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            contactless.background =
-                ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            regular.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            contactless.alpha = 1F
+            regular.alpha = 0.3F
             if (paymentType == PaymentMethodTYPE.COD) {
                 paymentMethod.text = "Select Payment Method"
                 paymentType = 0
@@ -253,16 +427,13 @@ class ConfirmOrder : BaseActivity() {
         regular.setOnClickListener {
             UIUtil.clickHandled(it)
             deliveryIns = "Regular"
-            contactless.setTextColor(ContextCompat.getColor(this, R.color.white))
-            regular.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            regular.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            contactless.background =
-                ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            contactless.alpha = 0.5F
+            regular.alpha = 1F
         }
-
+        regular.callOnClick()
 
         payButton.text =
-            getString(R.string.pay) + " " + getString(R.string.dollor) + String.format(
+            getString(R.string.pay) + " " + userInfo?.currency + String.format(
                 "%.2f", (intent.getDoubleExtra(
                     JSONKeys.TOTAL_CASH,
                     0.0
@@ -328,11 +499,30 @@ class ConfirmOrder : BaseActivity() {
 
         paymentMethod.setOnClickListener {
             UIUtil.clickAlpha(it)
+            isAllFromWallet = false
             startActivityForResult(
                 Intent(
                     this@ConfirmOrder,
                     PaymentOptionActivity::class.java
-                ).putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                ).putExtra(JSONKeys.WALLET_AMOUNT, walletAmount)
+                    .putExtra(JSONKeys.PAYMENT_TYPE, paymentType)
+                    .putExtra(
+                        JSONKeys.AMOUNT, String.format(
+                            "%.2f", (intent.getDoubleExtra(
+                                JSONKeys.TOTAL_CASH,
+                                0.0
+                            ) + intent.getDoubleExtra(
+                                JSONKeys.DELIVERY_CHARGES,
+                                0.0
+                            ) + intent.getDoubleExtra(
+                                JSONKeys.FEE_CHARGES,
+                                0.0
+                            ) - intent.getDoubleExtra(
+                                JSONKeys.DISCOUNT_AMOUNT,
+                                0.0
+                            ))
+                        ).toDouble()
+                    )
                     .putExtra(JSONKeys.DELIVERY_CHARGES, deliveryIns),
                 JSONKeys.SELECT_PAYMENT
             )
@@ -352,8 +542,12 @@ class ConfirmOrder : BaseActivity() {
 
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (paymentType == PaymentMethodTYPE.COD) {
+            if (paymentType == PaymentMethodTYPE.WALLET && isAllFromWallet) {
+                createCreatePaymentWallet()
+            } else if (paymentType == PaymentMethodTYPE.COD) {
                 createCreatePaymentCod()
+            } else if (paymentType == PaymentMethodTYPE.GPAY) {
+                requestPaymentGooglePay()
             } else {
                 if (paymentSession == null)
                     return@setOnClickListener
@@ -364,9 +558,21 @@ class ConfirmOrder : BaseActivity() {
 
     }
 
+    private fun requestPaymentGooglePay() {
+        AutoResolveHelper.resolveTask(
+            paymentsClient.loadPaymentData(createPaymentDataRequest()),
+            this@ConfirmOrder,
+            LOAD_PAYMENT_DATA_REQUEST_CODE
+        )
+
+    }
+
+
     private fun createPaymentIntent(paymentSessionData: PaymentSessionData) {
         when {
-            paymentSessionData.useGooglePay -> payWithGoogle()
+            paymentSessionData.useGooglePay -> {
+                requestPaymentGooglePay()
+            }
             else -> {
                 paymentSessionData.paymentMethod?.let { paymentMethod ->
                     payWithPaymentMethod(paymentMethod)
@@ -424,8 +630,13 @@ class ConfirmOrder : BaseActivity() {
 
     private fun setHeaderData() {
         toolbar_layout.setExpandedTitleTypeface(CustomTypeFace.bold)
-        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this,R.color.color_002366))
-        toolbar_layout.setCollapsedTitleTextColor(ContextCompat.getColor(this,R.color.color_002366))
+        toolbar_layout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.color_002366))
+        toolbar_layout.setCollapsedTitleTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.color_002366
+            )
+        )
         toolbar_layout.setCollapsedTitleTypeface(CustomTypeFace.bold)
         toolbar_layout.title = getString(R.string.title_confirm_order)
 
@@ -474,12 +685,13 @@ class ConfirmOrder : BaseActivity() {
                 }
             }
         })
-        EzymdApplication.getInstance().cartData.observe(this, Observer {
+        /*EzymdApplication.getInstance().cartData.observe(this, Observer {
+
+        })*/
+        /*viewModel.baseResponse.observe(this, Observer {
 
         })
-        viewModel.baseResponse.observe(this, Observer {
-
-        })
+        */
         viewModel.dateSelected.observe(this, Observer {
             if (it != null)
                 time.text = getString(R.string.delivery_at) + " " + it
@@ -696,7 +908,7 @@ class ConfirmOrder : BaseActivity() {
         jsonObject.addProperty("restaurant_address", restaurant.address)
         jsonObject.addProperty("delivery_lat", viewModel.locationSelected.value?.lat)
         jsonObject.addProperty("delivery_lang", viewModel.locationSelected.value?.lang)
-
+        jsonObject.addProperty("currency", userInfo?.currencyCode)
         if (intent.hasExtra(JSONKeys.PROMO)) {
             jsonObject.addProperty("coupon_id", intent.getIntExtra(JSONKeys.PROMO, 0))
             jsonObject.addProperty(
@@ -716,7 +928,7 @@ class ConfirmOrder : BaseActivity() {
             "delivery_instruction",
             deliveryIns
         )
-        jsonObject.addProperty("restaurant_id", restaurant.id)
+        jsonObject.addProperty("shop_id", restaurant.id)
         jsonObject.addProperty("schedule_type", checkoutModel.delivery_type)
         if (checkoutModel.delivery_type == 2) {
             jsonObject.addProperty("schedule_time", checkoutModel.delivery_time)
@@ -725,13 +937,35 @@ class ConfirmOrder : BaseActivity() {
         val orderItems = JsonArray()
         val listItemModel = EzymdApplication.getInstance().cartData.value
 
-        var price = 0
+        var price = 0.0
         for (model in listItemModel!!) {
             val jsonObjectModel = JsonObject()
-            jsonObjectModel.addProperty("food_id", model.id)
-            jsonObjectModel.addProperty("price", model.price)
+            jsonObjectModel.addProperty("product_id", model.id)
+            if (model.listModifiers.size > 0)
+                jsonObjectModel.addProperty("price", model.total)
+            else
+                jsonObjectModel.addProperty("price", model.price)
             jsonObjectModel.addProperty("qty", model.quantity)
             price += (model.price * model.quantity)
+
+            var productVariantids = ""
+            var productVariantNames = ""
+            for (modifier in model.listModifiers) {
+                productVariantids = productVariantids + "," + modifier.id
+                productVariantNames = productVariantNames + ", " + modifier.title
+            }
+            if (productVariantids.length > 1)
+                productVariantids = productVariantids.substring(1, productVariantids.length)
+
+            if (productVariantNames.length > 1)
+                productVariantNames = productVariantNames.substring(1, productVariantNames.length)
+
+            if (productVariantids.length > 1)
+                jsonObjectModel.addProperty("product_option_id", productVariantids)
+
+            if (productVariantNames.length > 1)
+                jsonObjectModel.addProperty("product_option_name", productVariantNames)
+
             orderItems.add(jsonObjectModel)
         }
         jsonObject.addProperty(
@@ -739,9 +973,14 @@ class ConfirmOrder : BaseActivity() {
             intent.getDoubleExtra(JSONKeys.FEE_CHARGES, 0.0)
         )
 
+
         jsonObject.addProperty(
             "delivery_charges",
             intent.getDoubleExtra(JSONKeys.DELIVERY_CHARGES, 0.0)
+        )
+        jsonObject.addProperty(
+            "wallet_amount",
+            walletAmount
         )
         totalPrice = String.format(
             "%.2f", (intent.getDoubleExtra(
@@ -756,42 +995,14 @@ class ConfirmOrder : BaseActivity() {
             ))
         ).toDouble()
         jsonObject.addProperty("total", totalPrice)
-
+        price -= walletAmount
+        SnapLog.print("price=======$price")
         paymentSession?.setCartTotal(price.toLong())
 
         jsonObject.add("orderItems", orderItems)
         return jsonObject
     }
 
-    private fun payWithGoogle() {
-        viewModel.isLoading.postValue(true)
-        AutoResolveHelper.resolveTask(
-            paymentsClient.loadPaymentData(
-                PaymentDataRequest.fromJson(
-                    googlePayJsonFactory.createPaymentDataRequest(
-                        transactionInfo = GooglePayJsonFactory.TransactionInfo(
-                            currencyCode = "USD",
-                            totalPrice = totalPrice.toInt(),
-                            totalPriceStatus = GooglePayJsonFactory.TransactionInfo.TotalPriceStatus.Final
-                        ),
-                        merchantInfo = GooglePayJsonFactory.MerchantInfo(
-                            merchantName = getString(R.string.app_name)
-                        ),
-                        shippingAddressParameters = GooglePayJsonFactory.ShippingAddressParameters(
-                            isRequired = true,
-                            allowedCountryCodes = setOf("US"),
-                            phoneNumberRequired = true
-                        ),
-                        billingAddressParameters = GooglePayJsonFactory.BillingAddressParameters(
-                            isRequired = true
-                        )
-                    ).toString()
-                )
-            ),
-            this@ConfirmOrder,
-            LOAD_PAYMENT_DATA_REQUEST_CODE
-        )
-    }
 
     private fun payWithPaymentMethod(paymentMethod: PaymentMethod) {
         viewModel.isLoading.postValue(true)
@@ -821,7 +1032,7 @@ class ConfirmOrder : BaseActivity() {
         if (response.has("success")) {
             val success = response.getBoolean("success")
             if (success) {
-               // finishPayment(orderModel)
+                // finishPayment(orderModel)
             } else {
                 displayError("Payment failed")
             }
@@ -903,6 +1114,21 @@ class ConfirmOrder : BaseActivity() {
     private fun createCreatePaymentCod() {
         val baseRequest = BaseRequest(userInfo)
         viewModel.saveCodPaymentInfo(getJsonObject(PaymentMethodTYPE.COD), baseRequest)
+
+        viewModel.savePaymentResponse.observe(this, Observer {
+            if (it != null) {
+                if (it.status == ErrorCodes.SUCCESS) {
+                    finishPayment(it.orderModel)
+                } else {
+                    showError(false, it.message, null)
+                }
+            }
+        })
+    }
+
+    private fun createCreatePaymentWallet() {
+        val baseRequest = BaseRequest(userInfo)
+        viewModel.saveCodPaymentInfo(getJsonObject(PaymentMethodTYPE.WALLET), baseRequest)
 
         viewModel.savePaymentResponse.observe(this, Observer {
             if (it != null) {

@@ -72,6 +72,7 @@ public interface JSONKeys {
     String CHEQUE_NO = "cheque_no";
     String SCHOOL_ID = "school_id";
     String AMOUNT = "amount";
+    String WALLET_AMOUNT = "w_amount";
     String UNPAID = "UnPaid";
     String PAID = "Paid";
     String IS_PAID = "is_paid";
@@ -399,4 +400,6 @@ public interface JSONKeys {
     @Nullable
     String PROMO="promo_code";
     int SELECT_PAYMENT=164;
+    @Nullable
+    String SHOP_ID="shop_id";
 }

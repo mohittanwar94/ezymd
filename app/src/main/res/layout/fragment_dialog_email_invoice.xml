@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:minHeight="@dimen/_200sdp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="@dimen/_10sdp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="@string/invoice"
+            android:textAllCaps="false"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_13sdp"
+            app:textFont="bold" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:gravity="center"
+            android:text="@string/please_add_email_address_to_receive_invoice"
+            android:textAllCaps="false"
+            android:textColor="@color/gray_333"
+            android:textSize="@dimen/_13sdp"
+            app:textFont="medium" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subTitle"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/email"
+            android:textColorHint="@color/gray_999"
+            app:boxBackgroundColor="@android:color/white"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/parent_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:paddingLeft="0dp"
+                android:paddingTop="@dimen/_27sdp"
+                android:paddingRight="0dp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:singleLine="true"
+                android:textAllCaps="false"
+                android:textColor="@color/color_002366"
+                android:textColorHint="@color/gray_999"
+                android:textSize="@dimen/_15sdp"
+                app:textFont="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputLay"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:text=""
+            android:textAllCaps="false"
+            android:textColor="@color/red_bg_build"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
+            app:textFont="bold" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/proceed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_below="@+id/error"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/ic_gray_btn_pressed"
+            android:gravity="center"
+            android:text="@string/request_invoice"
+            android:textAllCaps="false"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_17sdp"
+            app:textFont="bold" />
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -444,7 +444,7 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.ezymd.restaurantapp.customviews.SnapTextView
+                    <com.ezymd.restaurantapp.customviews.SnapButton
                         android:id="@+id/pickUp"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_35sdp"
@@ -459,10 +459,10 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
-                        app:textFont="roman" />
+                        app:buttonFont="bold" />
 
 
-                    <com.ezymd.restaurantapp.customviews.SnapTextView
+                    <com.ezymd.restaurantapp.customviews.SnapButton
                         android:id="@+id/delivery"
                         android:layout_width="0dp"
                         android:maxWidth="@dimen/_120sdp"
@@ -478,7 +478,7 @@
                         android:textColor="@color/color_1e222a"
                         android:textSize="@dimen/_13sdp"
                         android:textStyle="normal"
-                        app:textFont="roman" />
+                        app:buttonFont="bold" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -488,12 +488,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_15sdp"
-                android:background="@drawable/ic_gray_btn_pressed"
+                android:background="@drawable/login_button"
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="5sp"
                 android:text="@string/next"
                 android:textAllCaps="false"
-                android:textColor="@color/color_1e222a"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_17sdp"
                 android:textStyle="normal"
                 app:buttonFont="bold" />

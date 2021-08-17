@@ -1,14 +1,28 @@
 package com.ezymd.restaurantapp.login
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.View
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import com.android.installreferrer.api.ReferrerDetails
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.otp.OTPScreen
 import com.ezymd.restaurantapp.utils.*
@@ -21,11 +35,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.ybs.countrypicker.CountryPicker
 import kotlinx.android.synthetic.main.login.*
+import kotlinx.android.synthetic.main.login.progress
+import kotlinx.android.synthetic.main.user_live_tracking.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
 class Login : BaseActivity() {
-    private var counCode: String="US"
+    private var counCode: String = "US"
+    private lateinit var referrerClient: InstallReferrerClient
+
     private val RC_SIGN_IN = 100
     val gso by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,18 +63,115 @@ class Login : BaseActivity() {
 
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         setEventListener()
+        try {
+            initTracking()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
+
+
+    private fun initTracking() {
+        referrerClient = InstallReferrerClient.newBuilder(this).build()
+        referrerClient.startConnection(object : InstallReferrerStateListener {
+
+            override fun onInstallReferrerSetupFinished(responseCode: Int) {
+                when (responseCode) {
+                    InstallReferrerClient.InstallReferrerResponse.OK -> {
+                        // Connection established.
+                        obtainReferrerDetails()
+                        referrerClient.endConnection()
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
+                        // API not available on the current Play Store app.
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.DEVELOPER_ERROR -> {
+                        // API not available on the current Play Store app.
+                    }
+
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_DISCONNECTED -> {
+                        // API not available on the current Play Store app.
+                    }
+                    InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
+                        // Connection couldn't be established.
+                    }
+                }
+            }
+
+            override fun onInstallReferrerServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        })
+    }
+
+    private fun obtainReferrerDetails() {
+        val response: ReferrerDetails = referrerClient.installReferrer
+        SnapLog.print("response - $response")
+        val referrerUrl: String = response.installReferrer
+        Log.d("referrerUrl - ", referrerUrl)
+        val arr = referrerUrl.split("=")
+        userInfo?.saveReferalUrl(arr[1])
+    }
+
 
     private fun signIn() {
         val signInIntent: Intent = mGoogleApiClient.getSignInIntent()
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    private fun showConfirmationDialog() {
+        var msg =
+            "A 4-digit OTP code will be sent via SMS to your mobile device. Message and Data rates may apply"
+        msg = loginViewModel.contentVisiblity(userInfo!!.configJson)
+        val builder = AlertDialog.Builder(this, R.style.alert_dialog_theme_black)
+        builder.setMessage(msg)
+            .setCancelable(false)
+            .setPositiveButton("Yes", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, id: Int) {
+                    dialog?.dismiss()
+                    loginViewModel.generateOtpServer(
+                        phoneNo.text.toString(),
+                        countryCode.text.toString()
+                    )
+                }
+            })
+            .setNegativeButton("No", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface, id: Int) {
+                    dialog.dismiss()
+
+                }
+            })
+        val alert: AlertDialog = builder.create()
+        alert.setTitle("OTP-CODE")
+        alert.show()
+
+    }
+
     private fun setEventListener() {
+        val content = SpannableString(getString(R.string.help))
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        help.setText(content)
+
+        val privacy_policy = SpannableString(getString(R.string.privacy_policy))
+        privacy_policy.setSpan(UnderlineSpan(), 0, privacy_policy.length, 0)
+        privacy.setText(privacy_policy)
+
         countryCode.setOnClickListener {
             UIUtil.clickAlpha(it)
             selectCountry()
+
+        }
+        help.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            openWebView("https://www.ezymd.com/support")
+
+        }
+        privacy.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            openWebView("https://www.ezymd.com/tickets")
 
         }
         facebook.setOnClickListener {
@@ -67,10 +184,17 @@ class Login : BaseActivity() {
         next.setOnClickListener {
             SuspendKeyPad.suspendKeyPad(this)
             UIUtil.clickHandled(it)
-            loginViewModel.generateOtp(phoneNo.text.toString(),counCode)
+            loginViewModel.generateOtp(
+                phoneNo.text.toString(),
+                counCode,
+                countryCode.text.toString()
+            )
         }
-        loginViewModel.isLoading.observe(this, Observer {
-
+        loginViewModel.isShowDialog.observe(this, Observer {
+            if (it) {
+                showConfirmationDialog()
+                loginViewModel.isShowDialog.postValue(false)
+            }
         })
 
         loginViewModel.otpResponse.observe(this, Observer {
@@ -81,7 +205,8 @@ class Login : BaseActivity() {
                     Intent(
                         this,
                         OTPScreen::class.java
-                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim()),
+                    ).putExtra(JSONKeys.MOBILE_NO, phoneNo.text.toString().trim())
+                        .putExtra(JSONKeys.COUNTRY_CODE, countryCode.text.toString().trim()),
                     JSONKeys.OTP_REQUEST
                 )
             }
@@ -112,12 +237,42 @@ class Login : BaseActivity() {
         })
     }
 
+    private fun openWebView(url: String) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setShowTitle(true)
+        builder.setCloseButtonIcon(
+            BitmapFactory.decodeResource(resources, R.drawable.ic_back)
+        )
+        builder.setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+        builder.setStartAnimations(this, R.anim.left_in, R.anim.left_out)
+        builder.setExitAnimations(this, R.anim.right_in, R.anim.right_out)
+
+        val customTabsIntent = builder.build()
+
+        val list = ArrayList<String>()
+        list.add(url)
+        val packageName = CustomTabsClient.getPackageName(this, list)
+        if (packageName == null) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(url)
+                )
+            )
+
+        } else {
+            customTabsIntent.intent.setPackage(packageName)
+            customTabsIntent.launchUrl(this, Uri.parse(url))
+        }
+
+    }
+
     private fun selectCountry() {
         val picker = CountryPicker.newInstance("Choose Your Country") // dialog title
 
         picker.setListener { name, code, dialCode, flagDrawableResID ->
-            countryCode.text=dialCode
-            counCode=code
+            countryCode.text = dialCode
+            counCode = code
             picker.dismissAllowingStateLoss()
         }
         picker.show(supportFragmentManager, "COUNTRY_PICKER")
@@ -125,6 +280,7 @@ class Login : BaseActivity() {
 
     private fun setLoginUser(it: LoginModel) {
         userInfo?.accessToken = it.data.access_token
+        userInfo?.countryCode = countryCode.text.toString()
         userInfo?.userName = it.data.user.name
         userInfo?.email = it.data.user.email
         userInfo?.userID = it.data.user.id

@@ -1,7 +1,5 @@
 package com.ezymd.restaurantapp.editprofile
 
-import com.ezymd.restaurantapp.details.model.MenuItemModel
-import com.ezymd.restaurantapp.login.LoginRequest
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ApiClient
@@ -11,20 +9,26 @@ import com.ezymd.restaurantapp.network.WebServices
 import com.ezymd.restaurantapp.utils.BaseRequest
 import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.CoroutineDispatcher
-import java.util.HashMap
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.util.*
 
 class EditProfileRepository {
 
 
     suspend fun generateOtp(
-        otp: String,
+        otp: String, countryCode: String,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<OtpModel> {
 
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
-        map.put("phone_no", otp)
+        map["phone_no"] = otp
+        map["country_code"] = countryCode
+        map["is_otp"] = "1"
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(
@@ -35,17 +39,38 @@ class EditProfileRepository {
 
     }
 
-
     suspend fun updateUprofile(
         loginRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<LoginModel> {
 
-        SnapLog.print("Login repositry=====")
+        SnapLog.print("updateUprofile repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.loginSocialUser(
-                loginRequest.paramsMap
+            apiServices.updateWithoutImageProfile(
+                loginRequest.paramsMap, loginRequest.accessToken
+            )
+        }
+
+
+    }
+
+    suspend fun updateUprofile(
+        file: File,
+        loginRequest: BaseRequest,
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LoginModel> {
+
+        SnapLog.print("updateUprofile multipart repositry=====")
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.updateProfile(
+                MultipartBody.Part.createFormData(
+                    "photo", file.name, file
+                        .asRequestBody("image/*".toMediaTypeOrNull())
+                ),
+
+                loginRequest.accessToken
             )
         }
 

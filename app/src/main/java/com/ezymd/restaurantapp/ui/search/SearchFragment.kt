@@ -19,27 +19,27 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ezymd.restaurantapp.BaseActivity
-import com.ezymd.restaurantapp.GpsLocationReceiver
-import com.ezymd.restaurantapp.MainActivity
-import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.*
 import com.ezymd.restaurantapp.customviews.RoundedImageView
-import com.ezymd.restaurantapp.details.DetailsActivity
-import com.ezymd.restaurantapp.ui.home.RestaurantAdapter
-import com.ezymd.restaurantapp.ui.home.model.Resturant
+import com.ezymd.restaurantapp.dashboard.adapter.DashBoardNearByAdapter
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.details.CategoryActivity
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
-    private var restaurantAdapter: RestaurantAdapter? = null
+    private var restaurantAdapter: DashBoardNearByAdapter? = null
     private var isNullViewRoot = false
     private lateinit var searchViewModel: SearchViewModel
     private var viewRoot: View? = null
 
-    private val dataResturant = ArrayList<Resturant>()
+    private val dataResturant = ArrayList<DataTrending>()
 
     private val userInfo by lazy {
         (activity as MainActivity).userInfo
@@ -71,7 +71,9 @@ class SearchFragment : Fragment() {
         if (isNullViewRoot) {
             setAdapterRestaurant()
             askPermission()
-            searchViewModel.getResturants(BaseRequest(userInfo))
+            GlobalScope.launch {
+                searchViewModel.contentVisiblity(userInfo!!.configJson)
+            }
             setSearchListerner()
             requireActivity().registerReceiver(
                 mGpsSwitchStateReceiver,
@@ -122,7 +124,7 @@ class SearchFragment : Fragment() {
                     )
                     return
                 }
-                if (search.text.toString().trim().length > 4) {
+                if (search.text.toString().trim().length > 3) {
                     val baseRequest = BaseRequest(userInfo)
                     baseRequest.paramsMap.put("search", search.text.toString())
                     searchViewModel.searchRestaurants(baseRequest)
@@ -156,14 +158,15 @@ class SearchFragment : Fragment() {
             )
         )
         restaurantAdapter =
-            RestaurantAdapter(activity as MainActivity, OnRecyclerView { position, view ->
+            DashBoardNearByAdapter(activity as MainActivity, OnRecyclerView { position, view ->
                 val smallThumbnail = view.findViewById<RoundedImageView>(R.id.ivNotesThumb)
-                val intent = Intent(activity, DetailsActivity::class.java)
+                val intent = Intent(activity, CategoryActivity::class.java)
                 intent.putExtra(JSONKeys.OBJECT, dataResturant[position])
                 val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     (context as Activity?)!!, smallThumbnail, "thumbnailTransition"
                 )
                 (activity as MainActivity).startActivity(intent, optionsCompat.toBundle())
+                EzymdApplication.getInstance().cartData.postValue(null)
             }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
 
@@ -244,7 +247,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun setObservers() {
-        searchViewModel.isGPSEnable.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.isGPSEnable.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 setLocationEmpty()
             } else {
@@ -253,7 +256,7 @@ class SearchFragment : Fragment() {
 
             }
         })
-        searchViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (!it) {
                 progress.visibility = View.GONE
             } else {
@@ -261,7 +264,19 @@ class SearchFragment : Fragment() {
             }
         })
 
-        searchViewModel.mSearchData.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.primaryCategory.observe(viewLifecycleOwner, Observer {
+            val baseRequest = BaseRequest(userInfo)
+            baseRequest.paramsMap["category_id"] = "" + it
+            searchViewModel.getResturants(baseRequest)
+            when (it) {
+                StoreType.RESTAURANT -> search.setHint(getString(R.string.search_resturant))
+                StoreType.Pharmacy -> search.setHint(getString(R.string.search_pharmacy))
+                StoreType.Grocery -> search.setHint(getString(R.string.search_grocery_stores))
+            }
+
+        })
+
+        searchViewModel.mSearchData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataResturant.clear()
                 restaurantAdapter?.clearData()
@@ -276,7 +291,7 @@ class SearchFragment : Fragment() {
 
         })
 
-        searchViewModel.mResturantData.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.mResturantData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it.status == ErrorCodes.SUCCESS) {
                 dataResturant.clear()
                 restaurantAdapter?.clearData()
@@ -290,7 +305,7 @@ class SearchFragment : Fragment() {
             }
 
         })
-        searchViewModel.errorRequest.observe(this, androidx.lifecycle.Observer {
+        searchViewModel.errorRequest.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             (activity as BaseActivity).showError(false, it, null)
         })
 
@@ -299,10 +314,10 @@ class SearchFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        searchViewModel.isLoading.removeObservers(this)
-        searchViewModel.mResturantData.removeObservers(this)
-        searchViewModel.errorRequest.removeObservers(this)
-        searchViewModel.mSearchData.removeObservers(this)
+        searchViewModel.isLoading.removeObservers(viewLifecycleOwner)
+        searchViewModel.mResturantData.removeObservers(viewLifecycleOwner)
+        searchViewModel.errorRequest.removeObservers(viewLifecycleOwner)
+        searchViewModel.mSearchData.removeObservers(viewLifecycleOwner)
     }
 
 

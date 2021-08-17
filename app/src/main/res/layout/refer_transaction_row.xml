@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_5sdp"
+    app:cardElevation="@dimen/_1sdp"
+    app:cardUseCompatPadding="false"
+    app:contentPadding="@dimen/_5sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/price"
+            android:ellipsize="end"
+            android:letterSpacing="0.01"
+            android:paddingRight="@dimen/_15sdp"
+            android:lineSpacingExtra="@dimen/_2sdp"
+            android:maxLines="3"
+            android:text="@string/change"
+            android:textColor="@color/color_002366"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:textFont="roman" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_toStartOf="@+id/price"
+            android:gravity="start"
+            android:letterSpacing="0.02"
+            android:text="@string/add"
+            android:textAllCaps="false"
+            android:paddingRight="@dimen/_15sdp"
+            android:textColor="@color/color_bbbcbf"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
+
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.01"
+            android:text="@string/dummmy_price"
+            android:textColor="@color/color_48ce5f"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

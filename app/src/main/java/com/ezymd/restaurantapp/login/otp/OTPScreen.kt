@@ -35,6 +35,7 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
     private var isBackPressEnable = false
     private var otpViewModel: OtpViewModel? = null
 
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
@@ -108,6 +109,10 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
                 false
             )
 
+            if (it.status == ErrorCodes.SUCCESS) {
+                intent.putExtra(JSONKeys.OTP, it.data.otp)
+            }
+
 
         })
 
@@ -137,8 +142,8 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
 
         val spannMsg = SpannableString(getString(R.string.enter_four_digit_code))
         val mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
-        var mask = mobileNo.replace("\\w(?=\\w{4})".toRegex(), "x")
-        mask = mask.chunked(3).joinToString(separator = "-")
+        var mask = mobileNo?.replace("\\w(?=\\w{4})".toRegex(), "x")
+        mask = mask?.chunked(3)?.joinToString(separator = "-")
         val spannMobile = SpannableString(mask)
         spannMobile.setSpan(
             ForegroundColorSpan(
@@ -267,11 +272,19 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
             icon4.requestFocus()
         } else {
             SuspendKeyPad.suspendKeyPad(this)
-            progressLogin.visibility = View.VISIBLE
             if (intent.hasExtra(IS_MOBILE)) {
-                setResult(Activity.RESULT_OK)
-                finish()
+                val otp = intent.getStringExtra(JSONKeys.OTP)
+                val otpString = icon1.text.toString().trim() + icon2.text.toString()
+                    .trim() + icon3.text.toString().trim() + icon4.text.toString().trim()
+                if (otp!!.equals(otpString)) {
+                    progressLogin.visibility = View.VISIBLE
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                } else {
+                    setErrorWithVibrator()
+                }
             } else {
+                progressLogin.visibility = View.VISIBLE
                 val loginRequest = LoginRequest()
                 loginRequest.mobileNo = intent.getStringExtra(JSONKeys.MOBILE_NO)
                 loginRequest.otp =
@@ -286,7 +299,10 @@ class OTPScreen : BaseActivity(), View.OnClickListener {
     private fun resendSameOtp(v: View) {
         UIUtil.clickAlpha(v)
         otpViewModel!!.startLoading(true)
-        otpViewModel!!.resendOtp(intent.getStringExtra(JSONKeys.MOBILE_NO)!!)
+        otpViewModel!!.resendOtp(
+            intent.getStringExtra(JSONKeys.MOBILE_NO)!!,intent.getStringExtra(JSONKeys.COUNTRY_CODE)!!,
+            intent.hasExtra(IS_MOBILE)
+        )
 
     }
 

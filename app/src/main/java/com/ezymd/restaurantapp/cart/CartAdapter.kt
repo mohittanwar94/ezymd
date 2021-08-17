@@ -12,6 +12,7 @@ import com.ezymd.restaurantapp.details.model.ItemModel
 import com.ezymd.restaurantapp.utils.GlideApp
 import com.ezymd.restaurantapp.utils.OnRecyclerView
 import com.ezymd.restaurantapp.utils.SnapLog
+import com.ezymd.restaurantapp.utils.UserInfo
 import kotlinx.android.synthetic.main.cart_item_row.view.*
 import kotlinx.android.synthetic.main.restaurant_item_row.view.ivNotesThumb
 
@@ -67,7 +68,7 @@ class CartAdapter(
         holder.itemView.dishName.text = item.item
         holder.itemView.addOn.text = item.description
         item.stock = 5
-        holder.itemView.price.text = mContext.getString(R.string.dollor) + item.price
+        holder.itemView.price.text = UserInfo.getInstance(mContext).currency + item.total
         holder.itemView.quantityPicker.max = item.stock
 
         SnapLog.print("stock====" + item.quantity)
@@ -76,7 +77,18 @@ class CartAdapter(
         holder.itemView.quantityPicker.value = item.quantity
 
 
-
+        var productVariantids = ""
+        for (modifier in item.listModifiers) {
+            productVariantids = productVariantids + ", " + modifier.title
+        }
+        if (productVariantids.length > 1)
+            productVariantids = productVariantids.substring(1, productVariantids.length)
+        if (productVariantids.length > 1) {
+            holder.itemView.modifiers.visibility = View.VISIBLE
+            holder.itemView.modifiers.text = productVariantids
+        }else{
+            holder.itemView.modifiers.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             onRecyclerView.onClick(position, it)
         }

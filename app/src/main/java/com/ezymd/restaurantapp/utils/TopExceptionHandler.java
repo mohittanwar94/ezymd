@@ -72,9 +72,9 @@ sendEmail();
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         String subject = "Error report";
-        String body = "Mail this to m.tanwar@varshyl.com: " + "\n" + trace + "\n";
+        String body = "Mail this to er.mohittanwar94@gmail.com: " + "\n" + trace + "\n";
 
-        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"m.tanwar@varshyl.com"});
+        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"er.mohittanwar94@gmail.com"});
         sendIntent.putExtra(Intent.EXTRA_TEXT, body);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendIntent.setType("message/rfc822");

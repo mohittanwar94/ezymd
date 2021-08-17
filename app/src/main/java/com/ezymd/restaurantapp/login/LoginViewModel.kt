@@ -8,10 +8,12 @@ import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
 import com.ezymd.restaurantapp.network.ResultWrapper
+import com.ezymd.restaurantapp.splash.ConfigData
 import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +28,7 @@ class LoginViewModel : ViewModel() {
     val loginResponse: MutableLiveData<LoginModel>
     val otpResponse: MutableLiveData<OtpModel>
     val isLoading: MutableLiveData<Boolean>
+    val isShowDialog: MutableLiveData<Boolean>
 
     override fun onCleared() {
         super.onCleared()
@@ -47,9 +50,10 @@ class LoginViewModel : ViewModel() {
         isLoading = MutableLiveData()
         otpResponse = MutableLiveData()
         loginResponse = MutableLiveData()
+        isShowDialog = MutableLiveData()
     }
 
-    fun generateOtp(otp: String, counCode: String) {
+    fun generateOtp(otp: String, counCode: String, dialCode: String) {
         val phoneUtil = PhoneNumberUtil.getInstance()
         try {
             val swissNumberProto = phoneUtil.parse(otp, counCode)
@@ -57,20 +61,7 @@ class LoginViewModel : ViewModel() {
             if (!isValid)
                 errorRequest.postValue("Phone No. not valid")
             else {
-                isLoading.postValue(true)
-                viewModelScope.launch(Dispatchers.IO) {
-                    val result = loginRepository!!.generateOtp(
-                        otp,
-                        Dispatchers.IO
-                    )
-                    isLoading.postValue(false)
-                    when (result) {
-                        is ResultWrapper.NetworkError -> showNetworkError()
-                        is ResultWrapper.GenericError -> showGenericError(result.error)
-                        is ResultWrapper.Success -> otpResponse.postValue(result.value)
-                    }
-                }
-
+                isShowDialog.postValue(true)
             }
         } catch (e: NumberParseException) {
             System.err.println("NumberParseException was thrown: $e")
@@ -79,13 +70,29 @@ class LoginViewModel : ViewModel() {
 
     }
 
+    fun generateOtpServer(otp: String, dialCode: String) {
+        isLoading.postValue(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository!!.generateOtp(
+                otp, dialCode,
+                Dispatchers.IO
+            )
+            isLoading.postValue(false)
+            when (result) {
+                is ResultWrapper.NetworkError -> showNetworkError()
+                is ResultWrapper.GenericError -> showGenericError(result.error)
+                is ResultWrapper.Success -> otpResponse.postValue(result.value)
+            }
+        }
+    }
+
     fun loginFb(acessToken: AccessToken) {
         loginRepository!!.fbLogin(acessToken, loginRequest)
 
     }
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest
@@ -117,6 +124,11 @@ class LoginViewModel : ViewModel() {
             }
         }
 
+    }
+
+    fun contentVisiblity(configData: String): String {
+        var configModel = Gson().fromJson(configData, ConfigData::class.java)
+        return configModel.data?.otp_consent_message
     }
 
 }

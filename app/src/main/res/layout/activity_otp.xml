@@ -146,6 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:theme="@style/progressBarThemeBlack"
             android:layout_marginEnd="@dimen/_5sdp"
             android:elevation="@dimen/_10sdp"
             android:visibility="gone" />

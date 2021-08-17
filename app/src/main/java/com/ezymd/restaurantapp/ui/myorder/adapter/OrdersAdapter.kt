@@ -72,7 +72,7 @@ class OrdersAdapter(
         holder.itemView.name.text = item.restaurant.name
 
         holder.itemView.totalAmount.text =
-            holder.itemView.context.getString(R.string.dollor) + item.total
+            item.currency + item.total
 
         val itemsString = StringBuilder()
         for (model in item.orderItems) {
@@ -119,7 +119,10 @@ class OrdersAdapter(
             model.price = item.price
             model.item = item.item
             model.description = item.description
-            model.image = item.image
+            val listImage = ArrayList<String>()
+            listImage.add(item.image)
+            model.image = listImage
+
 
             list.add(model)
         }

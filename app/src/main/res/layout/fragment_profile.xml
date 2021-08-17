@@ -215,7 +215,7 @@
                 android:background="@color/color_f3f3f3" />
 
 
-            <LinearLayout
+        <!--    <LinearLayout
                 android:id="@+id/notification"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_52sdp"
@@ -259,7 +259,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/color_f3f3f3" />
-
+-->
 
             <LinearLayout
                 android:id="@+id/refer"
@@ -275,7 +275,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/image"
                     android:padding="@dimen/_4sdp"
-                    app:srcCompat="@drawable/ic_refer_earn" />
+                    app:srcCompat="@drawable/ic_refer" />
 
                 <com.ezymd.restaurantapp.customviews.SnapTextView
                     android:layout_width="0dp"
@@ -382,7 +382,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:elevation="@dimen/_9sdp"
-                    android:theme="@style/progressBarThemeWhite"
+                    android:theme="@style/progressBarThemeBlack"
                     android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>

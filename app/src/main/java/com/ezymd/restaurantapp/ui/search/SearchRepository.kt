@@ -1,10 +1,10 @@
 package com.ezymd.restaurantapp.ui.search
 
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.network.ApiClient
 import com.ezymd.restaurantapp.network.NetworkCommonRequest
 import com.ezymd.restaurantapp.network.ResultWrapper
 import com.ezymd.restaurantapp.network.WebServices
-import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.utils.BaseRequest
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -14,12 +14,12 @@ class SearchRepository {
     suspend fun getRestaurantSearch(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.searchRestaurant(
+            apiServices.nearByShops(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }
@@ -30,12 +30,12 @@ class SearchRepository {
     suspend fun getRestaurants(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getResturants(
+            apiServices.nearByShops(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }

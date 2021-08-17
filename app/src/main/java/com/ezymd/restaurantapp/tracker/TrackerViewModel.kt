@@ -66,11 +66,11 @@ class TrackerViewModel : ViewModel() {
             }
 
 
-        }, 100, 15000)
+        }, 100, 5000)
     }
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest
@@ -149,7 +149,7 @@ class TrackerViewModel : ViewModel() {
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> {
                     SnapLog.print(result.value.toString())
-                    locationUpdate.postValue(result.value)
+                    locationUpdate.postValue(result.value!!)
                 }
             }
         }
@@ -188,7 +188,7 @@ class TrackerViewModel : ViewModel() {
                 is ResultWrapper.NetworkError -> showNetworkError()
                 is ResultWrapper.GenericError -> showGenericError(result.error)
                 is ResultWrapper.Success -> {
-                    orderCancel.postValue(result.value)
+                    orderCancel.postValue(result.value!!)
                 }
             }
         }

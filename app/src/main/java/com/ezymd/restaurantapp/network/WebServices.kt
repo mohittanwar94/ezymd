@@ -5,10 +5,16 @@ import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
 import com.ezymd.restaurantapp.cart.model.TransactionChargeModel
 import com.ezymd.restaurantapp.coupon.model.CoupanBaseModel
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
+import com.ezymd.restaurantapp.details.model.CategoriesResponse
 import com.ezymd.restaurantapp.details.model.MenuItemModel
+import com.ezymd.restaurantapp.details.model.SubCategoriesResponse
 import com.ezymd.restaurantapp.filters.model.FilterModel
+import com.ezymd.restaurantapp.itemdetail.model.ProductDetailBaseModel
 import com.ezymd.restaurantapp.login.model.LoginModel
 import com.ezymd.restaurantapp.login.model.OtpModel
+import com.ezymd.restaurantapp.refer.ReferModel
+import com.ezymd.restaurantapp.reviewsList.model.ShopReviewsBaseModel
 import com.ezymd.restaurantapp.tracker.model.BaseUpdateLocationModel
 import com.ezymd.restaurantapp.ui.home.model.ResturantModel
 import com.ezymd.restaurantapp.ui.home.model.TrendingModel
@@ -17,6 +23,7 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderSuccessModel
 import com.ezymd.restaurantapp.ui.profile.LogoutModel
 import com.ezymd.restaurantapp.utils.BaseResponse
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -48,34 +55,55 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>
     ): LoginModel
 
-    @FormUrlEncoded
-    @POST(ServerConfig.LIST_BANNER)
-    suspend fun listBanners(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
 
     @GET(ServerConfig.LOGOUT)
     suspend fun logout(
         @Header("Authorization") token: String
     ): LogoutModel
 
-    @FormUrlEncoded
-    @POST(ServerConfig.SEARCH_RESTURANTS)
-    suspend fun searchRestaurant(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
+    @GET(ServerConfig.CONFIG)
+    suspend fun config(
+    ): JsonObject
 
-    @FormUrlEncoded
-    @POST(ServerConfig.LIST_RESTURANTS)
-    suspend fun getResturants(
-        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
-    ): ResturantModel
+    /* @FormUrlEncoded
+     @POST(ServerConfig.SEARCH_RESTURANTS)
+     suspend fun searchRestaurant(
+         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+     ): ResturantModel
 
+     @FormUrlEncoded
+     @POST(ServerConfig.LIST_RESTURANTS)
+     suspend fun getResturants(
+         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+     ): ResturantModel
 
+ */
     @GET(ServerConfig.RESTURANT_DETAILS)
     suspend fun getResturantDetails(
         @Path("id") id: Int, @Header("Authorization") token: String
     ): MenuItemModel
+
+
+
+
+    @FormUrlEncoded
+    @POST(ServerConfig.TRENDING_STORES)
+    suspend fun trendingStores(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): TrendingDashboardModel
+
+
+    @FormUrlEncoded
+    @POST(ServerConfig.NEAR_BY_SHOPS)
+    suspend fun nearByShops(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): TrendingDashboardModel
+
+    @FormUrlEncoded
+    @POST(ServerConfig.NEAR_BY_BANNERS)
+    suspend fun nearByBanners(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): TrendingDashboardModel
 
 
     @GET(ServerConfig.RESTURANT_FILTERS)
@@ -84,11 +112,33 @@ interface WebServices {
     ): FilterModel
 
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @POST(ServerConfig.LIST_TRENDING)
     suspend fun getTrending(
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): TrendingModel
+*/
+    @FormUrlEncoded
+    @POST(ServerConfig.SAVE_REFERRAL)
+    suspend fun saveReferral(
+        @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
+    ): LocationValidatorModel
+
+
+    @Multipart
+    @POST(ServerConfig.UPDATE_PROFILE)
+    suspend fun updateProfile(
+        @Part avatar: MultipartBody.Part,
+        @Header("Authorization") token: String
+    ): LoginModel
+
+    @FormUrlEncoded
+    @POST(ServerConfig.UPDATE_PROFILE)
+    suspend fun updateWithoutImageProfile(
+        @FieldMap commonParameters: Map<String, String>,
+        @Header("Authorization") token: String
+    ): LoginModel
+
 
     @FormUrlEncoded
     @POST(ServerConfig.SOCIAL_LOGIN_USER)
@@ -100,6 +150,21 @@ interface WebServices {
     suspend fun startCheckout(
         @Body jsonObject: JsonObject, @Header("Authorization") token: String
     ): BaseResponse
+
+    @FormUrlEncoded
+    @POST(ServerConfig.WALLET_BALANCE)
+    suspend fun balanceWallet(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): ReferModel
+
+
+    @FormUrlEncoded
+    @POST(ServerConfig.EMAIL_INVOICE)
+    suspend fun emailInvoice(
+        @FieldMap apiVersionMap: Map<String, String>,
+        @Header("Authorization") accessToken: String
+    ): ReferModel
 
 
     @GET(ServerConfig.DIRECTION_API)
@@ -182,6 +247,20 @@ interface WebServices {
         @FieldMap commonParameters: Map<String, String>, @Header("Authorization") token: String
     ): LocationValidatorModel
 
+    @GET(ServerConfig.SHOP_DETAIL)
+    suspend fun shopDetail(
+        @Query("shop_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): CategoriesResponse
+
+
+    @GET(ServerConfig.SHOP_PRODUCT_DETAIL)
+    suspend fun shopProductCategoryDetail(
+        @Query("shop_id") id: String,
+        @Query("category_id") category_id: String,
+        @Header("Authorization") accessToken: String
+    ): SubCategoriesResponse
+
     @FormUrlEncoded
     @POST(ServerConfig.APPLY_COUPON)
     suspend fun applyCoupon(
@@ -193,6 +272,25 @@ interface WebServices {
         @Path("restaurant_id") id: String,
         @Header("Authorization") accessToken: String
     ): CoupanBaseModel
+
+    @GET(ServerConfig.PRODUCT_DETAIL)
+    suspend fun productDetail(
+        @Query("product_id") id: String,
+        @Header("Authorization") accessToken: String
+    ): ProductDetailBaseModel
+
+    @GET(ServerConfig.GET_SHOP_REVIEW)
+    suspend fun getShopReview(
+        @Query("shop_id") shop_id: String,
+        @Header("Authorization") accessToken: String
+    ): ShopReviewsBaseModel
+
+    @GET(ServerConfig.GET_SHOP_REVIEW)
+    suspend fun getShopReviewByRating(
+        @Query("shop_id") shop_id: String,
+        @Query("rating") rating: String,
+        @Header("Authorization") accessToken: String
+    ): ShopReviewsBaseModel
 
 }
 

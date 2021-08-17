@@ -101,7 +101,108 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAvailOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    app:cardBackgroundColor="@color/color_fffce5"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    app:contentPaddingBottom="@dimen/_8sdp"
+                    app:contentPaddingTop="@dimen/_8sdp"
+                    app:strokeColor="@color/color_fff7b2"
+                    app:strokeWidth="@dimen/_1sdp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_food"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_food"
+                            app:layout_constraintEnd_toStartOf="@id/iv_pharmacy"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/iv_food_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="@string/food"
+                            app:layout_constraintEnd_toEndOf="@id/iv_food"
+                            app:layout_constraintStart_toStartOf="@id/iv_food"
+                            app:layout_constraintTop_toBottomOf="@id/iv_food" />
+
+                        <View
+                            android:id="@+id/iv_food_view"
+                            android:layout_width="@dimen/_1sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:background="@color/color_bbbcbf"
+                            app:layout_constraintEnd_toEndOf="@id/iv_food"
+                            app:layout_constraintEnd_toStartOf="@id/iv_pharmacy"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_pharmacy"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_pharmacy"
+                            app:layout_constraintEnd_toStartOf="@id/iv_grocery"
+                            app:layout_constraintStart_toEndOf="@id/iv_food"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/iv_pharmacy_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="@string/pharmacy"
+                            app:layout_constraintEnd_toEndOf="@id/iv_pharmacy"
+                            app:layout_constraintStart_toStartOf="@id/iv_pharmacy"
+                            app:layout_constraintTop_toBottomOf="@id/iv_pharmacy" />
+
+                        <View
+                            android:id="@+id/iv_pharmacy_view"
+                            android:layout_width="@dimen/_1sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:background="@color/color_bbbcbf"
+                            app:layout_constraintEnd_toStartOf="@id/iv_grocery"
+                            app:layout_constraintStart_toEndOf="@id/iv_pharmacy"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_grocery"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_grocery"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_pharmacy"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/iv_grocery_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="@string/grocery"
+                            app:layout_constraintEnd_toEndOf="@id/iv_grocery"
+                            app:layout_constraintStart_toStartOf="@id/iv_grocery"
+                            app:layout_constraintTop_toBottomOf="@id/iv_grocery" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.ezymd.restaurantapp.customviews.SnapViewPager
                     android:id="@+id/bannerPager"
@@ -145,12 +246,15 @@
                     android:id="@+id/trendingRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
+                    android:background="@color/color_f8f8f8"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
-                    android:paddingEnd="@dimen/_15sdp" />
+                    android:paddingLeft="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_15sdp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

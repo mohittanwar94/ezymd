@@ -26,13 +26,15 @@ class LoginRepository private constructor() {
 
     suspend fun generateOtp(
         otp: String,
+        countryCode: String,
         dispatcher: CoroutineDispatcher
     ): ResultWrapper<OtpModel> {
 
         SnapLog.print("Login repositry=====")
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
         val map = HashMap<String, String>()
-        map.put("phone_no", otp)
+        map["phone_no"] = otp
+        map["country_code"] = countryCode
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
             apiServices.sendOtp(
@@ -119,7 +121,9 @@ class LoginRepository private constructor() {
                 loginModel.first_name = account.displayName
                 loginModel.email = account.email
                 loginModel.id = account.id
-                loginModel.image_url = account.photoUrl.toString()
+                account.photoUrl?.let {
+                    loginModel.image_url = account.photoUrl?.toString()
+                }
                 loginModel.socialLogin = 2
             } else {
                 loginModel.errorMessage = "Account Info Not Found"

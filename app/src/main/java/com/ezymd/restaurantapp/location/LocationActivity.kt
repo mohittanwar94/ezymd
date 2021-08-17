@@ -44,7 +44,7 @@ import java.util.*
 
 class LocationActivity : BaseActivity(), OnMapReadyCallback {
     private var bottomSheetDialogFragment: AddressBottomSheet? = null
-    private var mTimerIsRunning = false
+
     val REQUEST_CHECK_SETTINGS = 43
 
 
@@ -58,7 +58,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     private val gcd by lazy {
         Geocoder(this, Locale.getDefault())
     }
-
+    private var mTimerIsRunning = false
     private val handler by lazy {
         Handler()
     }
@@ -201,7 +201,9 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
             getCurrentLocation()
         else {
             val location = intent.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
-            setStartLocation(location.lat, location.lang, "", 17f)
+            location?.let {
+                setStartLocation(it.lat, it.lang, "", 17f)
+            }
 
         }
 
@@ -315,7 +317,9 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
                     if (intent.hasExtra(JSONKeys.LOCATION_OBJECT)) {
                         val location =
                             intent.getParcelableExtra<LocationModel>(JSONKeys.LOCATION_OBJECT)
-                        setStartLocation(location.lat, location.lang, "", 17f)
+                        location?.let {
+                            setStartLocation(it.lat, it.lang, "", 17f)
+                        }
                     } else {
                         getCurrentLocation()
                     }
@@ -325,7 +329,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         if (requestCode == CURRENT_PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 AutocompleteActivity.RESULT_OK -> {
-                    val place = data!!.getParcelableExtra(JSONKeys.OBJECT) as Place
+                    val place = data!!.getParcelableExtra<Place>(JSONKeys.OBJECT)!!
                     val latLng = place.latLng.toString()
                     val location = latLng.substring(latLng.indexOf("(") + 1, latLng.indexOf(")"))
                     val loc = location.split(",")

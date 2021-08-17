@@ -1,11 +1,15 @@
 package com.ezymd.restaurantapp.ui.profile
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,9 +18,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.MainActivity
 import com.ezymd.restaurantapp.R
+import com.ezymd.restaurantapp.ServerConfig
 import com.ezymd.restaurantapp.editprofile.EditProfileActivity
+import com.ezymd.restaurantapp.refer.ReferActivity
 import com.ezymd.restaurantapp.ui.cart.ProfileViewModel
 import com.ezymd.restaurantapp.utils.*
+import com.ezymd.restaurantapp.wallet.WalletActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.stripe.android.CustomerSession
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -65,6 +72,55 @@ class ProfileFragment : Fragment() {
             notificationsViewModel.logout(baseRequest)
 
         }
+
+        refer.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(activity, ReferActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
+
+        wallet.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            val intent = Intent(activity, WalletActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out)
+        }
+        faq.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            loadFaqs()
+        }
+
+    }
+
+    private fun loadFaqs() {
+        val builder = CustomTabsIntent.Builder()
+        builder.setShowTitle(true)
+        builder.setCloseButtonIcon(
+            BitmapFactory.decodeResource(resources, R.drawable.ic_back)
+        )
+        builder.setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+        builder.setStartAnimations(requireActivity(), R.anim.left_in, R.anim.left_out)
+        builder.setExitAnimations(requireActivity(), R.anim.right_in, R.anim.right_out)
+
+        val customTabsIntent = builder.build()
+
+        val list = ArrayList<String>()
+        list.add(ServerConfig.FAQ_URL)
+        val packageName = CustomTabsClient.getPackageName(requireContext(), list)
+        if (packageName == null) {
+            requireActivity().startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(ServerConfig.FAQ_URL)
+                )
+            )
+
+        } else {
+            customTabsIntent.intent.setPackage(packageName)
+            customTabsIntent.launchUrl(requireActivity(), Uri.parse(ServerConfig.FAQ_URL))
+        }
+
     }
 
     override fun onResume() {

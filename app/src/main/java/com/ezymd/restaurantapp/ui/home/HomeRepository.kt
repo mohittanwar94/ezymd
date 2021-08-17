@@ -3,6 +3,9 @@ package com.ezymd.restaurantapp.ui.home
 import android.location.Address
 import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
+import com.ezymd.restaurantapp.cart.model.LocationValidatorModel
+import com.ezymd.restaurantapp.dashboard.model.DataTrending
+import com.ezymd.restaurantapp.dashboard.model.TrendingDashboardModel
 import com.ezymd.restaurantapp.filters.model.FilterModel
 import com.ezymd.restaurantapp.location.model.LocationModel
 import com.ezymd.restaurantapp.network.ApiClient
@@ -42,17 +45,18 @@ class HomeRepository {
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-           // isLoading.postValue(false)
+            // isLoading.postValue(false)
         } catch (e: IOException) {
             e.printStackTrace()
             locationModel.location = address
             locationModel.city = cityName
             addressResult.postValue(locationModel)
-          //  isLoading.postValue(false)
+            //  isLoading.postValue(false)
         }
 
 
     }
+
     suspend fun getFilters(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
@@ -70,14 +74,28 @@ class HomeRepository {
     suspend fun listBanners(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.listBanners(
+            apiServices.nearByBanners(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
+        }
+
+
+    }
+
+
+    suspend fun getConfigurations(
+        dispatcher: CoroutineDispatcher
+    ): ResultWrapper<com.google.gson.JsonObject> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.config()
         }
 
 
@@ -86,12 +104,12 @@ class HomeRepository {
     suspend fun getResturants(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<ResturantModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getResturants(
+            apiServices.nearByShops(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }
@@ -103,12 +121,27 @@ class HomeRepository {
     suspend fun getTrending(
         baseRequest: BaseRequest,
         dispatcher: CoroutineDispatcher
-    ): ResultWrapper<TrendingModel> {
+    ): ResultWrapper<TrendingDashboardModel> {
 
         val apiServices = ApiClient.client!!.create(WebServices::class.java)
 
         return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
-            apiServices.getTrending(
+            apiServices.trendingStores(
+                baseRequest.paramsMap, baseRequest.accessToken
+            )
+        }
+
+
+    }
+
+    suspend fun saveReferralOnServer(
+         baseRequest: BaseRequest, dispatcher: CoroutineDispatcher
+    ): ResultWrapper<LocationValidatorModel> {
+
+        val apiServices = ApiClient.client!!.create(WebServices::class.java)
+
+        return NetworkCommonRequest.instance!!.safeApiCall(dispatcher) {
+            apiServices.saveReferral(
                 baseRequest.paramsMap, baseRequest.accessToken
             )
         }

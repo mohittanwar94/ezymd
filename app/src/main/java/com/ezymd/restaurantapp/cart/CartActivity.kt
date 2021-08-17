@@ -22,6 +22,11 @@ import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_cart.*
+import kotlinx.android.synthetic.main.activity_cart.content
+import kotlinx.android.synthetic.main.activity_cart.payButton
+import kotlinx.android.synthetic.main.activity_cart.promoLayout
+import kotlinx.android.synthetic.main.activity_cart.toolbar_layout
+import kotlinx.android.synthetic.main.activity_confirm_order.*
 
 class CartActivity : BaseActivity() {
     private var discountApplied = 0.0
@@ -56,22 +61,23 @@ class CartActivity : BaseActivity() {
     }
 
     private fun setGUI() {
+        delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+        pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
+        pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
+        delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
         pickUp.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = true
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.white))
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            pickUp.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            delivery.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            delivery.alpha=0.5F
+            pickUp.alpha=1F
         }
         delivery.setOnClickListener {
             UIUtil.clickHandled(it)
             restaurant.isPick = false
-            pickUp.setTextColor(ContextCompat.getColor(this, R.color.white))
-            delivery.setTextColor(ContextCompat.getColor(this, R.color.color_002366))
-            delivery.background = ContextCompat.getDrawable(this, R.drawable.ic_gray_btn_pressed)
-            pickUp.background = ContextCompat.getDrawable(this, R.drawable.pick_up_button_bg)
+            pickUp.alpha=0.5F
+            delivery.alpha=1F
         }
+        delivery.callOnClick()
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)
             if (TextUtils.isEmpty(userInfo!!.phoneNumber)) {
@@ -122,7 +128,7 @@ class CartActivity : BaseActivity() {
         if (price < restaurant.minOrder.toInt()) {
             val msg = TextUtils.concat(
                 "Add ",
-                "$" + (restaurant.minOrder.toInt() - price),
+                userInfo?.currency + (restaurant.minOrder.toInt() - price),
                 " to reach minimum order amount"
             ).toString()
             showError(false, msg, null)
@@ -197,7 +203,7 @@ class CartActivity : BaseActivity() {
                     discountApplied = it.discountValue.toDouble()
                     discountApplied= String.format("%.2f",discountApplied).toDouble()
                 }
-                promoCharge.text = "$" + discountApplied
+                promoCharge.text = userInfo?.currency + discountApplied
                 notifyAdapter(EzymdApplication.getInstance().cartData.value!!)
                /* val baseRequest = BaseRequest(userInfo)
                 baseRequest.paramsMap.put("amount", "" +( getTotalPrice(EzymdApplication.getInstance().cartData.value!!)-discountApplied))
@@ -237,14 +243,8 @@ class CartActivity : BaseActivity() {
     }
 
     private fun getTotalPrice(arrayList: ArrayList<ItemModel>): Double {
-        var price = 0.0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-        }
-
-
-
-        return String.format("%.2f",price).toDouble()
+        val calc = CalculationUtils().processCartData(arrayList)
+        return String.format("%.2f",calc.second).toDouble()
     }
 
     private fun showEmpty() {
@@ -286,21 +286,13 @@ class CartActivity : BaseActivity() {
     }
 
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
-        var quantity = 0
-        var price = 0
-        for (itemModel in arrayList) {
-            price += (itemModel.price * itemModel.quantity)
-            quantity += itemModel.quantity
-        }
-
-
-        setCartData(quantity, price)
-
+        val calc = CalculationUtils().processCartData(arrayList)
+        setCartData(calc.first, calc.second)
     }
 
-    private fun setCartData(quantity: Int, price: Int) {
+    private fun setCartData(quantity: Int, price: Double) {
 
-        if (quantity == 0 && price == 0) {
+        if (quantity == 0 && price == 0.0) {
             //setEmptyCart()
         }
         setCartDetails(quantity, price)
@@ -308,24 +300,17 @@ class CartActivity : BaseActivity() {
 
     }
 
-    private fun setCartDetails(quantityCount: Int, price: Int) {
+    private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
 
             SnapLog.print("discountApplied=========="+(discountApplied))
-            totalAmount.text = TextUtils.concat(
-                getString(R.string.dollor),
-                "" +  String.format("%.2f",((serviceAmount + price)-discountApplied))
-            )
-            subTotal.text = TextUtils.concat(
-                getString(R.string.dollor),
-                "" + price
-            )
+            totalAmount.text = CalculationUtils().getPriceText(this, quantityCount, price,discountApplied)
 
             if (price < restaurant.minOrder.toInt()) {
                 discount.text =
                     TextUtils.concat(
-                        "Add $ ",
-                        "" + (restaurant.minOrder.toInt() - price),
+                        "Add  ",
+                        userInfo?.currency + (restaurant.minOrder.toInt() - price),
                         " to reach minimum order"
                     )
             } else

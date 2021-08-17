@@ -54,7 +54,7 @@ class OtpViewModel : ViewModel() {
     }
 
     private fun showNetworkError() {
-        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage)
+        errorRequest.postValue(EzymdApplication.getInstance().networkErrorMessage!!)
     }
 
     fun showError() = errorRequest
@@ -63,10 +63,10 @@ class OtpViewModel : ViewModel() {
         errorRequest.postValue(error?.message)
     }
 
-    fun resendOtp(mobile: String) {
+    fun resendOtp(mobile: String,countryCode: String, hasExtra: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loginRepository!!.resendSms(mobile,
-                Dispatchers.IO
+            val result = loginRepository!!.resendSms(mobile,countryCode,
+                Dispatchers.IO,hasExtra
             )
             isLoading.postValue(false)
             when (result) {

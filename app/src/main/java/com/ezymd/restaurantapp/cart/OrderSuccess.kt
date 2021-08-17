@@ -2,7 +2,6 @@ package com.ezymd.restaurantapp.cart
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ezymd.restaurantapp.BaseActivity
@@ -11,8 +10,6 @@ import com.ezymd.restaurantapp.R
 import com.ezymd.restaurantapp.ui.myorder.OrderFragment
 import com.ezymd.restaurantapp.utils.JSONKeys
 import com.ezymd.restaurantapp.utils.UIUtil
-import com.view.circulartimerview.CircularTimerListener
-import com.view.circulartimerview.TimeFormatEnum
 import kotlinx.android.synthetic.main.activity_order_success.*
 
 
@@ -64,32 +61,6 @@ class OrderSuccess : BaseActivity() {
     }
 
     private fun setGUI() {
-        if (intent.getBooleanExtra(JSONKeys.IS_PICKUP, false)) {
-            successLayout.visibility = View.VISIBLE
-            progressLay.visibility = View.GONE
-            isBackEnable = true
-        } else {
-            progress_circular.setPrefix("")
-            progress_circular.setCircularTimerListener(object : CircularTimerListener {
-                override fun updateDataOnTick(remainingTimeInMs: Long): String? {
-                    progress_circular.progress =
-                        Math.ceil((remainingTimeInMs / 1000f).toDouble()).toFloat()
-                    return (Math.ceil((remainingTimeInMs / 1000f).toDouble()).toInt()).toString()
-                }
-
-                override fun onTimerFinished() {
-                    progress_circular.setPrefix("")
-                    progress_circular.setSuffix("")
-                    progress_circular.setText("FINISHED THANKS!")
-                    successLayout.visibility = View.VISIBLE
-                    progressLay.visibility = View.GONE
-                    isBackEnable = true
-                }
-            }, 60, TimeFormatEnum.SECONDS, 1)
-
-            progress_circular.setMaxValue(60f)
-            progress_circular.startTimer()
-        }
 
         payButton.setOnClickListener {
             UIUtil.clickHandled(it)

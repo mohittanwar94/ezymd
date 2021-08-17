@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.MutableLiveData;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 
 public class UserInfo {
@@ -39,6 +41,14 @@ public class UserInfo {
 
     public void setDeviceToken(String token) {
         preferences.edit().putString("DeviceToken", token).apply();
+    }
+
+    public String getCountryCode() {
+        return preferences.getString("setCountryCode", "");
+    }
+
+    public void setCountryCode(String countryCode) {
+        preferences.edit().putString("setCountryCode", countryCode).apply();
     }
 
     public String getCustomerID() {
@@ -158,5 +168,37 @@ public class UserInfo {
     public void setLang(String lat) {
         preferences.edit().putString("lang", lat).apply();
     }
+
+    public String getReferalUrl() {
+        return preferences.getString("getRefferalUrl", "");
+    }
+
+    public void saveReferalUrl(String referrerUrl) {
+        preferences.edit().putString("getRefferalUrl", referrerUrl).apply();
+    }
+
+    public String getConfigJson() {
+        return preferences.getString("configJson", null);
+    }
+
+    public void setConfigJson(String configJson) {
+        preferences.edit().putString("configJson", configJson).apply();
+    }
+
+    public void setCurrency(String configJson) {
+        preferences.edit().putString("setCurrency", configJson).apply();
+    }
+    public String getCurrency(){
+        return preferences.getString("setCurrency", "$");
+    }
+
+
+    public void setCurrencyCode(String configJson) {
+        preferences.edit().putString("setCurrencyCode", configJson).apply();
+    }
+    public String getCurrencyCode(){
+        return preferences.getString("setCurrencyCode", "USD");
+    }
+
 
 }

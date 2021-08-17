@@ -52,6 +52,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+<!--
             <RelativeLayout
                 android:id="@+id/online"
                 android:layout_width="match_parent"
@@ -108,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/color_f2f4f7" />
+-->
 
             <RelativeLayout
                 android:id="@+id/cod"
@@ -161,6 +163,158 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
+          <!--  <RelativeLayout
+                android:id="@+id/gpay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_gravity="top">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/gpayloc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:text="@string/pay_using_gpay"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/gpayAss"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/gpayloc"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/googlepay"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/gpayCheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_below="@+id/gpayloc"
+                    android:layout_alignEnd="@+id/gpayloc"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:color_checked="@color/color_ffe600"
+                    app:color_tick="@color/color_002366"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/color_002366"
+                    app:duration="150"
+                    app:stroke_width="@dimen/_1sdp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/color_f2f4f7" />
+
+-->
+            <RelativeLayout
+                android:id="@+id/wallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/wallet_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:text="@string/pay_from_wallet"
+                    android:textColor="#b2bdd1"
+                    android:textSize="@dimen/_13sdp"
+                    android:textStyle="normal"
+                    app:textFont="bold" />
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/selectWallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/wallet_tv"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:letterSpacing="0.01"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:text="@string/wallet"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+
+                <com.ezymd.restaurantapp.customviews.SmoothCheckBox
+                    android:id="@+id/walletCheckBox"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_below="@+id/wallet_tv"
+                    android:layout_alignEnd="@+id/wallet_tv"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:color_checked="@color/color_ffe600"
+                    app:color_tick="@color/color_002366"
+                    app:color_unchecked="@color/white"
+                    app:color_unchecked_stroke="@color/color_002366"
+                    app:duration="150"
+                    app:stroke_width="@dimen/_1sdp" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/walletbalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectWallet"
+                    android:letterSpacing="0.01"
+                    android:textColor="@color/color_002366"
+                    android:textSize="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+
+                <com.ezymd.restaurantapp.customviews.SnapTextView
+                    android:id="@+id/instructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/walletbalance"
+                    android:letterSpacing="0.01"
+                    android:textColor="@color/color_ffe600"
+                    android:textSize="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:textStyle="normal"
+                    app:textFont="medium" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_below="@+id/walletCheckBox"
+                    android:layout_alignEnd="@+id/wallet_tv"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:theme="@style/progressBarThemeBlack" />
+
+
+            </RelativeLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -184,12 +338,6 @@
                 android:textStyle="normal"
                 app:buttonFont="bold" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/progressBarTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
 
         </LinearLayout>
 

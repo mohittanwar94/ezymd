@@ -72,6 +72,11 @@ public class OrderModel implements Serializable {
     @SerializedName("order_updated")
     @Expose
     private String updated;
+
+    @SerializedName("currency")
+    @Expose
+    private String currency;
+
     @SerializedName("schedule_date")
     @Expose
     private String scheduleTime;
@@ -215,6 +220,14 @@ public class OrderModel implements Serializable {
 
     public void setDeliveryCharges(String deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
+    }
+
+    public String getCurrency() {
+        return TextUtils.isEmpty(currency) ? "$" : currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getEmail() {

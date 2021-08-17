@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
@@ -18,11 +20,16 @@ import com.ezymd.restaurantapp.ui.myorder.model.OrderItems
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
 import com.ezymd.restaurantapp.utils.*
+import kotlinx.android.synthetic.main.activity_checkout.*
 import kotlinx.android.synthetic.main.activity_order_details.*
 
 class OrderDetailsActivity : BaseActivity() {
+    private var updateEmailDialogFragment: RequestInvoiceDialogFragment? = null
     private var restaurantAdapter: OrderDetailsAdapter? = null
     private val dataResturant = ArrayList<OrderItems>()
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(OrderDetailsViewModel::class.java)
+    }
 
 
     private val item by lazy {
@@ -54,21 +61,19 @@ class OrderDetailsActivity : BaseActivity() {
 
         paymentMode.text = getPaymentMode(item.paymentType)
         subTotal.text =
-            getString(R.string.dollor) + String.format("%.2f", getTotalPrice(item.orderItems))
+            item.currency + String.format("%.2f", getTotalPrice(item.orderItems))
         if (!item.discount.equals("0")) {
             discountLay.visibility = View.VISIBLE
             discount.text =
-                getString(R.string.dollor) + String.format("%.2f", item.discount.toDouble())
+                item.currency + String.format("%.2f", item.discount.toDouble())
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         restaurantname.text = item.restaurant?.name
         username.text = userInfo?.userName
         address.text = item.restaurant?.address
         order_info.text =
-            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
-                R.string.dollor
-            ) + item.total
-        totalAmount.text = getString(R.string.dollor) + item.total
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + item.currency + item.total
+        totalAmount.text = item.currency+ item.total
         deliveryInstruction.text = item.deliveryInstruction
         userAddress.text = item.address
         if (item.scheduleType == 2) {
@@ -83,7 +88,7 @@ class OrderDetailsActivity : BaseActivity() {
         }
         if (!item.deliveryCharges.equals("0"))
             shippingCharge.text =
-                getString(R.string.dollor) + String.format("%.2f", item.deliveryCharges.toDouble())
+                item.currency + String.format("%.2f", item.deliveryCharges.toDouble())
         review.setOnClickListener {
             UIUtil.clickAlpha(it)
             startActivityForResult(
@@ -94,6 +99,49 @@ class OrderDetailsActivity : BaseActivity() {
             )
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
+
+        invoice.setOnClickListener {
+            UIUtil.clickAlpha(it)
+            showInvoiceDialog(it)
+        }
+    }
+
+    private fun showInvoiceDialog(it: View?) {
+        if (supportFragmentManager.findFragmentByTag("fragment_email_update") == null) {
+            val fm = supportFragmentManager
+            updateEmailDialogFragment = RequestInvoiceDialogFragment.newInstance("", false)
+            updateEmailDialogFragment!!.show(fm, "fragment_email_update")
+        } else {
+            if (!updateEmailDialogFragment!!.isVisible) {
+                val fm = supportFragmentManager
+                updateEmailDialogFragment?.show(fm, "fragment_email_update")
+            }
+        }
+        updateEmailDialogFragment!!.setOnClickListener(OnEmailUpdate {
+            requestInvoiceServer(it)
+        })
+    }
+
+    private fun requestInvoiceServer(it: String) {
+        val baseRequest = BaseRequest(userInfo)
+        baseRequest.paramsMap["email"] = it
+        baseRequest.paramsMap["user_id"] = "" + userInfo?.userID
+        baseRequest.paramsMap["order_id"] = "" + item.orderId
+        viewModel.emailInvoice(baseRequest)
+        viewModel.baseResponse.observe(this, Observer {
+            showError(it.status == ErrorCodes.SUCCESS, it.message, null)
+
+        })
+
+        viewModel.errorRequest.observe(this, Observer {
+            if (it != null)
+                showError(false, it, null)
+        })
+        viewModel.isLoading.observe(this, Observer {
+
+
+        })
+
     }
 
     private fun getPaymentMode(paymentType: Int): String {
@@ -101,6 +149,8 @@ class OrderDetailsActivity : BaseActivity() {
             return getString(R.string.cash_on_delivery)
         else if (paymentType == PaymentMethodTYPE.ONLINE)
             return getString(R.string.card)
+        else if (paymentType == PaymentMethodTYPE.GPAY)
+            return getString(R.string.googlepay)
         else
             return getString(R.string.wallet)
     }
@@ -122,7 +172,9 @@ class OrderDetailsActivity : BaseActivity() {
             model.price = item.price
             model.item = item.item
             model.description = item.description
-            model.image = item.image
+            val listImage = ArrayList<String>()
+            listImage.add(item.image)
+            model.image = listImage
 
             list.add(model)
         }
@@ -164,7 +216,7 @@ class OrderDetailsActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        notifyAdapter(item.orderItems)
+//        notifyAdapter(item.orderItems)
 
     }
 
@@ -200,6 +252,7 @@ class OrderDetailsActivity : BaseActivity() {
 
 
     private fun setAdapter() {
+        dataResturant.addAll(item.orderItems)
         resturantRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         resturantRecyclerView.addItemDecoration(
@@ -209,7 +262,7 @@ class OrderDetailsActivity : BaseActivity() {
                 ))
             )
         )
-        restaurantAdapter = OrderDetailsAdapter(this, OnRecyclerView { position, view ->
+        restaurantAdapter = OrderDetailsAdapter(this,item.currency, OnRecyclerView { position, view ->
 
         }, dataResturant)
         resturantRecyclerView.adapter = restaurantAdapter
@@ -220,14 +273,6 @@ class OrderDetailsActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-    }
-
-
-    private fun notifyAdapter(it: ArrayList<OrderItems>) {
-        dataResturant.clear()
-        dataResturant.addAll(it)
-        restaurantAdapter!!.setData(it)
-
     }
 
 

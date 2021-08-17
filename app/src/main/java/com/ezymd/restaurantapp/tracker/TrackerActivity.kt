@@ -10,10 +10,15 @@ import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.SystemClock
 import android.view.View
-import android.widget.Toast
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -22,8 +27,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ezymd.restaurantapp.BaseActivity
 import com.ezymd.restaurantapp.EzymdApplication
 import com.ezymd.restaurantapp.R
-import com.ezymd.restaurantapp.push.CallScreenActivity
-import com.ezymd.restaurantapp.push.SinchService
 import com.ezymd.restaurantapp.tracker.model.UpdateLocationModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderModel
 import com.ezymd.restaurantapp.ui.myorder.model.OrderStatus
@@ -36,13 +39,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.database.DataSnapshot
 import com.google.maps.android.PolyUtil
-import com.google.maps.android.SphericalUtil.computeHeading
-import com.sinch.android.rtc.SinchError
 import kotlinx.android.synthetic.main.tracker_activity.*
 import kotlinx.android.synthetic.main.user_live_tracking.*
 
 
-class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFailedListener {
+class TrackerActivity : BaseActivity(), OnMapReadyCallback/*, SinchService.StartFailedListener*/ {
+    private var start_rotation: Float = 0f
+    private var isMarkerRotating: Boolean = false
     private var countTimer: CountDownTimer? = null
     private var cancelCountTimer: CountDownTimer? = null
     private var duration: String = "0"
@@ -54,6 +57,8 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     private var movingCabMarker: Marker? = null
     private var previousLatLng: LatLng? = null
     private var currentLatLng: LatLng? = null
+    private var previousLng: LatLng? = null
+    private var currentLng: LatLng? = null
     val pointsList = ArrayList<LatLng>()
 
     private val item by lazy {
@@ -78,16 +83,15 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-
+        chatLay.visibility=View.GONE
         chatLay.setOnClickListener {
             UIUtil.clickAlpha(it)
-            startChatSupport(this, userInfo!!)
+            showError(false,"This feature is coming soon",null)
+           // startChatSupport(this, userInfo!!)
         }
         order_id.text = getString(R.string.orderID) + " #" + item.orderId
         order_info.text =
-            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " + getString(
-                R.string.dollor
-            ) + item.total
+            TimeUtils.getReadableDate(item.created) + " | " + item.orderItems.size + " items | " +item.currency + item.total
 
         setOrderStatus()
         leftIcon.setOnClickListener {
@@ -256,28 +260,28 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     override fun onServiceConnected() {
-        getSinchServiceInterface()?.setStartListener(this)
+        //    getSinchServiceInterface()?.setStartListener(this)
     }
 
 
-    override fun onStartFailed(error: SinchError) {
-        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
-    }
+    /* override fun onStartFailed(error: SinchError) {
+         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+     }
 
-    override fun onStarted() {
-        openPlaceCallActivity()
-    }
+     override fun onStarted() {
+         openPlaceCallActivity()
+     }*/
 
     private fun loginClicked() {
-        val userName = "" + userInfo?.userID
+        /*val userName = "" + userInfo?.userID
         if (userName != getSinchServiceInterface()?.userName) {
             getSinchServiceInterface()?.stopClient()
         }
         if (!getSinchServiceInterface()?.isStarted!!) {
             getSinchServiceInterface()?.startClient(userName)
         } else {
-            openPlaceCallActivity()
-        }
+        */    openPlaceCallActivity()
+        //  }
     }
 
     private fun openPlaceCallActivity() {
@@ -287,14 +291,18 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     }
 
     private fun callConnect() {
-        //item.delivery.phoneNo
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:" + item.delivery.phoneNo)
+        startActivity(intent)
+
+        /*   //item.delivery.phoneNo
         val call = getSinchServiceInterface()!!.callPhoneNumber("+46000000000")
         val callId = call.callId
         val callScreen = Intent(this, CallScreenActivity::class.java)
         callScreen.putExtra(SinchService.CALL_ID, callId)
         callScreen.putExtra(JSONKeys.NAME, item.delivery.name)
         callScreen.putExtra(JSONKeys.AVATAR, item.delivery.photo)
-        startActivity(callScreen)
+        startActivity(callScreen)*/
     }
 
 
@@ -433,6 +441,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
 
     private fun getUpdateRoot(data: ArrayList<UpdateLocationModel>) {
+        SnapLog.print("message========method")
         if (data.size > 0) {
             val latLng = LatLng(data[0].lat, data[0].lang)
 
@@ -481,11 +490,11 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
             }
             if (previousLatLng == null) {
-                updateCarLocation(latLng)
+                updateCarLocation(latLng, data[0].bearing, data[0].hasBearing)
 
             } else {
-                if (distanceBetween(previousLatLng!!, latLng) > 10f) {
-                    updateCarLocation(latLng)
+                if (distanceBetween(previousLatLng!!, latLng) > 3f) {
+                    updateCarLocation(latLng, data[0].bearing, data[0].hasBearing)
 
                 }
             }
@@ -505,6 +514,12 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
 
     override fun onMapReady(map: GoogleMap) {
         mMap = map
+        mMap?.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                this, R.raw.style_json
+            )
+        );
+
         mMap!!.setMaxZoomPreference(20f)
         mMap!!.isTrafficEnabled = false
         mMap!!.isIndoorEnabled = false
@@ -630,6 +645,12 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
+    private fun animateCamera(latLng: LatLng, bearing: Float) {
+        val cameraPosition =
+            CameraPosition.Builder().target(latLng).bearing(bearing).zoom(16f).build()
+        mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+    }
+
     private fun animateCamera(latLng: LatLng) {
         val cameraPosition = CameraPosition.Builder().target(latLng).zoom(16f).build()
         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -651,7 +672,7 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
             }
 
         return mMap!!.addMarker(
-            MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor)
+            MarkerOptions().position(latLng).zIndex(1000F).flat(true).icon(bitmapDescriptor)
         )
     }
 
@@ -703,42 +724,165 @@ class TrackerActivity : BaseActivity(), OnMapReadyCallback, SinchService.StartFa
     /**
      * This function is used to update the location of the Cab while moving from Origin to Destination
      */
-    private fun updateCarLocation(latLng: LatLng) {
+    private fun updateCarLocation(latLng: LatLng, bearing: Float, hasBearing: Boolean) {
+        SnapLog.print("updateCarLocation============")
         if (movingCabMarker == null) {
             movingCabMarker = addCarMarkerAndGet(latLng)
         }
+        movingCabMarker?.zIndex = 1000F
         if (previousLatLng == null) {
             currentLatLng = latLng
             previousLatLng = currentLatLng
             movingCabMarker?.position = currentLatLng
             movingCabMarker?.setAnchor(0.5f, 0.5f)
             animateCamera(currentLatLng!!)
+            movingCabMarker?.rotation = bearing
         } else {
             previousLatLng = currentLatLng
             currentLatLng = latLng
-            val valueAnimator = AnimationUtils.carAnimator()
+            currentLng = previousLatLng
+
+
+            val updatedLocation = Location(LocationManager.GPS_PROVIDER)
+            updatedLocation.latitude = latLng.latitude
+            updatedLocation.longitude = latLng.longitude
+            moveVechile(movingCabMarker!!, updatedLocation)
+            rotateMarker(movingCabMarker!!, bearing, start_rotation, hasBearing)
+            /*val valueAnimator = AnimationUtils.carAnimator()
             valueAnimator.addUpdateListener { va ->
                 if (currentLatLng != null && previousLatLng != null) {
                     val multiplier = va.animatedFraction
+
+
                     val nextLocation = LatLng(
                         multiplier * currentLatLng!!.latitude + (1 - multiplier) * previousLatLng!!.latitude,
                         multiplier * currentLatLng!!.longitude + (1 - multiplier) * previousLatLng!!.longitude
                     )
-                    movingCabMarker?.position = nextLocation
-                    val heading = computeHeading(previousLatLng, nextLocation);
-                    movingCabMarker?.rotation = heading.toFloat() - 90
 
-                    //  val rotation = MapUtils.getRotation(previousLatLng!!, nextLocation)
-                    /* if (!rotation.isNaN()) {
-                         ?.rotation = rotation
-                     }*/
-                    // movingCabMarker?.setAnchor(0.5f, 0.5f)
+                    previousLng = currentLng
+                    currentLng = nextLocation
+
+                    val updatedLocation = Location(LocationManager.GPS_PROVIDER)
+                    updatedLocation.latitude = nextLocation.latitude
+                    updatedLocation.longitude = nextLocation.longitude
+                    val bearing = bearingBetweenLocations(previousLatLng!!, latLng).toFloat()
+
+
+                    movingCabMarker?.rotation = bearing
+                    SnapLog.print("bearing============$bearing")
+                    movingCabMarker?.position = nextLocation
+                    movingCabMarker?.setAnchor(0.5f, 0.5f)
                     animateCamera(nextLocation)
                 }
             }
             valueAnimator.start()
         }
+*/
+        }
+    }
 
+
+    /*private fun rotateMarker(marker: Marker, toRotation: Float) {
+        if (!isMarkerRotating) {
+            val handler = Handler()
+            val start: Long = SystemClock.uptimeMillis()
+            val startRotation = marker.rotation
+            SnapLog.print("startRotation=====$startRotation")
+
+            val duration: Long = 1000
+            val interpolator: Interpolator = LinearInterpolator()
+            handler.post(object : Runnable {
+                override fun run() {
+                    isMarkerRotating = true
+                    val elapsed: Long = SystemClock.uptimeMillis() - start
+                    val t: Float = interpolator.getInterpolation(elapsed.toFloat() / duration)
+                    val rot = t * toRotation + (1 - t) * startRotation
+                    marker.rotation = if (-rot > 180) rot / 2 else rot
+                    SnapLog.print("final=====" + marker.rotation)
+
+                    if (t < 1.0) {
+                        // Post again 16ms later.
+                        handler.postDelayed(this, 16)
+                    } else {
+                        isMarkerRotating = false
+                    }
+                }
+            })
+        }
+    }*/
+    fun moveVechile(myMarker: Marker, finalPosition: Location) {
+        val startPosition = myMarker.position
+        val handler = Handler()
+        val start = SystemClock.uptimeMillis()
+        val interpolator: Interpolator = AccelerateDecelerateInterpolator()
+        val durationInMs = 3000f
+        val hideMarker = false
+        handler.post(object : Runnable {
+            var elapsed: Long = 0
+            var t = 0f
+            var v = 0f
+            override fun run() {
+                // Calculate progress using interpolator
+                elapsed = SystemClock.uptimeMillis() - start
+                t = elapsed / durationInMs
+                v = interpolator.getInterpolation(t)
+                val currentPosition = LatLng(
+                    startPosition.latitude * (1 - t) + finalPosition.latitude * t,
+                    startPosition.longitude * (1 - t) + finalPosition.longitude * t
+                )
+                myMarker.setPosition(currentPosition)
+                // myMarker.setRotation(finalPosition.getBearing());
+
+
+                // Repeat till progress is completeelse
+                if (t < 1) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16)
+                    // handler.postDelayed(this, 100);
+                } else {
+                    myMarker.isVisible = !hideMarker
+                }
+            }
+        })
+    }
+
+    fun rotateMarker(marker: Marker, toRotation: Float, st: Float, hasBearing: Boolean) {
+        if (!hasBearing)
+            return
+        val handler = Handler()
+        val start = SystemClock.uptimeMillis()
+        val startRotation = marker.rotation
+        val duration: Long = 1555
+        val interpolator: Interpolator = LinearInterpolator()
+        handler.post(object : Runnable {
+            override fun run() {
+                val elapsed = SystemClock.uptimeMillis() - start
+                val t = interpolator.getInterpolation(elapsed.toFloat() / duration)
+                val rot = t * toRotation + (1 - t) * startRotation
+                marker.rotation = if (-rot > 180) rot / 2 else rot
+                start_rotation = if (-rot > 180) rot / 2 else rot
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16)
+                }
+            }
+        })
+    }
+
+    fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
+        val PI = 3.14159
+        val lat1 = latLng1.latitude * PI / 180
+        val long1 = latLng1.longitude * PI / 180
+        val lat2 = latLng2.latitude * PI / 180
+        val long2 = latLng2.longitude * PI / 180
+        val dLon = long2 - long1
+        val y = Math.sin(dLon) * Math.cos(lat2)
+        val x = Math.cos(lat1) * Math.sin(lat2) - (Math.sin(lat1)
+                * Math.cos(lat2) * Math.cos(dLon))
+        var brng = Math.atan2(y, x)
+        brng = Math.toDegrees(brng)
+        brng = (brng + 360) % 360
+        return brng
     }
 
 

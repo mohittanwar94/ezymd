@@ -159,7 +159,7 @@
                 <ImageView
                     android:id="@+id/view"
                     android:layout_width="@dimen/_35sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="@dimen/_45sdp"
                     android:layout_below="@+id/resutaurnatLocation"
                     android:layout_gravity="top|left"
                     android:background="@drawable/dotted_line_yellow"
@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_7sdp"
-                    android:layout_marginTop="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_55sdp"
                     android:layout_toEndOf="@+id/userLocation"
                     android:ellipsize="end"
                     android:gravity="start"
@@ -612,6 +612,22 @@
                 </LinearLayout>
             </LinearLayout>
 
+
+
+            <com.ezymd.restaurantapp.customviews.SnapButton
+                android:id="@+id/invoice"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/white"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/request_invoice"
+                android:textAllCaps="false"
+                android:textColor="@color/color_002366"
+                android:textSize="@dimen/_17sdp"
+                android:textStyle="normal"
+                app:buttonFont="bold" />
 
             <com.ezymd.restaurantapp.customviews.SnapButton
                 android:id="@+id/trackOrder"

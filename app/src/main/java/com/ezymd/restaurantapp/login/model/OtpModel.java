@@ -8,7 +8,11 @@ public class OtpModel implements Serializable {
     @SerializedName("status")
     private int status;
     @SerializedName("message")
-    private String message="";
+    private String message = "";
+
+
+    @SerializedName("data")
+    private Otp data;
 
     public int isStatus() {
         return status;
@@ -24,5 +28,17 @@ public class OtpModel implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public Otp getData() {
+        return data;
+    }
+
+    public void setData(Otp data) {
+        this.data = data;
     }
 }
