@@ -52,7 +52,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-<!--
             <RelativeLayout
                 android:id="@+id/online"
                 android:layout_width="match_parent"
@@ -109,7 +108,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/color_f2f4f7" />
--->
 
             <RelativeLayout
                 android:id="@+id/cod"
@@ -168,11 +166,11 @@
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/color_f2f4f7" />
 
-          <!--  <RelativeLayout
+            <RelativeLayout
                 android:id="@+id/gpay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_gravity="top">
 
 
@@ -226,7 +224,7 @@
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/color_f2f4f7" />
 
--->
+
             <RelativeLayout
                 android:id="@+id/wallet"
                 android:layout_width="match_parent"

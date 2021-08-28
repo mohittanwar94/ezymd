@@ -58,6 +58,7 @@ interface ServerConfig {
         const val WALLET_BALANCE="walletTransactions"
         const val EMAIL_INVOICE="sendInvoice"
         const val CONFIG="config"
+        const val PLAN_LIST="v1/razorpay/plan_list"
 
 
         /* TO Do change to this to near by restauant */
