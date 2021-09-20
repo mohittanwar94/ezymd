@@ -7,16 +7,14 @@ interface ServerConfig {
     companion object {
 
 
-        const val PAYMENT_ACCOUNT_ID = "acct_1J7MbhIryxPxNGEu"
-        const val PAYMENT_PUBLISHABLE_KEY =
-            "pk_live_51J7MbhIryxPxNGEuH1C8xjySJO5RijLVPpXDVWzPO1mKSwRuztkN5m6FppQxid43jMlsvfWNgmjDIUFMfZO2E1ou0031hrwtP0"
         const val IS_TESTING = false
         const val facebook = "JsmOX78jPApjOOP7ozZxtZL/Yto="
-        const val BASE_URL = "http://app.ezymd.com/api/"
+        const val BASE_URL = "https://app.ezymd.com/api/"
 
         const val OTP_HASH = "wGcYmfGND6w"
 
-
+        const val APP_MD5 = "d2a57dc1d883fd21fb9951699df71cc7"
+        const val EZYMD_MD5 = "3792e262ce5bc06d7a1f4fe1c68f5cf5"
         const val GENERATE_OTP = "sendOtp"
         const val LOGOUT = "logout"
 

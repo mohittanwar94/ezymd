@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezymd.restaurantapp.splash.ConfigData
+import com.ezymd.restaurantapp.utils.DecyrptInfo
 import com.ezymd.restaurantapp.utils.UserInfo
 import com.google.gson.Gson
 import kotlinx.coroutines.cancel
@@ -11,6 +12,8 @@ import kotlinx.coroutines.cancel
 class MainActivityViewModel : ViewModel() {
     val isForceUpgrade = MutableLiveData<Boolean>(false)
     val appUpgradeVersion: MutableLiveData<Int>
+    var accountId = MutableLiveData<String>()
+    var publishKey = MutableLiveData<String>()
 
 
     override fun onCleared() {
@@ -32,6 +35,8 @@ class MainActivityViewModel : ViewModel() {
         isForceUpgrade.postValue(configModel.data.forceUpgrade == 1)
         userInfo.currency = configModel?.data?.currentZone?.currency_symbol
         userInfo.currencyCode = configModel?.data?.currentZone?.currency_code
+        accountId.postValue(DecyrptInfo.decrypt(configModel.data.accountID))
+        publishKey.postValue(DecyrptInfo.decrypt(configModel.data.publicKey))
     }
 
 

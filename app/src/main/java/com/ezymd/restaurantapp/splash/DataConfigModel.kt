@@ -15,7 +15,9 @@ data class DataConfigModel(
     @SerializedName("created_at") var createdAt: String,
     @SerializedName("updated_at") var updatedAt: String,
     @SerializedName("otp_consent_message") var otp_consent_message: String,
-    @SerializedName("current_zone") var currentZone: CurrentZone
+    @SerializedName("current_zone") var currentZone: CurrentZone,
+    @SerializedName("account_id") var accountID: String,
+    @SerializedName("public_key") var publicKey: String
 
 
 )

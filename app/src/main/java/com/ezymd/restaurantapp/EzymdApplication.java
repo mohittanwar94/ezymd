@@ -74,11 +74,6 @@ public class EzymdApplication extends Application implements Application.Activit
     @Override
     public void onCreate() {
         super.onCreate();
-        PaymentConfiguration.init(
-                this,
-                ServerConfig.PAYMENT_PUBLISHABLE_KEY,
-                ServerConfig.PAYMENT_ACCOUNT_ID
-        );
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mInstance = this;
         FacebookSdk.setAutoLogAppEventsEnabled(false);
