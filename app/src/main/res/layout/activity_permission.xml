@@ -30,7 +30,7 @@
         android:gravity="center"
         android:letterSpacing="0.01"
         android:lineSpacingExtra="5sp"
-        android:text="Ezymd collects location data to enable live tracking on google map, provide you better experience like list restaurant base on your current location."
+        android:text="@string/ezymd_collects_location_data_to_enable_live_tracking_on_google_map_provide_you_better_experience_like_list_nearest_pharmacies_base_on_your_current_location"
         android:textColor="@color/color_002366"
         android:textSize="@dimen/_15sdp"
         android:textStyle="normal"

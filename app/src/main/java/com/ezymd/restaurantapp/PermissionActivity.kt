@@ -12,7 +12,6 @@ class PermissionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
         setGUI()
-
     }
 
     private fun checkLocationPermission() {
