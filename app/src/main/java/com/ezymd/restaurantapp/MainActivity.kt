@@ -22,6 +22,7 @@ import com.ezymd.restaurantapp.tracker.TrackerActivity
 import com.ezymd.restaurantapp.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+import com.stripe.android.PaymentConfiguration
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,9 +104,15 @@ class MainActivity : BaseActivity(), ConnectivityReceiver.ConnectivityReceiverLi
                 upgradeLay.visibility = View.VISIBLE
             }
         })
+        homeViewModel.publishKey.observe(this, Observer {
+           it?.let { PaymentConfiguration.init(
+               this,
+               it,
+               homeViewModel.accountId.value
+           ) }
+        })
         upgrade.setOnClickListener {
             UIUtil.clickHandled(it)
-
             openUpgradeApp()
         }
     }

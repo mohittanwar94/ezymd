@@ -47,7 +47,6 @@ class PaymentOptionActivity : BaseActivity() {
         setContentView(R.layout.activity_checkout)
         wAmount = intent.getDoubleExtra(JSONKeys.WALLET_AMOUNT, 0.0)
         tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
-        wallet.visibility=View.GONE
         setToolBar()
         setHeaderData()
         setGUI()
@@ -58,22 +57,22 @@ class PaymentOptionActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setGUI() {
-        /*if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.ONLINE) {
+        if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.ONLINE) {
             onlineCheckBox.setChecked(true, true)
-        } else*/ if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.COD) {
+        } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.COD) {
             codCheckBox.setChecked(true, true)
         } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.WALLET) {
             walletCheckBox.setChecked(true, true)
             // wallet
-        }/* else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.GPAY) {
+        } else if (intent.getIntExtra(JSONKeys.PAYMENT_TYPE, 1) == PaymentMethodTYPE.GPAY) {
             gpayCheckBox.setChecked(true, true)
             // wallet
-        }*/
+        }
 
         if (intent.getStringExtra(JSONKeys.DELIVERY_CHARGES).equals("Contact less", true)) {
             cod.visibility = View.GONE
         }
-       /* onlineCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+        onlineCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
             if (isChecked) {
                 wAmount = 0.0
                 tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
@@ -82,9 +81,9 @@ class PaymentOptionActivity : BaseActivity() {
                 walletCheckBox.setChecked(false, false)
                 gpayCheckBox.setChecked(false, false)
             }
-        }*/
+        }
 
-      /*  gpayCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
+        gpayCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
             if (isChecked) {
                 wAmount = 0.0
                 tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
@@ -94,13 +93,13 @@ class PaymentOptionActivity : BaseActivity() {
                 onlineCheckBox.setChecked(false, false)
             }
         }
-*/
+
         walletCheckBox.setOnCheckedChangeListener { checkBox, isChecked ->
             tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
             if (isChecked) {
                 codCheckBox.setChecked(false, false)
-               // onlineCheckBox.setChecked(false, false)
-                //gpayCheckBox.setChecked(false, false)
+                onlineCheckBox.setChecked(false, false)
+                gpayCheckBox.setChecked(false, false)
                 if (isLoaded) {
                     if (tAmount > viewModel.baseResponse.value!!.data?.total!!.toDouble()) {
                         instructions.text =
@@ -114,9 +113,9 @@ class PaymentOptionActivity : BaseActivity() {
                     }
                 } else {
                     codCheckBox.setChecked(false, false)
-                   // onlineCheckBox.setChecked(false, false)
+                    onlineCheckBox.setChecked(false, false)
                     walletCheckBox.setChecked(false, false)
-                  //  gpayCheckBox.setChecked(false, false)
+                    gpayCheckBox.setChecked(false, false)
                 }
 
             }
@@ -127,15 +126,15 @@ class PaymentOptionActivity : BaseActivity() {
                 tAmount = intent.getDoubleExtra(JSONKeys.AMOUNT, 0.0)
                 instructions.text = ""
                 walletCheckBox.setChecked(false, false)
-               // onlineCheckBox.setChecked(false, false)
-              //  gpayCheckBox.setChecked(false, false)
+                onlineCheckBox.setChecked(false, false)
+                gpayCheckBox.setChecked(false, false)
             }
         }
 
-       /* online.setOnClickListener {
+        online.setOnClickListener {
             onlineCheckBox.setChecked(true, false)
         }
-*/
+
         cod.setOnClickListener {
             codCheckBox.setChecked(true, false)
         }
@@ -146,14 +145,14 @@ class PaymentOptionActivity : BaseActivity() {
 
         }
 
-       /* gpay.setOnClickListener {
+        gpay.setOnClickListener {
             gpayCheckBox.setChecked(true, false)
 
 
         }
-       */ payButton.setOnClickListener {
+        payButton.setOnClickListener {
             UIUtil.clickHandled(it)
-            if (!codCheckBox.isChecked && /*!onlineCheckBox.isChecked &&*/ !walletCheckBox.isChecked /*&& !gpayCheckBox.isChecked*/) {
+            if (!codCheckBox.isChecked && !onlineCheckBox.isChecked && !walletCheckBox.isChecked && !gpayCheckBox.isChecked) {
                 showError(false, "please select payment mode", null)
             } else {
                 val intent = Intent()
@@ -163,14 +162,14 @@ class PaymentOptionActivity : BaseActivity() {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.COD)
                 }
 
-              /*  if (onlineCheckBox.isChecked) {
+                if (onlineCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.ONLINE)
                 }
 
                 if (gpayCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.GPAY)
                 }
-*/
+
                 if (walletCheckBox.isChecked) {
                     intent.putExtra(JSONKeys.PAYMENT_MODE, PaymentMethodTYPE.WALLET)
                 }
@@ -264,11 +263,11 @@ class PaymentOptionActivity : BaseActivity() {
     }
 
     private fun setGooglePayAvailable(available: Boolean) {
-     /*   if (available) {
+        if (available) {
             gpay.visibility = View.VISIBLE
         } else {
             gpay.visibility = View.GONE
-        }*/
+        }
     }
 
 }
