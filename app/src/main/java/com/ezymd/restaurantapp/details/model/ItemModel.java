@@ -1,5 +1,7 @@
 package com.ezymd.restaurantapp.details.model;
 
+import android.text.TextUtils;
+
 import com.ezymd.restaurantapp.itemdetail.model.Modifier;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -115,7 +117,11 @@ public class ItemModel implements Serializable {
     }
 
     public double getPrice() {
-        return price;
+        if (TextUtils.isEmpty(String.valueOf(sell_price)) || sell_price == 0) {
+            return price;
+        } else {
+            return Double.parseDouble(String.valueOf(sell_price));
+        }
     }
 
     public void setPrice(double price) {

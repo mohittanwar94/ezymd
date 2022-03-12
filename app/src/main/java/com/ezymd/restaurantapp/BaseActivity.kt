@@ -167,8 +167,6 @@ open class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connectivity
         is_option = dataTrending.is_option
         item = dataTrending.item
         description = dataTrending.description
-
-
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {

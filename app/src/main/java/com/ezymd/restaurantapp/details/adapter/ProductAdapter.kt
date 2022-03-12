@@ -67,7 +67,7 @@ class ProductAdapter(
             if (context is CategoryActivity)
                 context.showBottomSheet(it, data[holder.adapterPosition])
         }
-        holder.itemView.price.text = UserInfo.getInstance(context).currency + item.price
+        holder.itemView.price.text = UserInfo.getInstance(context).currency + item.calculatedPrice
         holder.itemView.quantityPicker.max = item.stock
         holder.itemView.quantityPicker.min = 0
 

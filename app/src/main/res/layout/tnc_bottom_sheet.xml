@@ -44,6 +44,39 @@
             android:textColor="@color/blue_667ba3"
             android:textSize="@dimen/_13sdp"
             app:textFont="roman" />
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/tv_menufacturer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:letterSpacing="0.02"
+            android:layout_gravity="center"
+            android:lineSpacingExtra="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_15sdp"
+            android:text="@string/manufactured_by"
+            android:textColor="@color/color_1e222a"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
+
+        <com.ezymd.restaurantapp.customviews.SnapTextView
+            android:id="@+id/tv_menufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center_vertical"
+            android:letterSpacing="0.02"
+            android:layout_gravity="center"
+            android:lineSpacingExtra="@dimen/_1sdp"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_15sdp"
+            android:textColor="@color/color_787a7f"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="normal"
+            app:textFont="medium" />
     </LinearLayout>
 
 </FrameLayout>
