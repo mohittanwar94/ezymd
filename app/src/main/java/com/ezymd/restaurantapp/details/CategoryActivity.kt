@@ -67,10 +67,8 @@ class CategoryActivity : BaseActivity() {
         getData()
         setToolBar()
         setHeaderData()
-
         setAdapter()
         setObserver()
-
     }
 
 
@@ -233,7 +231,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
-            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price,0.0)
+            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price, 0.0)
         })
 
     }
@@ -497,6 +495,8 @@ class CategoryActivity : BaseActivity() {
         val sheetDialog = BottomSheetDialog(this)
         sheetDialog.setContentView(R.layout.tnc_bottom_sheet)
         val promoName = sheetDialog.findViewById<TextView>(R.id.name)
+        val menufracturer = sheetDialog.findViewById<TextView>(R.id.tv_menufacturer)
+        menufracturer?.text = item.manufactured_by
         promoName!!.text = item.item
         val description = sheetDialog.findViewById<TextView>(R.id.description)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

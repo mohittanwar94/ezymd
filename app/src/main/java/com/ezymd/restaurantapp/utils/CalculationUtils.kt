@@ -11,16 +11,16 @@ class CalculationUtils {
         var quantity = 0
         var total = 0.0
         for (itemModel in arrayList) {
-            var tempPrice = getModifierPrice(itemModel.price, itemModel.listModifiers)
-            tempPrice = ((itemModel.price + tempPrice) * itemModel.quantity)
+            var tempPrice = getModifierPrice(0.0, itemModel.listModifiers)
+            tempPrice = if (tempPrice != 0.0)
+                (tempPrice * itemModel.quantity)
+            else
+                ((itemModel.price + tempPrice) * itemModel.quantity)
             quantity += itemModel.quantity
             total += tempPrice
             itemModel.total = tempPrice
         }
-
-
         return Pair(quantity, total)
-
     }
 
     fun getModifierPrice(price: Double, listModifiers: ArrayList<Modifier>): Double {
@@ -37,12 +37,12 @@ class CalculationUtils {
     }
 
     fun getModifierPrice(price: Double, mod: Modifier): Double {
-        var tempPrice = price
-        when (mod.operator) {
-            "+" -> tempPrice += mod.price
-            "-" -> tempPrice -= mod.price
-            "*" -> tempPrice *= mod.price
-        }
+        var tempPrice = mod.price
+        /*  when (mod.operator) {
+              "+" -> tempPrice += mod.price
+              "-" -> tempPrice -= mod.price
+              "*" -> tempPrice *= mod.price
+          }*/
         return tempPrice
 
     }
@@ -51,7 +51,7 @@ class CalculationUtils {
         context: Context,
         quantityCount: Int,
         price: Double,
-        disCount: Double
+        disCount: Double,
     ): CharSequence? {
         return TextUtils.concat(
             "" + quantityCount,
@@ -59,7 +59,7 @@ class CalculationUtils {
             context.getString(R.string.items),
             " | ",
             UserInfo.getInstance(context).currency,
-            String.format("%.2f", (price-disCount))
+            String.format("%.2f", (price - disCount))
         )
     }
 }

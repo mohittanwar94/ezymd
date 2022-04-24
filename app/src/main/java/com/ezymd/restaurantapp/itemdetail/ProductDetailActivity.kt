@@ -1,5 +1,6 @@
 package com.ezymd.restaurantapp.itemdetail
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -31,8 +32,6 @@ import com.ezymd.restaurantapp.ui.home.model.Resturant
 import com.ezymd.restaurantapp.utils.*
 import kotlinx.android.synthetic.main.activity_product_details.*
 import kotlinx.android.synthetic.main.cart_view.*
-import kotlinx.android.synthetic.main.cart_view.view.*
-import kotlinx.android.synthetic.main.order_item_row.*
 
 
 class ProductDetailActivity : BaseActivity() {
@@ -55,13 +54,12 @@ class ProductDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_details)
-
         setGUI()
         setObserver()
         fetchData()
-
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setObserver() {
         EzymdApplication.getInstance().cartData.observe(this, Observer {
             if (it != null) {
@@ -76,21 +74,17 @@ class ProductDetailActivity : BaseActivity() {
         })
         viewModel.options.observe(this, Observer {
             if (it != null) {
-                val restaurantAdapter = OptionsAdapter(this, it, product.price)
+                val restaurantAdapter = OptionsAdapter(this, it, 0.0)
                 rv_modifiers?.adapter = restaurantAdapter
             }
         })
-        viewModel.errorRequest.observe(this, {
+        viewModel.errorRequest.observe(this) {
             showError(false, it, null)
-        })
-        viewModel.isLoading.observe(this, {
+        }
+        viewModel.isLoading.observe(this) {
             progress.visibility = if (it) View.VISIBLE else View.GONE
-
-
-        })
-
-
-        viewModel.selectedOptionsList.observe(this, {
+        }
+        viewModel.selectedOptionsList.observe(this) {
             if (viewModel.options.value != null) {
                 val list = ArrayList<Modifier>(it.values)
                 checkExistInCart(list)
@@ -103,24 +97,21 @@ class ProductDetailActivity : BaseActivity() {
                         add.setTextColor(ContextCompat.getColor(this, R.color.red))
                     }
                 }
-                tv_price?.text = "${userInfo?.currency}${
-                    product.price + CalculationUtils().getModifierPrice(
-                        product.price,
+                /*tv_price?.text = "${userInfo?.currency}${
+                    CalculationUtils().getModifierPrice(
+                        0.0,
                         list
                     )
-                }"
-
+                }"*/
             }
 
-        })
+        }
         viewCart.setOnClickListener {
             val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
             intent.putExtra(JSONKeys.OBJECT, restaurant)
             startActivity(intent)
             overridePendingTransition(R.anim.left_in, R.anim.left_out)
         }
-
-
     }
 
     private fun checkExistInCart(list: ArrayList<Modifier>) {
@@ -166,9 +157,7 @@ class ProductDetailActivity : BaseActivity() {
             if (!isPresent) {
                 showAddButton()
             }
-
         }
-
     }
 
     private fun showAddButton() {
@@ -192,7 +181,6 @@ class ProductDetailActivity : BaseActivity() {
     private fun processCartData(arrayList: ArrayList<ItemModel>) {
         val calc = CalculationUtils().processCartData(arrayList)
         setCartData(calc.first, calc.second)
-
     }
 
     var isExanded = false
@@ -209,8 +197,6 @@ class ProductDetailActivity : BaseActivity() {
             isExanded = true
             setCartDetails(quantity, price)
         }
-
-
     }
 
     private fun setBannerPager(dataBanner: ArrayList<ImageModel>) {
@@ -244,7 +230,7 @@ class ProductDetailActivity : BaseActivity() {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
+                positionOffsetPixels: Int,
             ) {
             }
 
@@ -260,7 +246,7 @@ class ProductDetailActivity : BaseActivity() {
 
     private fun setCartDetails(quantityCount: Int, price: Double) {
         runOnUiThread(Runnable {
-            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price,0.0)
+            quantity.text = CalculationUtils().getPriceText(this, quantityCount, price, 0.0)
         })
 
     }
@@ -311,7 +297,8 @@ class ProductDetailActivity : BaseActivity() {
         } else {
             tv_desc?.text = Html.fromHtml(product.description)
         }
-        tv_price?.text = "${userInfo?.currency}${product.price}"
+        tv_menufacturer?.text = product.manufactured_by
+        tv_price?.text = "${userInfo?.currency}${product.calculatedPrice}"
         if (!TextUtils.isEmpty(product.image?.firstOrNull())) {
             GlideApp.with(applicationContext)
                 .load(product.image).centerCrop().override(200, 200).dontAnimate()
@@ -376,9 +363,26 @@ class ProductDetailActivity : BaseActivity() {
                     add.alpha = 0.0f
                     add.visibility = View.VISIBLE
                     add.animate().alpha(1f).setDuration(250)
+                        .setListener(object : Animator.AnimatorListener {
+                            override fun onAnimationEnd(p0: Animator?) {
+                                add.alpha = 1.0f
+                            }
+
+                            override fun onAnimationCancel(p0: Animator?) {
+
+                            }
+
+                            override fun onAnimationRepeat(p0: Animator?) {
+
+                            }
+
+                            override fun onAnimationStart(p0: Animator?) {
+
+                            }
+                        })
                         .setUpdateListener { animation ->
                             add.alpha =
-                                (250 / if (animation!!.currentPlayTime <= 0) 1 else animation.currentPlayTime).toFloat()
+                                (250 / if (animation!!.currentPlayTime <= 20) 1 else animation.currentPlayTime).toFloat()
                         }.start()
                     quantityPicker.value = 0
                     viewModel.removeItem(currentProduct!!.uuid)

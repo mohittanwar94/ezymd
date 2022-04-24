@@ -165,10 +165,10 @@
                 android:letterSpacing="0.01"
                 android:paddingLeft="@dimen/_15sdp"
                 android:paddingRight="@dimen/_15sdp"
-                android:text="@string/dummmy_price"
                 android:textColor="@color/color_1e222a"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/tv_desc_title"
                 app:layout_constraintStart_toStartOf="@id/tv_name"
                 app:layout_constraintTop_toBottomOf="@id/rv_modifiers"
@@ -210,6 +210,41 @@
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="@id/tv_name"
                 app:layout_constraintTop_toBottomOf="@id/tv_desc_title"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_menufacturer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="@dimen/_1sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:text="@string/manufactured_by"
+                android:textColor="@color/color_1e222a"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_desc"
+                app:textFont="medium" />
+
+            <com.ezymd.restaurantapp.customviews.SnapTextView
+                android:id="@+id/tv_menufacturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="@dimen/_1sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:textColor="@color/color_787a7f"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="@id/tv_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_menufacturer_title"
                 app:textFont="medium" />
 
             <ProgressBar

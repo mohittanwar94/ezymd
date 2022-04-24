@@ -16,10 +16,8 @@ import com.ezymd.restaurantapp.utils.ErrorResponse
 import com.ezymd.restaurantapp.utils.SnapLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.broadcast
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ItemDetailViewModel : ViewModel() {
     var errorRequest: MutableLiveData<String>
@@ -139,10 +137,11 @@ class ItemDetailViewModel : ViewModel() {
     fun removeItem(id: String) {
         val arrayList = EzymdApplication.getInstance().cartData.value
         if (arrayList != null) {
-            val item = arrayList.filter {
-                it.uuid.equals(it)
+            val item = arrayList.firstOrNull {
+                it.uuid.equals(id)
             }
-            arrayList.remove(item as ItemModel)
+            if (item != null)
+                arrayList.remove(item)
             EzymdApplication.getInstance().cartData.postValue(arrayList)
         }
     }
